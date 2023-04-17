@@ -1,0 +1,30 @@
+.dashboard_container {
+  display: grid;
+  grid-template-columns: 200px auto;
+  grid-template-rows: 60px auto;
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar main";
+  height: 100vh;
+}
+
+.main {
+  grid-area: main;
+  padding: 20px;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+}
+
+.card p {
+  margin: 0;
+}

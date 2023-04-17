@@ -1,0 +1,250 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap");
+
+body {
+  margin: 0;
+}
+* {
+  font-family: "Manrope", sans-serif !important;
+}
+*/
+/* body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+} */
+
+/* ROOT CSS VARIABLES */
+:root {
+  --color-white: #ffffff;
+  --color-light: #f0eff5;
+  --color-gray-light: #86848c;
+  --color-gray-dark: #56555e;
+  --color-dark: #27282f;
+  --card-padding: 1.6rem;
+  --padding-1: 1rem;
+  --padding-2: 8px;
+
+  --card-border-radius: 1.6rem;
+  --border-radius-1: 1rem;
+  --border-radius-2: 6px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  border: 0;
+  appearance: none;
+  text-decoration: none;
+  list-style: none;
+  box-sizing: border-box;
+}
+html {
+  font-size: 12px;
+}
+body {
+  background: var(--color-light);
+  font-family: poppins, sans-serif;
+  min-height: 100vh;
+  color: var(--color-dark);
+}
+img {
+  width: 100%;
+}
+h1 {
+  font-size: 2.2rem;
+}
+h2 {
+  font-size: 1.5rem;
+}
+h3 {
+  font-size: 1.2rem;
+}
+h4 {
+  font-size: 1.2rem;
+}
+h5 {
+  font-size: 0.86rem;
+  font-weight: 500;
+}
+h6 {
+  font-size: 7.6rem;
+}
+p {
+  font-size: 0.86rem;
+  color: var(--color-gray-dark);
+}
+small {
+  font-weight: 300;
+  font-size: 0.77rem;
+}
+.text-muted {
+  color: var(--color-gray-light);
+}
+/* NAV BAR */
+nav {
+  width: 100%;
+  background: var(--color-white);
+  padding: 1rem 0;
+}
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  width: 96%;
+  margin: 0 auto;
+}
+nav img.logo {
+  width: 3.5rem;
+}
+nav .search-bar {
+  background: var(--color-light);
+  padding: 0.6rem;
+  width: 32vw;
+  border-radius: var(--border-radius-2);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-gray-light);
+  position: absolute;
+  left: 15%;
+}
+nav .search-bar input[type="search"] {
+  color: var(--color-dark);
+  background: transparent;
+  width: 100%;
+}
+nav .search-bar input[type="search"]::placeholder {
+  color: var(--color-gray-dark);
+}
+nav .profile-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10rem;
+}
+nav .profile-area .profile {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+nav .profile-area .profile-photo {
+  display: block;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+nav .profile-area button {
+  display: none;
+}
+/* ================================ ASIDE AND SIDEBAR ========================= */
+main {
+  display: grid;
+  grid-template-columns: 16rem auto 30rem;
+  gap: 2rem;
+}
+main aside {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 88vh;
+}
+/* Visible only in mobile and tablets screens */
+main aside button#close-btn {
+  display: block;
+  width: 100%;
+}
+main aside .sidebar {
+  background: #136d66;
+  height: 100%;
+}
+main aside .sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  height: 4.2rem;
+  color: var(--color-white);
+  position: relative;
+}
+main aside .sidebar a span {
+  font-size: 1.7rem;
+  margin-left: 2rem;
+  transition: all 300ms ease;
+}
+main aside .sidebar a.active {
+  color: #ba760d;
+}
+main aside .sidebar a.active::before {
+  content: "";
+  width: 6px;
+  height: 100%;
+  position: absolute;
+  background: #ba760d;
+}
+main aside .sidebar a:hover {
+  color: #ba760d;
+}
+main aside .sidebar h4 {
+  font-weight: 500;
+}
+
+/* ======================= MEDIA QUERIES FOR TABLETS =============================== */
+@media screen and (max-width: 1024px) {
+  nav .profile-area {
+    gap: 2rem;
+  }
+  nav .profile-area button#menu-btn {
+    display: inline;
+    background: transparent;
+    color: var(--color-dark);
+  }
+  main {
+    grid-template-columns: 1fr;
+  }
+  main aside {
+    position: fixed;
+    left: 0;
+    z-index: 3;
+    background-color: #136d66;
+    width: 18rem;
+    height: 100vh;
+    box-shadow: 0.1rem 0 1rem #136d66;
+    display: none;
+  }
+  main aside button#close-btn {
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 4;
+    background: transparent;
+    color: var(--color-white);
+  }
+  button:hover {
+    cursor: pointer;
+  }
+  main aside .sidebar {
+    margin-top: 4rem;
+  }
+  /* ======================= MEDIA QUERIES FOR MOBILE PHONES =============================== */
+  @media screen and(max-width: 600px) {
+    nav .profile-area {
+      gap: 2.6rem;
+    }
+    nav .profile h5,
+    nav .profile span {
+      display: none;
+    }
+  }
+}
