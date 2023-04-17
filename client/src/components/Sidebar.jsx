@@ -1,10 +1,7 @@
 import React from "react";
 
-function Sidebar({ userDetails, show }) {
-  const user = localStorage.getItem("token");
-  const googleUser = userDetails?.googleUser;
-
-  // console.log("user: ", googleUser);
+function Sidebar({ user, googleUser, show }) {
+  // console.log("user: ", user);
 
   const handleLogout = () => {
     try {

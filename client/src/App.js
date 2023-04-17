@@ -24,7 +24,7 @@ function App() {
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.user);
+      // console.log(data.user);
       // localStorage.setItem("token", data.user);
       setGoogleUser(data.user._json);
     } catch (err) {
@@ -74,7 +74,6 @@ function App() {
                     user={user}
                     googleUser={googleUser}
                     show={showSidebar}
-                    onToggleSidebar={handleToggleSidebar}
                   />
                   <Dashboard />
                 </main>
