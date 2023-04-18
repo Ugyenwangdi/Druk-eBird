@@ -22,7 +22,7 @@ code {
 } */
 
 /* ROOT CSS VARIABLES */
-/* :root {
+:root {
   --color-white: #ffffff;
   --color-light: #f0eff5;
   --color-gray-light: #86848c;
@@ -87,7 +87,7 @@ small {
 }
 .text-muted {
   color: var(--color-gray-light);
-} */
+}
 /* NAV BAR */
 /* nav {
   width: 100%;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
-import "./App.css";
+// import "./App.css";
 
 import { Sidebar, Topbar } from "./components";
 import {
@@ -11,6 +11,7 @@ import {
   PasswordReset,
   Dashboard,
   Species,
+  AddSpecies,
 } from "./pages";
 
 // import "./App.css";
@@ -68,6 +69,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/species" element={<Species />} />
+              <Route path="/add-species" element={<AddSpecies />} />
             </Routes>
           </main>
         </div>

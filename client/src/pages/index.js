@@ -5,5 +5,14 @@ import ForgotPassword from "./ForgotPassword";
 import PasswordReset from "./PasswordReset";
 import Dashboard from "./Dashboard";
 import Species from "./Species";
+import AddSpecies from "./AddSpecies";
 
-export { Signup, Login, ForgotPassword, PasswordReset, Dashboard, Species };
+export {
+  Signup,
+  Login,
+  ForgotPassword,
+  PasswordReset,
+  Dashboard,
+  Species,
+  AddSpecies,
+};
