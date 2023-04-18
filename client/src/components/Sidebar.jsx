@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/sidebar.css";
 
 function Sidebar({ user, googleUser, show }) {
   // console.log("user: ", user);
@@ -20,11 +21,11 @@ function Sidebar({ user, googleUser, show }) {
   return (
     <aside style={{ display: show ? "block" : "none" }}>
       <div className="sidebar">
-        <a href="#" className="active">
+        <a href="/" className="active">
           <span className="material-icons">grid_view</span>
           <h4>Dashboard</h4>
         </a>
-        <a href="#">
+        <a href="/species">
           <span className="material-icons">flutter_dash</span>
           <h4>Species</h4>
         </a>

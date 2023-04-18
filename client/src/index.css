@@ -22,7 +22,7 @@ code {
 } */
 
 /* ROOT CSS VARIABLES */
-:root {
+/* :root {
   --color-white: #ffffff;
   --color-light: #f0eff5;
   --color-gray-light: #86848c;
@@ -87,9 +87,9 @@ small {
 }
 .text-muted {
   color: var(--color-gray-light);
-}
+} */
 /* NAV BAR */
-nav {
+/* nav {
   width: 100%;
   background: var(--color-white);
   padding: 1rem 0;
@@ -145,9 +145,9 @@ nav .profile-area .profile-photo {
 }
 nav .profile-area button {
   display: none;
-}
+} */
 /* ================================ ASIDE AND SIDEBAR ========================= */
-main {
+/* main {
   display: grid;
   grid-template-columns: 16rem auto 30rem;
   gap: 2rem;
@@ -157,9 +157,9 @@ main aside {
   flex-direction: column;
   justify-content: space-between;
   height: 88vh;
-}
+} */
 /* Visible only in mobile and tablets screens */
-main aside button#close-btn {
+/* main aside button#close-btn {
   display: block;
   width: 100%;
 }
@@ -195,7 +195,7 @@ main aside .sidebar a:hover {
 }
 main aside .sidebar h4 {
   font-weight: 500;
-}
+} */
 
 /* ======================= MEDIA QUERIES FOR TABLETS =============================== */
 @media screen and (max-width: 1024px) {

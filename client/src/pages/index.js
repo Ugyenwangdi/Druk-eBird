@@ -4,5 +4,6 @@ import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import PasswordReset from "./PasswordReset";
 import Dashboard from "./Dashboard";
+import Species from "./Species";
 
-export { Signup, Login, ForgotPassword, PasswordReset, Dashboard };
+export { Signup, Login, ForgotPassword, PasswordReset, Dashboard, Species };

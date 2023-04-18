@@ -1,6 +1,6 @@
 import React from "react";
 import { logo, profile } from "../images";
-// import "../styles/topbar.css";
+import "../styles/topbar.css";
 
 function TopBar({ onToggleSidebar }) {
   return (
