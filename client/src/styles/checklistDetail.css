@@ -1,0 +1,130 @@
+.checklist-detail-container {
+    height: 4rem;
+    width: 86rem;
+    border: 0.5px solid #dcd8d8;
+    background-color: #ffffff;
+    margin-top: 3rem;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    /* box-shadow: #050404; */
+}
+
+.checklist-detail-container-text {
+    padding: 1rem;
+    font-size: 12px;
+}
+
+.location-icon {
+    margin-right: 5px;
+}
+
+/* .contaier-table {
+    margin-top: 20px;
+    width: 50rem;
+} */
+
+.checklist-detail-table {
+    border-collapse: collapse;
+    width: 50rem;
+    border-radius: 10px;
+    margin-top: 10px;
+    height: 5em;
+    background-color: #ffffff;
+}
+
+.checklist-detail-td {
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.bird-img {
+    height: 40px;
+    width: 40px;
+}
+
+.reject-btn {
+    width: 5rem;
+    height: 2rem;
+    margin-right: 8px;
+    border: 0.5px solid #e02828;
+    border-radius: 2rem;
+}
+
+.approve-btn {
+    width: 5rem;
+    height: 2rem;
+    background-color: #136D66;
+    color: white;
+    margin-left: 8px;
+    border-radius: 2rem;
+
+}
+
+.details {
+    width: 30rem;
+    margin-left: 53rem;
+    margin-bottom: -50rem;
+}
+
+.card-container {
+    display: flex;
+    justify-content: right;
+    margin-top: -13rem;
+    /* margin-right: -1rem; */
+    width: 100%;
+    height: 60rem;
+
+}
+
+.card-detail {
+    width: 40%;
+    height: 50%;
+    margin-right: 1rem;
+}
+
+.card-detail ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-detail li {
+    display: flex;
+    align-items: center;
+    margin: 1rem;
+    font-size: 14px;
+}
+
+.card-detail span {
+    flex: 1;
+}
+
+/* .card-detail .font-bold {
+    font-weight: bold;
+} */
+
+.card-detail .p-1 {
+    padding: 0.25rem;
+}
+
+.detail-profile {
+    position: absolute;
+    bottom: 12rem;
+    left: 80%;
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+
+}
+.detail-text {
+    margin-top: 7rem; 
+    margin-left: 11rem;
+    text-align: center;
+  }
+.name{
+    font-size: 14px;
+    color: black;
+}
+.description{
+    font-size: 12px;
+}

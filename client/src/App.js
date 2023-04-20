@@ -9,6 +9,10 @@ import {
   ForgotPassword,
   PasswordReset,
   Dashboard,
+  Checklist,
+  Enteries,
+  ChecklistDetail,
+  AddSpecies,
 } from "./pages";
 
 // import "./App.css";
@@ -53,6 +57,26 @@ function App() {
 
   return (
     <BrowserRouter>
+      <div>
+        <Topbar onToggleSidebar={handleToggleSidebar} />
+        <main>
+          <Sidebar user={user}
+            googleUser={googleUser}
+            show={showSidebar} />
+
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/checklist" element={<Checklist />} />
+            <Route path="/enteries" element={<Enteries />} />
+            <Route path="/checklist-detail" element={<ChecklistDetail />} />
+            <Route path="/add-species" element={<AddSpecies />} />
+
+
+          </Routes>
+
+        </main>
+      </div>
+
       <Routes>
         (
         <Route
@@ -62,12 +86,12 @@ function App() {
             user || googleUser ? (
               <div>
                 <Topbar onToggleSidebar={handleToggleSidebar} />
-                {/* <div className="container">
+                <div className="container">
                   <Sidebar user={user} googleUser={googleUser} />
                   <div className="main">
                     <Dashboard />
                   </div>
-                </div> */}
+                </div>
 
                 <main>
                   <Sidebar
@@ -75,7 +99,11 @@ function App() {
                     googleUser={googleUser}
                     show={showSidebar}
                   />
-                  <Dashboard />
+                  <Routes>
+                    <Route path="/" exact element={<Dashboard />} />
+                    <Route path="/checklist" exactelement={<Checklist />} />
+                  </Routes>
+
                 </main>
               </div>
             ) : (
