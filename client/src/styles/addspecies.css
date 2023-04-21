@@ -1,99 +1,99 @@
 .speciescontainer {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
-}
+    width: 85rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+  }
+  
+  .column1 {
+    width: 20%;
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .column2 {
+    width: 40%;
+    padding: 10px;
+    text-align: left;
+    color: #4B5767;
+  }
+  
+  .column2 div, .column3 div {
+    margin-bottom: 5px;
+    padding-top: 10px;
+  }
+  
+  .column3 {
+    width: 40%;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .column2 input, .column3 input {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #DEE4ED;
+    border-radius: 3px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+  }
 
-.column1 {
-  width: 20%;
-  padding: 10px;
-  text-align: left;
-  font-weight: bold;
-}
+  .description{
+    height: 80px;
+  }
 
-.column2 {
-  width: 40%;
-  padding: 10px;
-  text-align: left;
-  color: #4b5767;
-}
 
-.column2 div,
-.column3 div {
-  margin-bottom: 5px;
-  padding-top: 10px;
-}
+  .number-input {
+    display: flex;
+    align-items: center;
+  }
+  
+  .number-input input {
+    width: 80px;
+    height: 30px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    margin: -10px 10px;
+    padding: 0;
+  }
 
-.column3 {
-  width: 40%;
-  padding: 10px;
-  text-align: left;
-}
-
-.column2 input,
-.column3 input {
-  width: 100%;
-  padding: 7px;
-  border: 1px solid #dee4ed;
-  border-radius: 3px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
-}
-
-.description {
-  height: 80px;
-}
-
-.number-input {
-  display: flex;
-  align-items: center;
-}
-
-.number-input input {
-  width: 80px;
-  height: 30px;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  text-align: center;
-  font-size: 14px;
-  font-weight: bold;
-  margin: -10px 10px;
-  padding: 0;
-}
-
-.more-btn {
-  padding: 0.3rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 10%;
-}
-
-.button-container-addspecies {
-  position: static;
-  right: 0;
-  padding-right: 20px;
-}
-
-.cancle-button {
-  background-color: white;
-  color: #136d66;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.addnew-button {
-  margin-left: 10px;
-  background-color: #136d66;
-  color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
+  .more-btn {
+    padding: 0.3rem;
+    border-radius: 0.25rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    width: 10%;
+  }
+  
+  .button-container-addspecies {
+    position: static;
+    right: 0;
+    padding-right: 20px;
+  }
+  
+  .cancle-button {
+    background-color: white;
+    color: #136D66;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .addnew-button {
+    margin-left: 10px;
+    background-color: #136D66;
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+  }

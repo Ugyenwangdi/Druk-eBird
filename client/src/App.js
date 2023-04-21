@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
-// import "./App.css";
 
 import { Sidebar, Topbar } from "./components";
 import {
@@ -10,7 +9,9 @@ import {
   ForgotPassword,
   PasswordReset,
   Dashboard,
-  Species,
+  Checklist,
+  Enteries,
+  ChecklistDetail,
   AddSpecies,
 } from "./pages";
 
@@ -27,7 +28,7 @@ function App() {
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.user);
+      // console.log(data.user);
       // localStorage.setItem("token", data.user);
       setGoogleUser(data.user._json);
     } catch (err) {
@@ -56,35 +57,67 @@ function App() {
 
   return (
     <BrowserRouter>
-      {user || googleUser ? (
-        <div>
-          <Topbar onToggleSidebar={handleToggleSidebar} />
-          <main>
-            <Sidebar
-              user={user}
-              googleUser={googleUser}
-              show={showSidebar}
-              onToggleSidebar={handleToggleSidebar}
-            />
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/species" element={<Species />} />
-              <Route path="/add-species" element={<AddSpecies />} />
-            </Routes>
-          </main>
-        </div>
-      ) : (
-        <Routes>
-          <Route path="/" element={<Navigate replace to="/login" />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route
-            path="/password-reset/:id/:token"
-            element={<PasswordReset />}
-          />
-        </Routes>
-      )}
+      <div>
+        <Topbar onToggleSidebar={handleToggleSidebar} />
+        <main>
+          <Sidebar user={user}
+            googleUser={googleUser}
+            show={showSidebar} />
+
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/checklist" element={<Checklist />} />
+            <Route path="/enteries" element={<Enteries />} />
+            <Route path="/checklist-detail" element={<ChecklistDetail />} />
+            <Route path="/add-species" element={<AddSpecies />} />
+
+
+          </Routes>
+
+        </main>
+      </div>
+
+      <Routes>
+        (
+        <Route
+          path="/"
+          exact
+          element={
+            user || googleUser ? (
+              <div>
+                <Topbar onToggleSidebar={handleToggleSidebar} />
+                <div className="container">
+                  <Sidebar user={user} googleUser={googleUser} />
+                  <div className="main">
+                    <Dashboard />
+                  </div>
+                </div>
+
+                <main>
+                  <Sidebar
+                    user={user}
+                    googleUser={googleUser}
+                    show={showSidebar}
+                  />
+                  <Routes>
+                    <Route path="/" exact element={<Dashboard />} />
+                    <Route path="/checklist" exactelement={<Checklist />} />
+                  </Routes>
+
+                </main>
+              </div>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        )
+        <Route path="/signup" exact element={<Signup />} />
+        <Route path="/login" exact element={<Login />} />
+        <Route path="/" element={<Navigate replace to="/login" />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/password-reset/:id/:token" element={<PasswordReset />} />
+      </Routes>
     </BrowserRouter>
   );
 }

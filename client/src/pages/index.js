@@ -4,15 +4,9 @@ import Login from "./Login";
 import ForgotPassword from "./ForgotPassword";
 import PasswordReset from "./PasswordReset";
 import Dashboard from "./Dashboard";
-import Species from "./Species";
+import Checklist from "./Checklist";
+import Enteries from "./Enteries";
+import ChecklistDetail from "./ChecklistDetail";
 import AddSpecies from "./AddSpecies";
 
-export {
-  Signup,
-  Login,
-  ForgotPassword,
-  PasswordReset,
-  Dashboard,
-  Species,
-  AddSpecies,
-};
+export { Signup, Login, ForgotPassword, PasswordReset, Dashboard, Checklist, Enteries, ChecklistDetail,AddSpecies };
