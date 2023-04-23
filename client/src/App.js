@@ -10,8 +10,10 @@ import {
   ForgotPassword,
   PasswordReset,
   Dashboard,
-  Species,
+  SpeciesList,
   AddSpecies,
+  EditSpecies,
+  SpeciesDetails,
 } from "./pages";
 
 // import "./App.css";
@@ -19,9 +21,12 @@ import {
 function App() {
   const user = localStorage.getItem("token");
 
-  const [loading, setLoading] = useState(true); // new loading state
+  const [loading, setLoading] = useState(true);
   const [googleUser, setGoogleUser] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
+
+  // console.log("user: ", user.email);
+  // console.log("googleUser: ", googleUser.email);
 
   const getGoogleUser = async () => {
     try {
@@ -68,8 +73,11 @@ function App() {
             />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/species" element={<Species />} />
-              <Route path="/add-species" element={<AddSpecies />} />
+              <Route path="/species" element={<SpeciesList />} />
+              <Route path="/species/add" element={<AddSpecies />} />
+              <Route path="/species/:id/edit" element={<EditSpecies />} />
+              <Route path="/species/:id" element={<SpeciesDetails />} />
+              <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>
         </div>
@@ -83,6 +91,7 @@ function App() {
             path="/password-reset/:id/:token"
             element={<PasswordReset />}
           />
+          <Route path="/*" element={<Navigate replace to="/login" />} />
         </Routes>
       )}
     </BrowserRouter>

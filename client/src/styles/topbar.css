@@ -10,6 +10,7 @@ nav .container {
   align-items: center;
   position: relative;
   width: 96%;
+  background: var(--color-white);
   margin: 0 auto;
 }
 nav img.logo {
@@ -19,22 +20,20 @@ nav .search-bar {
   background: var(--color-light);
   padding: 0.6rem;
   width: 32vw;
-  border-radius: var(--border-radius-2);
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 1rem;
-  color: var(--color-gray-light);
+  color: var(--color-gray-dark);
   position: absolute;
-  left: 15%;
+  left: 23%;
 }
 nav .search-bar input[type="search"] {
-  color: var(--color-dark);
+  color: var(--color-gray-dark);
   background: transparent;
   width: 100%;
 }
-nav .search-bar input[type="search"]::placeholder {
-  color: var(--color-gray-dark);
-}
+
 nav .profile-area {
   display: flex;
   align-items: center;
@@ -56,109 +55,3 @@ nav .profile-area .profile-photo {
 nav .profile-area button {
   display: none;
 }
-
-/* .top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffffff;
-  height: 70px;
-  padding: 0 20px;
-}
-
-.logo {
-  top: 0;
-  right: 0;
-  transform: translate(40%, 0%);
-}
-
-.logo img {
-  height: 70px;
-}
-
-.search-bar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.search-bar input[type="text"] {
-  width: 400px;
-  padding: 10px;
-  border: none;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  margin-right: 10px;
-  background-repeat: no-repeat;
-  padding-left: 40px;
-}
-
-.search-bar button {
-  background-color: #333;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  margin-right: 25px;
-}
-
-.user-profile img {
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 0px;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropbtn {
-  height: 30px;
-  background-color: #ffffff;
-  color: #333333;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  top: 30px;
-  right: 0;
-  background-color: #ffffff;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: #333333;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #f1f1f1;
-}
-
-.user-profile:hover .dropdown-content {
-  display: block;
-}
-
-.user-profile a {
-  height: 30px;
-  background-color: #ffffff;
-  color: #333333;
-  border: none;
-  padding: 0 10px;
-  cursor: pointer;
-  margin-left: 10px;
-} */

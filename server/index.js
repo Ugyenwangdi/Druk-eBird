@@ -9,6 +9,7 @@ import connectDB from "./mongodb/connect.js";
 import userRouter from "./routes/user.routes.js";
 import passwordResetRoutes from "./routes/passwordReset.js";
 import authRoute from "./routes/googleauth.js";
+import speciesRouter from "./routes/species.routes.js";
 
 import cookieSession from "cookie-session";
 import passportStrategy from "./passport.js";
@@ -16,7 +17,7 @@ import passportStrategy from "./passport.js";
 const app = express();
 app.setMaxListeners(15);
 app.use(express.json({ limit: "50mb" }));
-// app.use(cors());
+app.use(cors());
 
 app.use(
   cookieSession({
@@ -43,8 +44,9 @@ app.get("/", (req, res) => {
 
 // routes
 app.use("/api/v1/users", userRouter);
-app.use("/api/password-reset", passwordResetRoutes);
+app.use("/api/v1/password-reset", passwordResetRoutes);
 app.use("/auth", authRoute);
+app.use("/api/v1/species", speciesRouter);
 
 const startServer = async () => {
   try {
