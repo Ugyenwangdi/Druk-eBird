@@ -51,9 +51,9 @@ const Login = () => {
                 style={{ width: "150px", height: "90px" }}
               />
             </div>
-            <p style={{ fontSize: "18px" }}>
+            {/* <p style={{ fontSize: "18px" }}>
               Welcome back! Please enter your details.
-            </p>
+            </p> */}
             <div
               style={{
                 display: "flex",

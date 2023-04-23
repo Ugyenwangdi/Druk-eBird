@@ -52,9 +52,9 @@ const Signup = () => {
                 style={{ width: "150px", height: "90px" }}
               />
             </div>
-            <p style={{ fontSize: "18px" }}>
+            {/* <p style={{ fontSize: "18px" }}>
               Welcome to Druk Ebird! Please create your account.
-            </p>
+            </p> */}
 
             <div
               style={{
