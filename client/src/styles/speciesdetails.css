@@ -1,0 +1,135 @@
+.species-details-container {
+  border-radius: 15px;
+  margin-top: 20px;
+  border-color: #f7f7f7;
+  background-color: #fcfcfc;
+  padding: 1%;
+  padding-bottom: 10px;
+  max-width: 100%;
+  width: 1225px;
+  padding-bottom: 10%;
+  margin-bottom: 20px;
+}
+
+.species-details-header {
+  display: flex;
+  justify-content: space-between;
+  line-height: 190%;
+  padding: 0 10px;
+}
+
+.edit-button {
+  background-color: #136d66;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.species-images {
+  display: flex;
+}
+
+.species-image-column {
+  width: 33.33%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.map {
+  width: 33.33%;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-right: 10px;
+}
+
+.location {
+  height: 90%;
+}
+
+.iframe {
+  height: 100px;
+}
+
+.species-image1 {
+  width: 100%;
+  max-width: 400px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2%;
+  object-fit: cover;
+}
+
+.species-image {
+  width: 80%;
+  max-width: 200px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2%;
+  object-fit: cover;
+}
+
+.species-image-more {
+  position: relative;
+  width: 80%;
+  max-width: 200px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2%;
+  filter: grayscale(100%);
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.species-text {
+  padding: 5px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.species-name {
+  padding: 5px;
+  font-size: 25px;
+  margin-left: 15px;
+}
+
+.species-location {
+  padding-top: 10px;
+  color: #808191;
+  display: flex;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.species-stats {
+  padding: 5px;
+  padding-top: 25px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.species-stats-obs {
+  padding: 5px;
+  color: #808191;
+  padding-top: 5px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.species-des {
+  padding: 5px;
+  padding-top: 25px;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+.species-des-para {
+  padding: 5px;
+  color: #808191;
+  padding-top: 5px;
+  font-size: 20px;
+  margin-left: 15px;
+}
