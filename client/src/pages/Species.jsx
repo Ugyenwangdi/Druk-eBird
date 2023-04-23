@@ -4,7 +4,7 @@ import axios from "axios";
 import { preview } from "../images";
 import "../styles/species.css";
 
-function Species() {
+function SpeciesList() {
   const [speciesList, setSpeciesList] = useState([]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -209,7 +209,7 @@ function Species() {
   );
 }
 
-export default Species;
+export default SpeciesList;
 
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";

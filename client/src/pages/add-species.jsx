@@ -758,4 +758,4 @@ function AddSpecies() {
   );
 }
 
-export default AddSpecies;
+export { AddSpecies };
