@@ -59,9 +59,9 @@ function SpeciesList() {
           alignItems: "center",
         }}
       >
-        <h2 className="header">
+        {/* <h2 className="header">
           Total Species <span className="species-count">({speciesCount})</span>
-        </h2>
+        </h2> */}
         <div>
           <button className="export-button">Export Data</button>
           <Link to="/species/add">
