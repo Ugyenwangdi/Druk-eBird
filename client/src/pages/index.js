@@ -1,11 +1,13 @@
-import Signup from "./Signup";
-import Login from "./Login";
+import Signup from "./signup";
+import Login from "./login";
 // import Dashboard from "./dashboard/Dashboard";
-import ForgotPassword from "./ForgotPassword";
-import PasswordReset from "./PasswordReset";
-import Dashboard from "./Dashboard";
-import Species from "./Species";
-import AddSpecies from "./AddSpecies";
+import ForgotPassword from "./forgot-password";
+import PasswordReset from "./password-reset";
+import Dashboard from "./dashboard";
+import SpeciesList from "./species";
+import AddSpecies from "./add-species";
+import EditSpecies from "./edit-species";
+import SpeciesDetails from "./species-details";
 
 export {
   Signup,
@@ -13,6 +15,8 @@ export {
   ForgotPassword,
   PasswordReset,
   Dashboard,
-  Species,
+  SpeciesList,
   AddSpecies,
+  EditSpecies,
+  SpeciesDetails,
 };
