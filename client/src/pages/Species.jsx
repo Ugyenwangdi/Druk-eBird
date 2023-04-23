@@ -8,13 +8,11 @@ function SpeciesList() {
   const [speciesList, setSpeciesList] = useState([]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
-  const [speciesCount, setSpeciesCount] = useState(0);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
       try {
         const res = await axios.get("http://localhost:8080/api/v1/species");
-        setSpeciesCount(res.data.length);
 
         setSpeciesList(res.data);
       } catch (err) {
@@ -37,7 +35,6 @@ function SpeciesList() {
         setSpeciesList((prevSpeciesList) =>
           prevSpeciesList.filter((species) => species._id !== id)
         );
-        setSpeciesCount(speciesList.length);
         setMsg(res.data.message);
         setError("");
       }
@@ -209,7 +206,7 @@ function SpeciesList() {
   );
 }
 
-export default SpeciesList;
+export { SpeciesList };
 
 // import React, { useState, useEffect } from "react";
 // import { Link } from "react-router-dom";
