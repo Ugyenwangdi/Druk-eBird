@@ -14,5 +14,5 @@ function Dashboard() {
   );
 }
 
-export { Dashboard };
+export default Dashboard;
 //  edit
