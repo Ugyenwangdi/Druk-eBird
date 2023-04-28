@@ -132,3 +132,56 @@
 .google_btn > span {
   margin-left: 10px;
 }
+
+/* Tablet View */
+@media screen and (max-width: 768px) {
+  .login_form_container {
+    width: 100%;
+    height: auto;
+    flex-direction: column;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .login_left {
+    border-radius: 0;
+    border-bottom-left-radius: 10px;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .right {
+    display: none;
+  }
+
+  .form_container {
+    width: 100%;
+    margin-top: 30px;
+  }
+
+  .input {
+    width: 100%;
+  }
+
+  .green_btn {
+    width: 100%;
+    max-width: 350px;
+  }
+}
+
+/* Mobile View */
+@media screen and (max-width: 576px) {
+  .login_left {
+    padding: 20px;
+  }
+
+  .input {
+    font-size: 12px;
+    padding: 10px;
+  }
+
+  .google_btn {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
