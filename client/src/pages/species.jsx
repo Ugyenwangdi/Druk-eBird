@@ -1,28 +1,59 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { preview } from "../images";
+
+import {
+  Search,
+  SpeciesListComponent,
+  Pagination,
+  Orders,
+} from "../components";
 import "../styles/species.css";
 
 function Species() {
   const [speciesList, setSpeciesList] = useState([]);
+  const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [speciesCount, setSpeciesCount] = useState(0);
+  const [filterOrder, setFilterOrder] = useState([]);
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
+
+  // useEffect(() => {
+  //   const fetchSpeciesList = async () => {
+  //     try {
+  //       const res = await axios.get("http://localhost:8080/api/v1/species");
+  //       // const res = await axios.get(
+  //       //   `${process.env.REACT_APP_API_URL}/api/v1/species`
+  //       // );
+
+  //       setSpeciesCount(res.data.length);
+
+  //       setSpeciesList(res.data);
+  //     } catch (err) {
+  //       setError("Failed to fetch species list. Please try again later.");
+  //     }
+  //   };
+  //   fetchSpeciesList();
+  // }, []);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
       try {
-        const res = await axios.get("http://localhost:8080/api/v1/species");
-        setSpeciesCount(res.data.length);
+        const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
+        // console.log("url: ", url);
+        const { data } = await axios.get(url);
 
-        setSpeciesList(res.data);
+        setSpeciesCount(data.speciesTotal);
+        setObj(data);
+        setSpeciesList(data.species);
       } catch (err) {
         setError("Failed to fetch species list. Please try again later.");
       }
     };
     fetchSpeciesList();
-  }, []);
+  }, [filterOrder, page, search]);
 
   const handleDelete = async (id) => {
     try {
@@ -34,6 +65,11 @@ function Species() {
         const res = await axios.delete(
           `http://localhost:8080/api/v1/species/${id}`
         );
+
+        // const res = await axios.delete(
+        //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+        // );
+
         setSpeciesList((prevSpeciesList) =>
           prevSpeciesList.filter((species) => species._id !== id)
         );
@@ -77,18 +113,20 @@ function Species() {
         <div className="species-filter-container">
           <div className="species-search-bar">
             <span className="material-icons google-font-icon">search</span>
-            <input
-              type="text"
-              placeholder="Enter species, district or birding site"
-            />
+            <Search setSearch={(search) => setSearch(search)} />
           </div>
-          <div className="filter-select">
-            <select className="species-filter-dropdown">
+          <div className="filter-select-order">
+            {/* <select className="species-filter-dropdown">
               <option value="">Order</option>
               <option value="1">Order 1</option>
               <option value="2">Order 2</option>
               <option value="3">Order 3</option>
-            </select>
+            </select> */}
+            <Orders
+              filterOrder={filterOrder}
+              orders={obj.orders ? obj.orders : []}
+              setFilterOrder={(order) => setFilterOrder(order)}
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
@@ -135,7 +173,7 @@ function Species() {
             </button>
           </div>
         </div>
-        <div className="species-container">
+        {/* <div className="species-container">
           {speciesList.map((species) => (
             <div key={species._id} className="species-card">
               <span className="species-card-more material-icons">
@@ -203,8 +241,20 @@ function Species() {
               </div>
             </div>
           ))}
+        </div> */}
+        <div className="species-container">
+          <SpeciesListComponent
+            speciesObj={speciesList ? speciesList : []}
+            deleteSpecies={handleDelete}
+          />
         </div>
       </div>
+      <Pagination
+        page={page}
+        limit={obj.limit ? obj.limit : 0}
+        total={obj.foundTotal ? obj.foundTotal : 0}
+        setPage={(page) => setPage(page)}
+      />
     </div>
   );
 }

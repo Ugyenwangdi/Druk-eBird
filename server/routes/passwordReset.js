@@ -17,10 +17,13 @@ router.post("/", async (req, res) => {
       email: Joi.string().email().required().label("Email"),
     });
     const { error } = emailSchema.validate(req.body);
+
     if (error)
       return res.status(400).send({ message: error.details[0].message });
 
     let user = await User.findOne({ email: req.body.email });
+    // console.log(user);
+
     if (!user)
       return res
         .status(409)
