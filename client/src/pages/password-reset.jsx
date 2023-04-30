@@ -11,6 +11,7 @@ const PasswordReset = () => {
   const [isLoading, setIsLoading] = useState(true); // Add loading state
   const param = useParams();
   const url = `http://localhost:8080/api/v1/password-reset/${param.id}/${param.token}`;
+  // const url = `${process.env.REACT_APP_API_URL}/api/v1/password-reset/${param.id}/${param.token}`;
 
   useEffect(() => {
     const verifyUrl = async () => {
