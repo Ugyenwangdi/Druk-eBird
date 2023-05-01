@@ -4,9 +4,9 @@ import { logo } from "../images";
 
 
 function Enteries() {
-    
+
     return (
-        <div>
+        <div className='page-container'>
             <div className="button-container">
                 <button className="export-button">Export Data</button>
             </div>
@@ -41,58 +41,52 @@ function Enteries() {
 
 
                 </div>
-                <div className='enteries-table'>
-                    <div>
-                        <table className="custom-table">
-                            <thead >
-                                <tr>
-                                    <th>Sl.no</th>
-                                    <th>English Name</th>
-                                    <th>Birder</th>
-                                    <th>Birding Site</th>
-                                    <th>Data/Time</th>
-                                    <th>Photo</th>
-                                    <th>Numbers observed</th>
-                                </tr>
-                            </thead>
-                            
+                <table className='enteries-table'>
+                    <thead >
+                        <tr>
+                            <th>Sl.no</th>
+                            <th>English Name</th>
+                            <th>Birder</th>
+                            <th>Birding Site</th>
+                            <th>Data/Time</th>
+                            <th>Photo</th>
+                            <th>Numbers observed</th>
+                        </tr>
+                    </thead>
 
-                            <tbody>
-                                <tr>
-                                    <td className='custom-td'>1</td>
-                                    <td className='custom-td'>Spotted Dov</td>
-                                    <td className='custom-td'>Sonam</td>
-                                    <td className='custom-td'>Gyalpozhing,Mongar highway</td>
-                                    <td className='custom-td'>10.12.2022</td>
-                                    <td className='custom-td'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
-                                    <td className='custom-td'>2 male</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td className='custom-td'>1</td>
-                                    <td className='custom-td'>Spotted Dov</td>
-                                    <td className='custom-td'>Sonam</td>
-                                    <td className='custom-td'>Gyalpozhing,Mongar highway</td>
-                                    <td className='custom-td'>10.12.2022</td>
-                                    <td className='custom-td'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
-                                    <td className='custom-td'>2 male</td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-                                    <td className='custom-td'>1</td>
-                                    <td className='custom-td'>Spotted Dov</td>
-                                    <td className='custom-td'>Sonam</td>
-                                    <td className='custom-td'>Gyalpozhing,Mongar highway</td>
-                                    <td className='custom-td'>10.12.2022</td>
-                                    <td className='custom-td'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
-                                    <td className='custom-td'>2 male</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <tbody>
+                        <tr>
+                            <td data-title='Sl.no'>1</td>
+                            <td data-title='English Name'>Spotted Dov</td>
+                            <td data-title='Birder'>Sonam</td>
+                            <td data-title='Birding site'>Gyalpozhing,Mongar highway</td>
+                            <td data-title='Date/Time'>10.12.2022</td>
+                            <td data-title='Photo'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
+                            <td data-title='Number Observed'>2 male</td>
+                        </tr>
+
+                        <tr>
+                            <td data-title='Sl.no'>1</td>
+                            <td data-title='English Name'>Spotted Dov</td>
+                            <td data-title='Birder'>Sonam</td>
+                            <td data-title='Birding site'>Gyalpozhing,Mongar highway</td>
+                            <td data-title='Date/Time'>10.12.2022</td>
+                            <td data-title='Photo'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
+                            <td data-title='Number Observed'>2 male</td>
+                        </tr>
+                        <tr>
+                            <td data-title='Sl.no'>1</td>
+                            <td data-title='English Name'>Spotted Dov</td>
+                            <td data-title='Birder'>Sonam</td>
+                            <td data-title='Birding site'>Gyalpozhing,Mongar highway</td>
+                            <td data-title='Date/Time'>10.12.2022</td>
+                            <td data-title='Photo'><img src={logo} alt="Bird Photo" className='bird-img' /></td>
+                            <td data-title='Number Observed'>2 male</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
             </div>
 
 

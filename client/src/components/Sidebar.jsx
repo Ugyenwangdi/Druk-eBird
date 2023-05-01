@@ -1,4 +1,5 @@
 import React from "react";
+import "../styles/sidebar.css";
 
 function Sidebar({ user, googleUser, show }) {
   // console.log("user: ", user);
@@ -6,7 +7,7 @@ function Sidebar({ user, googleUser, show }) {
   const handleLogout = () => {
     try {
       if (googleUser) {
-        window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
+        window.open(`http://localhost:8080/auth/logout`, "_self");
       }
       if (user) {
         localStorage.removeItem("token");
@@ -24,7 +25,7 @@ function Sidebar({ user, googleUser, show }) {
           <span className="material-icons">grid_view</span>
           <h4>Dashboard</h4>
         </a>
-        <a href="#">
+        <a href="/species">
           <span className="material-icons">flutter_dash</span>
           <h4>Species</h4>
         </a>

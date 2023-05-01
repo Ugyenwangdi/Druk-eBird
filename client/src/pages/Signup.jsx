@@ -23,6 +23,8 @@ const Signup = () => {
     e.preventDefault();
     try {
       const url = "http://localhost:8080/api/v1/users/register";
+      // const url = `${process.env.REACT_APP_API_URL}/api/v1/users/register`;
+
       const { data: res } = await axios.post(url, data);
       navigate("/login");
       console.log(res.message);
@@ -160,6 +162,8 @@ const Signup = () => {
 };
 
 export default Signup;
+
+// edit
 
 // <div className={styles.signup_container}>
 //   <div className={styles.signup_form_container}>

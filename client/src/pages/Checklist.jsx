@@ -18,7 +18,7 @@ function Checklist() {
   //     getData();
   //  },)
   return (
-    <div>
+    <div className='page-container'>
       <div className="button-container">
         <button className="export-button">Export Data</button>
       </div>
@@ -69,39 +69,42 @@ function Checklist() {
         <Link to="/checklist-detail" className='checklist-link'>
           <div>
             <table className='checklist-table'>
+              <thead className='main-head'>
+                <tr>
+                  <th >Sl.no</th>
+                  <th>Birder</th>
+                  <th>Birding site</th>
+                  <th>Data/Time</th>
+                  <th>District</th>
+                  <th>Gewog</th>
+                  <th>Chiwog</th>
+                </tr>
+              </thead>
               <tbody>
-                {/* uses this code while fetching data {record.slice(0, 5).map((output)=>
-                            <tr>
-                                <td>{output.id}</td>
-                                <td>{output.name}</td>
-                                <td>{output.email}</td>
-                                <td>{output.username}</td>
-                                <td>{output.website}</td>
-                                <td></td>
-                            </tr>                     */}
-                <td className="custom-data">#Birder</td>
-                <td className="custom-data">Gyalpozhing,Mongar</td>
-                <td className="custom-data">10.08.2022</td>
-                <td className="custom-data">Mongar</td>
-                <td className="custom-data">Gyalppozhing</td>
-                <td className="custom-data">Gyalpozhing</td>
+                
+                <td data-label='Birder' className="custom-data">#Birder</td>
+                <td data-label='Birding site' className="custom-data">Gyalpozhing,Mongar</td>
+                <td data-label='Date/Time' className="custom-data">10.08.2022</td>
+                <td data-label='District' className="custom-data">Mongar</td>
+                <td data-label='Gewog' className="custom-data">Gyalppozhing</td>
+                <td data-label='Chiwog' className="custom-data">Gyalpozhing</td>
               </tbody>
             </table>
           </div>
         </Link>
       </div>
-      
+
       <div>
         <Link to="/checklist-detail" className='checklist-link'>
           <div>
             <table className='checklist-table'>
               <tbody>
-                <td className="custom-data">#Birder</td>
-                <td className="custom-data">Gyalpozhing,Mongar</td>
-                <td className="custom-data">10.08.2022</td>
-                <td className="custom-data">Mongar</td>
-                <td className="custom-data">Gyalppozhing</td>
-                <td className="custom-data">Gyalpozhing</td>
+                <td data-label='Birder' className="custom-data">#Birder</td>
+                <td data-label='Birding site' className="custom-data">Gyalpozhing,Mongar</td>
+                <td data-label='Date/Time' className="custom-data">10.08.2022</td>
+                <td data-label='District' className="custom-data">Mongar</td>
+                <td data-label='Gewog' className="custom-data">Gyalppozhing</td>
+                <td data-label='Chiwog' className="custom-data">Gyalpozhing</td>
               </tbody>
             </table>
           </div>
@@ -112,12 +115,12 @@ function Checklist() {
           <div>
             <table className='checklist-table'>
               <tbody>
-                <td className="custom-data">#Birder</td>
-                <td className="custom-data">Gyalpozhing,Mongar</td>
-                <td className="custom-data">10.08.2022</td>
-                <td className="custom-data">Mongar</td>
-                <td className="custom-data">Gyalppozhing</td>
-                <td className="custom-data">Gyalpozhing</td>
+                <td data-label='Birder' className="custom-data">#Birder</td>
+                <td data-label='Birding site' className="custom-data">Gyalpozhing,Mongar</td>
+                <td data-label='Date/Time' className="custom-data">10.08.2022</td>
+                <td data-label='District' className="custom-data">Mongar</td>
+                <td data-label='Gewog' className="custom-data">Gyalppozhing</td>
+                <td data-label='Chiwog' className="custom-data">Gyalpozhing</td>
               </tbody>
             </table>
           </div>
