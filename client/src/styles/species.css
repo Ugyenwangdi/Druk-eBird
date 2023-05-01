@@ -24,13 +24,14 @@
   padding-bottom: 10px;
   max-width: 100%;
   width: 1295px;
+  height: 80vh;
 }
 
 .species-filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 1.5rem 0;
+  margin: 0.5rem 0;
 }
 
 .species-search-bar {
@@ -73,6 +74,17 @@
   background: var(--color-light);
   padding: 5px;
   width: 10%;
+  border-radius: var(--border-radius-2);
+  display: flex;
+  justify-content: center;
+  color: var(--color-text-light-gray);
+  cursor: pointer;
+}
+
+.filter-select-order {
+  background: var(--color-light);
+  padding: 5px;
+  width: 13%;
   border-radius: var(--border-radius-2);
   display: flex;
   justify-content: center;

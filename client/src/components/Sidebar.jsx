@@ -7,7 +7,7 @@ function Sidebar({ user, googleUser, show }) {
   const handleLogout = () => {
     try {
       if (googleUser) {
-        window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
+        window.open(`http://localhost:8080/auth/logout`, "_self");
       }
       if (user) {
         localStorage.removeItem("token");
