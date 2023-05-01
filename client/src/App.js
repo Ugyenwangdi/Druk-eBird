@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
-// import "./App.css";
 
 import { Sidebar, Topbar } from "./components";
 import {
@@ -16,7 +15,7 @@ import {
   SpeciesDetails,
 } from "./pages";
 
-// import "./App.css";
+// import "./index.css";
 
 function App() {
   const user = localStorage.getItem("token");
@@ -30,7 +29,7 @@ function App() {
 
   const getGoogleUser = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const url = `http://localhost:8080/auth/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
       console.log(data.user);
       // localStorage.setItem("token", data.user);
