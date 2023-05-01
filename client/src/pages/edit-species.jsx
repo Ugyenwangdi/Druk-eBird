@@ -38,7 +38,7 @@ function AddSpecies() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // get the species details from the API
+    // localhost, get the species details from the API
     const getSpeciesDetails = async () => {
       const response = await fetch(
         `http://localhost:8080/api/v1/species/${id}`
@@ -46,6 +46,15 @@ function AddSpecies() {
       const data = await response.json();
       setForm(data);
     };
+
+    // // Deployed
+    // const getSpeciesDetails = async () => {
+    //   const response = await fetch(
+    //     `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+    //   );
+    //   const data = await response.json();
+    //   setForm(data);
+    // };
 
     getSpeciesDetails();
   }, [id]);
@@ -85,6 +94,15 @@ function AddSpecies() {
           photos: [speciesImg],
         }
       ); // send patch request to server
+
+      // const res = await axios.patch(
+      //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
+      //   {
+      //     ...form,
+      //     photos: [speciesImg],
+      //   }
+      // ); // send patch request to server
+
       const data = await res.data.data;
       setForm(data);
       setMsg(res.data.message);
@@ -99,13 +117,21 @@ function AddSpecies() {
   const handleDeleteClick = async (photoId) => {
     setLoading(true);
     try {
+      // // Localhost
       const res = await axios.delete(
         `http://localhost:8080/api/v1/species/${id}/photos/${photoId}`
       );
+
+      // // Deployed
+      // const res = await axios.delete(
+      //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`
+      // );
+
       setForm((prevSpecies) => ({
         ...prevSpecies,
         photos: prevSpecies.photos.filter((photo) => photo._id !== photoId),
       }));
+
       setMsg(res.data.message);
       setError("");
       console.log(res.data.message);

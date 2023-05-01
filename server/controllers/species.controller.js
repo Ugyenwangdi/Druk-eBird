@@ -13,10 +13,100 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+// const getAllSpecies = async (req, res) => {
+//   try {
+//     const species = await Species.find({});
+//     res.status(200).json(species);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+// Pagination
+
+// const getAllSpecies = async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 10;
+
+//     const species = await Species.find({})
+//       .skip((page - 1) * limit)
+//       .limit(limit);
+
+//     res.status(200).json(species);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
+// Complex search with pagination
 const getAllSpecies = async (req, res) => {
   try {
-    const species = await Species.find({});
-    res.status(200).json(species);
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 6;
+    const search = req.query.search || "";
+    let order = req.query.order || "All";
+
+    const orderOptions = [
+      "Galliformes",
+      "Charadriiformes",
+      "Anseriformes",
+      "Podicipediformes",
+      "Gaviiformes",
+      "Ciconiiformes",
+      "Pelecaniformes",
+      "Procellariiformes",
+      "Gruiformes",
+      "Suliformes",
+      "Coraciiformes",
+      "Bucerotiformes",
+      "Accipitriformes",
+      "Falconiformes",
+      "Piciformes",
+      "Passeriformes",
+      "Trogoniformes",
+      "Cuculiformes",
+      "Psittaciformes",
+      "Columbiformes",
+      "Caprimulgiformes",
+      "Strigiformes",
+      "Passerformes",
+      "nan",
+    ];
+
+    order === "All"
+      ? (order = [...orderOptions])
+      : (order = req.query.order.split(","));
+
+    const species = await Species.find({
+      englishName: { $regex: search, $options: "i" },
+    })
+      .where("order")
+      .in([...order])
+      .skip(page * limit)
+      .limit(limit);
+
+    const total = await Species.countDocuments({
+      order: { $in: [...order] },
+      englishName: { $regex: search, $options: "i" },
+    });
+
+    const speciesTotal = await Species.countDocuments();
+    // console.log(`Total number of species: ${speciesTotal}`);
+
+    const response = {
+      error: false,
+      foundTotal: total,
+      speciesTotal,
+      page: page + 1,
+      limit,
+      orders: orderOptions,
+      species,
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
@@ -58,9 +148,10 @@ const createSpecies = async (req, res) => {
     sharName,
     khengName,
     iucnStatus,
-    legislation,
-    migrationStatus,
-    birdType,
+    citesAppendix,
+    bhutanSchedule,
+    residency,
+    habitat,
     description,
     observations,
     photos,
@@ -83,9 +174,10 @@ const createSpecies = async (req, res) => {
       sharName,
       khengName,
       iucnStatus,
-      legislation,
-      migrationStatus,
-      birdType,
+      citesAppendix,
+      bhutanSchedule,
+      residency,
+      habitat,
       description,
       observations,
       photos: [],
@@ -131,9 +223,10 @@ const updateSpecies = async (req, res) => {
     sharName,
     khengName,
     iucnStatus,
-    legislation,
-    migrationStatus,
-    birdType,
+    citesAppendix,
+    bhutanSchedule,
+    residency,
+    habitat,
     description,
     observations,
     photos,
@@ -158,9 +251,10 @@ const updateSpecies = async (req, res) => {
     updatedSpecies.sharName = sharName;
     updatedSpecies.khengName = khengName;
     updatedSpecies.iucnStatus = iucnStatus;
-    updatedSpecies.legislation = legislation;
-    updatedSpecies.migrationStatus = migrationStatus;
-    updatedSpecies.birdType = birdType;
+    updatedSpecies.citesAppendix = citesAppendix;
+    updatedSpecies.bhutanSchedule = bhutanSchedule;
+    updatedSpecies.residency = residency;
+    updatedSpecies.habitat = habitat;
     updatedSpecies.description = description;
     updatedSpecies.observations = observations;
 
@@ -237,42 +331,85 @@ const deleteSpeciesPhoto = async (req, res) => {
   }
 };
 
+async function uploadPhoto(photoPath) {
+  try {
+    const result = await cloudinary.uploader.upload(photoPath, {
+      upload_preset: "druk-ebird",
+    });
+    return result.secure_url;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to upload photo to Cloudinary");
+  }
+}
+
+async function uploadPhotos(photoArray) {
+  try {
+    const photoUrls = [];
+    for (const photoPath of photoArray) {
+      const photoUrl = await uploadPhoto(photoPath);
+      photoUrls.push(photoUrl);
+    }
+    return photoUrls;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Failed to upload photos to Cloudinary");
+  }
+}
+
 const uploadExcelFile = async (req, res) => {
   try {
-    const file = req.file;
-    if (!file) {
-      return res.status(400).send("No file uploaded");
+    const workbook = xlsx.readFile(req.file.path);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const birdData = xlsx.utils.sheet_to_json(worksheet);
+    // console.log("bird Data: ", birdData);
+
+    let species = [];
+
+    for (const bird of birdData) {
+      let photoUrls = [];
+      if (bird.photos) {
+        const photoArray = JSON.parse(bird.photos.replace(/'/g, ""));
+        photoUrls = await uploadPhotos(photoArray);
+        // console.log("photoUrls: ", photoUrls);
+      }
+
+      const newBird = new Species({
+        englishName: bird.englishName,
+        scientificName: bird.scientificName,
+        order: bird.order,
+        familyName: bird.familyName,
+        genus: bird.genus,
+        species: bird.species,
+        authority: bird.authority,
+        group: bird.group,
+        dzongkhaName: bird.dzongkhaName,
+        lhoName: bird.lhoName,
+        sharName: bird.sharName,
+        khengName: bird.khengName,
+        iucnStatus: bird.iucnStatus,
+        citesAppendix: bird.citesAppendix,
+        bhutanSchedule: bird.bhutanSchedule,
+        residency: bird.residency,
+        habitat: bird.habitat,
+        description: bird.description,
+        observations: bird.observations,
+        photos: photoUrls.map((url) => ({ url })),
+      });
+
+      await newBird.save();
+      species.push(bird);
     }
-    const workbook = xlsx.readFile(file.path);
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-    const data = xlsx.utils.sheet_to_json(worksheet, { header: 1, raw: false });
-    const keys = data[0];
-    const values = data.slice(1);
-    const speciesList = values.map((row) => {
-      const speciesData = {};
-      row.forEach((value, index) => {
-        if (value) {
-          speciesData[keys[index]] = value;
-        }
-      });
-      return speciesData;
+
+    console.log(`Uploaded species successfully!`);
+
+    res.status(201).json({
+      data: species,
+      message: "Bird data uploaded successfully",
     });
-    // console.log(speciesList);
-    Species.insertMany(speciesList)
-      .then(() => {
-        console.log("Data added successfully!");
-        res
-          .status(201)
-          .send({ data: speciesList, message: "Data added successfully!" });
-      })
-      .catch((error) => {
-        console.error("Error adding data:", error);
-        res.status(500).json(error);
-      });
   } catch (error) {
-    console.log(error);
-    res.status(500).json(error);
+    console.error(error);
+    res.status(500).json({ message: "Failed to upload bird data" });
   }
 };
 

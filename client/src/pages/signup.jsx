@@ -23,6 +23,8 @@ const Signup = () => {
     e.preventDefault();
     try {
       const url = "http://localhost:8080/api/v1/users/register";
+      // const url = `${process.env.REACT_APP_API_URL}/api/v1/users/register`;
+
       const { data: res } = await axios.post(url, data);
       navigate("/login");
       console.log(res.message);
@@ -49,7 +51,7 @@ const Signup = () => {
               <img
                 src={logo}
                 alt="Logo"
-                style={{ width: "150px", height: "90px" }}
+                style={{ width: "150px", height: "150px" }}
               />
             </div>
             <p style={{ fontSize: "18px" }}>
@@ -136,7 +138,7 @@ const Signup = () => {
             </div>
 
             {error && <div className="error_msg">{error}</div>}
-            <button type="submit" className="green_btn">
+            <button type="submit" className="signup_green_btn">
               Sign Up
             </button>
 
@@ -149,7 +151,7 @@ const Signup = () => {
         <div
           className="right"
           style={{
-            backgroundImage: "url('/bird.png')",
+            backgroundImage: "url('/Verditer.jpg')",
             backgroundSize: "cover",
             flex: 1,
           }}
