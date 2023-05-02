@@ -1,5 +1,6 @@
 .total-species-container {
-  width: 1295px;
+  width: 100%;
+  max-width: 1000px;
   margin: 0;
 }
 .header {
@@ -24,14 +25,13 @@
   padding-bottom: 10px;
   max-width: 100%;
   width: 1295px;
-  height: 80vh;
 }
 
 .species-filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0;
+  margin: 1.5rem 0;
 }
 
 .species-search-bar {
@@ -74,17 +74,6 @@
   background: var(--color-light);
   padding: 5px;
   width: 10%;
-  border-radius: var(--border-radius-2);
-  display: flex;
-  justify-content: center;
-  color: var(--color-text-light-gray);
-  cursor: pointer;
-}
-
-.filter-select-order {
-  background: var(--color-light);
-  padding: 5px;
-  width: 13%;
   border-radius: var(--border-radius-2);
   display: flex;
   justify-content: center;
@@ -174,7 +163,7 @@
 .filter-button {
   background: var(--color-light);
   padding: 0px 10px;
-  width: 8%;
+  width: 10%;
   border-radius: var(--border-radius-2);
   color: var(--color-gray-light);
   cursor: pointer;
@@ -278,151 +267,55 @@
   font-size: 14px;
 }
 
-@media (max-width: 768px) {
+/* CSS for mobile devices */
+@media only screen and (max-width: 767px) {
+  .total-species-container {
+    max-width: 100%;
+  }
+  .species-page-container {
+    width: 100%;
+    padding: 2%;
+  }
+  .species-search-bar {
+    width: 70%;
+  }
+  .filter-select {
+    display: none;
+    width: 10%;
+  }
+  .filter-select-s {
+    display: none;
+    width: 12%;
+  }
   .species-card {
-    width: calc(100%);
+    width: 100%;
+    margin-right: 0;
   }
 }
 
-/* .species-count {
-  font-size: 14px;
-  color: #777;
-  margin-left: 5px;
-}
-
-.species-count {
-  font-size: 1rem;
-  margin-left: 1rem;
-}
-
-.species-page-container {
-  border-radius: 0.25rem;
-  border-color: #f7f7f7;
-  background-color: #fcfcfc;
-  padding: 0.5rem;
-}
-
-.species-filter-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-}
-
-.species-search-bar {
-  padding: 0.5rem;
-  border: none;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 30%;
-}
-
-.species-filter-dropdown {
-  padding: 0.3rem;
-  border: none;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 12%;
-}
-
-.species-container {
-  display: flex;
-  flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-}
-
-.species-card {
-  width: calc(33.33% - 1rem);
-  margin-right: 1rem;
-  margin-bottom: 1rem;
-  background-color: #f7f7f7;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  position: relative;
-}
-
-.species-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 0.25rem 0.25rem 0 0;
-}
-
-.species-card-content {
-  padding: 1rem;
-}
-
-.species-card-title {
-  margin: 0;
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.species-card-location {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.species-card-location span {
-  font-weight: bold;
-}
-
-.species-card-options {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  cursor: pointer;
-}
-
-.species-card-options i {
-  font-size: 1.5rem;
-  color: #555;
-  cursor: pointer;
-  transition: color 0.2s ease;
-}
-
-.species-card-options i:hover {
-  color: #333;
-}
-
-.more-btn {
-  padding: 0.3rem;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  width: 10%;
-}
-
-.button-container {
-  position: absolute;
-  top: -100;
-  right: 0;
-  padding-right: 20px;
-}
-
-.export-button {
-  background-color: white;
-  color: #136d66;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.add-button {
-  margin-left: 10px;
-  background-color: #136d66;
-  color: white;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-@media (max-width: 768px) {
+/* CSS for tablet devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .total-species-container {
+    max-width: 100%;
+  }
+  .species-page-container {
+    width: 100%;
+    padding: 2%;
+  }
+  .species-search-bar {
+    width: 70%;
+  }
+  .filter-select {
+    display: none;
+  }
+  .filter-select-s {
+    display: none;
+  }
   .species-card {
     width: calc(50% - 1rem);
+    margin-right: 1rem;
   }
-} */
+  .species-card:nth-child(2n) {
+    margin-right: 0;
+  }
+}
