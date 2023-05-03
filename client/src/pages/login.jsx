@@ -185,10 +185,14 @@ const Login = () => {
               <img
                 src={logo}
                 alt="Logo"
-                style={{ width: "150px", height: "150px" }}
+                style={{
+                  width: "150px",
+                  height: "150px",
+                  marginBottom: "20px",
+                }}
               />
             </div>
-            <p style={{ fontSize: "18px" }}>
+            <p style={{ fontSize: "16px", paddingBottom: "40px" }}>
               Welcome back! Please enter your details.
             </p>
             <div
@@ -196,6 +200,8 @@ const Login = () => {
                 display: "flex",
                 flexDirection: "column",
                 paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
               }}
             >
               <label htmlFor="email">Email</label>
@@ -208,6 +214,7 @@ const Login = () => {
                 required
                 className="input"
                 id="email"
+                style={{ color: "#808191" }}
               />
             </div>
             <div
@@ -215,6 +222,8 @@ const Login = () => {
                 display: "flex",
                 flexDirection: "column",
                 paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
               }}
             >
               <label htmlFor="password">Password</label>
@@ -227,6 +236,7 @@ const Login = () => {
                 required
                 className="input"
                 id="password"
+                style={{ color: "#808191" }}
               />
             </div>
 
