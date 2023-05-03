@@ -74,6 +74,7 @@ const getAllSpecies = async (req, res) => {
       "Strigiformes",
       "Passerformes",
       "nan",
+      "",
     ];
 
     order === "All"
@@ -87,6 +88,7 @@ const getAllSpecies = async (req, res) => {
       .in([...order])
       .skip(page * limit)
       .limit(limit);
+    // .sort({ _id: -1 });
 
     const total = await Species.countDocuments({
       order: { $in: [...order] },
