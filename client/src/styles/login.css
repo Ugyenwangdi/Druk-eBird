@@ -298,8 +298,7 @@ h6 {
   border: none;
   outline: none;
   background-color: white;
-  box-shadow: rgb(0 0 0 / 20%) 0px 3px 1px -2px,
-    rgb(0 0 0 / 14%) 0px 2px 2px 0px, rgb(0 0 0 / 12%) 0px 1px 5px 0px;
+  border: 2px solid #e4e4e4;
   font-size: 16px;
   font-weight: 500;
   margin: 0 0 20px 0;
