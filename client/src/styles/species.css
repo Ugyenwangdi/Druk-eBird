@@ -1,6 +1,7 @@
 .total-species-container {
-  width: 1295px;
+  width: 100%;
   margin: 0;
+  padding-right: 20px;
 }
 .header {
   padding: 20px 0;
@@ -23,15 +24,14 @@
   padding: 1%;
   padding-bottom: 10px;
   max-width: 100%;
-  width: 1295px;
-  height: 80vh;
+  width: 100%;
 }
 
 .species-filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 0.5rem 0;
+  margin: 1.5rem 0;
 }
 
 .species-search-bar {
@@ -278,9 +278,58 @@
   font-size: 14px;
 }
 
-@media (max-width: 768px) {
+/* CSS for mobile devices */
+@media only screen and (max-width: 767px) {
+  .total-species-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  .species-page-container {
+    width: 100%;
+    padding: 2%;
+  }
+  .species-search-bar {
+    width: 70%;
+  }
+  .filter-select {
+    display: none;
+    width: 10%;
+  }
+  .filter-select-s {
+    display: none;
+    width: 12%;
+  }
   .species-card {
-    width: calc(100%);
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* CSS for tablet devices */
+@media only screen and (min-width: 768px) and (max-width: 1023px) {
+  .total-species-container {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+  .species-page-container {
+    width: 100%;
+    padding: 2%;
+  }
+  .species-search-bar {
+    width: 70%;
+  }
+  .filter-select {
+    display: none;
+  }
+  .filter-select-s {
+    display: none;
+  }
+  .species-card {
+    width: calc(50% - 1rem);
+    margin-right: 1rem;
+  }
+  .species-card:nth-child(2n) {
+    margin-right: 0;
   }
 }
 

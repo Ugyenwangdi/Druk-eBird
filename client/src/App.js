@@ -13,6 +13,8 @@ import {
   AddSpecies,
   EditSpecies,
   SpeciesDetails,
+  Checklist,
+  Entries,
 } from "./pages";
 
 // import "./index.css";
@@ -69,6 +71,7 @@ function App() {
               googleUser={googleUser}
               show={showSidebar}
               onToggleSidebar={handleToggleSidebar}
+              style={{ position: "fixed" }}
             />
             <Routes>
               <Route path="/" element={<Dashboard />} />
@@ -76,6 +79,8 @@ function App() {
               <Route path="/species/add" element={<AddSpecies />} />
               <Route path="/species/:id/edit" element={<EditSpecies />} />
               <Route path="/species/:id" element={<SpeciesDetails />} />
+              <Route path="/entries" element={<Entries />} />
+              <Route path="/checklist" element={<Checklist />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

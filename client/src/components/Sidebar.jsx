@@ -29,11 +29,11 @@ function Sidebar({ user, googleUser, show }) {
           <span className="material-icons">flutter_dash</span>
           <h4>Species</h4>
         </a>
-        <a href="#">
+        <a href="/checklist">
           <span className="material-icons">fact_check</span>
           <h4>Checklists</h4>
         </a>
-        <a href="#">
+        <a href="/entries">
           <span className="material-icons">login</span>
           <h4>Entries</h4>
         </a>
