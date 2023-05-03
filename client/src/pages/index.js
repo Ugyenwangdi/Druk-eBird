@@ -8,6 +8,8 @@ import SpeciesList from "./species";
 import { AddSpecies } from "./add-species";
 import EditSpecies from "./edit-species";
 import SpeciesDetails from "./species-details";
+import Checklist from "./checklist";
+import Entries from "./entries";
 
 export {
   Signup,
@@ -19,4 +21,6 @@ export {
   AddSpecies,
   EditSpecies,
   SpeciesDetails,
+  Checklist,
+  Entries,
 };
