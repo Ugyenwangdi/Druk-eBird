@@ -3,7 +3,6 @@ import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
 
 import Species from "../mongodb/models/species.js";
-import { User, validateUser } from "../mongodb/models/user.js";
 
 dotenv.config();
 
@@ -16,24 +15,6 @@ cloudinary.config({
 // const getAllSpecies = async (req, res) => {
 //   try {
 //     const species = await Species.find({});
-//     res.status(200).json(species);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// Pagination
-
-// const getAllSpecies = async (req, res) => {
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 10;
-
-//     const species = await Species.find({})
-//       .skip((page - 1) * limit)
-//       .limit(limit);
-
 //     res.status(200).json(species);
 //   } catch (error) {
 //     console.log(error);
