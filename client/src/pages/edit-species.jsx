@@ -39,22 +39,22 @@ function AddSpecies() {
 
   useEffect(() => {
     // localhost, get the species details from the API
-    const getSpeciesDetails = async () => {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/species/${id}`
-      );
-      const data = await response.json();
-      setForm(data);
-    };
-
-    // // Deployed
     // const getSpeciesDetails = async () => {
     //   const response = await fetch(
-    //     `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+    //     `http://localhost:8080/api/v1/species/${id}`
     //   );
     //   const data = await response.json();
     //   setForm(data);
     // };
+
+    // Deployed
+    const getSpeciesDetails = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+      );
+      const data = await response.json();
+      setForm(data);
+    };
 
     getSpeciesDetails();
   }, [id]);
@@ -87,21 +87,21 @@ function AddSpecies() {
     event.preventDefault();
     try {
       setLoading(true);
-      const res = await axios.patch(
-        `http://localhost:8080/api/v1/species/${id}`,
-        {
-          ...form,
-          photos: [speciesImg],
-        }
-      ); // send patch request to server
-
       // const res = await axios.patch(
-      //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
+      //   `http://localhost:8080/api/v1/species/${id}`,
       //   {
       //     ...form,
       //     photos: [speciesImg],
       //   }
       // ); // send patch request to server
+
+      const res = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
+        {
+          ...form,
+          photos: [speciesImg],
+        }
+      ); // send patch request to server
 
       const data = await res.data.data;
       setForm(data);
@@ -118,14 +118,14 @@ function AddSpecies() {
     setLoading(true);
     try {
       // // Localhost
-      const res = await axios.delete(
-        `http://localhost:8080/api/v1/species/${id}/photos/${photoId}`
-      );
-
-      // // Deployed
       // const res = await axios.delete(
-      //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`
+      //   `http://localhost:8080/api/v1/species/${id}/photos/${photoId}`
       // );
+
+      // Deployed
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`
+      );
 
       setForm((prevSpecies) => ({
         ...prevSpecies,
@@ -435,390 +435,3 @@ function AddSpecies() {
 }
 
 export default AddSpecies;
-
-// import React, { useState, useEffect } from "react";
-// import { useParams, useLocation, Link } from "react-router-dom";
-// import axios from "axios";
-
-// function EditSpecies() {
-//   const { id } = useParams();
-//   const location = useLocation();
-
-//   const [form, setForm] = useState(
-//     location.state?.speciesDetail || {
-//       englishName: "",
-//       scientificName: "",
-//       order: "",
-//       familyName: "",
-//       genus: "",
-//       species: "",
-//       authority: "",
-//       group: "",
-//       dzongkhaName: "",
-//       lhoName: "",
-//       sharName: "",
-//       khengName: "",
-//       iucnStatus: "",
-//       legislation: "",
-//       migrationStatus: "",
-//       birdType: "",
-//       description: "",
-//       observations: 0,
-//       photos: [],
-//     }
-//   );
-
-//   const [speciesImg, setSpeciesImg] = useState("");
-//   const [msg, setMsg] = useState("");
-//   const [error, setError] = useState("");
-//   const [loading, setLoading] = useState(false);
-
-//   useEffect(() => {
-//     // get the species details from the API
-//     const getSpeciesDetails = async () => {
-//       const response = await fetch(
-//         `http://localhost:8080/api/v1/species/${id}`
-//       );
-//       const data = await response.json();
-//       setForm(data);
-//     };
-
-//     getSpeciesDetails();
-//   }, [id]);
-
-//   const handleChange = (event) => {
-//     setMsg("");
-//     if (event.target.name === "photo") {
-//       const file = event.target.files[0];
-//       TransformFileData(file);
-//     } else {
-//       setForm({ ...form, [event.target.name]: event.target.value });
-//     }
-//   };
-
-//   const TransformFileData = (file) => {
-//     const reader = new FileReader();
-//     if (file) {
-//       reader.readAsDataURL(file);
-//       reader.onloadend = () => {
-//         setSpeciesImg(reader.result);
-//       };
-//     } else {
-//       setSpeciesImg("");
-//     }
-//   };
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//       setLoading(true);
-//       const res = await axios.patch(
-//         `http://localhost:8080/api/v1/species/${id}`,
-//         {
-//           ...form,
-//           photos: [speciesImg],
-//         }
-//       ); // send patch request to server
-//       const data = await res.data.data;
-//       setForm(data);
-//       setMsg(res.data.message);
-//       console.log(res.data.message);
-//     } catch (err) {
-//       setError("Server error!");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleDeleteClick = async (photoId) => {
-//     setLoading(true);
-//     try {
-//       const res = await axios.delete(
-//         `http://localhost:8080/api/v1/species/${id}/photos/${photoId}`
-//       );
-//       setForm((prevSpecies) => ({
-//         ...prevSpecies,
-//         photos: prevSpecies.photos.filter((photo) => photo._id !== photoId),
-//       }));
-//       setMsg(res.data.message);
-//       setError("");
-//       console.log(res.data.message);
-//     } catch (error) {
-//       console.error(error);
-//       setError("Server error!");
-//     }
-//     setLoading(false);
-//   };
-
-//   return (
-//     <div>
-//       <h1>Edit Species</h1>
-
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           English Name:
-//           <input
-//             type="text"
-//             name="englishName"
-//             value={form.englishName}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//         <label>
-//           Scientific Name:
-//           <input
-//             type="text"
-//             name="scientificName"
-//             value={form.scientificName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Order:
-//           <input
-//             type="text"
-//             name="order"
-//             value={form.order}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Family Name:
-//           <input
-//             type="text"
-//             name="familyName"
-//             value={form.familyName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Genus:
-//           <input
-//             type="text"
-//             name="genus"
-//             value={form.genus}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Species:
-//           <input
-//             type="text"
-//             name="species"
-//             value={form.species}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Authority:
-//           <input
-//             type="text"
-//             name="authority"
-//             value={form.authority}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Group:
-//           <input
-//             type="text"
-//             name="group"
-//             value={form.group}
-//             onChange={handleChange}
-//           />
-//         </label>
-
-//         <label>
-//           Dzongkha Name:
-//           <input
-//             type="text"
-//             name="dzongkhaName"
-//             value={form.dzongkhaName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Lho Name:
-//           <input
-//             type="text"
-//             name="lhoName"
-//             value={form.lhoName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Shar Name:
-//           <input
-//             type="text"
-//             name="sharName"
-//             value={form.sharName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Kheng Name:
-//           <input
-//             type="text"
-//             name="khengName"
-//             value={form.khengName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           IUCN Status:
-//           <input
-//             type="text"
-//             name="iucnStatus"
-//             value={form.iucnStatus}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Legislation:
-//           <input
-//             type="text"
-//             name="legislation"
-//             value={form.legislation}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Migration Status:
-//           <select
-//             name="migrationStatus"
-//             value={form.migrationStatus}
-//             onChange={handleChange}
-//           >
-//             <option value="">Select status</option>
-//             <option value="migratory">Migratory</option>
-//             <option value="non migratory">Non Migratory</option>
-//           </select>
-//         </label>
-
-//         <br></br>
-//         <br></br>
-//         <label>
-//           Waterbird/Landbird/Seabird:
-//           <select name="birdType" value={form.birdType} onChange={handleChange}>
-//             <option value="">Select type</option>
-//             <option value="waterbird">Waterbird</option>
-//             <option value="landbird">Landbird</option>
-//             <option value="seabird">Seabird</option>
-//           </select>
-//         </label>
-//         <br></br>
-//         <br></br>
-//         <label>
-//           Description:
-//           <input
-//             type="text"
-//             name="description"
-//             value={form.description}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           observation:
-//           <input
-//             type="text"
-//             name="observations"
-//             value={form.observations}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Photo:
-//           <input
-//             name="photo"
-//             accept="image/*"
-//             type="file"
-//             onChange={handleChange}
-//           />
-//         </label>
-
-//         <button disabled={loading} type="submit">
-//           Submit
-//         </button>
-//       </form>
-//       <br></br>
-//       <br></br>
-//       {loading && (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//             fontSize: "18px",
-//           }}
-//         >
-//           <p>Loading....</p>
-//         </div>
-//       )}
-//       {error && <div className="error_msg">{error}</div>}
-//       {msg && <div className="success_msg">{msg}</div>}
-//       <br></br>
-//       <br></br>
-//       <div>
-//         Image Preview:
-//         {speciesImg ? (
-//           <>
-//             <img
-//               src={speciesImg}
-//               alt="Species"
-//               style={{
-//                 width: "200px",
-//               }}
-//             />
-//           </>
-//         ) : (
-//           <p>Product image upload preview will appear here!</p>
-//         )}
-//       </div>
-//       <br></br>
-//       <div>
-//         Uploaded images:
-//         <div>
-//           {form.photos ? (
-//             <>
-//               {form.photos.map((photo, index) => (
-//                 <div key={index}>
-//                   <img
-//                     src={photo.url}
-//                     alt={photo.englishName}
-//                     style={{
-//                       width: "200px",
-//                     }}
-//                   />
-//                   <div className="button-container">
-//                     <button
-//                       disabled={loading}
-//                       onClick={() => handleDeleteClick(photo._id)}
-//                     >
-//                       Delete Photo
-//                     </button>
-//                   </div>
-//                 </div>
-//               ))}
-//               {/* {speciesImg && <img src={speciesImg} alt="Species" />} */}
-//             </>
-//           ) : (
-//             <p>Image not uploaded!</p>
-//           )}
-//         </div>
-//       </div>
-//       <br></br>
-//       <br></br>
-//       <br></br>
-//       <br></br>
-//       <Link to={`/species/${id}`} className="add-button">
-//         Go Back
-//       </Link>
-//       <br></br>
-//       <br></br>
-//       <br></br>
-//       <br></br>
-//     </div>
-//   );
-// }
-
-// export default EditSpecies;

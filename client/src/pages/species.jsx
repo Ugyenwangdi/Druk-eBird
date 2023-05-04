@@ -20,28 +20,14 @@ function Species() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  // useEffect(() => {
-  //   const fetchSpeciesList = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:8080/api/v1/species");
-  //       // const res = await axios.get(
-  //       //   `${process.env.REACT_APP_API_URL}/api/v1/species`
-  //       // );
-
-  //       setSpeciesCount(res.data.length);
-
-  //       setSpeciesList(res.data);
-  //     } catch (err) {
-  //       setError("Failed to fetch species list. Please try again later.");
-  //     }
-  //   };
-  //   fetchSpeciesList();
-  // }, []);
-
   useEffect(() => {
     const fetchSpeciesList = async () => {
       try {
-        const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
+        // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
+        const url = `${
+          process.env.REACT_APP_API_URL
+        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
+
         // console.log("url: ", url);
         const { data } = await axios.get(url);
 
@@ -62,13 +48,13 @@ function Species() {
         `Are you sure you want to delete ${speciesToDelete.englishName}?`
       );
       if (confirmation) {
-        const res = await axios.delete(
-          `http://localhost:8080/api/v1/species/${id}`
-        );
-
         // const res = await axios.delete(
-        //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+        //   `http://localhost:8080/api/v1/species/${id}`
         // );
+
+        const res = await axios.delete(
+          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+        );
 
         setSpeciesList((prevSpeciesList) =>
           prevSpeciesList.filter((species) => species._id !== id)
@@ -173,75 +159,7 @@ function Species() {
             </button>
           </div>
         </div>
-        {/* <div className="species-container">
-          {speciesList.map((species) => (
-            <div key={species._id} className="species-card">
-              <span className="species-card-more material-icons">
-                more_horiz
-              </span>
 
-              <Link
-                to={`/species/${species._id}`}
-                state={{ speciesDetail: species }}
-              >
-                {species.photos[0] ? (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "200px",
-                      height: "130px",
-                      border: "1px solid #dee4ed",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <img
-                      src={species.photos[0].url}
-                      alt={species.englishName}
-                    />
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "200px",
-                      height: "130px",
-                      border: "1px solid #dee4ed",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <img src={preview} alt="placeholder" />
-                  </span>
-                )}
-              </Link>
-
-              <div className="species-card-content">
-                <h3 className="species-card-name">{species.englishName}</h3>
-                <div className="species-card-sname">
-                  {" "}
-                  {species.scientificName}
-                </div>
-                <div className="species-card-IUCNStatus">
-                  IUCN Status: {species.iucnStatus}
-                </div>
-              </div>
-              <div className="species-card-options">
-                <ul>
-                  <li>
-                    <Link
-                      to={`/species/${species._id}/edit`}
-                      state={{ speciesDetail: species }}
-                    >
-                      <p>Edit</p>
-                    </Link>
-                  </li>
-                  <li>
-                    <p onClick={() => handleDelete(species._id)}>Delete</p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div> */}
         <div className="species-container">
           <SpeciesListComponent
             speciesObj={speciesList ? speciesList : []}
@@ -260,160 +178,3 @@ function Species() {
 }
 
 export default Species;
-
-// import React, { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import axios from "axios";
-
-// import "../styles/species.css";
-
-// function SpeciesList() {
-//   const [speciesList, setSpeciesList] = useState([]);
-//   const [msg, setMsg] = useState("");
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const fetchSpeciesList = async () => {
-//       try {
-//         const res = await axios.get("http://localhost:8080/api/v1/species");
-//         setSpeciesList(res.data);
-//       } catch (err) {
-//         setError("Failed to fetch species list. Please try again later.");
-//       }
-//     };
-//     fetchSpeciesList();
-//   }, []);
-
-//   const handleDelete = async (id) => {
-//     try {
-//       const speciesToDelete = speciesList.find((species) => species._id === id);
-//       const confirmation = window.confirm(
-//         `Are you sure you want to delete ${speciesToDelete.englishName}?`
-//       );
-//       if (confirmation) {
-//         const res = await axios.delete(
-//           `http://localhost:8080/api/v1/species/${id}`
-//         );
-//         setSpeciesList((prevSpeciesList) =>
-//           prevSpeciesList.filter((species) => species._id !== id)
-//         );
-//         setMsg(res.data.message);
-//         setError("");
-//       }
-//     } catch (err) {
-//       setError(err.response.data.error);
-//       setMsg("");
-//     } finally {
-//       setError("");
-//       setMsg("");
-//     }
-//   };
-
-//   // const handleDelete = async (id) => {
-//   //   try {
-//   //     const res = await axios.delete(
-//   //       `http://localhost:8080/api/v1/species/${id}`
-//   //     );
-//   //     setSpeciesList((prevSpeciesList) =>
-//   //       prevSpeciesList.filter((species) => species._id !== id)
-//   //     );
-//   //     setMsg(res.data.message);
-//   //     setError("");
-//   //   } catch (err) {
-//   //     setError(err.response.data.error);
-//   //     setMsg("");
-//   //   }
-//   // };
-//   return (
-//     <div>
-//       <h1>Species List</h1>
-//       <br></br>
-//       <br></br>
-
-//       <br></br>
-//       <Link to="/species/add">
-//         <button className="add-button">Add Species</button>
-//       </Link>
-//       <br></br>
-//       <br></br>
-//       {error && <div className="error_msg">{error}</div>}
-//       {msg && <div className="success_msg">{msg}</div>}
-
-//       <ul>
-//         {speciesList.map((species) => (
-//           <li key={species._id} className="species-card">
-//             <div className="button-container">
-//               <button onClick={() => handleDelete(species._id)}>Delete</button>
-//             </div>
-
-//             <Link
-//               to={`/species/${species._id}`}
-//               state={{ speciesDetail: species }}
-//             >
-//               <h2>{species.englishName}</h2>
-//             </Link>
-//             <p>
-//               <strong>Scientific Name:</strong> {species.scientificName}
-//             </p>
-//             <p>
-//               <strong>Order:</strong> {species.order}
-//             </p>
-//             <p>
-//               <strong>Family Name:</strong> {species.familyName}
-//             </p>
-//             <p>
-//               <strong>Genus:</strong> {species.genus}
-//             </p>
-//             <p>
-//               <strong>Species:</strong> {species.species}
-//             </p>
-//             <p>
-//               <strong>Authority:</strong> {species.authority}
-//             </p>
-//             <p>
-//               <strong>Group:</strong> {species.group}
-//             </p>
-//             <p>
-//               <strong>Dzongkha Name:</strong> {species.dzongkhaName}
-//             </p>
-//             <p>
-//               <strong>Lho Name:</strong> {species.lhoName}
-//             </p>
-//             <p>
-//               <strong>Shar Name:</strong> {species.sharName}
-//             </p>
-//             <p>
-//               <strong>Kheng Name:</strong> {species.khengName}
-//             </p>
-//             <p>
-//               <strong>IUCN Status:</strong> {species.iucnStatus}
-//             </p>
-//             <p>
-//               <strong>Legislation:</strong> {species.legislation}
-//             </p>
-//             <p>
-//               <strong>Migration Status:</strong> {species.migrationStatus}
-//             </p>
-//             <p>
-//               <strong>Bird Type:</strong> {species.birdType}
-//             </p>
-//             <p>
-//               <strong>Description:</strong> {species.description}
-//             </p>
-//             <p>
-//               <strong>Observations:</strong> {species.observations}
-//             </p>
-//             {species.photos[0] && (
-//               <img
-//                 src={species.photos[0].url}
-//                 alt={species.photos[0].caption}
-//               />
-//             )}
-//           </li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default SpeciesList;
