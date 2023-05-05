@@ -15,7 +15,7 @@ function UserList() {
       );
 
       const jsonData = await response.json();
-      setData(jsonData);
+      setData(Object.values(jsonData));
     } catch (error) {
       console.log(error);
     }
