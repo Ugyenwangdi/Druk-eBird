@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { CSVLink } from "react-csv";
 
 import {
   Search,
@@ -72,6 +73,48 @@ function Species() {
     }
   };
 
+  const headers = [
+    { label: "English Name", key: "englishName" },
+    { label: "Scientific Name", key: "scientificName" },
+    { label: "Order", key: "order" },
+    { label: "Family Name", key: "familyName" },
+    { label: "Genus", key: "genus" },
+    { label: "Species", key: "species"},
+    { label: "Authority", key: "authority"},
+    { label: "Group", key: "group"},
+    { label: "Dzongkha Name", key: "dzongkhaName"},
+    { label: "Lho Name", key: "lhoName"},
+    { label: "Shar Name", key: "sharName"},
+    { label: "Kheng Name", key: "khengName"},
+    { label: "IUCN Status", key: "iucnStatus" },
+    { label: "Cites Appendix", key: "citesAppendix" },
+    { label: "Bhutan Schedule", key: "bhutanSchedule" },
+    { label: "Residency", key: "residency" },
+    { label: "Habitat", key: "habitat" },
+  ];
+
+  const csvData = speciesList.map((species) => {
+    return {
+      englishName: species.englishName,
+      scientificName: species.scientificName,
+      order: species.order,
+      familyName: species.family,
+      genus: species.genus,
+      species: species.species,
+      authority: species.authority,
+      group: species.group,
+      dzongkhaName: species.dzongkhaName,
+      lhoName: species.lhoName,
+      sharName: species.sharName,
+      khengName: species.khengName,
+      iucnStatus: species.iucnStatus,
+      citesAppendix: species.citesAppendix,
+      bhutanSchedule: species.bhutanSchedule,
+      residency: species.residency,
+      habitat: species.habitat
+    };
+  });
+
   return (
     <div className="total-species-container">
       <div
@@ -85,7 +128,9 @@ function Species() {
           Total Species <span className="species-count">({speciesCount})</span>
         </h2>
         <div>
-          <button className="export-button">Export Data</button>
+          <CSVLink data={csvData} headers={headers} filename={"species.csv"}>
+            <button className="export-button">Export Data</button>
+          </CSVLink>
           <Link to="/species/add">
             <button className="add-button">Add Species</button>
           </Link>
