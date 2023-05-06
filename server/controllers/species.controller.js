@@ -366,7 +366,7 @@ async function uploadPhotos(photoArray) {
 //     for (const photoPath of photoArray) {
 //       try {
 //         const photoUrl = await uploadPhoto(photoPath);
-//         console.log("Uploaded: ", photoUrl);
+//         console.log(`Uploaded image ${++imageCount}: ${photoPath}`);
 //         photoUrls.push(photoUrl);
 //       } catch (error) {
 //         console.error(error);
