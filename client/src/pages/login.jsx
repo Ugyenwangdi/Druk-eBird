@@ -17,7 +17,7 @@ const Login = () => {
     e.preventDefault();
     try {
       // const url = "http://localhost:8080/api/v1/users/login";
-      const url = `${process.env.REACT_APP_API_URL}/api/v1/users/login`;
+      const url = `${process.env.REACT_APP_API_URL}/auth/login`;
 
       const res = await axios.post(url, data);
       // console.log("token: ", res.data.token);
