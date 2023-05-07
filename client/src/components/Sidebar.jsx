@@ -56,7 +56,7 @@ function Sidebar({ user, googleUser, show }) {
           <span className="material-icons">groups</span>
           <h4>Birders</h4>
         </a>
-        <a href="#">
+        <a href="/settings">
           <span className="material-icons">settings</span>
           <h4>Settings</h4>
         </a>

@@ -2,19 +2,25 @@
 nav {
   width: 100%;
   background: var(--color-white);
-  padding: 1rem 0;
+  margin-top: 66px;
 }
 nav .container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-  width: 96%;
   background: var(--color-white);
   margin: 0 auto;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 nav img.logo {
-  width: 3.5rem;
+  width: 3.7rem;
+  margin-left: 2rem;
 }
 nav .search-bar {
   background: var(--color-light);
@@ -44,6 +50,8 @@ nav .profile-area .profile {
   display: flex;
   gap: 1rem;
   align-items: center;
+  margin-right: 2rem; ;
+
 }
 nav .profile-area .profile-photo {
   display: block;
