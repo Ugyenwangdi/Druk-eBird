@@ -10,6 +10,7 @@ import EditSpecies from "./edit-species";
 import SpeciesDetails from "./species-details";
 import Checklist from "./checklist";
 import Entries from "./entries";
+import Settings from "./settings";
 
 export {
   Signup,
@@ -23,4 +24,5 @@ export {
   SpeciesDetails,
   Checklist,
   Entries,
+  Settings,
 };
