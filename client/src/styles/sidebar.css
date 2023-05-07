@@ -19,6 +19,11 @@ main aside .sidebar {
   background: #136d66;
   height: 100%;
   width: 18rem;
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 5rem;
+  z-index: 999; */
 }
 main aside .sidebar a {
   display: flex;
