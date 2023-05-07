@@ -32,7 +32,9 @@ function App() {
 
   const getGoogleUser = async () => {
     try {
-      const url = `http://localhost:8080/auth/login/success`;
+      // const url = `http://localhost:8080/auth/login/success`;
+      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+
       const { data } = await axios.get(url, { withCredentials: true });
       console.log(data.user);
       // localStorage.setItem("token", data.user);

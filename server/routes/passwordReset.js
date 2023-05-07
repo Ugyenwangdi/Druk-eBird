@@ -1,6 +1,6 @@
 import express from "express";
-import { User } from "../mongodb/models/user.js";
-import Token from "../mongodb/models/token.js";
+import { Admin } from "../mongodb/models/admin.js";
+import AdminToken from "../mongodb/models/token.js";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";
 import Joi from "joi";
@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
     if (error)
       return res.status(400).send({ message: error.details[0].message });
 
-    let user = await User.findOne({ email: req.body.email });
+    let user = await Admin.findOne({ email: req.body.email });
     // console.log(user);
 
     if (!user)
@@ -29,15 +29,15 @@ router.post("/", async (req, res) => {
         .status(409)
         .send({ message: "User with given email does not exist!" });
 
-    let token = await Token.findOne({ userId: user._id });
+    let token = await AdminToken.findOne({ userId: user._id });
     if (!token) {
-      token = await new Token({
+      token = await new AdminToken({
         userId: user._id,
         token: crypto.randomBytes(32).toString("hex"),
       }).save();
     }
 
-    const url = `${process.env.CLIENT_URL}password-reset/${user._id}/${token.token}/`;
+    const url = `${process.env.CLIENT_URL}/password-reset/${user._id}/${token.token}/`;
     await sendEmail(user.email, "Password Reset", url);
 
     res
@@ -51,10 +51,10 @@ router.post("/", async (req, res) => {
 // verify password reset link
 router.get("/:id/:token", async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await Admin.findOne({ _id: req.params.id });
     if (!user) return res.status(400).send({ message: "Invalid link" });
 
-    const token = await Token.findOne({
+    const token = await AdminToken.findOne({
       userId: user._id,
       token: req.params.token,
     });
@@ -76,10 +76,10 @@ router.post("/:id/:token", async (req, res) => {
     if (error)
       return res.status(400).send({ message: error.details[0].message });
 
-    const user = await User.findOne({ _id: req.params.id });
+    const user = await Admin.findOne({ _id: req.params.id });
     if (!user) return res.status(400).send({ message: "Invalid link" });
 
-    const token = await Token.findOne({
+    const token = await AdminToken.findOne({
       userId: user._id,
       token: req.params.token,
     });
@@ -91,7 +91,7 @@ router.post("/:id/:token", async (req, res) => {
     user.password = hashPassword;
     await user.save();
 
-    await Token.deleteOne({ _id: token._id }); // remove the token from the database
+    await AdminToken.deleteOne({ _id: token._id }); // remove the token from the database
 
     res.status(200).send({ message: "Password reset successful!" });
   } catch (error) {

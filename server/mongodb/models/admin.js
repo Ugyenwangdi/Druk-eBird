@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import Joi from "joi";
 import passwordComplexity from "joi-password-complexity";
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   country: { type: String, required: true },
@@ -11,14 +11,14 @@ const userSchema = new mongoose.Schema({
   userType: { type: String, default: "user" },
 });
 
-userSchema.methods.generateAuthToken = function () {
+adminSchema.methods.generateAuthToken = function () {
   const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
     expiresIn: "7d",
   });
   return token;
 };
 
-const User = mongoose.model("user", userSchema);
+const Admin = mongoose.model("Admin", adminSchema);
 
 const validateUser = (data) => {
   const schema = Joi.object({
@@ -31,4 +31,4 @@ const validateUser = (data) => {
   return schema.validate(data);
 };
 
-export { User, validateUser };
+export { Admin, validateUser };

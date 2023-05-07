@@ -61,19 +61,19 @@ function AddSpecies() {
       setLoading(true);
 
       // Localhost
-      const res = await axios.post("http://localhost:8080/api/v1/species", {
-        ...form,
-        photos: [speciesImg],
-      }); // post data to server
+      // const res = await axios.post("http://localhost:8080/api/v1/species", {
+      //   ...form,
+      //   photos: [speciesImg],
+      // }); // post data to server
 
       // // Deployed
-      // const res = await axios.post(
-      //   `${process.env.REACT_APP_API_URL}/api/v1/species`,
-      //   {
-      //     ...form,
-      //     photos: [speciesImg],
-      //   }
-      // ); // post data to server
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/species`,
+        {
+          ...form,
+          photos: [speciesImg],
+        }
+      ); // post data to server
 
       setForm({
         englishName: "",
@@ -120,19 +120,8 @@ function AddSpecies() {
     formData.append("file", file);
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/species/fileupload",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      // // Deployed
       // const response = await axios.post(
-      //   `${process.env.REACT_APP_API_URL}/api/v1/species/fileupload`,
+      //   "http://localhost:8080/api/v1/species/fileupload",
       //   formData,
       //   {
       //     headers: {
@@ -140,6 +129,17 @@ function AddSpecies() {
       //     },
       //   }
       // );
+
+      // Deployed
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/fileupload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       setMsg(`Uploaded ${response.data.data.length} species`);
       setFile(null);
@@ -430,365 +430,3 @@ function AddSpecies() {
 }
 
 export { AddSpecies };
-
-// import React, { useState } from "react";
-// import { Link } from "react-router-dom";
-
-// import axios from "axios";
-
-// function AddSpecies() {
-//   const [form, setForm] = useState({
-//     englishName: "",
-//     scientificName: "",
-//     order: "",
-//     familyName: "",
-//     genus: "",
-//     species: "",
-//     authority: "",
-//     group: "",
-//     dzongkhaName: "",
-//     lhoName: "",
-//     sharName: "",
-//     khengName: "",
-//     iucnStatus: "",
-//     legislation: "",
-//     migrationStatus: "",
-//     birdType: "",
-//     description: "",
-//     observations: 0,
-//     photos: [],
-//   });
-//   const [file, setFile] = useState(null);
-//   const [speciesImg, setSpeciesImg] = useState("");
-//   const [msg, setMsg] = useState("");
-//   const [error, setError] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   // console.log(speciesImg);
-
-//   const handleChange = (event) => {
-//     setMsg("");
-//     setError("");
-//     if (event.target.name === "photo") {
-//       const file = event.target.files[0];
-//       TransformImgFileData(file);
-//     } else {
-//       setForm({ ...form, [event.target.name]: event.target.value });
-//     }
-//   };
-
-//   const TransformImgFileData = (file) => {
-//     const reader = new FileReader();
-//     if (file) {
-//       reader.readAsDataURL(file);
-//       reader.onloadend = () => {
-//         setSpeciesImg(reader.result);
-//       };
-//     } else {
-//       setSpeciesImg("");
-//     }
-//   };
-
-//   const handleSubmit = async (event) => {
-//     event.preventDefault();
-//     try {
-//       setLoading(true);
-//       const res = await axios.post("http://localhost:8080/api/v1/species", {
-//         ...form,
-//         photos: [speciesImg],
-//       }); // post data to server
-//       setForm({
-//         englishName: "",
-//         scientificName: "",
-//         order: "",
-//         familyName: "",
-//         genus: "",
-//         species: "",
-//         authority: "",
-//         group: "",
-//         dzongkhaName: "",
-//         lhoName: "",
-//         sharName: "",
-//         khengName: "",
-//         iucnStatus: "",
-//         legislation: "",
-//         migrationStatus: "",
-//         birdType: "",
-//         description: "",
-//         observations: 0,
-//         photos: [],
-//       }); // reset form
-//       setSpeciesImg("");
-//       setMsg(res.data.message);
-//       console.log(res.data.message);
-//     } catch (err) {
-//       setError("Server error! Problem adding species");
-//     } finally {
-//       setLoading(false); // set loading to false once user object is available or error occurs
-//     }
-//   };
-
-//   const handleFileChange = (e) => {
-//     setMsg("");
-//     setError("");
-//     setFile(e.target.files[0]);
-//   };
-
-//   const handleFileSubmit = async (e) => {
-//     e.preventDefault();
-//     const formData = new FormData();
-//     formData.append("file", file);
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:8080/api/v1/species/fileupload",
-//         formData,
-//         {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//           },
-//         }
-//       );
-//       setMsg(`Uploaded ${response.data.length} species`);
-//     } catch (error) {
-//       console.log(error);
-//       setError(error.message);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <div style={{ display: "flex" }}>
-//         <Link to="/species">
-//           <span className="material-icons">arrow_back_ios</span>
-//         </Link>
-//         <h1>Add New Species</h1>
-//       </div>
-//       <br></br>
-//       <br></br>
-
-//       <div>
-//         <h2>Upload Excel File</h2>
-//         <form onSubmit={handleFileSubmit}>
-//           <input type="file" onChange={handleFileChange} />
-//           <button type="submit" disabled={!file}>
-//             Submit
-//           </button>
-//         </form>
-//       </div>
-//       {error && <div className="error_msg">{error}</div>}
-//       {msg && <div className="success_msg">{msg}</div>}
-//       <br></br>
-//       <br></br>
-//       <br></br>
-
-//       <form onSubmit={handleSubmit}>
-//         <label>
-//           English Name:
-//           <input
-//             type="text"
-//             name="englishName"
-//             value={form.englishName}
-//             onChange={handleChange}
-//             required
-//           />
-//         </label>
-//         <label>
-//           Scientific Name:
-//           <input
-//             type="text"
-//             name="scientificName"
-//             value={form.scientificName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Order:
-//           <input
-//             type="text"
-//             name="order"
-//             value={form.order}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Family Name:
-//           <input
-//             type="text"
-//             name="familyName"
-//             value={form.familyName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Genus:
-//           <input
-//             type="text"
-//             name="genus"
-//             value={form.genus}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Species:
-//           <input
-//             type="text"
-//             name="species"
-//             value={form.species}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Authority:
-//           <input
-//             type="text"
-//             name="authority"
-//             value={form.authority}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Group:
-//           <input
-//             type="text"
-//             name="group"
-//             value={form.group}
-//             onChange={handleChange}
-//           />
-//         </label>
-
-//         <label>
-//           Dzongkha Name:
-//           <input
-//             type="text"
-//             name="dzongkhaName"
-//             value={form.dzongkhaName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Lho Name:
-//           <input
-//             type="text"
-//             name="lhoName"
-//             value={form.lhoName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Shar Name:
-//           <input
-//             type="text"
-//             name="sharName"
-//             value={form.sharName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Kheng Name:
-//           <input
-//             type="text"
-//             name="khengName"
-//             value={form.khengName}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           IUCN Status:
-//           <input
-//             type="text"
-//             name="iucnStatus"
-//             value={form.iucnStatus}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Legislation:
-//           <input
-//             type="text"
-//             name="legislation"
-//             value={form.legislation}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Migration Status:
-//           <select name="migrationStatus" onChange={handleChange}>
-//             <option value="">Select status</option>
-//             <option value="Migratory">Migratory</option>
-//             <option value="Non-migratory">Non Migratory</option>
-//           </select>
-//         </label>
-
-//         <br></br>
-//         <br></br>
-//         <label>
-//           Waterbird/Landbird/Seabird:
-//           <select name="birdType" onChange={handleChange}>
-//             <option value="">Select type</option>
-//             <option value="Waterbird">Waterbird</option>
-//             <option value="Landbird">Landbird</option>
-//             <option value="Seabird">Seabird</option>
-//           </select>
-//         </label>
-//         <br></br>
-//         <br></br>
-//         <label>
-//           Description:
-//           <input
-//             type="text"
-//             name="description"
-//             value={form.description}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Observations:
-//           <input
-//             type="text"
-//             name="observations"
-//             value={form.observations}
-//             onChange={handleChange}
-//           />
-//         </label>
-//         <label>
-//           Photo:
-//           <input
-//             name="photo"
-//             accept="image/*"
-//             type="file"
-//             onChange={handleChange}
-//           />
-//         </label>
-
-//         <button type="submit">Submit</button>
-//       </form>
-//       <br></br>
-//       <br></br>
-//       {loading && (
-//         <div
-//           style={{
-//             display: "flex",
-//             justifyContent: "center",
-//             fontSize: "18px",
-//           }}
-//         >
-//           <p>Loading....</p>
-//         </div>
-//       )}
-
-//       <br></br>
-//       <br></br>
-//       <div>
-//         Image Preview:
-//         {speciesImg ? (
-//           <>
-//             <img src={speciesImg} alt="Species" />
-//           </>
-//         ) : (
-//           <p>Product image upload preview will appear here!</p>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AddSpecies;

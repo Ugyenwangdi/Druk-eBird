@@ -1,9 +1,9 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
+import axios from "axios";
 
 import Species from "../mongodb/models/species.js";
-import { User, validateUser } from "../mongodb/models/user.js";
 
 dotenv.config();
 
@@ -16,24 +16,6 @@ cloudinary.config({
 // const getAllSpecies = async (req, res) => {
 //   try {
 //     const species = await Species.find({});
-//     res.status(200).json(species);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
-// Pagination
-
-// const getAllSpecies = async (req, res) => {
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 10;
-
-//     const species = await Species.find({})
-//       .skip((page - 1) * limit)
-//       .limit(limit);
-
 //     res.status(200).json(species);
 //   } catch (error) {
 //     console.log(error);
@@ -345,68 +327,110 @@ async function uploadPhoto(photoPath) {
   }
 }
 
+let imageCount = 0; // Initialize counter variable outside of the function
+
 async function uploadPhotos(photoArray) {
-  try {
-    const photoUrls = [];
-    for (const photoPath of photoArray) {
-      const photoUrl = await uploadPhoto(photoPath);
-      photoUrls.push(photoUrl);
-    }
-    return photoUrls;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to upload photos to Cloudinary");
+  const batchSize = 50;
+  const photoBatches = [];
+  for (let i = 0; i < photoArray.length; i += batchSize) {
+    photoBatches.push(photoArray.slice(i, i + batchSize));
   }
+
+  const photoUrls = [];
+  for (const batch of photoBatches) {
+    const batchResults = await Promise.all(
+      batch.map(async (photoPath) => {
+        try {
+          const photoUrl = await uploadPhoto(photoPath);
+          console.log(`Uploaded image ${++imageCount}: ${photoPath}`); // Increment counter and log image number
+          photoUrls.push(photoUrl);
+          return true;
+        } catch (error) {
+          console.error(error);
+          console.log(`Skipping photo: ${photoPath}`);
+          return false;
+        }
+      })
+    );
+
+    // Wait for 1 second before uploading the next batch
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+
+  return photoUrls;
 }
+
+// async function uploadPhotos(photoArray) {
+//   try {
+//     const photoUrls = [];
+//     for (const photoPath of photoArray) {
+//       try {
+//         const photoUrl = await uploadPhoto(photoPath);
+//         console.log(`Uploaded image ${++imageCount}: ${photoPath}`);
+//         photoUrls.push(photoUrl);
+//       } catch (error) {
+//         console.error(error);
+//         console.log(`Skipping photo: ${photoPath}`);
+//       }
+//     }
+//     return photoUrls;
+//   } catch (error) {
+//     console.error(error);
+//     throw new Error("Failed to upload photos to Cloudinary");
+//   }
+// }
 
 const uploadExcelFile = async (req, res) => {
   try {
     const workbook = xlsx.readFile(req.file.path);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const birdData = xlsx.utils.sheet_to_json(worksheet);
-    // console.log("bird Data: ", birdData);
 
-    let species = [];
+    let requests = [];
 
     for (const bird of birdData) {
       let photoUrls = [];
       if (bird.photos) {
         const photoArray = JSON.parse(bird.photos.replace(/'/g, ""));
         photoUrls = await uploadPhotos(photoArray);
-        // console.log("photoUrls: ", photoUrls);
       }
 
-      const newBird = new Species({
-        englishName: bird.englishName,
-        scientificName: bird.scientificName,
-        order: bird.order,
-        familyName: bird.familyName,
-        genus: bird.genus,
-        species: bird.species,
-        authority: bird.authority,
-        group: bird.group,
-        dzongkhaName: bird.dzongkhaName,
-        lhoName: bird.lhoName,
-        sharName: bird.sharName,
-        khengName: bird.khengName,
-        iucnStatus: bird.iucnStatus,
-        citesAppendix: bird.citesAppendix,
-        bhutanSchedule: bird.bhutanSchedule,
-        residency: bird.residency,
-        habitat: bird.habitat,
-        description: bird.description,
-        observations: bird.observations,
-        photos: photoUrls.map((url) => ({ url })),
-      });
+      const request = {
+        insertOne: {
+          document: {
+            englishName: bird.englishName,
+            scientificName: bird.scientificName,
+            order: bird.order,
+            familyName: bird.familyName,
+            genus: bird.genus,
+            species: bird.species,
+            authority: bird.authority,
+            group: bird.group,
+            dzongkhaName: bird.dzongkhaName,
+            lhoName: bird.lhoName,
+            sharName: bird.sharName,
+            khengName: bird.khengName,
+            iucnStatus: bird.iucnStatus,
+            citesAppendix: bird.citesAppendix,
+            bhutanSchedule: bird.bhutanSchedule,
+            residency: bird.residency,
+            habitat: bird.habitat,
+            description: bird.description,
+            observations: bird.observations,
+            photos: photoUrls.map((url) => ({ url })),
+          },
+        },
+      };
 
-      await newBird.save();
-      species.push(bird);
+      requests.push(request);
     }
 
-    console.log(`Uploaded species successfully!`);
+    const result = await Species.bulkWrite(requests);
+
+    console.log(`Uploaded ${result.insertedCount} species successfully!`);
 
     res.status(201).json({
-      data: species,
+      data: birdData,
       message: "Bird data uploaded successfully",
     });
   } catch (error) {

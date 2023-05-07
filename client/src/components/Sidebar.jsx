@@ -6,9 +6,16 @@ function Sidebar({ user, googleUser, show }) {
 
   const handleLogout = () => {
     try {
+      // Localhost
+      // if (googleUser) {
+      //   window.open(`http://localhost:8080/auth/logout`, "_self");
+      // }
+
+      // Deployed
       if (googleUser) {
-        window.open(`http://localhost:8080/auth/logout`, "_self");
+        window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
       }
+
       if (user) {
         localStorage.removeItem("token");
         window.location.reload();
@@ -66,66 +73,3 @@ function Sidebar({ user, googleUser, show }) {
 }
 
 export default Sidebar;
-
-// import React from "react";
-// // import "../styles/sidebar.css";
-
-// function Sidebar(userDetails) {
-//   const user = localStorage.getItem("token");
-
-//   const googleUser = userDetails?.googleUser;
-
-//   // console.log("user: ", user);
-
-//   const handleLogout = () => {
-//     try {
-//       if (googleUser) {
-//         window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
-//       }
-//       if (user) {
-//         localStorage.removeItem("token");
-//         window.location.reload();
-//       }
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   return (
-//     <div className="sidebar">
-//       <ul>
-//         <li>
-//           <a href="#">Dashboard</a>
-//         </li>
-//         <li>
-//           <a href="#">Species</a>
-//         </li>
-//         <li>
-//           <a href="#">Checklists</a>
-//         </li>
-//         <li>
-//           <a href="#">Entries</a>
-//         </li>
-//         <li>
-//           <a href="#">New Species</a>
-//         </li>
-//         <li>
-//           <a href="#">Graphs</a>
-//         </li>
-//         <li>
-//           <a href="#">Birders</a>
-//         </li>
-//         <li>
-//           <a href="#">Settings</a>
-//         </li>
-//         <li>
-//           <a href="#" onClick={handleLogout}>
-//             Logout
-//           </a>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default Sidebar;
