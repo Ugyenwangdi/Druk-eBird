@@ -36,6 +36,7 @@ function AddSpecies() {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showFullscreen, setShowFullscreen] = useState(false);
 
   useEffect(() => {
     // localhost, get the species details from the API
@@ -140,6 +141,10 @@ function AddSpecies() {
       setError("Server error!");
     }
     setLoading(false);
+  };
+
+  const toggleFullscreen = () => {
+    setShowFullscreen(!showFullscreen);
   };
 
   return (
@@ -401,12 +406,25 @@ function AddSpecies() {
               <>
                 {form.photos.map((photo, index) => (
                   <div key={index} className="uploaded-photos-img-container">
+                    {showFullscreen && (
+                      <div className="fullscreen-container">
+                        <button
+                          className="close-button"
+                          onClick={toggleFullscreen}
+                        >
+                          <span className="material-icons">close</span>
+                        </button>
+                        <img src={photo.url} alt={photo.englishName} />
+                      </div>
+                    )}
                     <img
                       src={photo.url}
                       alt={photo.englishName}
                       style={{
                         width: "200px",
+                        cursor: "pointer",
                       }}
+                      onClick={toggleFullscreen}
                     />
                     <div className="delete-button-container">
                       <button

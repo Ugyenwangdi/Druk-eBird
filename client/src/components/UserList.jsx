@@ -10,9 +10,7 @@ function UserList() {
   const fetchData = async () => {
     try {
       // const response = await fetch("http://localhost:8080/api/v1/users/");
-      const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/api/v1/users/`
-      );
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/`);
 
       const jsonData = await response.json();
       setData(Object.values(jsonData));
