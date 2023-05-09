@@ -40,7 +40,7 @@ const successGoogleLogin = async (req, res) => {
   if (req.user) {
     // console.log("id: ", req.user.id);
     // console.log("email: ", req.user.email);
-    console.log(req.user);
+    // console.log(req.user);
 
     const token = jwt.sign(
       {
