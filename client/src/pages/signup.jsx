@@ -6,6 +6,8 @@ import { logo } from "../images";
 import "../styles/signup.css";
 
 const Signup = () => {
+  const token = localStorage.getItem("token");
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -25,7 +27,12 @@ const Signup = () => {
       // const url = "http://localhost:8080/api/v1/users/register";
       const url = `${process.env.REACT_APP_API_URL}/auth/register`;
 
-      const { data: res } = await axios.post(url, data);
+      // add your JWT token to the headers object
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      const { data: res } = await axios.post(url, data, { headers });
       navigate("/login");
       console.log(res.message);
     } catch (error) {

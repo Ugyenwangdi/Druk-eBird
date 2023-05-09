@@ -6,7 +6,6 @@ import cors from "cors";
 import passport from "passport";
 import session from "express-session";
 import bodyParser from "body-parser";
-import cookieSession from "cookie-session";
 
 import connectDB from "./mongodb/connect.js";
 import { Admin } from "./mongodb/models/adminSchema.js";
@@ -16,25 +15,16 @@ import speciesRouter from "./routes/species.routes.js";
 const app = express();
 app.setMaxListeners(15);
 app.use(express.json({ limit: "50mb" }));
-app.use(cors());
-
-// app.use(
-//   session({
-//     secret: process.env.PASSPORT_LONG_SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
   session({
-    secret: "Our little secret.",
+    secret: process.env.PASSPORT_LONG_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
+    // cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
   })
 );
 
@@ -43,7 +33,7 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CLIENT_URL,
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
@@ -58,6 +48,7 @@ passport.serializeUser(function (user, cb) {
       name: user.name,
       email: user.email, // what we want to retrieve when we call req.user
       googleId: user.googleId,
+      userType: user.userType,
     });
   });
 });
@@ -66,12 +57,6 @@ passport.deserializeUser(function (user, cb) {
   process.nextTick(function () {
     return cb(null, user);
   });
-});
-
-app.get("/", (req, res) => {
-  console.log("user: ", req.user);
-
-  res.send({ message: "Hello World!" });
 });
 
 app.use("", authRoute);

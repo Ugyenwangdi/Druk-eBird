@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  useNavigate,
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import axios from "axios";
 
 import { Sidebar, Topbar } from "./components";
@@ -17,43 +23,60 @@ import {
   Entries,
 } from "./pages";
 
-// import "./index.css";
-
 function App() {
-  const user = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [loading, setLoading] = useState(true);
   const [googleUser, setGoogleUser] = useState(null);
   const [showSidebar, setShowSidebar] = useState(true);
+  const [isValidToken, setIsValidtoken] = useState(false);
 
-  // console.log("user: ", user.email);
-  // console.log("googleUser: ", googleUser.email);
+  const validateToken = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200 && res.data.valid) {
+        setIsValidtoken(true);
+      } else {
+        localStorage.removeItem("token");
+        setIsValidtoken(false);
+      }
+    } catch (error) {
+      console.error(error);
+      localStorage.removeItem("token");
+      setIsValidtoken(false);
+    }
+  };
 
   const getGoogleUser = async () => {
     try {
-      // const url = `http://localhost:8080/auth/login/success`;
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
-
       const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.user);
-      // localStorage.setItem("token", data.user);
-      setGoogleUser(data.user._json);
+      localStorage.setItem("token", data.token);
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false); // set loading to false once user object is available or error occurs
+      setLoading(false);
     }
   };
 
   useEffect(() => {
+    validateToken();
     getGoogleUser();
-  }, []);
+  }, [navigate]);
 
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  // render loading spinner/message while loading is true
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -63,14 +86,12 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      {user || googleUser ? (
+    <>
+      {isValidToken ? (
         <div>
           <Topbar onToggleSidebar={handleToggleSidebar} />
           <main>
             <Sidebar
-              user={user}
-              googleUser={googleUser}
               show={showSidebar}
               onToggleSidebar={handleToggleSidebar}
               style={{ position: "fixed" }}
@@ -89,7 +110,6 @@ function App() {
         </div>
       ) : (
         <Routes>
-          <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -100,7 +120,7 @@ function App() {
           <Route path="/*" element={<Navigate replace to="/login" />} />
         </Routes>
       )}
-    </BrowserRouter>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
@@ -6,6 +7,8 @@ import { logo, google } from "../images";
 import "../styles/login.css";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
 
@@ -20,9 +23,8 @@ const Login = () => {
       const url = `${process.env.REACT_APP_API_URL}/auth/login`;
 
       const res = await axios.post(url, data);
-      // console.log("token: ", res.data.token);
-      localStorage.setItem("token", res.data.token);
-      window.location = "/";
+      localStorage.setItem("token", res.data.token); // store the session token from jwt
+      navigate("/");
     } catch (error) {
       if (
         error.response &&
