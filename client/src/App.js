@@ -21,6 +21,7 @@ import {
   SpeciesDetails,
   Checklist,
   Entries,
+  Settings,
 } from "./pages";
 
 function App() {
@@ -104,6 +105,7 @@ function App() {
               <Route path="/species/:id" element={<SpeciesDetails />} />
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>
