@@ -20,23 +20,6 @@ function Species() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
 
-  // useEffect(() => {
-  //   const fetchSpeciesList = async () => {
-  //     try {
-  //       const res = await axios.get("http://localhost:8080/api/v1/species");
-  //       // const res = await axios.get(
-  //       //   `${process.env.REACT_APP_API_URL}/api/v1/species`
-  //       // );
-
-  //       setSpeciesCount(res.data.length);
-
-  //       setSpeciesList(res.data);
-  //     } catch (err) {
-  //       setError("Failed to fetch species list. Please try again later.");
-  //     }
-  //   };
-  //   fetchSpeciesList();
-  // }, []);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
@@ -173,75 +156,6 @@ function Species() {
             </button>
           </div>
         </div>
-        {/* <div className="species-container">
-          {speciesList.map((species) => (
-            <div key={species._id} className="species-card">
-              <span className="species-card-more material-icons">
-                more_horiz
-              </span>
-
-              <Link
-                to={`/species/${species._id}`}
-                state={{ speciesDetail: species }}
-              >
-                {species.photos[0] ? (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "200px",
-                      height: "130px",
-                      border: "1px solid #dee4ed",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <img
-                      src={species.photos[0].url}
-                      alt={species.englishName}
-                    />
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      width: "200px",
-                      height: "130px",
-                      border: "1px solid #dee4ed",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <img src={preview} alt="placeholder" />
-                  </span>
-                )}
-              </Link>
-
-              <div className="species-card-content">
-                <h3 className="species-card-name">{species.englishName}</h3>
-                <div className="species-card-sname">
-                  {" "}
-                  {species.scientificName}
-                </div>
-                <div className="species-card-IUCNStatus">
-                  IUCN Status: {species.iucnStatus}
-                </div>
-              </div>
-              <div className="species-card-options">
-                <ul>
-                  <li>
-                    <Link
-                      to={`/species/${species._id}/edit`}
-                      state={{ speciesDetail: species }}
-                    >
-                      <p>Edit</p>
-                    </Link>
-                  </li>
-                  <li>
-                    <p onClick={() => handleDelete(species._id)}>Delete</p>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          ))}
-        </div> */}
         <div className="species-container">
           <SpeciesListComponent
             speciesObj={speciesList ? speciesList : []}

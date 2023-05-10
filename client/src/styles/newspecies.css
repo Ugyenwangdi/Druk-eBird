@@ -1,22 +1,22 @@
-.checklists-page-container{
+.new-species-page-container{
   display: block;
   width: 100%;
   overflow-x: hidden;
   margin-left: -1rem;
 }
-.checklist-count {
+.newspecies-count {
   font-size: 14px;
   color: #777;
   margin-left: 5px;
 }
 
-.checklist-count {
+.newspecies-count {
   margin-top: 12rem;
   font-size: 1rem;
   margin-left: 1rem;
 }
 
-.checklist-page-container {
+.newspecies-page-container {
   margin-top: 45px;
   border-radius: 0.25rem;
   border-color: #f7f7f7;
@@ -26,23 +26,14 @@
   width: 99%;
 }
 
-/* .checklist-filter-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-} */
-
-
-
-.checklist-filter-container {
+.newspecies-filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 1.5rem 0;
 }
 
-.checklist-search-bar {
+.newspecies-search-bar {
   padding: 0.5rem;
   border: none;
   border-radius: 0.25rem;
@@ -50,7 +41,7 @@
   width: 30%;
 }
 
-.checklist-filter-dropdown {
+.newspecies-filter-dropdown {
   padding: 0.3rem;
   /* background-color: #f7f1f1; */
   border-radius: 0.25rem;
@@ -58,7 +49,7 @@
   width: 12%;
 }
 
-.checklist-filter-dropdown-birdingSite {
+.newspecies-filter-dropdown-birdingSite {
   padding: 0.3rem;
   background-color: #ffffff;
   border: none;
@@ -68,14 +59,14 @@
 }
 
 
-.button-container {
+.newspecies-button-container {
   position: absolute;
   top: -100;
   right: 0;
   padding-right: 20px;
 }
 
-.export-button {
+.newspecies-export-button {
   background-color: #136D66;
   color: #ffffff;
   border: none;
@@ -87,7 +78,7 @@
 
 
 
-.checklist-table {
+.newspecies-table {
   border: 0.5px solid #dcd8d8;
   width: 99%;
   border-radius: 10px;
@@ -98,12 +89,12 @@
   table-layout: fixed;
 }
 
-.custom-data {
+.data {
   text-align: center;
   padding-bottom: 0;
 }
 
-.checklist-link {
+.newspecies-link {
   color: black;
   text-decoration: none;
 }
@@ -125,8 +116,8 @@
   }
 
 
-  .checklist-search-bar,
-  .checklist-filter-dropdown {
+  .newspecies-search-bar,
+  .newspecies-filter-dropdown {
     margin: .5em;
     width: 10rem;
   }
@@ -138,7 +129,7 @@
     overflow: hidden;
   }
 
-  .checklist-filter-container {
+  .newspecies-filter-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -151,64 +142,64 @@
     overflow-x: hidden;
   }
 
-  .checklist-filter-container {
+  .newspecies-filter-container {
     flex-wrap: wrap;
   }
 
-  .checklist-filter-dropdown {
+  .newspecies-filter-dropdown {
     margin-bottom: 10px;
   }
 
   
 
-  .checklist-search-bar,
-  .checklist-filter-dropdown {
+  .newspecies-search-bar,
+  .newspecies-filter-dropdown {
     padding: .5em;
   }
 
-  .checklist-search-bar {
+  .newspecies-search-bar {
     flex-basis: 100%;
     margin-bottom: 5px;
 
   }
 
-  .checklist-search-bar,
-  .checklist-filter-dropdown {
+  .newspecies-search-bar,
+  .newspecies-filter-dropdown {
     margin-bottom: 5px;
     width: 100%;
   }
 
-  .checklist-filter-dropdown {
+  .newspecies-filter-dropdown {
     flex-basis: auto;
     width: 100%;
     margin-right: 0;
   }
 
-  .checklist-filter-dropdown:last-child {
+  .newspecies-filter-dropdown:last-child {
     margin-right: 0;
   }
 
 
-  .checklist-table .main-head tr {
+  .newspecies-table .main-head tr {
     display: none;
 
   }
 
-  .checklist-table tr {
+  .newspecies-table tr {
     display: block;
   }
 
-  .checklist-table .main-table,
-  .checklist-table td {
+  .newspecies-table .main-table,
+  .newspecies-table td {
     padding: .5em;
   }
 
-  .checklist-table .custom-data {
+  .newspecies-table .data {
     text-align: right;
     display: block;
   }
 
-  .checklist-table .custom-data::before {
+  .newspecies-table .data::before {
     content: attr(data-label) ": ";
     color: black;
     float: left;
