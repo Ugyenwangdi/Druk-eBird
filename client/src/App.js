@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import {
+  useNavigate,
+  BrowserRouter,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import axios from "axios";
 
 import { Sidebar, Topbar } from "./components";
@@ -16,38 +22,59 @@ import {
   Checklist,
   Entries,
   Settings,
+  AddAdmin,
+  EditAdmin,
 } from "./pages";
 
-// import "./index.css";
-
 function App() {
-  const user = localStorage.getItem("token");
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
   const [loading, setLoading] = useState(true);
   const [googleUser, setGoogleUser] = useState(null);
-  // const [showSidebar, setShowSidebar] = useState(true);
 
-  // console.log("user: ", user.email);
-  // console.log("googleUser: ", googleUser.email);
+  const [isValidToken, setIsValidtoken] = useState(false);
+
+  const validateToken = async () => {
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.status === 200 && res.data.valid) {
+        setIsValidtoken(true);
+      } else {
+        localStorage.removeItem("token");
+        setIsValidtoken(false);
+      }
+    } catch (error) {
+      console.error(error);
+      localStorage.removeItem("token");
+      setIsValidtoken(false);
+    }
+  };
 
   const getGoogleUser = async () => {
     try {
-      // const url = `http://localhost:8080/auth/login/success`;
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
-
       const { data } = await axios.get(url, { withCredentials: true });
-      console.log(data.user);
-      // localStorage.setItem("token", data.user);
-      setGoogleUser(data.user._json);
+      localStorage.setItem("token", data.token);
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false); // set loading to false once user object is available or error occurs
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    getGoogleUser();
+    validateToken();
+
+    // getGoogleUser();
   }, []);
 
   // Sidebar and toggle connection
@@ -59,7 +86,7 @@ function App() {
   const handleCloseSidebar = () => {
     setShowSidebar(false);
   };
-  // adding an event listener to the window object to listen for changes in the screen size and update the state accordingly. 
+  // adding an event listener to the window object to listen for changes in the screen size and update the state accordingly.
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -67,14 +94,14 @@ function App() {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-  // hidding the sidebar in mobile and tablet screen 
+  // hidding the sidebar in mobile and tablet screen
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 768) {
@@ -84,34 +111,32 @@ function App() {
       }
     };
 
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
     setShowSidebar(mediaQuery.matches);
 
-    mediaQuery.addEventListener('change', handleResize);
+    mediaQuery.addEventListener("change", handleResize);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleResize);
+      mediaQuery.removeEventListener("change", handleResize);
     };
   }, []);
 
   // render loading spinner/message while loading is true
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div style={{ display: "flex", justifyContent: "center" }}>
+  //       <p>Loading...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <BrowserRouter>
-      {user || googleUser ? (
+    <>
+      {isValidToken ? (
         <div>
           <Topbar onToggleSidebar={handleToggleSidebar} />
           <main>
             <Sidebar
-              user={user}
-              googleUser={googleUser}
               showSidebar={showSidebar}
               closeSidebar={handleCloseSidebar}
               onToggleSidebar={handleToggleSidebar}
@@ -126,13 +151,15 @@ function App() {
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/add-admin" element={<AddAdmin />} />
+              <Route path="/admins/:id/edit" element={<EditAdmin />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>
         </div>
       ) : (
         <Routes>
-          <Route path="/" element={<Navigate replace to="/login" />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -143,7 +170,7 @@ function App() {
           <Route path="/*" element={<Navigate replace to="/login" />} />
         </Routes>
       )}
-    </BrowserRouter>
+    </>
   );
 }
 

@@ -5,7 +5,7 @@ import { logo } from "../images";
 
 import "../styles/signup.css";
 
-const Signup = () => {
+const AddAdmin = () => {
   const token = localStorage.getItem("token");
 
   const [data, setData] = useState({
@@ -15,26 +15,33 @@ const Signup = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = ({ currentTarget: input }) => {
+    setMsg("");
+    setError("");
     setData({ ...data, [input.name]: input.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       // const url = "http://localhost:8080/api/v1/users/register";
-      const url = `${process.env.REACT_APP_API_URL}/auth/register`;
+      const url = `${process.env.REACT_APP_API_URL}/auth/register-admin`;
 
       // add your JWT token to the headers object
       const headers = {
         Authorization: `Bearer ${token}`,
       };
 
-      const { data: res } = await axios.post(url, data, { headers });
-      navigate("/login");
-      console.log(res.message);
+      const res = await axios.post(url, data, { headers });
+      setMsg(res.data.message);
+      console.log(res);
+      setData({ name: "", email: "", country: "", password: "" });
     } catch (error) {
       if (
         error.response &&
@@ -43,17 +50,20 @@ const Signup = () => {
       ) {
         setError(error.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="login_container">
-      <div
-        className="login_form_container"
-        style={{ height: "680px", width: "1050px" }}
-      >
+      <div className="signup_form_container">
         <div className="signup_left" style={{ flex: 1 }}>
-          <form className="form_container" onSubmit={handleSubmit}>
+          <form
+            className="form_container"
+            onSubmit={handleSubmit}
+            style={{ marginBottom: "10px", padding: "0 40px" }}
+          >
             <div style={{ display: "flex", justifyContent: "center" }}>
               <img
                 src={logo}
@@ -61,13 +71,15 @@ const Signup = () => {
                 style={{
                   width: "150px",
                   height: "150px",
-                  marginBottom: "12px",
+                  marginTop: "-12px",
                 }}
               />
             </div>
             <p style={{ fontSize: "16px", paddingBottom: "20px" }}>
-              Welcome to Druk Ebird! Please create your account.
+              Register Admin User
             </p>
+            {error && <div className="error_msg">{error}</div>}
+            {msg && <div className="success_msg">{msg}</div>}
 
             <div
               style={{
@@ -122,6 +134,35 @@ const Signup = () => {
                 fontSize: "16px",
               }}
             >
+              <label htmlFor="userType">User Type</label>
+              <select
+                className="input"
+                name="userType"
+                onChange={handleChange}
+                value={data.userType}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingBottom: "10px",
+                  color: "#808191",
+                  fontSize: "16px",
+                }}
+              >
+                <option value="">Select type</option>
+                <option value="user">Basic User</option>
+                <option value="admin-user">Admin User</option>
+                <option value="root-user">Root User</option>
+              </select>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
+              }}
+            >
               <label htmlFor="country">Country</label>
               <input
                 type="text"
@@ -129,7 +170,6 @@ const Signup = () => {
                 name="country"
                 onChange={handleChange}
                 value={data.country}
-                required
                 className="input"
                 id="country"
                 style={{ color: "#808191" }}
@@ -160,28 +200,36 @@ const Signup = () => {
               />
             </div>
 
-            {error && <div className="error_msg">{error}</div>}
-            <button type="submit" className="signup_green_btn">
-              Sign Up
-            </button>
-
-            <div>
-              Already have an account? <Link to="/login"> Sign In</Link>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
+              }}
+            >
+              <label htmlFor="password-confirm">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                onChange={handleChange}
+                required
+                className="input"
+                id="password-confirm"
+                style={{ color: "#808191" }}
+              />
             </div>
+
+            <button type="submit" className="signup_green_btn">
+              {loading ? "Adding Admin ..." : "Add Admin"}
+            </button>
           </form>
         </div>
-
-        <div
-          className="right"
-          style={{
-            backgroundImage: "url('/Verditer.jpg')",
-            backgroundSize: "cover",
-            flex: 1,
-          }}
-        ></div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default AddAdmin;

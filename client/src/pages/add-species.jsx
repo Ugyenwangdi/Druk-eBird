@@ -30,6 +30,7 @@ function AddSpecies() {
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showFullscreen, setShowFullscreen] = useState(false);
   // console.log(speciesImg);
 
   const handleChange = (event) => {
@@ -152,8 +153,21 @@ function AddSpecies() {
     }
   };
 
+  const toggleFullscreen = () => {
+    setShowFullscreen(!showFullscreen);
+  };
+
   return (
     <div className="add-species-container">
+      {showFullscreen && (
+        <div className="fullscreen-container">
+          <button className="close-button" onClick={toggleFullscreen}>
+            <span className="material-icons">close</span>
+          </button>
+          <img src={speciesImg} alt="Species" />
+        </div>
+      )}
+
       <div className="species-header">
         <Link to="/species">
           <span className="material-icons back-arrow">arrow_back_ios</span>
@@ -397,7 +411,12 @@ function AddSpecies() {
           <div>Image Preview:</div>
           {speciesImg ? (
             <>
-              <img src={speciesImg} alt="Species" style={{ width: "400px" }} />
+              <img
+                src={speciesImg}
+                alt="Species"
+                style={{ width: "400px", cursor: "pointer" }}
+                onClick={toggleFullscreen}
+              />
             </>
           ) : (
             <p>Product image upload preview will appear here!</p>

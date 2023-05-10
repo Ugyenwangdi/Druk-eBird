@@ -1,57 +1,60 @@
-// import express from "express";
-// import passport from "passport";
-// import {
-//   registerUser,
-//   loginUser,
-//   getUserByID,
-//   logoutUser,
-//   getAllUsers,
-//   secretPage,
-//   googleAuth,
-//   successGoogleLogin,
-//   failedGoogleLogin,
-//   googleAuthCallback,
-// } from "../controllers/auth.controller.js";
+import express from "express";
+import passport from "passport";
+import {
+  baseRoute,
+  // validateSession,
+  checkAuthStatus,
+  authMiddleware,
+  registerUser,
+  loginUser,
+  getUserByID,
+  logoutUser,
+  getAllUsers,
+  editAdminUser,
+  deleteUser,
+  secretPage,
+  googleAuth,
+  successGoogleLogin,
+  failedGoogleLogin,
+  googleAuthCallback,
+} from "../controllers/auth.controller.js";
 
-// const router = express.Router();
+const router = express.Router();
 
 // const ensureAuthenticated = (req, res, next) => {
-//   if (req.session.user) {
+//   if (req.isAuthenticated()) {
 //     return next();
 //   } else {
 //     return res.status(401).json({ error: "User not logged in!" });
 //   }
-
-//   // if (req.isAuthenticated()) {
-//   //   return next();
-//   // } else {
-//   //   return res.status(401).json({ error: "User not logged in!" });
-//   // }
 // };
 
 // // route to check if user is logged in
-// router.get("/auth/checkLoggedIn", ensureAuthenticated, (req, res) => {
+// router.get("/auth/checkLoggedIn", authMiddleware, (req, res) => {
 //   res.json({ message: "User is logged in" });
 // });
 
-// // Google Authentication routes
-// router.route("/auth/google").get(googleAuth);
-// router.route("/auth/login/success").get(successGoogleLogin);
-// router.route("/auth/login/failed").get(failedGoogleLogin);
-// router
-//   .route("/auth/google/callback")
-//   .get(googleAuthCallback, successGoogleLogin);
+router.route("").get(authMiddleware, baseRoute);
+router.route("/auth/checkLoggedIn").get(authMiddleware, checkAuthStatus);
 
-// // Register and Login POST routes
-// router.route("/auth/register").post(registerUser);
-// router.route("/auth/login").post(loginUser);
-// router.route("/auth/logout").post(logoutUser);
+// Google Authentication routes
+router.route("/auth/google").get(googleAuth);
+router.route("/auth/login/success").get(successGoogleLogin);
+router.route("/auth/login/failed").get(failedGoogleLogin);
+router.route("/auth/google/callback").get(googleAuthCallback);
 
-// // User GET routes
-// router.route("/users").get(getAllUsers);
-// router.route("/users/:id").get(getUserByID);
+// Register and Login POST routes
+router.route("/auth/register-admin").post(authMiddleware, registerUser);
+router.route("/auth/login").post(loginUser);
+router.route("/auth/logout").post(logoutUser);
 
-// // Secret route
-// router.route("/secrets").get(ensureAuthenticated, secretPage);
+// User GET routes
+router.route("/users").get(getAllUsers);
+router.route("/users/:id").get(getUserByID);
+router.route("/users/:id").patch(authMiddleware, editAdminUser);
+router.route("/users/:id").delete(authMiddleware, deleteUser);
 
-// export default router;
+// Secret route
+router.route("/secrets").get(authMiddleware, secretPage);
+
+export default router;

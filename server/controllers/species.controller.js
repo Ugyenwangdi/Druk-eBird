@@ -192,7 +192,7 @@ const createSpecies = async (req, res) => {
 
 const updateSpecies = async (req, res) => {
   const speciesId = req.params.id;
-  // console.log(req.body);
+  console.log(req.body);
   const {
     englishName,
     scientificName,
@@ -218,6 +218,7 @@ const updateSpecies = async (req, res) => {
 
   try {
     let updatedSpecies = await Species.findById(speciesId);
+    // console.log(updateSpecies);
     if (!updatedSpecies) {
       return res.status(404).json({ message: "Species not found" });
     }

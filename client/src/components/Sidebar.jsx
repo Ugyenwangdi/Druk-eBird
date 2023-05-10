@@ -1,13 +1,14 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/sidebar.css";
 import { NavLink } from "react-router-dom";
 
+import axios from "axios";
 
 function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
   // console.log("user: ", user);
 
-    // handling the clicked menu item
-  const [activeItem, setActiveItem] = useState('/');
+  // handling the clicked menu item
+  const [activeItem, setActiveItem] = useState("/");
 
   useEffect(() => {
     setActiveItem(window.location.pathname);
@@ -18,48 +19,65 @@ function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
   };
 
   const handleLogout = () => {
-    try {
-      // Localhost
-      // if (googleUser) {
-      //   window.open(`http://localhost:8080/auth/logout`, "_self");
-      // }
+    // Make a POST request to your backend to log out the user
+    axios
+      .post("http://localhost:8080/auth/logout")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
 
-      // Deployed
-      if (googleUser) {
-        window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
-      }
+    // Remove the sessionId from local storage
+    localStorage.removeItem("token");
 
-      if (user) {
-        localStorage.removeItem("token");
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    // Redirect the user to the login page
+    window.location = "/login";
   };
-
 
   return (
     <main>
-      <aside className={`sidebar ${showSidebar ? 'show' : ''}`}
-      style={{ display: window.innerWidth >= 768 || showSidebar ? 'block' : 'none' }}>
+      <aside
+        className={`sidebar ${showSidebar ? "show" : ""}`}
+        style={{
+          display: window.innerWidth >= 768 || showSidebar ? "block" : "none",
+        }}
+      >
         <button id="close-btn" onClick={closeSidebar} className="close-button">
           <span className="material-icons">close</span>
         </button>
         <div className="sidebar">
-          <NavLink exact to="/" className={activeItem === '/' ? 'active' : ''} onClick={() => handleMenuItemClick('/')}>
-          <span className="material-icons">grid_view</span>
+          <NavLink
+            exact
+            to="/"
+            className={activeItem === "/" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/")}
+          >
+            <span className="material-icons">grid_view</span>
             <h4>Dashboard</h4>
           </NavLink>
-          <NavLink to="/species" className={activeItem === '/species' ? 'active' : ''} onClick={() => handleMenuItemClick('/species')}>
+          <NavLink
+            to="/species"
+            className={activeItem === "/species" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/species")}
+          >
             <span className="material-icons">flutter_dash</span>
             <h4>Species</h4>
           </NavLink>
-          <NavLink to="/checklist" className={activeItem === '/checklist' ? 'active' : ''} onClick={() => handleMenuItemClick('/checklist')}>
+          <NavLink
+            to="/checklist"
+            className={activeItem === "/checklist" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/checklist")}
+          >
             <span className="material-icons">fact_check</span>
             <h4>Checklists</h4>
           </NavLink>
-          <NavLink to="/entries" className={activeItem === '/entries' ? 'active' : ''} onClick={() => handleMenuItemClick('/entries')}>
+          <NavLink
+            to="/entries"
+            className={activeItem === "/entries" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/entries")}
+          >
             <span className="material-icons">login</span>
             <h4>Entries</h4>
           </NavLink>
@@ -75,7 +93,11 @@ function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
             <span className="material-icons">groups</span>
             <h4>Birders</h4>
           </a>
-          <NavLink to="/settings" className={activeItem === '/settings' ? 'active' : ''} onClick={() => handleMenuItemClick('/settings')}>
+          <NavLink
+            to="/settings"
+            className={activeItem === "/settings" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/settings")}
+          >
             <span className="material-icons">settings</span>
             <h4>Settings</h4>
           </NavLink>

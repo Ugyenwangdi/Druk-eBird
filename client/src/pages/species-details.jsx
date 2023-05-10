@@ -7,6 +7,7 @@ import "../styles/speciesdetails.css";
 function SpeciesDetails() {
   const { id } = useParams();
   const location = useLocation();
+  const [showFullscreen, setShowFullscreen] = useState(false);
 
   const [species, setSpecies] = useState(
     location.state?.speciesDetail || { photos: [] }
@@ -32,12 +33,24 @@ function SpeciesDetails() {
 
   // console.log(species.photos[0].caption);
 
+  const toggleFullscreen = () => {
+    setShowFullscreen(!showFullscreen);
+  };
+
   if (!species) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="species-details-container">
+      {showFullscreen && (
+        <div className="fullscreen-container">
+          <button className="close-button" onClick={toggleFullscreen}>
+            <span className="material-icons">close</span>
+          </button>
+          <img src={species.photos[0].url} alt="Species" />
+        </div>
+      )}
       <h2 className="species-details-header">
         <div>
           <Link to="/species">
@@ -55,6 +68,7 @@ function SpeciesDetails() {
           className="species-image1"
           src={species.photos[0] ? species.photos[0].url : preview}
           alt="Speciesphoto1"
+          onClick={toggleFullscreen}
         />
         <div className="species-image-column">
           <img
