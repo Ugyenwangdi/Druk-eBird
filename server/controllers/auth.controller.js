@@ -395,6 +395,43 @@ const editAdminUser = async (req, res) => {
   });
 };
 
+const updateProfile = async (req, res) => {
+  const userId = req.params.id;
+  console.log(req.body);
+  const { name, email, photo } = req.body;
+
+  try {
+    let updatedUser = await Admin.findById(userId);
+    // console.log(updateSpecies);
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    updatedUser.name = name;
+    updatedUser.email = email;
+
+    if (photo) {
+      const uploadedResponse = await cloudinary.uploader.upload(photo, {
+        upload_preset: "druk-ebird-profiles",
+      });
+
+      if (uploadedResponse) {
+        updatedUser.photo = uploadedResponse.secure_url;
+      }
+    }
+
+    const savedUser = await updatedUser.save();
+
+    res.status(200).json({
+      data: savedUser,
+      message: "User updated successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 const deleteUser = async (req, res) => {
   try {
     const user = await Admin.findByIdAndDelete(req.params.id);
