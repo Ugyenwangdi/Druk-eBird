@@ -84,13 +84,13 @@ function App() {
   };
 
   // render loading spinner/message while loading is true
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div style={{ display: "flex", justifyContent: "center" }}>
+  //       <p>Loading...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
