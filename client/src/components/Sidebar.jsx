@@ -1,37 +1,22 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "../styles/sidebar.css";
+import { NavLink } from "react-router-dom";
+
 import axios from "axios";
 
-function Sidebar({ show }) {
+function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
   // console.log("user: ", user);
 
-  // const handleLogout = () => {
-  //   try {
-  //     // Localhost
-  //     // if (googleUser) {
-  //     //   window.open(`http://localhost:8080/auth/logout`, "_self");
-  //     // }
+  // handling the clicked menu item
+  const [activeItem, setActiveItem] = useState("/");
 
-  //     // Deployed
-  //     if (googleUser) {
-  //       window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
-  //     }
+  useEffect(() => {
+    setActiveItem(window.location.pathname);
+  }, []);
 
-  //     if (user) {
-  //       localStorage.removeItem("token");
-  //       window.location.reload();
-  //     }
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
-  const [activeTab, setActiveTab] = useState("");
-  const location = useLocation();
-
-  const handleTabClick = (path) => {
-    setActiveTab(path);
+  const handleMenuItemClick = (menuItem) => {
+    setActiveItem(menuItem);
   };
 
   const handleLogout = () => {
@@ -53,70 +38,77 @@ function Sidebar({ show }) {
   };
 
   return (
-    <aside style={{ display: show ? "block" : "none" }}>
-      <div className="sidebar">
-        <Link
-          to="/"
-          className={location.pathname === "/" ? "active" : ""}
-          onClick={() => handleTabClick("/")}
-        >
-          <span className="material-icons">grid_view</span>
-          <h4>Dashboard</h4>
-        </Link>
-        <Link
-          to="/species"
-          className={location.pathname.includes("/species") ? "active" : ""}
-          onClick={() => handleTabClick("/species")}
-        >
-          <span className="material-icons">flutter_dash</span>
-          <h4>Species</h4>
-        </Link>
-        <Link
-          to="/checklist"
-          className={location.pathname === "/checklist" ? "active" : ""}
-          onClick={() => handleTabClick("/checklist")}
-        >
-          <span className="material-icons">fact_check</span>
-          <h4>Checklists</h4>
-        </Link>
-        <Link
-          to="/entries"
-          className={location.pathname === "/entries" ? "active" : ""}
-          onClick={() => handleTabClick("/entries")}
-        >
-          <span className="material-icons">login</span>
-          <h4>Entries</h4>
-        </Link>
-        <Link to="#">
-          <span className="material-icons">flutter_dash</span>
-          <h4>New Species</h4>
-        </Link>
-        <Link to="#">
-          <span className="material-icons">poll </span>
-          <h4>Graphs</h4>
-        </Link>
-        <Link to="#">
-          <span className="material-icons">groups</span>
-          <h4>Birders</h4>
-        </Link>
-        <Link
-          to="/settings"
-          className={location.pathname === "/settings" ? "active" : ""}
-          onClick={() => handleTabClick("/settings")}
-        >
-          <span className="material-icons">settings</span>
-          <h4>Settings</h4>
-        </Link>
-        <Link to="#" onClick={handleLogout}>
-          <span className="material-icons">logout</span>
-          <h4>Logout</h4>
-        </Link>
-      </div>
-      {/* <button id="close-btn">
-        <span className="material-icons">chevron_left</span>
-      </button> */}
-    </aside>
+    <main>
+      <aside
+        className={`sidebar ${showSidebar ? "show" : ""}`}
+        style={{
+          display: window.innerWidth >= 768 || showSidebar ? "block" : "none",
+        }}
+      >
+        <button id="close-btn" onClick={closeSidebar} className="close-button">
+          <span className="material-icons">close</span>
+        </button>
+        <div className="sidebar">
+          <NavLink
+            exact
+            to="/"
+            className={activeItem === "/" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/")}
+          >
+            <span className="material-icons">grid_view</span>
+            <h4>Dashboard</h4>
+          </NavLink>
+          <NavLink
+            to="/species"
+            className={activeItem === "/species" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/species")}
+          >
+            <span className="material-icons">flutter_dash</span>
+            <h4>Species</h4>
+          </NavLink>
+          <NavLink
+            to="/checklist"
+            className={activeItem === "/checklist" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/checklist")}
+          >
+            <span className="material-icons">fact_check</span>
+            <h4>Checklists</h4>
+          </NavLink>
+          <NavLink
+            to="/entries"
+            className={activeItem === "/entries" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/entries")}
+          >
+            <span className="material-icons">login</span>
+            <h4>Entries</h4>
+          </NavLink>
+          <a href="#">
+            <span className="material-icons">flutter_dash</span>
+            <h4>New Species</h4>
+          </a>
+          <a href="#">
+            <span className="material-icons">poll </span>
+            <h4>Graphs</h4>
+          </a>
+          <a href="#">
+            <span className="material-icons">groups</span>
+            <h4>Birders</h4>
+          </a>
+          <NavLink
+            to="/settings"
+            className={activeItem === "/settings" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/settings")}
+          >
+            <span className="material-icons">settings</span>
+            <h4>Settings</h4>
+          </NavLink>
+          <a href="#" onClick={handleLogout}>
+            <span className="material-icons">logout</span>
+            <h4>Logout</h4>
+          </a>
+        </div>
+      </aside>
+    </main>
   );
 }
-
 export default Sidebar;
