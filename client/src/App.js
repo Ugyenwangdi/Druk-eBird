@@ -25,7 +25,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [googleUser, setGoogleUser] = useState(null);
-  const [showSidebar, setShowSidebar] = useState(true);
+  // const [showSidebar, setShowSidebar] = useState(true);
 
   // console.log("user: ", user.email);
   // console.log("googleUser: ", googleUser.email);
@@ -50,9 +50,49 @@ function App() {
     getGoogleUser();
   }, []);
 
+  // Sidebar and toggle connection
+  const [showSidebar, setShowSidebar] = useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
+
+  const handleCloseSidebar = () => {
+    setShowSidebar(false);
+  };
+  // adding an event listener to the window object to listen for changes in the screen size and update the state accordingly. 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setShowSidebar(true);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  // hidding the sidebar in mobile and tablet screen 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setShowSidebar(true);
+      } else {
+        setShowSidebar(false);
+      }
+    };
+
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    setShowSidebar(mediaQuery.matches);
+
+    mediaQuery.addEventListener('change', handleResize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleResize);
+    };
+  }, []);
 
   // render loading spinner/message while loading is true
   if (loading) {
@@ -72,7 +112,8 @@ function App() {
             <Sidebar
               user={user}
               googleUser={googleUser}
-              show={showSidebar}
+              showSidebar={showSidebar}
+              closeSidebar={handleCloseSidebar}
               onToggleSidebar={handleToggleSidebar}
               style={{ position: "fixed" }}
             />

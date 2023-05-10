@@ -1,8 +1,21 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import "../styles/sidebar.css";
+import { NavLink } from "react-router-dom";
 
-function Sidebar({ user, googleUser, show }) {
+
+function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
   // console.log("user: ", user);
+
+    // handling the clicked menu item
+  const [activeItem, setActiveItem] = useState('/');
+
+  useEffect(() => {
+    setActiveItem(window.location.pathname);
+  }, []);
+
+  const handleMenuItemClick = (menuItem) => {
+    setActiveItem(menuItem);
+  };
 
   const handleLogout = () => {
     try {
@@ -25,51 +38,54 @@ function Sidebar({ user, googleUser, show }) {
     }
   };
 
+
   return (
-    <aside style={{ display: show ? "block" : "none" }}>
-      <div className="sidebar">
-        <a href="/" className="active">
+    <main>
+      <aside className={`sidebar ${showSidebar ? 'show' : ''}`}
+      style={{ display: window.innerWidth >= 768 || showSidebar ? 'block' : 'none' }}>
+        <button id="close-btn" onClick={closeSidebar} className="close-button">
+          <span className="material-icons">close</span>
+        </button>
+        <div className="sidebar">
+          <NavLink exact to="/" className={activeItem === '/' ? 'active' : ''} onClick={() => handleMenuItemClick('/')}>
           <span className="material-icons">grid_view</span>
-          <h4>Dashboard</h4>
-        </a>
-        <a href="/species">
-          <span className="material-icons">flutter_dash</span>
-          <h4>Species</h4>
-        </a>
-        <a href="/checklist">
-          <span className="material-icons">fact_check</span>
-          <h4>Checklists</h4>
-        </a>
-        <a href="/entries">
-          <span className="material-icons">login</span>
-          <h4>Entries</h4>
-        </a>
-        <a href="#">
-          <span className="material-icons">flutter_dash</span>
-          <h4>New Species</h4>
-        </a>
-        <a href="#">
-          <span className="material-icons">poll </span>
-          <h4>Graphs</h4>
-        </a>
-        <a href="#">
-          <span className="material-icons">groups</span>
-          <h4>Birders</h4>
-        </a>
-        <a href="/settings">
-          <span className="material-icons">settings</span>
-          <h4>Settings</h4>
-        </a>
-        <a href="#" onClick={handleLogout}>
-          <span className="material-icons">logout</span>
-          <h4>Logout</h4>
-        </a>
-      </div>
-      {/* <button id="close-btn">
-        <span className="material-icons">chevron_left</span>
-      </button> */}
-    </aside>
+            <h4>Dashboard</h4>
+          </NavLink>
+          <NavLink to="/species" className={activeItem === '/species' ? 'active' : ''} onClick={() => handleMenuItemClick('/species')}>
+            <span className="material-icons">flutter_dash</span>
+            <h4>Species</h4>
+          </NavLink>
+          <NavLink to="/checklist" className={activeItem === '/checklist' ? 'active' : ''} onClick={() => handleMenuItemClick('/checklist')}>
+            <span className="material-icons">fact_check</span>
+            <h4>Checklists</h4>
+          </NavLink>
+          <NavLink to="/entries" className={activeItem === '/entries' ? 'active' : ''} onClick={() => handleMenuItemClick('/entries')}>
+            <span className="material-icons">login</span>
+            <h4>Entries</h4>
+          </NavLink>
+          <a href="#">
+            <span className="material-icons">flutter_dash</span>
+            <h4>New Species</h4>
+          </a>
+          <a href="#">
+            <span className="material-icons">poll </span>
+            <h4>Graphs</h4>
+          </a>
+          <a href="#">
+            <span className="material-icons">groups</span>
+            <h4>Birders</h4>
+          </a>
+          <NavLink to="/settings" className={activeItem === '/settings' ? 'active' : ''} onClick={() => handleMenuItemClick('/settings')}>
+            <span className="material-icons">settings</span>
+            <h4>Settings</h4>
+          </NavLink>
+          <a href="#" onClick={handleLogout}>
+            <span className="material-icons">logout</span>
+            <h4>Logout</h4>
+          </a>
+        </div>
+      </aside>
+    </main>
   );
 }
-
 export default Sidebar;

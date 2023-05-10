@@ -211,13 +211,13 @@ function Species() {
             deleteSpecies={handleDelete}
           />
         </div>
-      </div>
-      <Pagination
+        <Pagination
         page={page}
         limit={obj.limit ? obj.limit : 0}
         total={obj.foundTotal ? obj.foundTotal : 0}
         setPage={(page) => setPage(page)}
       />
+      </div>
     </div>
   );
 }
