@@ -10,6 +10,7 @@ import {
   getUserByID,
   logoutUser,
   getAllUsers,
+  editAdminUser,
   deleteUser,
   secretPage,
   googleAuth,
@@ -43,13 +44,14 @@ router.route("/auth/login/failed").get(failedGoogleLogin);
 router.route("/auth/google/callback").get(googleAuthCallback);
 
 // Register and Login POST routes
-router.route("/auth/register").post(authMiddleware, registerUser);
+router.route("/auth/register-admin").post(authMiddleware, registerUser);
 router.route("/auth/login").post(loginUser);
 router.route("/auth/logout").post(logoutUser);
 
 // User GET routes
 router.route("/users").get(getAllUsers);
 router.route("/users/:id").get(getUserByID);
+router.route("/users/:id").patch(authMiddleware, editAdminUser);
 router.route("/users/:id").delete(authMiddleware, deleteUser);
 
 // Secret route

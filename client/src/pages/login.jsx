@@ -9,8 +9,25 @@ import "../styles/login.css";
 const Login = () => {
   const navigate = useNavigate();
 
+  const token = localStorage.getItem("token");
+
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+
+  const handleGoogleLogin = async () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+      "_self"
+    );
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -24,7 +41,7 @@ const Login = () => {
 
       const res = await axios.post(url, data);
       localStorage.setItem("token", res.data.token); // store the session token from jwt
-      navigate("/");
+      window.location = "/";
     } catch (error) {
       if (
         error.response &&
@@ -40,12 +57,12 @@ const Login = () => {
   //   window.open(`http://localhost:8080/auth/google/callback`, "_self");
   // };
 
-  const googleAuth = () => {
-    window.open(
-      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
-      "_self"
-    );
-  };
+  // const googleAuth = () => {
+  //   window.open(
+  //     `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+  //     "_self"
+  //   );
+  // };
 
   return (
     <div className="login_container">
@@ -64,7 +81,7 @@ const Login = () => {
               />
             </div>
             <p style={{ fontSize: "16px", paddingBottom: "40px" }}>
-              Welcome back! Please enter your details.
+              Welcome back! Log in to your account.
             </p>
             <div
               style={{
@@ -119,7 +136,7 @@ const Login = () => {
             <p className="text">or</p>
           </form>
           <div className="form_container">
-            <button className="google_btn" onClick={googleAuth}>
+            <button className="google_btn" onClick={handleGoogleLogin}>
               <img src={google} alt="google icon" />
               <span>Sign in with Google</span>
             </button>

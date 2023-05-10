@@ -11,6 +11,8 @@ import SpeciesDetails from "./species-details";
 import Checklist from "./checklist";
 import Entries from "./entries";
 import Settings from "./settings";
+import AddAdmin from "./add-admin";
+import EditAdmin from "./edit-admin";
 
 export {
   Signup,
@@ -25,4 +27,6 @@ export {
   Checklist,
   Entries,
   Settings,
+  AddAdmin,
+  EditAdmin,
 };

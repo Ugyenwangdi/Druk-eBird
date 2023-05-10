@@ -22,6 +22,8 @@ import {
   Checklist,
   Entries,
   Settings,
+  AddAdmin,
+  EditAdmin,
 } from "./pages";
 
 function App() {
@@ -71,20 +73,21 @@ function App() {
 
   useEffect(() => {
     validateToken();
-    getGoogleUser();
-  }, [navigate]);
+
+    // getGoogleUser();
+  }, []);
 
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <p>Loading...</p>
-      </div>
-    );
-  }
+  // if (loading) {
+  //   return (
+  //     <div style={{ display: "flex", justifyContent: "center" }}>
+  //       <p>Loading...</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <>
@@ -106,6 +109,8 @@ function App() {
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/add-admin" element={<AddAdmin />} />
+              <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

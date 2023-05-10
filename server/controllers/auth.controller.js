@@ -40,7 +40,7 @@ const successGoogleLogin = async (req, res) => {
   if (req.user) {
     // console.log("id: ", req.user.id);
     // console.log("email: ", req.user.email);
-    // console.log(req.user);
+    console.log(req.user);
 
     const token = jwt.sign(
       {
@@ -84,7 +84,7 @@ const authMiddleware = (req, res, next) => {
   if (!token) {
     return res
       .status(401)
-      .json({ valid: false, error: "Unauthorized! token not provided" });
+      .json({ valid: false, message: "Unauthorized! token not provided" });
   }
 
   try {
@@ -97,13 +97,15 @@ const authMiddleware = (req, res, next) => {
   } catch (err) {
     return res
       .status(401)
-      .json({ valid: false, error: "Unauthorized! Invalid token" });
+      .json({ valid: false, message: "Unauthorized! Invalid token" });
   }
 };
 
 // route to check if user is logged in
 const checkAuthStatus = (req, res) => {
-  res.json({ valid: true, message: "User is logged in" });
+  return res
+    .status(200)
+    .json({ user: req.user, valid: true, message: "User is logged in" });
 };
 
 const baseRoute = (req, res) => {
@@ -151,15 +153,92 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// const registerUser = async (req, res) => {
+//   console.log("user: ", req.user.email);
+//   console.log("user: ", req.user.userType);
+
+//   if (!req.body.email || !req.body.password) {
+//     return res.status(400).json({ error: "Email and password are required" });
+//   }
+
+//   // check password validation
+//   if (
+//     !req.body.password.match(
+//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/
+//     )
+//   ) {
+//     return res.status(400).json({
+//       message:
+//         "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
+//     });
+//   }
+
+//   Admin.register(
+//     {
+//       email: req.body.email, // explicitly set the username field
+//       name: req.body.name,
+//       country: req.body.country,
+//     },
+//     req.body.password,
+//     (err, user) => {
+//       if (err) {
+//         return res.status(400).json({ error: err.message });
+//       }
+//       passport.authenticate("local")(req, res, () => {
+//         return res
+//           .status(200)
+//           .json({ message: "User registered successfully!" });
+//       });
+//     }
+//   );
+// };
+
 const registerUser = async (req, res) => {
+  console.log("user register: ", req.user);
+  // Check if the user is authorized to add new users
+  if (req.user.userType !== "root-user") {
+    console.log("not root user");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
   console.log("user: ", req.user.email);
   console.log("user: ", req.user.userType);
 
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ error: "Email and password are required" });
+  // Check that name does not start with a number or is all numbers
+  const name = req.body.name;
+  if (/^\d/.test(name) || /^\d+$/.test(name)) {
+    return res
+      .status(400)
+      .json({ message: "Name cannot start with a number or be all numbers" });
   }
 
-  // check password validation
+  if (
+    typeof req.body.name !== "string" ||
+    req.body.name.length < 2 ||
+    req.body.name.length > 50
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Name must be a string between 2 and 50 characters" });
+  }
+
+  // Check that email does not contain uppercase
+  const email = req.body.email.toLowerCase();
+  if (req.body.email !== email) {
+    return res
+      .status(400)
+      .json({ message: "Email must not contain uppercase letters" });
+  }
+
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({ message: "Email and password are required" });
+  }
+
+  if (typeof req.body.country !== "string") {
+    return res.status(400).json({ message: "Country must be a string" });
+  }
+
+  // Check password validation
   if (
     !req.body.password.match(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/
@@ -171,10 +250,16 @@ const registerUser = async (req, res) => {
     });
   }
 
+  if (req.body.password !== req.body.confirmPassword) {
+    return res
+      .status(400)
+      .json({ message: "Password and confirm password do not match" });
+  }
+
   Admin.register(
     {
-      email: req.body.email, // explicitly set the username field
-      name: req.body.name,
+      email: email, // explicitly set the username field
+      name: name,
       country: req.body.country,
     },
     req.body.password,
@@ -247,6 +332,69 @@ const getUserByID = async (req, res) => {
   }
 };
 
+const editAdminUser = async (req, res) => {
+  const { id } = req.params;
+
+  // Check if the user is authorized to add new users
+  if (req.user.userType !== "root-user") {
+    console.log("not root user");
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  const name = req.body.name;
+  console.log(name);
+  if (/^\d/.test(name) || /^\d+$/.test(name)) {
+    return res
+      .status(400)
+      .json({ message: "Name cannot start with a number or be all numbers" });
+  }
+
+  if (
+    typeof req.body.name !== "string" ||
+    req.body.name.length < 2 ||
+    req.body.name.length > 50
+  ) {
+    return res
+      .status(400)
+      .json({ message: "Name must be a string between 2 and 50 characters" });
+  }
+
+  // Check that email does not contain uppercase
+  const email = req.body.email.toLowerCase();
+  if (req.body.email !== email) {
+    return res
+      .status(400)
+      .json({ message: "Email must not contain uppercase letters" });
+  }
+
+  if (typeof req.body.country !== "string") {
+    return res.status(400).json({ message: "Country must be a string" });
+  }
+
+  const updatedUser = await Admin.findByIdAndUpdate(
+    id,
+    {
+      name: req.body.name,
+      email: req.body.email,
+      userType: req.body.userType,
+    },
+    { new: true }
+  );
+
+  if (!updatedUser) {
+    return res.status(404).json({
+      error: true,
+      message: "User not found",
+    });
+  }
+
+  res.status(200).json({
+    error: false,
+    message: "User updated successfully",
+    user: updatedUser,
+  });
+};
+
 const deleteUser = async (req, res) => {
   try {
     const user = await Admin.findByIdAndDelete(req.params.id);
@@ -280,6 +428,7 @@ export {
   registerUser,
   loginUser,
   getUserByID,
+  editAdminUser,
   deleteUser,
   secretPage,
 
