@@ -18,7 +18,7 @@ function BirderDetail() {
             </h2>
             <div className="parent-container">
                 <div className="birder-detail-profile">
-                    <img src="VerditerFlycatcher2.jpg" style={{ width: '100%', height: '150px', borderRadius: '10px' }} />
+                    <img src="VerditerFlycatcher2.jpg" style={{ width: '100%', height: '150px', borderRadius: '10px'}}/>
                     <div className="profile-img">
                         <img src={profile} ></img>
                     </div>
@@ -66,7 +66,6 @@ function BirderDetail() {
                             </ul>
                         </article>
                     </div>
-
                 </div>
                 <div className="birder-description">
                     <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
