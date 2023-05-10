@@ -32,7 +32,7 @@ function App() {
 
   const [loading, setLoading] = useState(true);
   const [googleUser, setGoogleUser] = useState(null);
-  const [showSidebar, setShowSidebar] = useState(true);
+
   const [isValidToken, setIsValidtoken] = useState(false);
 
   const validateToken = async () => {
@@ -77,17 +77,20 @@ function App() {
     // getGoogleUser();
   }, []);
 
+  // Sidebar and toggle connection
+  const [showSidebar, setShowSidebar] = useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
 
-  // if (loading) {
-  //   return (
-  //     <div style={{ display: "flex", justifyContent: "center" }}>
-  //       <p>Loading...</p>
-  //     </div>
-  //   );
-  // }
+  // render loading spinner/message while loading is true
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <>
