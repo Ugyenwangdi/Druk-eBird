@@ -1,5 +1,5 @@
 import express from "express";
-import { Admin } from "../mongodb/models/admin.js";
+import { Admin } from "../mongodb/models/adminSchema.js";
 import AdminToken from "../mongodb/models/token.js";
 import crypto from "crypto";
 import sendEmail from "../utils/sendEmail.js";

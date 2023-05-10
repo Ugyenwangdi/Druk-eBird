@@ -20,6 +20,11 @@ function Species() {
   const [filterOrder, setFilterOrder] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
@@ -79,13 +84,13 @@ function Species() {
     { label: "Order", key: "order" },
     { label: "Family Name", key: "familyName" },
     { label: "Genus", key: "genus" },
-    { label: "Species", key: "species"},
-    { label: "Authority", key: "authority"},
-    { label: "Group", key: "group"},
-    { label: "Dzongkha Name", key: "dzongkhaName"},
-    { label: "Lho Name", key: "lhoName"},
-    { label: "Shar Name", key: "sharName"},
-    { label: "Kheng Name", key: "khengName"},
+    { label: "Species", key: "species" },
+    { label: "Authority", key: "authority" },
+    { label: "Group", key: "group" },
+    { label: "Dzongkha Name", key: "dzongkhaName" },
+    { label: "Lho Name", key: "lhoName" },
+    { label: "Shar Name", key: "sharName" },
+    { label: "Kheng Name", key: "khengName" },
     { label: "IUCN Status", key: "iucnStatus" },
     { label: "Cites Appendix", key: "citesAppendix" },
     { label: "Bhutan Schedule", key: "bhutanSchedule" },
@@ -111,7 +116,7 @@ function Species() {
       citesAppendix: species.citesAppendix,
       bhutanSchedule: species.bhutanSchedule,
       residency: species.residency,
-      habitat: species.habitat
+      habitat: species.habitat,
     };
   });
 
@@ -146,13 +151,7 @@ function Species() {
             <span className="material-icons google-font-icon">search</span>
             <Search setSearch={(search) => setSearch(search)} />
           </div>
-          <div className="filter-select-order">
-            {/* <select className="species-filter-dropdown">
-              <option value="">Order</option>
-              <option value="1">Order 1</option>
-              <option value="2">Order 2</option>
-              <option value="3">Order 3</option>
-            </select> */}
+          <div className="filter-select" id="order">
             <Orders
               filterOrder={filterOrder}
               orders={obj.orders ? obj.orders : []}
@@ -162,7 +161,7 @@ function Species() {
               arrow_drop_down
             </span>
           </div>
-          <div className="filter-select">
+          <div className="filter-select" id="family">
             <select className="species-filter-dropdown">
               <option value="">Family</option>
               <option value="1">Family 1</option>
@@ -173,7 +172,7 @@ function Species() {
               arrow_drop_down
             </span>
           </div>
-          <div className="filter-select">
+          <div className="filter-select" id="genus">
             <select className="species-filter-dropdown">
               <option value="">Genus</option>
               <option value="1">Genus 1</option>
@@ -184,7 +183,7 @@ function Species() {
               arrow_drop_down
             </span>
           </div>
-          <div className="filter-select-s">
+          <div className="filter-select" id="iucnstatus">
             <select className="species-filter-dropdown">
               <option value="">IUCN Status</option>
               <option value="1">IUCN Status 1</option>
@@ -195,13 +194,95 @@ function Species() {
               arrow_drop_down
             </span>
           </div>
-          <div className="filter-button">
-            <button className="filter-more-btn">
+          <div className="filter-button" style={{ position: "relative" }}>
+            <button className="filter-more-btn" onClick={handleDropdown}>
               More
               <span className="material-symbols-outlined google-font-icon">
                 page_info
               </span>
             </button>
+
+            {isDropdownOpen && (
+              <div className="dropdown-content show">
+                <div className="search-bar">
+                  <span className="material-icons google-font-icon">
+                    search
+                  </span>
+                  <input type="text" placeholder="Enter scientific name" />
+                </div>
+                <div className="search-bar">
+                  <span className="material-icons google-font-icon">
+                    search
+                  </span>
+                  <input type="text" placeholder="Enter species name" />
+                </div>
+                <div className="filter-select" id="order-dropdown">
+                  <Orders
+                    filterOrder={filterOrder}
+                    orders={obj.orders ? obj.orders : []}
+                    setFilterOrder={(order) => setFilterOrder(order)}
+                  />
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+                <div className="filter-select" id="family-dropdown">
+                  <select className="species-filter-dropdown">
+                    <option value="">Family</option>
+                    <option value="1">Family 1</option>
+                    <option value="2">Family 2</option>
+                    <option value="3">Family 3</option>
+                  </select>
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+                <div className="filter-select" id="genus-dropdown">
+                  <select className="species-filter-dropdown">
+                    <option value="">Genus</option>
+                    <option value="1">Genus 1</option>
+                    <option value="2">Genus 2</option>
+                    <option value="3">Genus 3</option>
+                  </select>
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+                <div className="filter-select" id="group-dropdown">
+                  <select className="species-filter-dropdown">
+                    <option value="">Group</option>
+                    <option value="1">Group 1</option>
+                    <option value="2">Group 2</option>
+                    <option value="3">Group 3</option>
+                  </select>
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+                <div className="filter-select" id="iucnstatus-dropdown">
+                  <select className="species-filter-dropdown">
+                    <option value="">IUCN Status</option>
+                    <option value="1">IUCN Status 1</option>
+                    <option value="2">IUCN Status 2</option>
+                    <option value="3">IUCN Status 3</option>
+                  </select>
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+                <div className="filter-select" id="residency-dropdown">
+                  <select className="species-filter-dropdown">
+                    <option value="">Residency</option>
+                    <option value="1">Residency 1</option>
+                    <option value="2">Residency 2</option>
+                    <option value="3">Residency 3</option>
+                  </select>
+                  <span className="material-icons google-font-icon">
+                    arrow_drop_down
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -212,11 +293,11 @@ function Species() {
           />
         </div>
         <Pagination
-        page={page}
-        limit={obj.limit ? obj.limit : 0}
-        total={obj.foundTotal ? obj.foundTotal : 0}
-        setPage={(page) => setPage(page)}
-      />
+          page={page}
+          limit={obj.limit ? obj.limit : 0}
+          total={obj.foundTotal ? obj.foundTotal : 0}
+          setPage={(page) => setPage(page)}
+        />
       </div>
     </div>
   );

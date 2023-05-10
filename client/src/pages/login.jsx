@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
@@ -6,8 +7,29 @@ import { logo, google } from "../images";
 import "../styles/login.css";
 
 const Login = () => {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("token");
+
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+
+  const handleGoogleLogin = async () => {
+    window.open(
+      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+      "_self"
+    );
+
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      localStorage.setItem("token", data.token);
+      window.location.reload();
+      window.location = "/";
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleChange = ({ currentTarget: input }) => {
     setData({ ...data, [input.name]: input.value });
@@ -17,11 +39,10 @@ const Login = () => {
     e.preventDefault();
     try {
       // const url = "http://localhost:8080/api/v1/users/login";
-      const url = `${process.env.REACT_APP_API_URL}/api/v1/users/login`;
+      const url = `${process.env.REACT_APP_API_URL}/auth/login`;
 
       const res = await axios.post(url, data);
-      // console.log("token: ", res.data.token);
-      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("token", res.data.token); // store the session token from jwt
       window.location = "/";
     } catch (error) {
       if (
@@ -38,12 +59,12 @@ const Login = () => {
   //   window.open(`http://localhost:8080/auth/google/callback`, "_self");
   // };
 
-  const googleAuth = () => {
-    window.open(
-      `${process.env.REACT_APP_API_URL}/auth/google/callback`,
-      "_self"
-    );
-  };
+  // const googleAuth = () => {
+  //   window.open(
+  //     `${process.env.REACT_APP_API_URL}/auth/google/callback`,
+  //     "_self"
+  //   );
+  // };
 
   return (
     <div className="login_container">
@@ -62,7 +83,7 @@ const Login = () => {
               />
             </div>
             <p style={{ fontSize: "16px", paddingBottom: "40px" }}>
-              Welcome back! Please enter your details.
+              Welcome back! Log in to your account.
             </p>
             <div
               style={{
@@ -117,14 +138,14 @@ const Login = () => {
             <p className="text">or</p>
           </form>
           <div className="form_container">
-            <button className="google_btn" onClick={googleAuth}>
+            <button className="google_btn" onClick={handleGoogleLogin}>
               <img src={google} alt="google icon" />
               <span>Sign in with Google</span>
             </button>
 
             <div>
               <Link to="/forgot-password">Forgot Password? </Link>
-              <Link to="/signup">Sign Up</Link>
+              {/* <Link to="/signup">Sign Up</Link> */}
             </div>
           </div>
         </div>

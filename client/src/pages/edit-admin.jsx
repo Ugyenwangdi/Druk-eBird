@@ -1,40 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { logo } from "../images";
 
 import "../styles/signup.css";
 
-const Signup = () => {
+const EditAdmin = () => {
+  const { id } = useParams();
+  const location = useLocation();
+
   const token = localStorage.getItem("token");
 
-  const [data, setData] = useState({
-    name: "",
-    email: "",
-    country: "",
-    password: "",
-  });
+  const [data, setData] = useState(
+    location.state?.adminDetail || {
+      name: "",
+      email: "",
+      country: "",
+      password: "",
+    }
+  );
   const [error, setError] = useState("");
+  const [msg, setMsg] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = ({ currentTarget: input }) => {
+    setMsg("");
+    setError("");
     setData({ ...data, [input.name]: input.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       // const url = "http://localhost:8080/api/v1/users/register";
-      const url = `${process.env.REACT_APP_API_URL}/auth/register`;
+      const url = `${process.env.REACT_APP_API_URL}/users/${id}`;
 
       // add your JWT token to the headers object
       const headers = {
         Authorization: `Bearer ${token}`,
       };
 
-      const { data: res } = await axios.post(url, data, { headers });
-      navigate("/login");
-      console.log(res.message);
+      const res = await axios.patch(url, data, { headers });
+      setMsg(res.data.message);
+      console.log(res);
     } catch (error) {
       if (
         error.response &&
@@ -43,17 +54,32 @@ const Signup = () => {
       ) {
         setError(error.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
+  useEffect(() => {
+    const getAdminDetails = async () => {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/users/${id}`
+      );
+      const data = await response.json();
+      setData(data);
+    };
+
+    getAdminDetails();
+  }, [id]);
+
   return (
     <div className="login_container">
-      <div
-        className="login_form_container"
-        style={{ height: "680px", width: "1050px" }}
-      >
+      <div className="signup_form_container">
         <div className="signup_left" style={{ flex: 1 }}>
-          <form className="form_container" onSubmit={handleSubmit}>
+          <form
+            className="form_container"
+            onSubmit={handleSubmit}
+            style={{ marginBottom: "10px", padding: "0 40px" }}
+          >
             <div style={{ display: "flex", justifyContent: "center" }}>
               <img
                 src={logo}
@@ -61,13 +87,15 @@ const Signup = () => {
                 style={{
                   width: "150px",
                   height: "150px",
-                  marginBottom: "12px",
+                  marginTop: "-12px",
                 }}
               />
             </div>
             <p style={{ fontSize: "16px", paddingBottom: "20px" }}>
-              Welcome to Druk Ebird! Please create your account.
+              Update Admin User
             </p>
+            {error && <div className="error_msg">{error}</div>}
+            {msg && <div className="success_msg">{msg}</div>}
 
             <div
               style={{
@@ -111,7 +139,37 @@ const Signup = () => {
                 className="input"
                 id="email"
                 style={{ color: "#808191" }}
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
               />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
+              }}
+            >
+              <label htmlFor="userType">User Type</label>
+              <select
+                className="input"
+                name="userType"
+                onChange={handleChange}
+                value={data.userType}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingBottom: "10px",
+                  color: "#808191",
+                  fontSize: "16px",
+                }}
+              >
+                <option value="">Select type</option>
+                <option value="user">Basic User</option>
+                <option value="admin-user">Admin User</option>
+                <option value="root-user">Root User</option>
+              </select>
             </div>
             <div
               style={{
@@ -136,7 +194,7 @@ const Signup = () => {
               />
             </div>
 
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -146,7 +204,6 @@ const Signup = () => {
               }}
             >
               <label htmlFor="password">Password</label>
-
               <input
                 type="password"
                 placeholder="Password"
@@ -160,28 +217,36 @@ const Signup = () => {
               />
             </div>
 
-            {error && <div className="error_msg">{error}</div>}
-            <button type="submit" className="signup_green_btn">
-              Sign Up
-            </button>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
+              }}
+            >
+              <label htmlFor="password-confirm">Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                onChange={handleChange}
+                required
+                className="input"
+                id="password-confirm"
+                style={{ color: "#808191" }}
+              />
+            </div> */}
 
-            <div>
-              Already have an account? <Link to="/login"> Sign In</Link>
-            </div>
+            <button type="submit" className="signup_green_btn">
+              {loading ? "Adding Admin ..." : "Add Admin"}
+            </button>
           </form>
         </div>
-
-        <div
-          className="right"
-          style={{
-            backgroundImage: "url('/Verditer.jpg')",
-            backgroundSize: "cover",
-            flex: 1,
-          }}
-        ></div>
       </div>
     </div>
   );
 };
 
-export default Signup;
+export default EditAdmin;
