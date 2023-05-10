@@ -10,6 +10,7 @@ import bodyParser from "body-parser";
 import connectDB from "./mongodb/connect.js";
 import { Admin } from "./mongodb/models/adminSchema.js";
 import authRoute from "./routes/auth.routes.js";
+import passwordResetRoutes from "./routes/passwordReset.js";
 import speciesRouter from "./routes/species.routes.js";
 
 const app = express();
@@ -60,6 +61,7 @@ passport.deserializeUser(function (user, cb) {
 });
 
 app.use("", authRoute);
+app.use("/api/v1/password-reset", passwordResetRoutes);
 app.use("/api/v1/species", speciesRouter);
 
 const startServer = async () => {

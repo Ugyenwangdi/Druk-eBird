@@ -19,10 +19,12 @@ const Login = () => {
       `${process.env.REACT_APP_API_URL}/auth/google/callback`,
       "_self"
     );
+
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
       localStorage.setItem("token", data.token);
+      window.location.reload();
       window.location = "/";
     } catch (err) {
       console.log(err);
@@ -143,7 +145,7 @@ const Login = () => {
 
             <div>
               <Link to="/forgot-password">Forgot Password? </Link>
-              <Link to="/signup">Sign Up</Link>
+              {/* <Link to="/signup">Sign Up</Link> */}
             </div>
           </div>
         </div>

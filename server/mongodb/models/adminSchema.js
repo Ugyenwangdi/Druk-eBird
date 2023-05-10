@@ -15,6 +15,7 @@ const adminSchema = new mongoose.Schema(
     country: { type: String, required: false },
     userType: { type: String, default: "user" },
     googleId: String,
+    profile: String,
   },
   { _id: true, timestamps: true }
 );

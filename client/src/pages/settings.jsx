@@ -187,9 +187,11 @@ function Settings() {
             You can reset or change your password <br></br> by clicking here{" "}
           </p>{" "}
           <br></br>
-          <button type="submit" class="btn">
-            Change
-          </button>
+          <Link to="/forgot-password">
+            <button type="submit" class="btn">
+              Change
+            </button>
+          </Link>
         </div>
         <div class="box-2">
           <br></br>

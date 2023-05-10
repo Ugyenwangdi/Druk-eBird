@@ -123,6 +123,7 @@ body {
   border-radius: 0.2rem;
   font-size: 14px;
   text-align: right;
+  cursor: pointer;
   padding: 0.5rem;
 }
 .text {
