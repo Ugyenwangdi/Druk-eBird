@@ -37,7 +37,7 @@ function Sidebar({ user, googleUser, show }) {
           <span className="material-icons">login</span>
           <h4>Entries</h4>
         </a>
-        <a href="#">
+        <a href="/new-species">
           <span className="material-icons">flutter_dash</span>
           <h4>New Species</h4>
         </a>
@@ -45,7 +45,7 @@ function Sidebar({ user, googleUser, show }) {
           <span className="material-icons">poll </span>
           <h4>Graphs</h4>
         </a>
-        <a href="#">
+        <a href="/Birder">
           <span className="material-icons">groups</span>
           <h4>Birders</h4>
         </a>

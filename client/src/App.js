@@ -15,6 +15,11 @@ import {
   SpeciesDetails,
   Checklist,
   Entries,
+  ChecklistDetail,
+  NewSpecies,
+  NewSpeciesDetail, 
+  Birder,
+  BirderDetail,
 } from "./pages";
 
 // import "./index.css";
@@ -81,6 +86,15 @@ function App() {
               <Route path="/species/:id" element={<SpeciesDetails />} />
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
+              <Route path="/checklist-detail" element={<ChecklistDetail />} />
+              <Route path="/new-species" element={<NewSpecies />} />
+              <Route path="/new-species-detail" element={<NewSpeciesDetail />} />
+              <Route path="/birder" element={<Birder />} />
+              <Route path="/birder-detail" element={<BirderDetail />} />
+
+
+
+
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

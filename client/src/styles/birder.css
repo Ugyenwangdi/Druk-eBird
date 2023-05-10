@@ -1,0 +1,279 @@
+.birders-page-container {
+    display: block;
+    width: 100%;
+    overflow-x: hidden;
+    margin-right: 2rem;
+}
+
+.birder-page-container {
+    width: 100%;
+    border-radius: 0.25rem;
+    border-color: #ffffff;
+    background-color: #ffffff;
+    margin-top: 3rem;
+    margin-right: -5rem;
+    padding: 0.5rem;
+    box-shadow: #050404;
+}
+
+.birder-count {
+    font-size: 14px;
+    color: #777;
+    margin-left: 5px;
+    margin-top: 5rem;
+}
+
+.birder-button-container {
+    position: absolute;
+    top: -100;
+    right: 0;
+    padding-right: 20px;
+}
+
+.birder-export-button {
+    background-color: #136d66;
+    color: #ffffff;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 3rem;
+    margin-right: 1rem;
+}
+
+.birder-filter-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1.5rem 0;
+}
+
+.birder-search-bar {
+    background: var(--color-light);
+    padding: 5px;
+    width: 85%;
+    border-radius: var(--border-radius-2);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--color-gray-light);
+}
+
+/* .input-text{
+    background: var(--color-light);
+
+} */
+.birder-search-bar input {
+    background-color: transparent;
+    color: var(--color-gray-light);
+    width: 100%;
+}
+
+.birder-search-bar input[type="search"] {
+    color: var(--color-dark);
+    background: transparent;
+    width: 100%;
+}
+
+.birder-search-bar input[type="search"]::placeholder {
+    color: var(--color-gray-dark);
+}
+
+.birder-filter-dropdown {
+    padding: 5px;
+    background: var(--color-light);
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    color: var(--color-text-light-gray);
+}
+
+.birder-filter-select {
+    background: var(--color-light);
+    padding: 5px;
+    width: 10%;
+    border-radius: var(--border-radius-2);
+    display: flex;
+    justify-content: center;
+    color: var(--color-text-light-gray);
+    cursor: pointer;
+}
+
+.all-birder {
+    display: block;
+    margin-top: 5rem;
+}
+
+.birder-container {
+    width: 100%;
+    height: 20rem;
+    border: 1px solid rgb(244, 238, 238);
+    border-Radius: 10px;
+    background: #fff;
+    box-Shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-Direction: column;
+    margin-top: -2rem;
+}
+
+
+.birder-profile {
+    width: 250px;
+    height: 200px;
+    margin-left: 2rem;
+    margin-right: 20px;
+    margin-top: 0;
+    border-radius: 15px;
+}
+
+.birder-name {
+    margin-left: 26rem;
+    margin-top: -16rem;
+}
+
+.email-contact {
+    display: flex;
+    width: 20%;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-left: 26rem;
+    margin-top: 4rem;
+
+}
+
+.email-contact ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.email-contact ul li {
+    font-size: 14px;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.email-contact ul li span {
+    margin-right: 0.5rem;
+}
+
+.locatio-date {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: 15rem;
+    margin-top: -6rem;
+}
+
+.locatio-date ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.locatio-date ul li {
+    font-size: 14px;
+    padding-top: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.locatio-date ul li span {
+    margin-right: 0.5rem;
+}
+
+@media(max-width:1024px) {
+    .birder-page-container {
+        display: block;
+        width: 100%;
+    }
+
+    .birder-search-bar {
+        width: 85%;
+    }
+
+    .birder-container {
+        width: 100%;
+        height: 30rem;
+    }
+
+    .birder-profile {
+        width: 25%;
+        height: 300px;
+        margin-left: 2rem;
+        margin-right: 20px;
+        margin-top: 0;
+        border-radius: 15px;
+    }
+
+    .birder-name {
+        margin-left: 30%;
+        margin-top: -24rem;
+    }
+
+    .locatio-date {
+        width: 50%;
+        position: relative;
+        margin-left: 30%;
+        margin-top: 1rem;
+
+    }
+
+    .email-contact {
+        width: 50%;
+        position: relative;
+        margin-left: 30%;
+        margin-top: 6rem;
+
+    }
+}
+
+@media(max-width:768px) {
+    .birder-page-container {
+        display: block;
+        width: 100%;
+    }
+
+    .birder-search-bar {
+        width: 85%;
+    }
+
+    .birder-container {
+        width: 100%;
+        height: 30rem;
+    }
+
+    .birder-name {
+        margin-left: 35%;
+        margin-top: -24rem;
+    }
+
+    .email-contact {
+        display: flex;
+        width: 50%;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: auto;
+        margin-left: 35%;
+        margin-top: 6rem;
+
+    }
+
+
+    .locatio-date {
+        width: 50%;
+        position: relative;
+
+        margin-left: 35%;
+        margin-top: 1rem;
+
+    }
+
+
+
+}

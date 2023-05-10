@@ -1,0 +1,410 @@
+.birder-detail-page-container{
+    border-radius: 15px;
+    margin-top: 20px;
+    padding: 1%;
+    padding-bottom: 10px;
+    width: 100%;
+    padding-bottom: 10%;
+    margin-bottom: 20px;
+    margin-right: 2rem;
+}
+.birder-detail-header{
+    display: flex;
+    justify-content: space-between;
+    line-height: 190%;
+    padding: 0 10px;
+  }
+.birder-detail-profile{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    height: 50rem;
+    border-color: #f7f7f7;
+    background-color: #ffffff;
+    margin-top: 2rem;
+    border-radius: 10px;
+}
+.profile-img{
+    display: block;
+    margin-top: -3rem;
+    margin-left: 3rem;
+    margin-right: 1rem;
+    /* position: relative;
+    left: 2rem;
+    top: -2em;
+    z-index: 1; */
+    }
+.profile-img img{
+    width: 95px;
+    height: 95px;
+    border-radius: 100%;
+}
+
+.name-description{
+    /* position: relative; */
+    display: flex;
+    margin-top: -15%;
+    margin-left: 50%;
+}
+.name-description p{
+    margin-top: 2rem;
+    margin-left: -5rem;
+    font-size: 14px;
+}
+.parent-container {
+    display: flex;
+    flex-direction: row;
+    width: 81rem;
+
+    height: 100%;
+  }
+.birder-detail{
+    flex: 1;
+}
+.birder-detail ul{
+    margin-left: 2rem;
+    margin-top: 2rem;
+}
+.birder-detail ul li{
+    padding-top: 1rem;
+}
+.birder-detail ul li span:first-child {
+    display: inline-block;
+    width: 40%;
+    color: #827f7f; 
+  }
+  
+  .birder-detail ul li span:last-child {
+    display: inline-block;
+  }
+  
+
+.birder-description{
+    position: relative;
+    display: flex;
+    flex: 1;
+    height: 50rem;
+    margin-top: 2rem;
+    margin-left: 4rem;
+    border-color: #f7f7f7;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+  .all-bio {
+    position: absolute;
+    /* top: 3rem;
+    left: 3rem; */
+    width: 100%;
+  }
+  .birder-bio{
+    margin-left: 2rem;
+    margin: 1rem;
+  }
+  hr {
+    height: 1px;
+    background-color: rgb(192, 185, 185);
+    border: none;
+    width: 95%;
+    margin-top: 2rem;
+    margin-left: 1rem;
+  }
+  .bio-text{
+    width: 95%;
+    font-size: 14px;
+    margin-left: 1rem;
+    margin-top: 2rem;
+    color: #000000;
+    line-height: 1.5;
+  }
+  .birder-states{
+    display: flex;
+    position: absolute;
+    top: 20rem;
+    left: 1rem;
+    width: 95%;
+  }
+  .states-checklist{
+    display: flex;
+    flex: 1;
+    max-width: 15rem;
+    height: 13rem;
+    margin-top: 4rem;
+    margin-left: -5rem ;
+    /* border-color: #f7f7f7; */
+    background-color: #f2f1f1;
+    border-radius: 10px;
+
+  }
+  .states-checklist-text{
+    margin-top: 2rem;
+    margin-left: 3rem;
+    font-size: 14px;
+    font-family: "Manrope";
+    
+  }
+  .states-species{
+    display: flex;
+    flex: 1;
+    max-width: 15rem;
+    height: 13rem;
+    margin-top: 4rem;
+    margin-left: 5rem ;
+    border:1px solid #d8d7d7;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+  }
+  .states-species-text{
+    margin-top: 2rem;
+    margin-left: 3rem;
+    font-size: 14px;
+    font-family: "Manrope";
+    
+  }
+  .total-species-observed{
+    display: flex;
+    flex-direction: column;
+    width: 81rem;
+    height: 17rem;
+    margin-top: -9rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+  }
+  .submitted-checklist {
+    font-size: 14px;
+    margin-left: 2rem;
+    display: inline-block;
+
+    margin-top: 2rem;
+    clear: both;
+}
+
+.viewall-button-container {
+    position: absolute;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: 73rem;
+    padding-right: 20px;
+}
+
+.view-all-button {
+    background-color: #136d66;
+    color: #ffffff;
+    border: none;
+    height: 2rem;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 3rem;
+    margin-right: 1rem;
+}
+.submitted-species {
+  /* position: relative; */
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+.first-species{
+  flex: 1;
+  width: 10rem;
+  height: 10rem;
+  margin: 2rem;
+}
+.first-span{
+  display:inline-block; 
+  margin-Left:10px;
+  vertical-Align:top;
+}
+.first-location{
+  margin-top: 1rem;
+}
+.second-species{
+  flex: 1;
+  width: 10rem;
+  height: 10rem;
+  /* margin-left: -10rem; */
+  margin-top: 2rem;
+}
+.second-species{
+  flex: 1;
+  width: 10rem;
+  height: 10rem;
+  margin: 2rem;
+}
+.second-span{
+  display:inline-block; 
+  margin-Left:10px;
+  vertical-Align:top;
+}
+.second-location{
+  margin-top: 1rem;
+}
+@media(max-width:1024px){
+  .birder-detail-page-container{
+    width: 100%;
+  }
+  .parent-container{
+    display: flex;
+    width: 100%;
+  }
+  .total-species-observed{
+    display: flex; 
+    /* margin-left: 20rem;*/
+    width: 100%;
+  }
+  .viewall-button-container {
+    position: absolute;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: 73rem;
+    padding-right: 20px;
+    margin-left: 80%;
+
+}
+  .view-all-button{
+    margin-left: 80%;
+  }
+ 
+}
+@media(max-width:768px){
+  .birder-detail-page-container{
+    width: 100%;
+  }
+  .birder-detail ul {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .birder-description{
+    position: relative;
+    display: flex;
+    flex: 1;
+    height: auto;
+    
+}
+
+  .birder-states{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    /* top: 20rem; */
+    left: 1rem;
+    width: 100%;
+  }
+  .states-checklist{
+    /* display: flex; */
+    max-width: 90%;
+    /* align-items: center; */
+    height: 10rem;
+    margin-top: 1rem;
+    margin-left: 2rem ;
+    background-color: #f2f1f1;
+    border-radius: 10px;
+
+  }
+  .states-species{
+    display: flex;
+    margin-top: 1rem;
+    margin-left: 2rem ;
+    max-width: 90%;
+    height: 10rem;
+  }
+
+  
+  .total-species-observed{
+    width: 100%;
+    height: 29rem;
+    margin-top: -15rem;
+  }
+  .submitted-checklist {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    margin-left: 2rem;
+    display: inline-block;
+    margin-top: 2rem;
+    clear: both;
+    width: 50%;
+}
+  .viewall-button-container {
+    position: relative;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: 71rem;
+    padding-right: 20px;
+    margin-left: 80%;
+}
+.view-all-button{
+  margin-left: 80%;
+}
+  
+  .submitted-species {
+    flex-direction: column;
+    height: 30rem;
+  }
+  
+    .first-species {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      margin: 2rem 0;
+    }
+    .first-species img {
+      width: 100px;
+      height: 100px;
+      margin-right: 1rem;
+    }
+    .first-span {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .first-span h4 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .first-span .first-location {
+      font-size: 0.875rem;
+    }
+    .first-span h5 {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+
+    .second-species {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+      width: 100%;
+      height: auto;
+      margin: 2rem 0;
+    }
+    .second-species img {
+      width: 100px;
+      height: 100px;
+      margin-right: 1rem;
+    }
+    .second-span {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .second-span h4 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .second-span .second-location {
+      font-size: 0.875rem;
+    }
+    .second-span h5 {
+      margin: 0;
+      font-size: 0.875rem;
+    }
+  
+  
+}
