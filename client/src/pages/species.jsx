@@ -8,6 +8,7 @@ import {
   SpeciesListComponent,
   Pagination,
   Orders,
+  Families
 } from "../components";
 import "../styles/species.css";
 
@@ -18,6 +19,7 @@ function Species() {
   const [error, setError] = useState("");
   const [speciesCount, setSpeciesCount] = useState(0);
   const [filterOrder, setFilterOrder] = useState([]);
+  const [filterFamily, setFilterFamily] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -30,12 +32,13 @@ function Species() {
     const fetchSpeciesList = async () => {
       try {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
-        const url = `${
-          process.env.REACT_APP_API_URL
-        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
+        const url = `${process.env.REACT_APP_API_URL
+          }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&search=${search}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
+        // console.log("Species data:", data.species)
+
 
         setSpeciesCount(data.speciesTotal);
         setObj(data);
@@ -45,7 +48,11 @@ function Species() {
       }
     };
     fetchSpeciesList();
-  }, [filterOrder, page, search]);
+  }, [filterOrder, filterFamily, page, search]);
+
+  console.log("obj:", obj)
+  // console.log("Species List:", speciesList)
+
 
   const handleDelete = async (id) => {
     try {
@@ -162,12 +169,16 @@ function Species() {
             </span>
           </div>
           <div className="filter-select" id="family">
-            <select className="species-filter-dropdown">
+
+            <Families filterFamily={filterFamily}
+              families={obj.families ? obj.families : []}
+              setFilterFamily={(family) => setFilterFamily(family)} />
+            {/* <select className="species-filter-dropdown">
               <option value="">Family</option>
               <option value="1">Family 1</option>
               <option value="2">Family 2</option>
               <option value="3">Family 3</option>
-            </select>
+            </select> */}
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
