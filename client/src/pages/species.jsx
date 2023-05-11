@@ -50,7 +50,7 @@ function Species() {
     fetchSpeciesList();
   }, [filterOrder, filterFamily, page, search]);
 
-  console.log("obj:", obj)
+  // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
 
 
