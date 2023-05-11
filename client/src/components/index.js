@@ -6,6 +6,7 @@ import SpeciesListComponent from "./SpeciesListComponent";
 import Pagination from "./Pagination";
 import Orders from "./Orders";
 import Families from "./Families";
+import Genuses from "./Genuses";
 
 
 export {
@@ -16,5 +17,6 @@ export {
   SpeciesListComponent,
   Pagination,
   Orders,
-  Families
+  Families,
+  Genuses,
 };
