@@ -222,7 +222,11 @@ const AddAdmin = () => {
               />
             </div>
 
-            <button type="submit" className="signup_green_btn">
+            <button
+              type="submit"
+              className="signup_green_btn"
+              disabled={loading}
+            >
               {loading ? "Adding Admin ..." : "Add Admin"}
             </button>
           </form>

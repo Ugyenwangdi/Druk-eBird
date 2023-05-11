@@ -154,6 +154,10 @@ function App() {
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route
+                path="/password-reset/:id/:token"
+                element={<PasswordReset />}
+              />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

@@ -195,6 +195,9 @@ const getAllUsers = async (req, res) => {
 
 const registerUser = async (req, res) => {
   console.log("user register: ", req.user);
+
+  try {
+    
   // Check if the user is authorized to add new users
   if (req.user.userType !== "root-user") {
     console.log("not root user");
@@ -265,7 +268,7 @@ const registerUser = async (req, res) => {
     req.body.password,
     (err, user) => {
       if (err) {
-        return res.status(400).json({ error: err.message });
+        return res.status(400).json({ message: err.message });
       }
       passport.authenticate("local")(req, res, () => {
         return res
@@ -274,6 +277,12 @@ const registerUser = async (req, res) => {
       });
     }
   );
+  
+} catch(err) {
+  return res
+  .status(400)
+  .json({ message: err.message });
+}
 };
 
 const loginUser = async (req, res, next) => {

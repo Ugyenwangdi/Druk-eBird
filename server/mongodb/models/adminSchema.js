@@ -8,7 +8,7 @@ const adminSchema = new mongoose.Schema(
       type: String,
       required: [true, "Email field is required"],
       unique: [true, "Email should be unique"],
-      match: /^\S+@\S+\.\S+$/,
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address" ],
     },
     name: { type: String, required: false },
     password: String,
