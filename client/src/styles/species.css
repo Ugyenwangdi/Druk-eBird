@@ -354,7 +354,7 @@ input[type="text"] {
   #family-dropdown,
   #genus-dropdown,
   #iucnstatus-dropdown {
-    display: block;
+    display: flex;
   }
   #family,
   #genus,
@@ -386,7 +386,7 @@ input[type="text"] {
   }
   #genus-dropdown,
   #iucnstatus-dropdown {
-    display: block;
+    display: flex;
   }
   #genus,
   #iucnstatus {
