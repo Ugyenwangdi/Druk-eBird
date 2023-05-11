@@ -7,6 +7,7 @@ Pull the latest changes from the master branch before working on new issues!!!
     $ git pull  
 
 
+## You don't have a copy or project??
 
 Frontend Setup:
 
