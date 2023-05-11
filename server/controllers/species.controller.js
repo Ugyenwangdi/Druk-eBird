@@ -31,6 +31,7 @@ const getAllSpecies = async (req, res) => {
     const search = req.query.search || "";
     let order = req.query.order || "All";
     let family = req.query.family || "All";
+    let genus = req.query.genus || "All"
 
     const orderOptions = [
       "Galliformes",
@@ -61,8 +62,11 @@ const getAllSpecies = async (req, res) => {
     ];
 
     const familyOptions = ['Phasianidae', 'Turnicidae', 'Anatidae', 'Podicipedidae', 'Gaviidae', 'Laridae', 'Ciconiidae', 'Threskiornithidae', 'Ardeidae', 'Procellariidae', 'Scolopacidae', 'Ibidorhynchidae', 'Charadriidae', 'Rallidae', 'Rostratulidae', 'Recurvirostridae', 'Burhinidae', 'Glareolidae', 'Jacanidae', 'Phalacrocoracidae', 'Pelecanidae', 'Alcedinidae', 'Bucerotidae', 'Accipitridae', 'Falconidae', 'Pandionidae', 'Gruidae', 'Picidae', 'Indicatoridae', 'Megalaimidae', 'Upupidae', 'Coraciidae', 'Trogonidae', 'Meropidae', 'Cuculidae', 'Psittaculidae', 'Columbidae', 'Apodidae', 'Hemiprocnidae', 'Hirundinidae', 'Strigidae', 'Tytonidae', 'Caprimulgidae', 'Podargidae', 'Cinclidae', 'Muscicapidae', 'Dicruridae', 'Campephagidae', 'Vangidae', 'Monarchidae', 'Rhipiduridae', 'Stenostiridae', 'Pittidae', 'Eurylaimidae', 'Irenidae', 'Chloropseidae', 'Aegithinidae', 'Corvidae', 'Laniidae', 'Paridae', 'Turdidae', 'Sylviidae', 'Oriolidae', 'Artamidae', 'Sturnidae', 'Sittidae', 'Certhiidae', 'Tichodromidae', 'Troglodytidae', 'Aegithalidae', 'Phylloscopidae', 'Scotocercidae', 'Acrocephalidae', 'Locustellidae', 'Cittiidae', 'Cisticolidae', 'Regulidae', 'Zosteropidae', 'Leiothrichidae', 'Pycnonotidae', 'Pellorneidae', 'Timaliidae', 'Pnoepygidae', 'Elachuridae', 'Vireonidae', 'Dicaeidae', 'Nectariniidae', 'Motacillidae', 'Passeridae', 'Prunellidae', 'Alaudidae', 'Ploceidae', 'Estrildidae', 'Fringillidae', 'Emberizidae', 'Calcariidae', 'nan']
-
-    order === "All"
+    const genusOptions = ['Lerwa', 'Perdix', 'Francolinus', 'Tetraogallus', 'Coturnix', 'Turnix', 'Ithaginis', 'Lophura', 'Tragopan', 'Lophophorus', 'Gallus', 'Pavo', 'Polyplectron', 'Phasianus', 'Arborophila', 'Anser', 'Mareca', 'Aythya', 'Clangula', 'Aix', 'Dendrocygna', 'Asarcornis', 'Tadorna', 'Spatula', 'Anas', 'Sibirionetta', 'Mergus', 'Podiceps', 'Tachybaptus', 'Netta', 'Gavia', 'Sternula', 'Chlidonias', 'Sterna', 'Anastomus', 'Pseudibis', 'Leptoptilos', 'Platalea', 'Ixobrychus', 'Botaurus', 'Bucephala', 'Ardenna', 'Actitis', 'Calidris', 'Tringa', 'Ibidorhyncha', 'Vanellus', 'Charadrius', 'Pluvialis', 'Zapornia', 'Rallina', 'Rostratula', 'Lymnocryptes', 'Gallinago', 'Himantopus', 'Esacus', 'Burhinus', 'Scolopax', 'Glareola', 'Recurvirostra', 'Porphyrio', 'Fulica', 'Gallinula', 'Gallirallus', 'Numenius', 'Amaurornis', 'Metopidius', 'Hydrophasianus', 'Phalaropus', 'Chroicocephalus', 'Ichthyaetus', 'Larus', 'Phalacrocorax', 'Pelecanus', 'Alcedo', 'Halcyon', 'Todiramphus', 'Megaceryle', 'Ceyx', 'Ceryle', 'Pelargopsis', 'Buceros', 'Aceros', 'Anthracoceros', 'Rhyticeros', 'Accipiter', 'Buteo', 'Pernis', 'Butastur', 'Circus', 'Hieraaetus', 'Aquila', 'Circaetus', 'Clanga', 'Nisaetus', 'Lophotriorchis', 'Microhierax', 'Falco', 'Ictinaetus', 'Milvus', 'Elanus', 'Haliastur', 'Aviceda', 'Spilornis', 'Haliaeetus', 'Icthyophaga', 'Pandion', 'Gypaetus', 'Aegypius', 'Neophron', 'Gyps', 'Sarcogyps', 'Grus', 'Anthropoides', 'Ciconia', 'Ardea', 'Egretta', 'Bubulcus', 'Nycticorax', 'Ardeola', 'Gorsachius', 'Butorides', 'Picumnus', 
+      'Sasia', 'Blythipicus', 'Drenddrocopos', 'Dendrocopos', 'Picus', 'Mulleripicus', 'Gecinulus', 'Micropternus', 'Dinopium', 'Indicator', 'Chrysocolaptes ', 'Megalaima', 'Jynx', 'Upupa', 'Eurystomus', 'Coracias', 'Harpactes', 'Nyctyornis', 'Merops', 'Eudynamys', 'Chrysococcyx', 'Cacomantis', 'Hierococcyx', 'Clamator', 'Surniculus', 'Cuculus', 'Hierococcyx ', 'Rhopodytes', 'Centropus', 'Psittacula', 'Loriculus', 'Columba', 'Ducula', 'Treron', 'Treron ', 'Macropygia', 'Chalcophaps', 'Stigmatopelia', 'Spilopelia', 'Streptopelia', 'Cypsiurus', 'Tachymarptis', 'Apus', 'Collocalia', 'Hirundapus', 'Hemiprocne', 'Delichon', 'Ptyonoprogne', 'Riparia', 'Hirundo', 'Cecropis', 'Glaucidium', 'Athene', 'Tyto', 'Aegolius', 'Ninox', 'Otus', 'Bubo', 'Strix', 'Asio', 'Phodilus', 'Ketupa', 'Caprimulgus', 'Eurostopodus', 'Batrachostomus', 'Cinclus', 'Phoenicurus', 'Rhyacornis', 'Chaimarrornis', 'Hodgsonius', 'Phoenicurus ', 'Dicrurus', 'Pericrocotus', 'Hemipus', 'Hypothymis', 'Rhipidura', 'Chelidorhynx', 'Terpsiphone', 'Cyornis', 'Muscicapa', 'Culicicapa', 'Ficedula', 'Muscicapella ', 'Eumyias', 'Anthipes', 'Niltava', 'Pitta', 'Psarisomus', 'Serilophus', 'Irena', 'Chloropsis', 'Aegithina', 'Cissa', 'Pica', 'Urocissa', 'Dendrocitta', 'Pyrrhocorax', 'Corvus', 'Lanius', 'Nucifraga', 'Pseudopodoces', 'Garrulus', 'Heteroxenicus', 'Brachypteryx', 'Myophonus', 'Turdus', 'Turdus ', 'Monticola', 'Zoothera', 'Geokichla', 'Sylvia', 'Oriolus', 'Tephrodornis', 'Artamus', 'Coracina', 'Luscinia', 'Tarsiger', 'Copsychus', 'Cinclidium', 'Myiomela', 'Grandala', 'Saxicola', 'Enicurus', 'Oenanthe', 'Cochoa', 'Gracupica', 'Sturnia', 'Sturnus', 'Pastor', 'Saroglossa', 'Spodiopsar', 'Acridotheres', 'Gracula', 'Ampeliceps', 'Sitta', 'Certhia', 'Tichodroma',
+     'Troglodytes', 'Aegithalos', 'Periparus', 'Cephalopyrus', 'Parus', 'Lophophanes', 'Melanochlora', 'Sylviparus', 'Phylloscopus', 'Seicercus', 'Abroscopus', 'Acrocephalus', 'Tickellia', 'Locustella', 'Bradypterus', 'Cettia', 'Iduna', 'Oligura', 'Leptopoecile', 'Seicercus ', 'Phylloscopus ', 'Megalurus', 'Phragmaticola', 'Orthotomus', 'Phyllergates', 'Regulus', 'Prinia', 'Zosterops', 'Tesia', 'Cisticola', 'Garrulax', 'Garrulax ', 'Liocichla', 'Hemixos', 'Hypsipetes', 'Rubigula', 'Pycnonotus', 'Ixos', 'Alcurus', 'Alophoixus', 'Malacocincla', 'Pellorneum', 'Stachyris', 'Statchyridopsis ', 'Statchyridopsis', 'Stachyridopsis', 'Sphenocichla', 'Turdoides', 'Gampsorhynchus', 'Chrysomma', 'Spelaeornis', 'Napothera', 'Rimator', 'Pnoepyga', 'Elachura', 'Pomatorhinus', 'Xiphirhynchus', 'Pteruthius', 'Myzornis', 'Cutia', 'Actinodura', 'Siva', 'Macronus', 'Leiothrix', 'Malacias', 'Heterophasia', 'Leioptila', 'Cholornis', 'Suthora', 'Conostoma', 'Psittiparus', 'Chleuasicus', 'Lioparus', 'Fulvetta', 'Alcippe', 'Schoeniparus', 'Pseudominla', 'Minla', 'Staphida', 'Yuhina', 'Erpornis', 'Dicaeum', 'Aethopyga', 'Cinnyris', 'Chalcoparia', 'Motacilla', 'Dendronanthus', 'Arachnothera', 'Passer', 'Prunella', 'Mirafra', 'Calandrella', 'Alauda', 'Eremophila', 'Alaudala', 'Anthus', 'Ploceus', 'Lonchura', 'Serinus', 'Spinus', 'Fringilla', 'Leucosticte', 'Carpodacus', 'Pyrrhoplectes', 'Callacanthis', 'Agraphospiza', 'Procarduelis', 'Physlloscopus', 'Loxia', 'Chloris', 'Pyrrhula', 'Erythrura', 'Mycerobas', 'Emberiza', 'Calcarius', 'Ocyceros ', 'Poecile']
+    
+     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
 
@@ -70,13 +74,19 @@ const getAllSpecies = async (req, res) => {
       ? (family = [...familyOptions])
       : (family = req.query.family.split(","));
 
+    genus === "All"
+      ? (genus = [...genusOptions])
+      : (genus = req.query.genus.split(","));
+
     const species = await Species.find({
       englishName: { $regex: search, $options: "i" },
     })
       .where("order")
       .in([...order])
-      .where("familyName") // Add this line
+      .where("familyName")
       .in([...family]) 
+      .where("genus")
+      .in([...genus]) 
       .skip(page * limit)
       .limit(limit);
     // .sort({ _id: -1 });
@@ -84,6 +94,7 @@ const getAllSpecies = async (req, res) => {
     const total = await Species.countDocuments({
       order: { $in: [...order] },
       familyName: { $in: [...family] },
+      genus: { $in: [...genus] },
       englishName: { $regex: search, $options: "i" },
     });
 
@@ -98,6 +109,7 @@ const getAllSpecies = async (req, res) => {
       limit,
       orders: orderOptions,
       families: familyOptions,
+      genuses: genusOptions,
       species,
     };
 

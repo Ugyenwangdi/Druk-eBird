@@ -8,7 +8,8 @@ import {
   SpeciesListComponent,
   Pagination,
   Orders,
-  Families
+  Families,
+  Genuses,
 } from "../components";
 import "../styles/species.css";
 
@@ -20,6 +21,7 @@ function Species() {
   const [speciesCount, setSpeciesCount] = useState(0);
   const [filterOrder, setFilterOrder] = useState([]);
   const [filterFamily, setFilterFamily] = useState([]);
+  const [filterGenus, setFilterGenus] = useState([]);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -33,7 +35,7 @@ function Species() {
       try {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
         const url = `${process.env.REACT_APP_API_URL
-          }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&search=${search}`;
+          }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&search=${search}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
@@ -48,7 +50,7 @@ function Species() {
       }
     };
     fetchSpeciesList();
-  }, [filterOrder, filterFamily, page, search]);
+  }, [filterOrder, filterFamily, filterGenus, page, search]);
 
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
@@ -184,12 +186,9 @@ function Species() {
             </span>
           </div>
           <div className="filter-select" id="genus">
-            <select className="species-filter-dropdown">
-              <option value="">Genus</option>
-              <option value="1">Genus 1</option>
-              <option value="2">Genus 2</option>
-              <option value="3">Genus 3</option>
-            </select>
+            <Genuses filterGenus={filterGenus}
+              genuses={obj.genuses ? obj.genuses : []}
+              setFilterGenus={(genus) => setFilterGenus(genus)} /> 
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
