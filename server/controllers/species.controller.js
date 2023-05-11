@@ -30,6 +30,7 @@ const getAllSpecies = async (req, res) => {
     const limit = parseInt(req.query.limit) || 6;
     const search = req.query.search || "";
     let order = req.query.order || "All";
+    let family = req.query.family || "All";
 
     const orderOptions = [
       "Galliformes",
@@ -59,21 +60,30 @@ const getAllSpecies = async (req, res) => {
       "",
     ];
 
+    const familyOptions = ['Phasianidae', 'Turnicidae', 'Anatidae', 'Podicipedidae', 'Gaviidae', 'Laridae', 'Ciconiidae', 'Threskiornithidae', 'Ardeidae', 'Procellariidae', 'Scolopacidae', 'Ibidorhynchidae', 'Charadriidae', 'Rallidae', 'Rostratulidae', 'Recurvirostridae', 'Burhinidae', 'Glareolidae', 'Jacanidae', 'Phalacrocoracidae', 'Pelecanidae', 'Alcedinidae', 'Bucerotidae', 'Accipitridae', 'Falconidae', 'Pandionidae', 'Gruidae', 'Picidae', 'Indicatoridae', 'Megalaimidae', 'Upupidae', 'Coraciidae', 'Trogonidae', 'Meropidae', 'Cuculidae', 'Psittaculidae', 'Columbidae', 'Apodidae', 'Hemiprocnidae', 'Hirundinidae', 'Strigidae', 'Tytonidae', 'Caprimulgidae', 'Podargidae', 'Cinclidae', 'Muscicapidae', 'Dicruridae', 'Campephagidae', 'Vangidae', 'Monarchidae', 'Rhipiduridae', 'Stenostiridae', 'Pittidae', 'Eurylaimidae', 'Irenidae', 'Chloropseidae', 'Aegithinidae', 'Corvidae', 'Laniidae', 'Paridae', 'Turdidae', 'Sylviidae', 'Oriolidae', 'Artamidae', 'Sturnidae', 'Sittidae', 'Certhiidae', 'Tichodromidae', 'Troglodytidae', 'Aegithalidae', 'Phylloscopidae', 'Scotocercidae', 'Acrocephalidae', 'Locustellidae', 'Cittiidae', 'Cisticolidae', 'Regulidae', 'Zosteropidae', 'Leiothrichidae', 'Pycnonotidae', 'Pellorneidae', 'Timaliidae', 'Pnoepygidae', 'Elachuridae', 'Vireonidae', 'Dicaeidae', 'Nectariniidae', 'Motacillidae', 'Passeridae', 'Prunellidae', 'Alaudidae', 'Ploceidae', 'Estrildidae', 'Fringillidae', 'Emberizidae', 'Calcariidae', 'nan']
+
     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
+
+    family === "All"
+      ? (family = [...familyOptions])
+      : (family = req.query.family.split(","));
 
     const species = await Species.find({
       englishName: { $regex: search, $options: "i" },
     })
       .where("order")
       .in([...order])
+      .where("familyName") // Add this line
+      .in([...family]) 
       .skip(page * limit)
       .limit(limit);
     // .sort({ _id: -1 });
 
     const total = await Species.countDocuments({
       order: { $in: [...order] },
+      familyName: { $in: [...family] },
       englishName: { $regex: search, $options: "i" },
     });
 
@@ -87,6 +97,7 @@ const getAllSpecies = async (req, res) => {
       page: page + 1,
       limit,
       orders: orderOptions,
+      families: familyOptions,
       species,
     };
 
