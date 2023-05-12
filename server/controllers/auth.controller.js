@@ -5,7 +5,7 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
 
-import { Admin } from "../mongodb/models/adminSchema.js";
+import { Admin } from "../mongodb/models/admin.js";
 
 // Google OAuth Strategy
 passport.use(
@@ -197,92 +197,90 @@ const registerUser = async (req, res) => {
   console.log("user register: ", req.user);
 
   try {
-    
-  // Check if the user is authorized to add new users
-  if (req.user.userType !== "root-user") {
-    console.log("not root user");
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+    // Check if the user is authorized to add new users
+    if (req.user.userType !== "root-user") {
+      console.log("not root user");
+      return res.status(401).json({ message: "Unauthorized" });
+    }
 
-  console.log("user: ", req.user.email);
-  console.log("user: ", req.user.userType);
+    console.log("user: ", req.user.email);
+    console.log("user: ", req.user.userType);
 
-  // Check that name does not start with a number or is all numbers
-  const name = req.body.name;
-  if (/^\d/.test(name) || /^\d+$/.test(name)) {
-    return res
-      .status(400)
-      .json({ message: "Name cannot start with a number or be all numbers" });
-  }
+    // Check that name does not start with a number or is all numbers
+    const name = req.body.name;
+    if (/^\d/.test(name) || /^\d+$/.test(name)) {
+      return res
+        .status(400)
+        .json({ message: "Name cannot start with a number or be all numbers" });
+    }
 
-  if (
-    typeof req.body.name !== "string" ||
-    req.body.name.length < 2 ||
-    req.body.name.length > 50
-  ) {
-    return res
-      .status(400)
-      .json({ message: "Name must be a string between 2 and 50 characters" });
-  }
+    if (
+      typeof req.body.name !== "string" ||
+      req.body.name.length < 2 ||
+      req.body.name.length > 50
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Name must be a string between 2 and 50 characters" });
+    }
 
-  // Check that email does not contain uppercase
-  const email = req.body.email.toLowerCase();
-  if (req.body.email !== email) {
-    return res
-      .status(400)
-      .json({ message: "Email must not contain uppercase letters" });
-  }
+    // Check that email does not contain uppercase
+    const email = req.body.email.toLowerCase();
+    if (req.body.email !== email) {
+      return res
+        .status(400)
+        .json({ message: "Email must not contain uppercase letters" });
+    }
 
-  if (!req.body.email || !req.body.password) {
-    return res.status(400).json({ message: "Email and password are required" });
-  }
+    if (!req.body.email || !req.body.password) {
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
+    }
 
-  if (typeof req.body.country !== "string") {
-    return res.status(400).json({ message: "Country must be a string" });
-  }
+    if (typeof req.body.country !== "string") {
+      return res.status(400).json({ message: "Country must be a string" });
+    }
 
-  // Check password validation
-  if (
-    !req.body.password.match(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/
-    )
-  ) {
-    return res.status(400).json({
-      message:
-        "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
-    });
-  }
-
-  if (req.body.password !== req.body.confirmPassword) {
-    return res
-      .status(400)
-      .json({ message: "Password and confirm password do not match" });
-  }
-
-  Admin.register(
-    {
-      email: email, // explicitly set the username field
-      name: name,
-      country: req.body.country,
-    },
-    req.body.password,
-    (err, user) => {
-      if (err) {
-        return res.status(400).json({ message: err.message });
-      }
-      passport.authenticate("local")(req, res, () => {
-        return res
-          .status(200)
-          .json({ message: "User registered successfully!" });
+    // Check password validation
+    if (
+      !req.body.password.match(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/
+      )
+    ) {
+      return res.status(400).json({
+        message:
+          "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
       });
     }
-  );
-  
-} catch(err) {
-  return res
-  .status(400)
-  .json({ message: err.message });
-}
+
+    if (req.body.password !== req.body.confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: "Password and confirm password do not match" });
+    }
+
+    Admin.register(
+      {
+        email: email, // explicitly set the username field
+        name: name,
+        country: req.body.country,
+      },
+      req.body.password,
+      (err, user) => {
+        if (err) {
+          return res.status(400).json({ message: err.message });
+        }
+        passport.authenticate("local")(req, res, () => {
+          return res
+            .status(200)
+            .json({ message: "User registered successfully!" });
+        });
+      }
+    );
+  } catch (err) {
+    return res.status(400).json({ message: err.message });
+  }
 };
 
 const loginUser = async (req, res, next) => {
