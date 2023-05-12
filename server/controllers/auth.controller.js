@@ -159,46 +159,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// const registerUser = async (req, res) => {
-//   console.log("user: ", req.user.email);
-//   console.log("user: ", req.user.userType);
-
-//   if (!req.body.email || !req.body.password) {
-//     return res.status(400).json({ error: "Email and password are required" });
-//   }
-
-//   // check password validation
-//   if (
-//     !req.body.password.match(
-//       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/
-//     )
-//   ) {
-//     return res.status(400).json({
-//       message:
-//         "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
-//     });
-//   }
-
-//   Admin.register(
-//     {
-//       email: req.body.email, // explicitly set the username field
-//       name: req.body.name,
-//       country: req.body.country,
-//     },
-//     req.body.password,
-//     (err, user) => {
-//       if (err) {
-//         return res.status(400).json({ error: err.message });
-//       }
-//       passport.authenticate("local")(req, res, () => {
-//         return res
-//           .status(200)
-//           .json({ message: "User registered successfully!" });
-//       });
-//     }
-//   );
-// };
-
 const registerUser = async (req, res) => {
   console.log("user register: ", req.user);
 
@@ -244,10 +204,6 @@ const registerUser = async (req, res) => {
         .json({ message: "Email and password are required" });
     }
 
-    if (typeof req.body.country !== "string") {
-      return res.status(400).json({ message: "Country must be a string" });
-    }
-
     // Check password validation
     if (
       !req.body.password.match(
@@ -270,7 +226,6 @@ const registerUser = async (req, res) => {
       {
         email: email, // explicitly set the username field
         name: name,
-        country: req.body.country,
       },
       req.body.password,
       (err, user) => {
@@ -380,10 +335,6 @@ const editAdminUser = async (req, res) => {
       .json({ message: "Email must not contain uppercase letters" });
   }
 
-  if (typeof req.body.country !== "string") {
-    return res.status(400).json({ message: "Country must be a string" });
-  }
-
   const updatedUser = await Admin.findByIdAndUpdate(
     id,
     {
@@ -401,7 +352,29 @@ const editAdminUser = async (req, res) => {
     });
   }
 
-  res.status(200).json({
+  if (req.body.password) {
+    const user = await Admin.findOne({ _id: id });
+    // Step 3: Update user's password in the database
+    user.setPassword(req.body.password, async (err) => {
+      try {
+        await user.save();
+        await sendEmail(
+          user.email,
+          "Your password has been changed",
+          `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+        );
+        console.error("Password reset successful!");
+        return res.status(200).send({ message: "Password reset successful!" }); // Added return statement here
+      } catch (err) {
+        console.error(err);
+        return res.status(500).send("Server error");
+      }
+    });
+    return; // Added return statement here
+  }
+
+  return res.status(200).json({
+    // Moved the return statement inside this block
     error: false,
     message: "User updated successfully",
     user: updatedUser,
