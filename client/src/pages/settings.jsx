@@ -182,12 +182,12 @@ function Settings() {
       <div class="parent">
         <div class="box-1">
           <br></br>
-          <p style={{ fontSize: "16px" }}>Password</p> <br></br>
+          <p style={{ fontSize: "16px" }}>Update Password</p> <br></br>
           <p style={{ fontSize: "15px" }}>
-            You can reset or change your password <br></br> by clicking here{" "}
+            You can update your password by clicking here <br></br>
           </p>{" "}
           <br></br>
-          <Link to="/forgot-password">
+          <Link to="/password-update">
             <button type="submit" class="btn">
               Change
             </button>
