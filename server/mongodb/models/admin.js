@@ -12,7 +12,6 @@ const adminSchema = new mongoose.Schema(
     },
     name: { type: String, required: false },
     password: String,
-    country: { type: String, required: false },
     userType: { type: String, default: "user" },
     googleId: String,
     profile: String,

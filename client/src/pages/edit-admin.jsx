@@ -15,8 +15,8 @@ const EditAdmin = () => {
     location.state?.adminDetail || {
       name: "",
       email: "",
-      country: "",
       password: "",
+      confirmPassword: "",
     }
   );
   const [error, setError] = useState("");
@@ -171,30 +171,8 @@ const EditAdmin = () => {
                 <option value="root-user">Root User</option>
               </select>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                paddingBottom: "10px",
-                color: "#808191",
-                fontSize: "16px",
-              }}
-            >
-              <label htmlFor="country">Country</label>
-              <input
-                type="text"
-                placeholder="Country"
-                name="country"
-                onChange={handleChange}
-                value={data.country}
-                required
-                className="input"
-                id="country"
-                style={{ color: "#808191" }}
-              />
-            </div>
 
-            {/* <div
+            <div
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -217,7 +195,7 @@ const EditAdmin = () => {
               />
             </div>
 
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -240,7 +218,7 @@ const EditAdmin = () => {
             </div> */}
 
             <button type="submit" className="signup_green_btn">
-              {loading ? "Adding Admin ..." : "Add Admin"}
+              {loading ? "Updating User ..." : "Update Admin"}
             </button>
           </form>
         </div>

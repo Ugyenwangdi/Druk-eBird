@@ -3,7 +3,6 @@ import express from "express";
 import {
   sendPasswordResetLink,
   verifyPasswordResetLink,
-  setNewPassword,
   resetPassword,
 } from "../controllers/password-reset.controller.js";
 
