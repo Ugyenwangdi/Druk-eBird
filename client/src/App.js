@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
-import {
-  useNavigate,
-  BrowserRouter,
-  Route,
-  Routes,
-  Navigate,
-} from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import axios from "axios";
 
 import { Sidebar, Topbar } from "./components";
@@ -24,18 +18,18 @@ import {
   Settings,
   AddAdmin,
   EditAdmin,
+  UpdatePassword,
 } from "./pages";
 
 function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
-  const [loading, setLoading] = useState(true);
-  const [googleUser, setGoogleUser] = useState(null);
+  // const [loading, setLoading] = useState(true);
 
   const [isValidToken, setIsValidtoken] = useState(false);
 
-  const validateToken = async () => {
+  const validateToken = useCallback(async () => {
     try {
       const res = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
@@ -57,25 +51,13 @@ function App() {
       localStorage.removeItem("token");
       setIsValidtoken(false);
     }
-  };
-
-  const getGoogleUser = async () => {
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
-      const { data } = await axios.get(url, { withCredentials: true });
-      localStorage.setItem("token", data.token);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [token]);
 
   useEffect(() => {
     validateToken();
 
     // getGoogleUser();
-  }, []);
+  }, [validateToken]);
 
   // Sidebar and toggle connection
   const [showSidebar, setShowSidebar] = useState(false);
@@ -153,7 +135,7 @@ function App() {
               <Route path="/settings" element={<Settings />} />
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/password-update" element={<UpdatePassword />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

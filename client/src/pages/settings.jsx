@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -44,7 +44,7 @@ function Settings() {
     }
   };
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
@@ -62,7 +62,7 @@ function Settings() {
       // Handle error
       console.error(error);
     }
-  };
+  }, [token, currentUser]);
 
   const deleteUser = async (id) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
@@ -84,7 +84,7 @@ function Settings() {
   useEffect(() => {
     fetchCurrentUser();
     fetchData();
-  }, []);
+  }, [fetchCurrentUser]);
 
   const handleChange = ({ currentTarget: input }) => {
     setMsg("");
@@ -154,7 +154,7 @@ function Settings() {
             />
           </div>
           <div class="profile-pic">
-            <img src={previewImage} id="photo"></img>
+            <img src={previewImage} id="photo" alt="profile"></img>
             <input
               type="file"
               id="file"
@@ -169,8 +169,8 @@ function Settings() {
           {msg && <div className="success_msg">{msg}</div>}
 
           <div class="submit">
-            <button type="submit" class="form-button">
-              Save Changes
+            <button type="submit" class="form-button" disabled={loading}>
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
@@ -182,12 +182,12 @@ function Settings() {
       <div class="parent">
         <div class="box-1">
           <br></br>
-          <p style={{ fontSize: "16px" }}>Password</p> <br></br>
+          <p style={{ fontSize: "16px" }}>Update Password</p> <br></br>
           <p style={{ fontSize: "15px" }}>
-            You can reset or change your password <br></br> by clicking here{" "}
+            You can update your password by clicking here <br></br>
           </p>{" "}
           <br></br>
-          <Link to="/forgot-password">
+          <Link to="/password-update">
             <button type="submit" class="btn">
               Change
             </button>

@@ -15,15 +15,19 @@ const Signup = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = ({ currentTarget: input }) => {
+    setError("");
     setData({ ...data, [input.name]: input.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       // const url = "http://localhost:8080/api/v1/users/register";
       const url = `${process.env.REACT_APP_API_URL}/auth/register`;
 
@@ -43,6 +47,8 @@ const Signup = () => {
       ) {
         setError(error.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -161,8 +167,12 @@ const Signup = () => {
             </div>
 
             {error && <div className="error_msg">{error}</div>}
-            <button type="submit" className="signup_green_btn">
-              Sign Up
+            <button
+              type="submit"
+              className="signup_green_btn"
+              disabled={loading}
+            >
+              {loading ? "Signing Up..." : "Sign Up"}
             </button>
 
             <div>
