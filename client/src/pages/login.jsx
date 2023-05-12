@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { Link } from "react-router-dom";
@@ -7,12 +6,9 @@ import { logo, google } from "../images";
 import "../styles/login.css";
 
 const Login = () => {
-  const navigate = useNavigate();
-
-  const token = localStorage.getItem("token");
-
   const [data, setData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleGoogleLogin = async () => {
     window.open(
@@ -32,12 +28,14 @@ const Login = () => {
   };
 
   const handleChange = ({ currentTarget: input }) => {
+    setError("");
     setData({ ...data, [input.name]: input.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       // const url = "http://localhost:8080/api/v1/users/login";
       const url = `${process.env.REACT_APP_API_URL}/auth/login`;
 
@@ -52,6 +50,8 @@ const Login = () => {
       ) {
         setError(error.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,8 +131,8 @@ const Login = () => {
             </div>
 
             {error && <div className="error_msg">{error}</div>}
-            <button type="submit" className="green_btn">
-              Sign In
+            <button type="submit" className="green_btn" disabled={loading}>
+              {loading ? "Signing in..." : "Sign In"}
             </button>
 
             <p className="text">or</p>

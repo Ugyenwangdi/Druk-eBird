@@ -1,37 +1,28 @@
 import mongoose from "mongoose";
-import jwt from "jsonwebtoken";
-import Joi from "joi";
-import passwordComplexity from "joi-password-complexity";
+import passportLocalMongoose from "passport-local-mongoose";
+import findOrCreate from "mongoose-findorcreate";
 
 const adminSchema = new mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    country: { type: String, required: true },
-    password: { type: String, required: true },
+    email: {
+      type: String,
+      required: [true, "Email field is required"],
+      unique: [true, "Email should be unique"],
+      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email address"],
+    },
+    name: { type: String, required: false },
+    password: String,
+    country: { type: String, required: false },
     userType: { type: String, default: "user" },
+    googleId: String,
+    profile: String,
   },
   { _id: true, timestamps: true }
 );
 
-adminSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this._id }, process.env.JWTPRIVATEKEY, {
-    expiresIn: "7d",
-  });
-  return token;
-};
+adminSchema.plugin(passportLocalMongoose, { usernameField: "email" });
+adminSchema.plugin(findOrCreate);
 
-const Admin = mongoose.model("Admin", adminSchema);
+const Admin = new mongoose.model("Admin", adminSchema);
 
-const validateUser = (data) => {
-  const schema = Joi.object({
-    name: Joi.string().required().label("Name"),
-    email: Joi.string().email().required().label("Email"),
-    country: Joi.string().required().label("Last Name"),
-    password: passwordComplexity().required().label("Password"),
-    userType: Joi.string(),
-  });
-  return schema.validate(data);
-};
-
-export { Admin, validateUser };
+export { Admin };

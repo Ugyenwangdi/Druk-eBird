@@ -38,7 +38,7 @@ const PasswordReset = () => {
       });
       setMsg(data.message);
       setError("");
-      window.location = "/login";
+      // window.location = "/login";
     } catch (error) {
       if (
         error.response &&

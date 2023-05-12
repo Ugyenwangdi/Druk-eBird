@@ -8,7 +8,7 @@ import session from "express-session";
 import bodyParser from "body-parser";
 
 import connectDB from "./mongodb/connect.js";
-import { Admin } from "./mongodb/models/adminSchema.js";
+import { Admin } from "./mongodb/models/admin.js";
 import authRoute from "./routes/auth.routes.js";
 import passwordResetRoutes from "./routes/reset-password.routes.js";
 import speciesRouter from "./routes/species.routes.js";

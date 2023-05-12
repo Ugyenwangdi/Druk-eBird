@@ -6,7 +6,7 @@ import passport from "passport";
 import crypto from "crypto";
 
 import AdminToken from "../mongodb/models/token.js";
-import { Admin } from "../mongodb/models/adminSchema.js";
+import { Admin } from "../mongodb/models/admin.js";
 import sendEmail from "../utils/sendEmail.js";
 
 function isValidEmail(email) {
