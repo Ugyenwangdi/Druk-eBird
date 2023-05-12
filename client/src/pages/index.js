@@ -13,6 +13,7 @@ import Entries from "./entries";
 import Settings from "./settings";
 import AddAdmin from "./add-admin";
 import EditAdmin from "./edit-admin";
+import UpdatePassword from "./update-password";
 
 export {
   Signup,
@@ -29,4 +30,5 @@ export {
   Settings,
   AddAdmin,
   EditAdmin,
+  UpdatePassword,
 };
