@@ -24,6 +24,7 @@ import {
   Settings,
   AddAdmin,
   EditAdmin,
+  UpdatePassword,
 } from "./pages";
 
 function App() {
@@ -153,11 +154,7 @@ function App() {
               <Route path="/settings" element={<Settings />} />
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route
-                path="/password-reset/:id/:token"
-                element={<PasswordReset />}
-              />
+              <Route path="/password-update" element={<UpdatePassword />} />
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

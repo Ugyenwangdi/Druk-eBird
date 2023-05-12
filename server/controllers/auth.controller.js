@@ -6,6 +6,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
 
 import { Admin } from "../mongodb/models/admin.js";
+import sendEmail from "../utils/sendEmail.js";
 
 // Google OAuth Strategy
 passport.use(
@@ -107,6 +108,11 @@ const checkAuthStatus = (req, res) => {
     .status(200)
     .json({ user: req.user, valid: true, message: "User is logged in" });
 };
+
+function isValidPassword(password) {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,26}$/;
+  return regex.test(password);
+}
 
 const baseRoute = (req, res) => {
   console.log("user: ", req.user);
@@ -407,6 +413,13 @@ const updateProfile = async (req, res) => {
   console.log(req.body);
   const { name, email, photo } = req.body;
 
+  // Check logged in user and the user to be updated are same
+  if (userId !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "You are not authorized to update this password!" });
+  }
+
   try {
     let updatedUser = await Admin.findById(userId);
     // console.log(updateSpecies);
@@ -436,6 +449,47 @@ const updateProfile = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Update password
+const updatePassword = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    // Check logged in user and the user to be updated are same
+    if (userId !== req.user.id) {
+      return res
+        .status(403)
+        .json({ message: "You are not authorized to update this password!" });
+    }
+
+    if (!req.body.oldPassword || !req.body.newPassword) {
+      return res
+        .status(400)
+        .json({ message: "Old Password and New Password are required" });
+    }
+
+    if (!isValidPassword(req.body.newPassword)) {
+      return res.status(400).send({
+        message:
+          "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
+      });
+    }
+
+    const user = await Admin.findOne({ _id: userId });
+    if (!user) return res.status(400).send({ message: "User not found!" });
+
+    // Change the password
+    await user.changePassword(req.body.oldPassword, req.body.newPassword);
+    await sendEmail(
+      user.email,
+      "Your password has been changed",
+      `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
+    );
+
+    return res.status(200).send({ message: "Password reset successful!" });
+  } catch (error) {
+    return res.status(500).send({ message: "Internal Server Error" });
   }
 };
 
@@ -473,6 +527,7 @@ export {
   loginUser,
   getUserByID,
   editAdminUser,
+  updatePassword,
   deleteUser,
   secretPage,
 

@@ -5,8 +5,7 @@ import "../styles/passwordreset.css";
 
 const PasswordReset = () => {
   const [validUrl, setValidUrl] = useState(false);
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
+  const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -33,12 +32,11 @@ const PasswordReset = () => {
     try {
       setIsLoading(true);
       const { data } = await axios.post(url, {
-        oldPassword: oldPassword,
-        newPassword: newPassword,
+        password: password,
       });
       setMsg(data.message);
       setError("");
-      // window.location = "/login";
+      window.location = "/login";
     } catch (error) {
       if (
         error.response &&
@@ -55,35 +53,20 @@ const PasswordReset = () => {
 
   return (
     <Fragment>
-      {isLoading ? ( // Display loading spinner while loading
-        <div className="loading">Loading...</div>
-      ) : validUrl ? (
+      {validUrl ? (
         <div className="password_reset_container">
           <form className="form_contain" onSubmit={handleSubmit}>
             <h1>Add New Password</h1>
             <input
               type="password"
-              placeholder="Old Password"
-              name="oldPassword"
+              placeholder="Password"
+              name="password"
               onChange={(e) => {
                 setMsg("");
                 setError("");
-                setOldPassword(e.target.value);
+                setPassword(e.target.value);
               }}
-              value={oldPassword}
-              required
-              className="input"
-            />
-            <input
-              type="password"
-              placeholder="New Password"
-              name="newPassword"
-              onChange={(e) => {
-                setMsg("");
-                setError("");
-                setNewPassword(e.target.value);
-              }}
-              value={newPassword}
+              value={password}
               required
               className="input"
             />

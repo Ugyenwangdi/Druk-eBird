@@ -16,6 +16,7 @@ const adminSchema = new mongoose.Schema(
     userType: { type: String, default: "user" },
     googleId: String,
     profile: String,
+    isDeactivated: { type: Boolean, default: false },
   },
   { _id: true, timestamps: true }
 );

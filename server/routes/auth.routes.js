@@ -11,6 +11,7 @@ import {
   logoutUser,
   getAllUsers,
   editAdminUser,
+  updatePassword,
   deleteUser,
   secretPage,
   googleAuth,
@@ -21,19 +22,6 @@ import {
 
 const router = express.Router();
 
-// const ensureAuthenticated = (req, res, next) => {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   } else {
-//     return res.status(401).json({ error: "User not logged in!" });
-//   }
-// };
-
-// // route to check if user is logged in
-// router.get("/auth/checkLoggedIn", authMiddleware, (req, res) => {
-//   res.json({ message: "User is logged in" });
-// });
-
 router.route("").get(authMiddleware, baseRoute);
 router.route("/auth/checkLoggedIn").get(authMiddleware, checkAuthStatus);
 
@@ -43,16 +31,17 @@ router.route("/auth/login/success").get(successGoogleLogin);
 router.route("/auth/login/failed").get(failedGoogleLogin);
 router.route("/auth/google/callback").get(googleAuthCallback);
 
-// Register and Login POST routes
+// User Auth routes
 router.route("/auth/register-admin").post(authMiddleware, registerUser);
 router.route("/auth/login").post(loginUser);
 router.route("/auth/logout").post(logoutUser);
 
-// User GET routes
+// User routes
 router.route("/users").get(getAllUsers);
 router.route("/users/:id").get(getUserByID);
 router.route("/users/:id").patch(authMiddleware, editAdminUser);
 router.route("/users/:id").delete(authMiddleware, deleteUser);
+router.route("/users/:id/update-password").post(authMiddleware, updatePassword);
 
 // Secret route
 router.route("/secrets").get(authMiddleware, secretPage);
