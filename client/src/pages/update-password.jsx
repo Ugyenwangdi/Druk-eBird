@@ -1,5 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, Fragment, useCallback } from "react";
 import axios from "axios";
 import "../styles/passwordreset.css";
 
@@ -13,7 +12,7 @@ const UpdatePassword = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
@@ -31,7 +30,7 @@ const UpdatePassword = () => {
       // Handle error
       console.error(error);
     }
-  };
+  }, [token, currentUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +68,7 @@ const UpdatePassword = () => {
 
   useEffect(() => {
     fetchCurrentUser();
-  }, []);
+  }, [fetchCurrentUser]);
 
   return (
     <Fragment>
