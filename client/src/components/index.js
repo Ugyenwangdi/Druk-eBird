@@ -6,6 +6,12 @@ import SpeciesListComponent from "./SpeciesListComponent";
 import Pagination from "./Pagination";
 import Orders from "./Orders";
 import Families from "./Families";
+import Genuses from "./Genuses";
+import Iucnstatuses from "./Iucnstatuses";
+import Groups from "./Groups";
+import Residencies from "./Residencies";
+import Searchspecies from "./Searchspecies";
+import Searchscientific from "./Searchscientific";
 
 
 export {
@@ -16,5 +22,11 @@ export {
   SpeciesListComponent,
   Pagination,
   Orders,
-  Families
+  Families,
+  Genuses,
+  Iucnstatuses,
+  Groups,
+  Residencies,
+  Searchspecies,
+  Searchscientific,
 };
