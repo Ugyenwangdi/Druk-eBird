@@ -4,9 +4,16 @@ dotenv.config();
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import jwt from "jsonwebtoken";
+import { v2 as cloudinary } from "cloudinary";
 
 import { Admin } from "../mongodb/models/admin.js";
 import sendEmail from "../utils/sendEmail.js";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 // Google OAuth Strategy
 passport.use(
@@ -14,7 +21,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
+      callbackURL: `/auth/google/callback`,
       scope: ["profile", "email"],
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -75,7 +82,7 @@ const failedGoogleLogin = async (req, res) => {
 };
 
 const googleAuthCallback = passport.authenticate("google", {
-  successRedirect: "http://localhost:3000/",
+  successRedirect: process.env.CLIENT_URL,
   failureRedirect: "/auth/login/failed",
 });
 
@@ -118,34 +125,6 @@ const baseRoute = (req, res) => {
   console.log("user: ", req.user);
   res.send({ message: "Hello World!" });
 };
-
-// const validateSession = (req, res) => {
-//   const { sessionId } = req.body;
-//   console.log("sessionId: ", req.user);
-//   console.log("clientId: ", sessionId);
-
-//   if (!sessionId) {
-//     return res.status(401).json({ valid: false });
-//   }
-
-//   if (sessionId !== req.user.id) {
-//     return res.status(401).json({
-//       valid: false,
-//     });
-//   }
-//   return res.status(200).json({
-//     valid: true,
-//   });
-// };
-
-// const checkAuthStatus = (req, res) => {
-//   if (req.isAuthenticated()) {
-//     // assuming you are using Passport.js for authentication
-//     res.json({ isLoggedIn: true });
-//   } else {
-//     res.json({ isLoggedIn: false });
-//   }
-// };
 
 const getAllUsers = async (req, res) => {
   // console.log("user: ", req.user);
@@ -266,6 +245,7 @@ const loginUser = async (req, res, next) => {
             userType: user.userType,
             name: user.name,
             googleId: user.googleId,
+            isDeactivated: req.user.isDeactivated,
           },
           process.env.JWTPRIVATEKEY,
           {
@@ -302,6 +282,7 @@ const getUserByID = async (req, res) => {
 
 const editAdminUser = async (req, res) => {
   const { id } = req.params;
+  console.log(req.body.isDeactivated);
 
   // Check if the user is authorized to add new users
   if (req.user.userType !== "root-user") {
@@ -341,6 +322,7 @@ const editAdminUser = async (req, res) => {
       name: req.body.name,
       email: req.body.email,
       userType: req.body.userType,
+      isDeactivated: req.body.isDeactivated,
     },
     { new: true }
   );
@@ -354,7 +336,7 @@ const editAdminUser = async (req, res) => {
 
   if (req.body.password) {
     const user = await Admin.findOne({ _id: id });
-    // Step 3: Update user's password in the database
+
     user.setPassword(req.body.password, async (err) => {
       try {
         await user.save();
@@ -364,17 +346,16 @@ const editAdminUser = async (req, res) => {
           `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
         );
         console.error("Password reset successful!");
-        return res.status(200).send({ message: "Password reset successful!" }); // Added return statement here
+        return res.status(200).send({ message: "Password reset successful!" });
       } catch (err) {
         console.error(err);
         return res.status(500).send("Server error");
       }
     });
-    return; // Added return statement here
+    return;
   }
 
   return res.status(200).json({
-    // Moved the return statement inside this block
     error: false,
     message: "User updated successfully",
     user: updatedUser,
@@ -390,7 +371,7 @@ const updateProfile = async (req, res) => {
   if (userId !== req.user.id) {
     return res
       .status(403)
-      .json({ message: "You are not authorized to update this password!" });
+      .json({ message: "You are not authorized to update this user!" });
   }
 
   try {
@@ -409,7 +390,7 @@ const updateProfile = async (req, res) => {
       });
 
       if (uploadedResponse) {
-        updatedUser.photo = uploadedResponse.secure_url;
+        updatedUser.profile = uploadedResponse.secure_url;
       }
     }
 
@@ -421,7 +402,7 @@ const updateProfile = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Server error!" });
   }
 };
 
@@ -466,6 +447,36 @@ const updatePassword = async (req, res) => {
   }
 };
 
+const deactivateAccount = async (req, res) => {
+  const { id } = req.params;
+
+  if (id !== req.user.id) {
+    return res
+      .status(403)
+      .json({ message: "You are not authorized to update this account!" });
+  }
+
+  const updatedUser = await Admin.findByIdAndUpdate(
+    id,
+    {
+      isDeactivated: true,
+    },
+    { new: true }
+  );
+
+  if (!updatedUser) {
+    return res.status(404).json({
+      error: true,
+      message: "User not found!",
+    });
+  }
+
+  return res.status(200).json({
+    message: "User deactivated successfully",
+    user: updatedUser,
+  });
+};
+
 const deleteUser = async (req, res) => {
   try {
     const user = await Admin.findByIdAndDelete(req.params.id);
@@ -489,9 +500,7 @@ const logoutUser = async (req, res) => {
 };
 
 export {
-  // passport local controllers
   baseRoute,
-  // validateSession,
   checkAuthStatus,
   authMiddleware,
   getAllUsers,
@@ -500,7 +509,9 @@ export {
   loginUser,
   getUserByID,
   editAdminUser,
+  updateProfile,
   updatePassword,
+  deactivateAccount,
   deleteUser,
   secretPage,
 
@@ -510,3 +521,31 @@ export {
   failedGoogleLogin,
   googleAuthCallback,
 };
+
+// const validateSession = (req, res) => {
+//   const { sessionId } = req.body;
+//   console.log("sessionId: ", req.user);
+//   console.log("clientId: ", sessionId);
+
+//   if (!sessionId) {
+//     return res.status(401).json({ valid: false });
+//   }
+
+//   if (sessionId !== req.user.id) {
+//     return res.status(401).json({
+//       valid: false,
+//     });
+//   }
+//   return res.status(200).json({
+//     valid: true,
+//   });
+// };
+
+// const checkAuthStatus = (req, res) => {
+//   if (req.isAuthenticated()) {
+//     // assuming you are using Passport.js for authentication
+//     res.json({ isLoggedIn: true });
+//   } else {
+//     res.json({ isLoggedIn: false });
+//   }
+// };

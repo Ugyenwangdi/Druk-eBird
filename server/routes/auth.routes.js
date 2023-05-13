@@ -11,7 +11,9 @@ import {
   logoutUser,
   getAllUsers,
   editAdminUser,
+  updateProfile,
   updatePassword,
+  deactivateAccount,
   deleteUser,
   secretPage,
   googleAuth,
@@ -41,6 +43,8 @@ router.route("/users").get(getAllUsers);
 router.route("/users/:id").get(getUserByID);
 router.route("/users/:id").patch(authMiddleware, editAdminUser);
 router.route("/users/:id").delete(authMiddleware, deleteUser);
+router.route("/users/:id/update-profile").patch(authMiddleware, updateProfile);
+router.route("/users/:id/deactivate").patch(authMiddleware, deactivateAccount);
 router.route("/users/:id/update-password").post(authMiddleware, updatePassword);
 
 // Secret route
