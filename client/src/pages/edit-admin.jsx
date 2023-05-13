@@ -15,6 +15,8 @@ const EditAdmin = () => {
     location.state?.adminDetail || {
       name: "",
       email: "",
+      userType: "",
+      status: "",
       password: "",
       confirmPassword: "",
     }
@@ -181,6 +183,35 @@ const EditAdmin = () => {
                 fontSize: "16px",
               }}
             >
+              <label htmlFor="userType">Account Status</label>
+              <select
+                className="input"
+                name="isDeactivated"
+                onChange={handleChange}
+                value={data.isDeactivated}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingBottom: "10px",
+                  color: "#808191",
+                  fontSize: "16px",
+                }}
+              >
+                <option value="">Select status</option>
+                <option value="false">Activated</option>
+                <option value="true">Deactivated</option>
+              </select>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                paddingBottom: "10px",
+                color: "#808191",
+                fontSize: "16px",
+              }}
+            >
               <label htmlFor="password">Password</label>
               <input
                 type="password"
@@ -188,7 +219,6 @@ const EditAdmin = () => {
                 name="password"
                 onChange={handleChange}
                 value={data.password}
-                required
                 className="input"
                 id="password"
                 style={{ color: "#808191" }}
