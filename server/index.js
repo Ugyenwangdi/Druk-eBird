@@ -50,6 +50,8 @@ passport.serializeUser(function (user, cb) {
       email: user.email, // what we want to retrieve when we call req.user
       googleId: user.googleId,
       userType: user.userType,
+      isDeactivated: user.isDeactivated,
+      profile: user.profile, //
     });
   });
 });

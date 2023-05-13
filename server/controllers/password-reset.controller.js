@@ -155,7 +155,6 @@ const resetPassword = async (req, res) => {
     });
     if (!token) return res.status(400).send({ message: "Token invalid!" });
 
-    // Step 3: Update user's password in the database
     user.setPassword(req.body.password, async (err) => {
       if (err) {
         console.error(err);

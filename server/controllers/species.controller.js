@@ -173,7 +173,7 @@ const getAllSpecies = async (req, res) => {
     })
       .where("order")
       .in([...order])
-      .where("familyName") // Add this line
+      .where("familyName")
       .in([...family])
       .skip(page * limit)
       .limit(limit);
