@@ -134,14 +134,17 @@ function SpeciesDetails() {
       <div className="species-des">IUCN Status:</div>
       <div className="species-des-para">{species.iucnStatus}</div>
 
-      <div className="species-des">Legislation:</div>
-      <div className="species-des-para">{species.legislation}</div>
+      <div className="species-des">Cites Appendix:</div>
+      <div className="species-des-para">{species.citesAppendix}</div>
 
-      <div className="species-des">Migratory/Non-migratory:</div>
-      <div className="species-des-para">{species.migrationStatus}</div>
+      <div className="species-des">Bhutan Schedule:</div>
+      <div className="species-des-para">{species.bhutanSchedule}</div>
 
-      <div className="species-des">Landbird/Waterbird/Seabird:</div>
-      <div className="species-des-para">{species.birdType}</div>
+      <div className="species-des">Residency:</div>
+      <div className="species-des-para">{species.residency}</div>
+
+      <div className="species-des">Habitat:</div>
+      <div className="species-des-para">{species.habitat}</div>
 
       <div className="species-stats">Stats:</div>
       <div className="species-stats-obs">300 Observations</div>
