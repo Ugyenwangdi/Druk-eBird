@@ -15,8 +15,10 @@ const EditAdmin = () => {
     location.state?.adminDetail || {
       name: "",
       email: "",
-      country: "",
+      userType: "",
+      status: "",
       password: "",
+      confirmPassword: "",
     }
   );
   const [error, setError] = useState("");
@@ -171,6 +173,7 @@ const EditAdmin = () => {
                 <option value="root-user">Root User</option>
               </select>
             </div>
+
             <div
               style={{
                 display: "flex",
@@ -180,21 +183,27 @@ const EditAdmin = () => {
                 fontSize: "16px",
               }}
             >
-              <label htmlFor="country">Country</label>
-              <input
-                type="text"
-                placeholder="Country"
-                name="country"
-                onChange={handleChange}
-                value={data.country}
-                required
+              <label htmlFor="userType">Account Status</label>
+              <select
                 className="input"
-                id="country"
-                style={{ color: "#808191" }}
-              />
+                name="isDeactivated"
+                onChange={handleChange}
+                value={data.isDeactivated}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  paddingBottom: "10px",
+                  color: "#808191",
+                  fontSize: "16px",
+                }}
+              >
+                <option value="">Select status</option>
+                <option value="false">Activated</option>
+                <option value="true">Deactivated</option>
+              </select>
             </div>
 
-            {/* <div
+            <div
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -210,14 +219,13 @@ const EditAdmin = () => {
                 name="password"
                 onChange={handleChange}
                 value={data.password}
-                required
                 className="input"
                 id="password"
                 style={{ color: "#808191" }}
               />
             </div>
 
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -240,7 +248,7 @@ const EditAdmin = () => {
             </div> */}
 
             <button type="submit" className="signup_green_btn">
-              {loading ? "Adding Admin ..." : "Add Admin"}
+              {loading ? "Updating User ..." : "Update Admin"}
             </button>
           </form>
         </div>
