@@ -75,7 +75,7 @@ const getAllSpecies = async (req, res) => {
     'Wren', 'Tit', 'Warbler', 'Major', 'Tesia', 'Grassbird', 'Tailorbird', 'Goldcrest', 'Prinia', 'White-eye', 'Cisticola', 'Laughingthrush', 'Liocichla', 'Bubul', 'Bulbul', 'Babbler', 'Myzornis', 'Cutia', 'Barwing', 'Siva', 'Leiothrix', 'Mesia', 'Sibia', 'Parrotbill', 'Fulvetta', 'Minla', 'Yuhina', 'Erpornis', 'Flowerpecker', 'Sunbird', 'gouldiae', 'Wagtail', 'Spiderhunter', 'Sparrow', 'Accentor', 'Bushlark', 'Lark', 'Skylark', 'Pipit', 'Weaver', 'Munia', 'Serin', 'Siskin', 'Brambling ', 'Finch', 'Rosefinch', 'Chaffinch', 'Crossbill', 'Greenfinch', 'Bullfinch', 'Parrotfinch', 'Grosbeak', 'Bunting']
     const residencyOptions = ['Altitudinal migrant', 'Resident', 'Passage migrant', 'Summer visitor', 'Introduced', 'Vagrant', 'Winter visitor', 'No recent records', 'Visitor', 'Resident ', 'Summer Visitor', 'Passsage migrant', 'Rare visitor', 'Altitudinal Migrant', 'vagrant']
 
-     order === "All"
+    order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
 

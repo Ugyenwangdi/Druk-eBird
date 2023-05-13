@@ -11,8 +11,8 @@ const AddAdmin = () => {
   const [data, setData] = useState({
     name: "",
     email: "",
-    country: "",
     password: "",
+    confirmPassword: "",
   });
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
@@ -154,27 +154,6 @@ const AddAdmin = () => {
                 <option value="root-user">Root User</option>
               </select>
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                paddingBottom: "10px",
-                color: "#808191",
-                fontSize: "16px",
-              }}
-            >
-              <label htmlFor="country">Country</label>
-              <input
-                type="text"
-                placeholder="Country"
-                name="country"
-                onChange={handleChange}
-                value={data.country}
-                className="input"
-                id="country"
-                style={{ color: "#808191" }}
-              />
-            </div>
 
             <div
               style={{
@@ -215,6 +194,7 @@ const AddAdmin = () => {
                 placeholder="Confirm Password"
                 name="confirmPassword"
                 onChange={handleChange}
+                value={data.confirmPassword}
                 required
                 className="input"
                 id="password-confirm"
@@ -222,7 +202,11 @@ const AddAdmin = () => {
               />
             </div>
 
-            <button type="submit" className="signup_green_btn">
+            <button
+              type="submit"
+              className="signup_green_btn"
+              disabled={loading}
+            >
               {loading ? "Adding Admin ..." : "Add Admin"}
             </button>
           </form>
