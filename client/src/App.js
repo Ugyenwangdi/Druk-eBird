@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate, Link } from "react-router-dom";
 import axios from "axios";
 
 import { Sidebar, Topbar } from "./components";
@@ -28,6 +28,10 @@ function App() {
   // const [loading, setLoading] = useState(true);
 
   const [isValidToken, setIsValidtoken] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [tokenValidated, setTokenValidated] = useState(false);
+  const [isDeactivatedUser, setIsDeactivatedUser] = useState(false);
+  const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
 
   const validateToken = useCallback(async () => {
     try {
@@ -50,17 +54,50 @@ function App() {
       console.error(error);
       localStorage.removeItem("token");
       setIsValidtoken(false);
+    } finally {
+      setTokenValidated(true); // set the state variable to true once validation is complete
     }
   }, [token]);
 
+  const fetchCurrentUser = useCallback(async () => {
+    if (!tokenValidated) return; // skip the API call if the token has not been validated yet
+
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setIsDeactivatedUser(response.data.user.isDeactivated);
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    } finally {
+      setCheckedDeactivatedUser(true);
+    }
+  }, [token, tokenValidated]);
+
   useEffect(() => {
     validateToken();
-
-    // getGoogleUser();
   }, [validateToken]);
 
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (!checkedDeactivatedUser) return;
+    if (isDeactivatedUser) {
+      localStorage.removeItem("token");
+      window.location = "/deactivated";
+    }
+  }, []);
+
   // Sidebar and toggle connection
-  const [showSidebar, setShowSidebar] = useState(false);
   const handleToggleSidebar = () => {
     setShowSidebar(!showSidebar);
   };
@@ -103,18 +140,17 @@ function App() {
     };
   }, []);
 
-  // render loading spinner/message while loading is true
-  // if (loading) {
-  //   return (
-  //     <div style={{ display: "flex", justifyContent: "center" }}>
-  //       <p>Loading...</p>
-  //     </div>
-  //   );
-  // }
+  if (!checkedDeactivatedUser) {
+    return (
+      <div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <>
-      {isValidToken ? (
+      {isValidToken && !isDeactivatedUser ? (
         <div>
           <Topbar onToggleSidebar={handleToggleSidebar} />
           <main>
@@ -148,6 +184,34 @@ function App() {
           <Route
             path="/password-reset/:id/:token"
             element={<PasswordReset />}
+          />
+          <Route
+            path="/deactivated"
+            element={
+              <div
+                style={{
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100vh",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "24px",
+                    color: "link",
+                    marginBottom: "20px",
+                  }}
+                >
+                  Your account has been deactivated and you cannot log in.
+                </p>
+                <Link to="/login" style={{ color: "blue" }}>
+                  Click here to login with different account
+                </Link>
+              </div>
+            }
           />
           <Route path="/*" element={<Navigate replace to="/login" />} />
         </Routes>
