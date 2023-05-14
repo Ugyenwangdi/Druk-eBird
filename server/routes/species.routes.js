@@ -5,6 +5,7 @@ import upload from "../utils/multer.js";
 import {
   createSpecies,
   getAllSpecies,
+  searchSpecies,
   getSpeciesDetail,
   updateSpecies,
   deleteSpecies,
@@ -15,6 +16,7 @@ import {
 const router = express.Router();
 
 router.route("/").get(getAllSpecies);
+router.route("/birds").get(searchSpecies);
 router.route("/:id").get(getSpeciesDetail);
 router.route("/").post(createSpecies);
 router.route("/:id").patch(updateSpecies);
