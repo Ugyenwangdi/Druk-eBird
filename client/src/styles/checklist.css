@@ -22,8 +22,8 @@
   border-color: #f7f7f7;
   background-color: #FCFCFC;
   padding: 0.5rem;
-  margin-left: 0;
-  width: 99%;
+  margin-left: 2rem;
+  width: 95%;
 }
 
 /* .checklist-filter-container {
@@ -89,10 +89,10 @@
 
 .checklist-table {
   border: 0.5px solid #dcd8d8;
-  width: 99%;
+  width: 95%;
   border-radius: 10px;
   margin-top: 10px;
-  margin-left: 0;
+  margin-left: 2rem;
   height: 5rem;
   background-color: #ffffff;
   table-layout: fixed;
@@ -200,6 +200,7 @@
 
   .checklist-table .main-table,
   .checklist-table td {
+    display:inline-block;
     padding: .5em;
   }
 
@@ -217,5 +218,5 @@
   tbody tr:nth-child(even) {
     background-color: #eaeaea;
   }
-
+ 
 }
