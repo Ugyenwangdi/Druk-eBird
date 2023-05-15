@@ -71,12 +71,22 @@ const getAllSpecies = async (req, res) => {
       ? (residency = [...residencyOptions])
       : (residency = req.query.residency.split(","));
 
-    if (startsWith) {
-      search = `^${startsWith}`;
-    }
+    let searchQuery = {};
 
+    if (startsWith) {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: `^${startsWith}`, $options: "i" } },
+          { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        ],
+      };
+    } else if (search) {
+      searchQuery = {
+        englishName: { $regex: search, $options: "i" },
+      };
+    }
     const foundSpecies = await Species.find({
-      englishName: { $regex: search, $options: "i" },
+      ...searchQuery,
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     })
@@ -93,17 +103,17 @@ const getAllSpecies = async (req, res) => {
       .where("residency")
       .in([...residency])
       .skip(page * limit)
-      .limit(limit)
-      .sort({ _id: -1 });
+      .limit(limit);
+    // .sort({ createdAt: -1 });
 
     const total = await Species.countDocuments({
+      ...searchQuery,
       order: { $in: [...order] },
       familyName: { $in: [...family] },
       genus: { $in: [...genus] },
       iucnStatus: { $in: [...iucnStatus] },
       group: { $in: [...group] },
       residency: { $in: [...residency] },
-      englishName: { $regex: search, $options: "i" },
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     });
