@@ -65,7 +65,6 @@ function Species() {
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
 
-
   const handleDelete = async (id) => {
     try {
       const speciesToDelete = speciesList.find((species) => species._id === id);
