@@ -1,4 +1,4 @@
-.checklists-page-container{
+.checklists-page-container {
   display: block;
   width: 100%;
   overflow-x: hidden;
@@ -20,7 +20,7 @@
   margin-top: 45px;
   border-radius: 0.25rem;
   border-color: #f7f7f7;
-  background-color: #FCFCFC;
+  background-color: #fcfcfc;
   padding: 0.5rem;
   margin-left: 2rem;
   width: 95%;
@@ -32,8 +32,6 @@
   align-items: center;
   margin: 1.5rem 0;
 } */
-
-
 
 .checklist-filter-container {
   display: flex;
@@ -67,7 +65,6 @@
   width: 20%;
 }
 
-
 .button-container {
   position: absolute;
   top: -100;
@@ -75,8 +72,8 @@
   padding-right: 20px;
 }
 
-.export-button {
-  background-color: #136D66;
+.checklist-export-button {
+  background-color: #136d66;
   color: #ffffff;
   border: none;
   padding: 10px 10px;
@@ -84,8 +81,6 @@
   cursor: pointer;
   font-size: 14px;
 }
-
-
 
 .checklist-table {
   border: 0.5px solid #dcd8d8;
@@ -112,8 +107,7 @@
   display: none;
 }
 
-@media(max-width:1024px) {
-
+@media (max-width: 1024px) {
   .enteries-filter-container {
     display: flex;
     justify-content: flex-start;
@@ -124,16 +118,14 @@
     /* width: 130%; */
   }
 
-
   .checklist-search-bar,
   .checklist-filter-dropdown {
-    margin: .5em;
+    margin: 0.5em;
     width: 10rem;
   }
 }
 
-@media(max-width:768px) {
-
+@media (max-width: 768px) {
   .page-container {
     overflow: hidden;
   }
@@ -159,17 +151,14 @@
     margin-bottom: 10px;
   }
 
-  
-
   .checklist-search-bar,
   .checklist-filter-dropdown {
-    padding: .5em;
+    padding: 0.5em;
   }
 
   .checklist-search-bar {
     flex-basis: 100%;
     margin-bottom: 5px;
-
   }
 
   .checklist-search-bar,
@@ -188,10 +177,8 @@
     margin-right: 0;
   }
 
-
   .checklist-table .main-head tr {
     display: none;
-
   }
 
   .checklist-table tr {
@@ -200,8 +187,8 @@
 
   .checklist-table .main-table,
   .checklist-table td {
-    display:inline-block;
-    padding: .5em;
+    display: inline-block;
+    padding: 0.5em;
   }
 
   .checklist-table .custom-data {
@@ -218,5 +205,4 @@
   tbody tr:nth-child(even) {
     background-color: #eaeaea;
   }
- 
 }

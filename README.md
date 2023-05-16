@@ -1,3 +1,14 @@
+## Already cloned??? 
+
+Pull the latest changes from the master branch before working on new issues!!!
+
+    $ git checkout master 
+
+    $ git pull  
+
+
+## You don't have a copy or project??
+
 Frontend Setup:
 
     $ git clone https://github.com/Ugyenwangdi/Druk-eBird.git
@@ -21,4 +32,4 @@ Backend Setup:
 
 
 
-# project e-bird
+# Druk e-Bird Project

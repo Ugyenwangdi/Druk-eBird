@@ -7,6 +7,7 @@ import "../styles/speciesdetails.css";
 function SpeciesDetails() {
   const { id } = useParams();
   const location = useLocation();
+  const [showFullscreen, setShowFullscreen] = useState(false);
 
   const [species, setSpecies] = useState(
     location.state?.speciesDetail || { photos: [] }
@@ -15,12 +16,12 @@ function SpeciesDetails() {
   useEffect(() => {
     const fetchSpecies = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8080/api/v1/species/${id}`
-        );
         // const res = await axios.get(
-        //   `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+        //   `http://localhost:8080/api/v1/species/${id}`
         // );
+        const res = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+        );
 
         setSpecies(res.data);
       } catch (err) {
@@ -32,12 +33,24 @@ function SpeciesDetails() {
 
   // console.log(species.photos[0].caption);
 
+  const toggleFullscreen = () => {
+    setShowFullscreen(!showFullscreen);
+  };
+
   if (!species) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="species-details-container">
+      {showFullscreen && (
+        <div className="fullscreen-container">
+          <button className="close-button" onClick={toggleFullscreen}>
+            <span className="material-icons">close</span>
+          </button>
+          <img src={species.photos[0].url} alt="Species" />
+        </div>
+      )}
       <h2 className="species-details-header">
         <div>
           <Link to="/species">
@@ -55,6 +68,7 @@ function SpeciesDetails() {
           className="species-image1"
           src={species.photos[0] ? species.photos[0].url : preview}
           alt="Speciesphoto1"
+          onClick={toggleFullscreen}
         />
         <div className="species-image-column">
           <img
@@ -120,17 +134,23 @@ function SpeciesDetails() {
 
         <div className="species-des">IUCN Status:</div>
         <div className="species-des-para">{species.iucnStatus}</div>
+        
+        
+              <div className="species-des">Cites Appendix:</div>
+      <div className="species-des-para">{species.citesAppendix}</div>
 
-        <div className="species-des">Legislation:</div>
-        <div className="species-des-para">{species.legislation}</div>
+            <div className="species-des">Bhutan Schedule:</div>
+      <div className="species-des-para">{species.bhutanSchedule}</div>
 
-        <div className="species-des">Migratory/Non-migratory:</div>
-        <div className="species-des-para">{species.migrationStatus}</div>
+  <div className="species-des">Residency:</div>
+      <div className="species-des-para">{species.residency}</div>
 
-        <div className="species-des">Landbird/Waterbird/Seabird:</div>
-        <div className="species-des-para">{species.birdType}</div>
 
-        <div className="species-des">Stats:</div>
+    
+      <div className="species-des">Habitat:</div>
+      <div className="species-des-para">{species.habitat}</div>
+      
+         <div className="species-des">Stats:</div>
         <div className="species-des-para">300 Observations</div>
 
         <div className="species-des">Description:</div>
@@ -157,261 +177,3 @@ function SpeciesDetails() {
 }
 
 export default SpeciesDetails;
-
-// import React, { useState, useEffect } from "react";
-// import { Link, useParams, useLocation } from "react-router-dom";
-// import axios from "axios";
-
-// function SpeciesDetails() {
-//   const { id } = useParams();
-//   const location = useLocation();
-
-//   const [species, setSpecies] = useState(
-//     location.state?.speciesDetail || { photos: [] }
-//   );
-
-//   useEffect(() => {
-//     const fetchSpecies = async () => {
-//       try {
-//         const res = await axios.get(
-//           `http://localhost:8080/api/v1/species/${id}`
-//         );
-//         setSpecies(res.data);
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-//     fetchSpecies();
-//   }, [id]);
-
-//   // console.log(species.photos[0].caption);
-
-//   if (!species) {
-//     return <div>Loading...</div>;
-//   }
-
-//   return (
-//     <div>
-//       <Link to={`/species/${id}/edit`} state={{ speciesDetail: species }}>
-//         <button className="add-button">Edit Species</button>
-//       </Link>
-//       <Link to="/species" className="add-button">
-//         Back to List
-//       </Link>
-
-//       <h1>{species.englishName}</h1>
-//       <p>
-//         <strong>Scientific Name:</strong> {species.scientificName}
-//       </p>
-//       <p>
-//         <strong>Order:</strong> {species.order}
-//       </p>
-//       <p>
-//         <strong>Family Name:</strong> {species.familyName}
-//       </p>
-//       <p>
-//         <strong>Genus:</strong> {species.genus}
-//       </p>
-//       <p>
-//         <strong>Species:</strong> {species.species}
-//       </p>
-//       <p>
-//         <strong>Authority:</strong> {species.authority}
-//       </p>
-//       <p>
-//         <strong>Group:</strong> {species.group}
-//       </p>
-//       <p>
-//         <strong>Dzongkha Name:</strong> {species.dzongkhaName}
-//       </p>
-//       <p>
-//         <strong>Lho Name:</strong> {species.lhoName}
-//       </p>
-//       <p>
-//         <strong>Shar Name:</strong> {species.sharName}
-//       </p>
-//       <p>
-//         <strong>Kheng Name:</strong> {species.khengName}
-//       </p>
-//       <p>
-//         <strong>IUCN Status:</strong> {species.iucnStatus}
-//       </p>
-//       <p>
-//         <strong>Legislation:</strong> {species.legislation}
-//       </p>
-//       <p>
-//         <strong>Migration Status:</strong> {species.migrationStatus}
-//       </p>
-//       <p>
-//         <strong>Bird Type:</strong> {species.birdType}
-//       </p>
-//       <p>
-//         <strong>Description:</strong> {species.description}
-//       </p>
-//       <p>
-//         <strong>Observations:</strong> {species.observations}
-//       </p>
-
-//       {species.photos &&
-//         species.photos.map((p) => (
-//           <div key={p._id} style={{ display: "flex" }}>
-//             <div>
-//               <img
-//                 src={p.url}
-//                 alt={p.englishName}
-//                 style={{
-//                   width: "200px",
-//                 }}
-//               />
-//             </div>
-//           </div>
-//         ))}
-//     </div>
-//   );
-// }
-
-// export default SpeciesDetails;
-
-// import React, { useState, useEffect } from "react";
-// import { Link, useParams, useLocation } from "react-router-dom";
-// import axios from "axios";
-
-// function SpeciesDetail() {
-//   const { id } = useParams();
-//   const location = useLocation();
-
-//   const [species, setSpecies] = useState(location.state?.speciesDetail);
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [msg, setMsg] = useState("");
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const fetchSpecies = async () => {
-//       try {
-//         const res = await axios.get(
-//           `http://localhost:8080/api/v1/species/${id}`
-//         );
-//         setSpecies(res.data);
-//       } catch (err) {
-//         console.error(err);
-//       }
-//     };
-//     fetchSpecies();
-//   }, [id]);
-
-//   // console.log(species.photos[0].caption);
-
-//   const handleDeleteClick = async (photoId) => {
-//     setIsLoading(true);
-
-//     try {
-//       const res = await axios.delete(
-//         `http://localhost:8080/api/v1/species/${id}/photos/${photoId}`
-//       );
-
-//       setMsg(res.data.message);
-//       console.log(res);
-//       setError("");
-//     } catch (error) {
-//       console.error(error);
-//       setError("Server error!");
-//     }
-
-//     setIsLoading(false);
-//   };
-
-//   if (!species) {
-//     return <div>Loading...</div>;
-//   }
-
-//   return (
-//     <div>
-//       <Link to={`/species/${id}/edit`} state={{ speciesDetail: species }}>
-//         <button className="add-button">Edit Species</button>
-//       </Link>
-//       <Link to="/species" className="add-button">
-//         Back to List
-//       </Link>
-
-//       <h1>{species.englishName}</h1>
-//       <p>
-//         <strong>Scientific Name:</strong> {species.scientificName}
-//       </p>
-//       <p>
-//         <strong>Order:</strong> {species.order}
-//       </p>
-//       <p>
-//         <strong>Family Name:</strong> {species.familyName}
-//       </p>
-//       <p>
-//         <strong>Genus:</strong> {species.genus}
-//       </p>
-//       <p>
-//         <strong>Species:</strong> {species.species}
-//       </p>
-//       <p>
-//         <strong>Authority:</strong> {species.authority}
-//       </p>
-//       <p>
-//         <strong>Group:</strong> {species.group}
-//       </p>
-//       <p>
-//         <strong>Dzongkha Name:</strong> {species.dzongkhaName}
-//       </p>
-//       <p>
-//         <strong>Lho Name:</strong> {species.lhoName}
-//       </p>
-//       <p>
-//         <strong>Shar Name:</strong> {species.sharName}
-//       </p>
-//       <p>
-//         <strong>Kheng Name:</strong> {species.khengName}
-//       </p>
-//       <p>
-//         <strong>IUCN Status:</strong> {species.iucnStatus}
-//       </p>
-//       <p>
-//         <strong>Legislation:</strong> {species.legislation}
-//       </p>
-//       <p>
-//         <strong>Migration Status:</strong> {species.migrationStatus}
-//       </p>
-//       <p>
-//         <strong>Bird Type:</strong> {species.birdType}
-//       </p>
-//       <p>
-//         <strong>Description:</strong> {species.description}
-//       </p>
-//       <p>
-//         <strong>Observations:</strong> {species.observations}
-//       </p>
-//       {error && <div className="error_msg">{error}</div>}
-//       {msg && <div className="success_msg">{msg}</div>}
-//       {species.photos.map((p) => (
-//         <div key={p._id} style={{ display: "flex" }}>
-//           <div>
-//             <img
-//               src={p.url}
-//               alt={p.caption}
-//               style={{
-//                 width: "200px",
-//               }}
-//             />
-//             <p>{p.caption}</p>
-
-//             <div className="button-container">
-//               <button
-//                 disabled={isLoading}
-//                 onClick={() => handleDeleteClick(p._id)}
-//               >
-//                 Delete Photo
-//               </button>
-//             </div>
-//           </div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export default SpeciesDetail;
