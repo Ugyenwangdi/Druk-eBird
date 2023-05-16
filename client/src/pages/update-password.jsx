@@ -36,22 +36,27 @@ const UpdatePassword = () => {
     e.preventDefault();
     try {
       setIsLoading(true);
-      const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-password`;
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const { data } = await axios.post(
-        url,
-        {
-          oldPassword: oldPassword,
-          newPassword: newPassword,
-        },
-        { headers }
-      );
 
-      setMsg(data.message);
-      setError("");
-      window.location = "/login";
+      if (!currentUser.googleId) {
+        const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-password`;
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+        const { data } = await axios.post(
+          url,
+          {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+          },
+          { headers }
+        );
+
+        setMsg(data.message);
+        setError("");
+        window.location = "/login";
+      } else {
+        setError("You cannot update your google account");
+      }
     } catch (error) {
       if (
         error.response &&
@@ -74,7 +79,7 @@ const UpdatePassword = () => {
     <Fragment>
       <div className="password_reset_container">
         <form className="form_contain" onSubmit={handleSubmit}>
-          <h1>Update Password</h1>
+          <h1 style={{ margin: "15px 0" }}>Update Password</h1>
           <input
             type="password"
             placeholder="Old Password"

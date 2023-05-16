@@ -4,6 +4,14 @@ import xlsx from "xlsx";
 import axios from "axios";
 
 import Species from "../mongodb/models/species.js";
+import {
+  orderOptions,
+  familyOptions,
+  genusOptions,
+  iucnStatusOptions,
+  groupOptions,
+  residencyOptions,
+} from "../constants/index.js";
 
 dotenv.config();
 
@@ -28,53 +36,17 @@ const getAllSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 6;
-    const search = req.query.search || "";
-    const searchspecies = req.query.searchspecies || "";
-    const searchscientific = req.query.searchscientific || "";
+    const startsWith = req.query.starts_with || "";
+    let search = req.query.search || "";
+    const species = req.query.species || "";
+    const scientificName = req.query.scientific_name || "";
     let order = req.query.order || "All";
     let family = req.query.family || "All";
     let genus = req.query.genus || "All";
-    let iucnstatus = req.query.iucnstatus || "All";
+    let iucnStatus = req.query.iucn_status || "All";
     let group = req.query.group || "All";
     let residency = req.query.residency || "All";
-;
-    const orderOptions = [
-      "Galliformes",
-      "Charadriiformes",
-      "Anseriformes",
-      "Podicipediformes",
-      "Gaviiformes",
-      "Ciconiiformes",
-      "Pelecaniformes",
-      "Procellariiformes",
-      "Gruiformes",
-      "Suliformes",
-      "Coraciiformes",
-      "Bucerotiformes",
-      "Accipitriformes",
-      "Falconiformes",
-      "Piciformes",
-      "Passeriformes",
-      "Trogoniformes",
-      "Cuculiformes",
-      "Psittaciformes",
-      "Columbiformes",
-      "Caprimulgiformes",
-      "Strigiformes",
-      "Passerformes",
-      "nan",
-      "",
-    ];
-
-    const familyOptions = ['Phasianidae', 'Turnicidae', 'Anatidae', 'Podicipedidae', 'Gaviidae', 'Laridae', 'Ciconiidae', 'Threskiornithidae', 'Ardeidae', 'Procellariidae', 'Scolopacidae', 'Ibidorhynchidae', 'Charadriidae', 'Rallidae', 'Rostratulidae', 'Recurvirostridae', 'Burhinidae', 'Glareolidae', 'Jacanidae', 'Phalacrocoracidae', 'Pelecanidae', 'Alcedinidae', 'Bucerotidae', 'Accipitridae', 'Falconidae', 'Pandionidae', 'Gruidae', 'Picidae', 'Indicatoridae', 'Megalaimidae', 'Upupidae', 'Coraciidae', 'Trogonidae', 'Meropidae', 'Cuculidae', 'Psittaculidae', 'Columbidae', 'Apodidae', 'Hemiprocnidae', 'Hirundinidae', 'Strigidae', 'Tytonidae', 'Caprimulgidae', 'Podargidae', 'Cinclidae', 'Muscicapidae', 'Dicruridae', 'Campephagidae', 'Vangidae', 'Monarchidae', 'Rhipiduridae', 'Stenostiridae', 'Pittidae', 'Eurylaimidae', 'Irenidae', 'Chloropseidae', 'Aegithinidae', 'Corvidae', 'Laniidae', 'Paridae', 'Turdidae', 'Sylviidae', 'Oriolidae', 'Artamidae', 'Sturnidae', 'Sittidae', 'Certhiidae', 'Tichodromidae', 'Troglodytidae', 'Aegithalidae', 'Phylloscopidae', 'Scotocercidae', 'Acrocephalidae', 'Locustellidae', 'Cittiidae', 'Cisticolidae', 'Regulidae', 'Zosteropidae', 'Leiothrichidae', 'Pycnonotidae', 'Pellorneidae', 'Timaliidae', 'Pnoepygidae', 'Elachuridae', 'Vireonidae', 'Dicaeidae', 'Nectariniidae', 'Motacillidae', 'Passeridae', 'Prunellidae', 'Alaudidae', 'Ploceidae', 'Estrildidae', 'Fringillidae', 'Emberizidae', 'Calcariidae', 'nan']
-    const genusOptions = ['Lerwa', 'Perdix', 'Francolinus', 'Tetraogallus', 'Coturnix', 'Turnix', 'Ithaginis', 'Lophura', 'Tragopan', 'Lophophorus', 'Gallus', 'Pavo', 'Polyplectron', 'Phasianus', 'Arborophila', 'Anser', 'Mareca', 'Aythya', 'Clangula', 'Aix', 'Dendrocygna', 'Asarcornis', 'Tadorna', 'Spatula', 'Anas', 'Sibirionetta', 'Mergus', 'Podiceps', 'Tachybaptus', 'Netta', 'Gavia', 'Sternula', 'Chlidonias', 'Sterna', 'Anastomus', 'Pseudibis', 'Leptoptilos', 'Platalea', 'Ixobrychus', 'Botaurus', 'Bucephala', 'Ardenna', 'Actitis', 'Calidris', 'Tringa', 'Ibidorhyncha', 'Vanellus', 'Charadrius', 'Pluvialis', 'Zapornia', 'Rallina', 'Rostratula', 'Lymnocryptes', 'Gallinago', 'Himantopus', 'Esacus', 'Burhinus', 'Scolopax', 'Glareola', 'Recurvirostra', 'Porphyrio', 'Fulica', 'Gallinula', 'Gallirallus', 'Numenius', 'Amaurornis', 'Metopidius', 'Hydrophasianus', 'Phalaropus', 'Chroicocephalus', 'Ichthyaetus', 'Larus', 'Phalacrocorax', 'Pelecanus', 'Alcedo', 'Halcyon', 'Todiramphus', 'Megaceryle', 'Ceyx', 'Ceryle', 'Pelargopsis', 'Buceros', 'Aceros', 'Anthracoceros', 'Rhyticeros', 'Accipiter', 'Buteo', 'Pernis', 'Butastur', 'Circus', 'Hieraaetus', 'Aquila', 'Circaetus', 'Clanga', 'Nisaetus', 'Lophotriorchis', 'Microhierax', 'Falco', 'Ictinaetus', 'Milvus', 'Elanus', 'Haliastur', 'Aviceda', 'Spilornis', 'Haliaeetus', 'Icthyophaga', 'Pandion', 'Gypaetus', 'Aegypius', 'Neophron', 'Gyps', 'Sarcogyps', 'Grus', 'Anthropoides', 'Ciconia', 'Ardea', 'Egretta', 'Bubulcus', 'Nycticorax', 'Ardeola', 'Gorsachius', 'Butorides', 'Picumnus', 
-      'Sasia', 'Blythipicus', 'Drenddrocopos', 'Dendrocopos', 'Picus', 'Mulleripicus', 'Gecinulus', 'Micropternus', 'Dinopium', 'Indicator', 'Chrysocolaptes ', 'Megalaima', 'Jynx', 'Upupa', 'Eurystomus', 'Coracias', 'Harpactes', 'Nyctyornis', 'Merops', 'Eudynamys', 'Chrysococcyx', 'Cacomantis', 'Hierococcyx', 'Clamator', 'Surniculus', 'Cuculus', 'Hierococcyx ', 'Rhopodytes', 'Centropus', 'Psittacula', 'Loriculus', 'Columba', 'Ducula', 'Treron', 'Treron ', 'Macropygia', 'Chalcophaps', 'Stigmatopelia', 'Spilopelia', 'Streptopelia', 'Cypsiurus', 'Tachymarptis', 'Apus', 'Collocalia', 'Hirundapus', 'Hemiprocne', 'Delichon', 'Ptyonoprogne', 'Riparia', 'Hirundo', 'Cecropis', 'Glaucidium', 'Athene', 'Tyto', 'Aegolius', 'Ninox', 'Otus', 'Bubo', 'Strix', 'Asio', 'Phodilus', 'Ketupa', 'Caprimulgus', 'Eurostopodus', 'Batrachostomus', 'Cinclus', 'Phoenicurus', 'Rhyacornis', 'Chaimarrornis', 'Hodgsonius', 'Phoenicurus ', 'Dicrurus', 'Pericrocotus', 'Hemipus', 'Hypothymis', 'Rhipidura', 'Chelidorhynx', 'Terpsiphone', 'Cyornis', 'Muscicapa', 'Culicicapa', 'Ficedula', 'Muscicapella ', 'Eumyias', 'Anthipes', 'Niltava', 'Pitta', 'Psarisomus', 'Serilophus', 'Irena', 'Chloropsis', 'Aegithina', 'Cissa', 'Pica', 'Urocissa', 'Dendrocitta', 'Pyrrhocorax', 'Corvus', 'Lanius', 'Nucifraga', 'Pseudopodoces', 'Garrulus', 'Heteroxenicus', 'Brachypteryx', 'Myophonus', 'Turdus', 'Turdus ', 'Monticola', 'Zoothera', 'Geokichla', 'Sylvia', 'Oriolus', 'Tephrodornis', 'Artamus', 'Coracina', 'Luscinia', 'Tarsiger', 'Copsychus', 'Cinclidium', 'Myiomela', 'Grandala', 'Saxicola', 'Enicurus', 'Oenanthe', 'Cochoa', 'Gracupica', 'Sturnia', 'Sturnus', 'Pastor', 'Saroglossa', 'Spodiopsar', 'Acridotheres', 'Gracula', 'Ampeliceps', 'Sitta', 'Certhia', 'Tichodroma',
-     'Troglodytes', 'Aegithalos', 'Periparus', 'Cephalopyrus', 'Parus', 'Lophophanes', 'Melanochlora', 'Sylviparus', 'Phylloscopus', 'Seicercus', 'Abroscopus', 'Acrocephalus', 'Tickellia', 'Locustella', 'Bradypterus', 'Cettia', 'Iduna', 'Oligura', 'Leptopoecile', 'Seicercus ', 'Phylloscopus ', 'Megalurus', 'Phragmaticola', 'Orthotomus', 'Phyllergates', 'Regulus', 'Prinia', 'Zosterops', 'Tesia', 'Cisticola', 'Garrulax', 'Garrulax ', 'Liocichla', 'Hemixos', 'Hypsipetes', 'Rubigula', 'Pycnonotus', 'Ixos', 'Alcurus', 'Alophoixus', 'Malacocincla', 'Pellorneum', 'Stachyris', 'Statchyridopsis ', 'Statchyridopsis', 'Stachyridopsis', 'Sphenocichla', 'Turdoides', 'Gampsorhynchus', 'Chrysomma', 'Spelaeornis', 'Napothera', 'Rimator', 'Pnoepyga', 'Elachura', 'Pomatorhinus', 'Xiphirhynchus', 'Pteruthius', 'Myzornis', 'Cutia', 'Actinodura', 'Siva', 'Macronus', 'Leiothrix', 'Malacias', 'Heterophasia', 'Leioptila', 'Cholornis', 'Suthora', 'Conostoma', 'Psittiparus', 'Chleuasicus', 'Lioparus', 'Fulvetta', 'Alcippe', 'Schoeniparus', 'Pseudominla', 'Minla', 'Staphida', 'Yuhina', 'Erpornis', 'Dicaeum', 'Aethopyga', 'Cinnyris', 'Chalcoparia', 'Motacilla', 'Dendronanthus', 'Arachnothera', 'Passer', 'Prunella', 'Mirafra', 'Calandrella', 'Alauda', 'Eremophila', 'Alaudala', 'Anthus', 'Ploceus', 'Lonchura', 'Serinus', 'Spinus', 'Fringilla', 'Leucosticte', 'Carpodacus', 'Pyrrhoplectes', 'Callacanthis', 'Agraphospiza', 'Procarduelis', 'Physlloscopus', 'Loxia', 'Chloris', 'Pyrrhula', 'Erythrura', 'Mycerobas', 'Emberiza', 'Calcarius', 'Ocyceros ', 'Poecile']
-    const iucnstatusOptions = ['LC', 'NT', 'VU', 'LC ', 'EN', 'CR']
-    const groupOptions = ['Partridge', 'Francolin', 'Snowcock', 'Quail', 'Buttonquail', 'Pheasant', 'Goose', 'Duck', 'duck', 'Shelduck', 'Gadwall', 'Wigeon', 'Anas', 'Shoveler', 'Mallard', 'Teal', 'Pintail', 'Goosander', 'Grebe', 'Pochard', 'Scaup', 'Diver', 'Tern', 'Stork', 'Ibis', 'Adjutant', 'Spoonbill', 'Bittern', 'Goldeneye', 'Shearwater', 'Sandpiper', 'sandpiper', 'Ibisbill', 'Lapwing', 'Plover', 'Crake', 'Snipe', 'Stilt', 'Greenshank', 'Redshank', 'Thick-knee', 'Woodcock', 'Stint', 'Ruff', 'Pratincole', 'Avocet', 'Swamphen', 'Coot', 'Moorhen', 'Whimbrel', 'Curlew', 'Waterhen', 'Jacana', 'Phalarope', 'Gull', 'Cormorant', 'Pelican', 'Kingfisher', 'erithacus', 'Hornbill', 'Accipiter', 'Buzzard', 'Harrier', 'Eagle', 'Falconet', 'Kestrel', 'Falcon', 'Hobby', 'Kite', 'Baza', 'Sea eagles', 'Fish eagle', 'Osprey', 'Vulture', 'Crane', 'Heron', 'Egret', 'Woodpecker', 'Honeyguide', 'Barbet', 'Wryneck', 'Hoopoe', 'Dollarbird', 'Roller', 'Trogon', 'Bee-eater', 'Koel', 'Cuckoo', 'Malkoha', 'Coucal', 'Parakeet', 'Parrot', 'Pigeon', 'badia', 'Green Pigeon', 'Dove', 'Swift', 'Martin', 'Swallow', 'Owl', 'Nightjar', 'Frogmouth', 'Dipper', 'Redstart', 'Drongo', 'Minivet', 'Flycatcher-shrike', 'Monarch', 'Fantail', 'Flycatcher', 'Flyctacher', 'Niltava', 'Pitta', 'Broadbill', 'Bluebird', 'Leafbird', 'Iora', 'Magpie', 'Treepie', 'Chough', 'Raven', 'Crow', 'Shrike', 'Nutcracker', 'Groundpecker', 'Jay', 'Shortwing', 'Thrush', 'maximus', 'Blackbird', 'Rock Thrush', 'Whitethroat', 'Oriole', 'Woodshrike', 'Woodswallows', 'Cuckooshrike', 'Bluethroat', 'Rubythroat', 'Robin', 'Bluetail', 'Shama', 'Grandala', 'Stonechat', 'Bushchat', 'Forktail', 'Rockchat', 'Wheatear', 'Cochoa', 'Starling', 'Myna', 'Nuthatch', 'Treecreeper', 'Wallcreeper', 
-    'Wren', 'Tit', 'Warbler', 'Major', 'Tesia', 'Grassbird', 'Tailorbird', 'Goldcrest', 'Prinia', 'White-eye', 'Cisticola', 'Laughingthrush', 'Liocichla', 'Bubul', 'Bulbul', 'Babbler', 'Myzornis', 'Cutia', 'Barwing', 'Siva', 'Leiothrix', 'Mesia', 'Sibia', 'Parrotbill', 'Fulvetta', 'Minla', 'Yuhina', 'Erpornis', 'Flowerpecker', 'Sunbird', 'gouldiae', 'Wagtail', 'Spiderhunter', 'Sparrow', 'Accentor', 'Bushlark', 'Lark', 'Skylark', 'Pipit', 'Weaver', 'Munia', 'Serin', 'Siskin', 'Brambling ', 'Finch', 'Rosefinch', 'Chaffinch', 'Crossbill', 'Greenfinch', 'Bullfinch', 'Parrotfinch', 'Grosbeak', 'Bunting']
-    const residencyOptions = ['Altitudinal Migrant', 'Resident', 'Passage Migrant', 'Summer Visitor', 'Introduced', 'Vagrant', 'Winter Visitor', 'No recent records', 'Visitor', 'Rare Visitor']
-
+    
     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
@@ -87,9 +59,9 @@ const getAllSpecies = async (req, res) => {
       ? (genus = [...genusOptions])
       : (genus = req.query.genus.split(","));
 
-    iucnstatus === "All"
-      ? (iucnstatus = [...iucnstatusOptions])
-      : (iucnstatus = req.query.iucnstatus.split(","));
+    iucnStatus === "All"
+      ? (iucnStatus = [...iucnStatusOptions])
+      : (iucnStatus = req.query.iucn_status.split(","));
 
     group === "All"
       ? (group = [...groupOptions])
@@ -99,37 +71,51 @@ const getAllSpecies = async (req, res) => {
       ? (residency = [...residencyOptions])
       : (residency = req.query.residency.split(","));
 
-    const species = await Species.find({
-      englishName: { $regex: search, $options: "i" },
-      species: { $regex: searchspecies, $options: "i" },
-      scientificName: { $regex: searchscientific, $options: "i" },
+    let searchQuery = {};
+
+    if (startsWith) {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: `^${startsWith}`, $options: "i" } },
+          { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        ],
+      };
+    } else if (search) {
+      searchQuery = {
+        englishName: { $regex: search, $options: "i" },
+      };
+    }
+    const foundSpecies = await Species.find({
+      ...searchQuery,
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     })
       .where("order")
       .in([...order])
       .where("familyName")
-      .in([...family]) 
+      .in([...family])
       .where("genus")
       .in([...genus])
       .where("iucnStatus")
-      .in([...iucnstatus])
+      .in([...iucnStatus])
       .where("group")
       .in([...group])
       .where("residency")
-      .in([...residency])    
+      .in([...residency])
       .skip(page * limit)
       .limit(limit);
-    // .sort({ _id: -1 });
+    // .sort({ createdAt: -1 });
 
     const total = await Species.countDocuments({
+      ...searchQuery,
       order: { $in: [...order] },
       familyName: { $in: [...family] },
       genus: { $in: [...genus] },
-      iucnStatus: {$in: [...iucnstatus]},
-      group: {$in: [...group]},
-      residency: {$in: [...residency]},
-      englishName: { $regex: search, $options: "i" },
-      species: { $regex: searchspecies, $options: "i" },
-      scientificName: { $regex: searchscientific, $options: "i" },
+      iucnStatus: { $in: [...iucnStatus] },
+      group: { $in: [...group] },
+      residency: { $in: [...residency] },
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     });
 
     const speciesTotal = await Species.countDocuments();
@@ -144,10 +130,10 @@ const getAllSpecies = async (req, res) => {
       orders: orderOptions,
       families: familyOptions,
       genuses: genusOptions,
-      iucnstatuses: iucnstatusOptions,
+      iucnstatuses: iucnStatusOptions,
       groups: groupOptions,
       residencies: residencyOptions,
-      species,
+      species: foundSpecies,
     };
 
     res.status(200).json(response);
@@ -173,7 +159,7 @@ const getSpeciesDetail = async (req, res) => {
     res.status(200).json(species);
   } catch (error) {
     console.error(error);
-    res.status(400).send({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
 

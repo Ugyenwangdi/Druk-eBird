@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 
 import axios from "axios";
 
-function Sidebar({ user, googleUser, showSidebar, closeSidebar }) {
+function Sidebar({ showSidebar, closeSidebar }) {
   // console.log("user: ", user);
 
   // handling the clicked menu item

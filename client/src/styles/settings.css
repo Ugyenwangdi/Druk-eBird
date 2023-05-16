@@ -183,7 +183,7 @@ body {
 .deleteBtn {
   padding: 6px 12px;
   font-size: 14px;
-  border-radius: 3rem;
+  border-radius: 5px;
   color: #a90b0b;
   background-color: white;
   border: solid 1px #a90b0b;
@@ -194,7 +194,7 @@ body {
 .editBtn {
   padding: 6px 12px;
   font-size: 14px;
-  border-radius: 3rem;
+  border-radius: 5px;
   color: #136d66;
   background-color: white;
   border: solid 1px #136d66;

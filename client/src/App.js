@@ -95,7 +95,7 @@ function App() {
       localStorage.removeItem("token");
       window.location = "/deactivated";
     }
-  }, []);
+  }, [checkedDeactivatedUser, isDeactivatedUser]);
 
   // Sidebar and toggle connection
   const handleToggleSidebar = () => {

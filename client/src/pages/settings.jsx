@@ -121,25 +121,30 @@ function Settings() {
     e.preventDefault();
     try {
       setLoading(true);
-      // add your JWT token to the headers object
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
 
-      const res = await axios.patch(
-        `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
-        {
-          ...formData,
-          photo: userProfileImg,
-        },
-        { headers }
-      ); // send patch request to server
+      if (!currentUser.googleId) {
+        // add your JWT token to the headers object
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
-      const data = await res.data.data;
-      setFormData(data);
-      setCurrentUser(data);
-      setMsg(res.data.message);
-      console.log(res.data.message);
+        const res = await axios.patch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
+          {
+            ...formData,
+            photo: userProfileImg,
+          },
+          { headers }
+        ); // send patch request to server
+
+        const data = await res.data.data;
+        setFormData(data);
+        setCurrentUser(data);
+        setMsg(res.data.message);
+        console.log(res.data.message);
+      } else {
+        setError("You cannot update your google account");
+      }
     } catch (error) {
       if (
         error.response &&
