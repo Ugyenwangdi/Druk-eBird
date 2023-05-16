@@ -81,18 +81,27 @@ function Sidebar({ showSidebar, closeSidebar }) {
             <span className="material-icons">login</span>
             <h4>Entries</h4>
           </NavLink>
-          <NavLink href="/new-species"
-          className={activeItem === "/entries" ? "active" : ""}
-            onClick={() => handleMenuItemClick("/entries")}>
+          <NavLink
+            to="/new-species"
+            className={activeItem === "/new-species" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/new-species")}
+          >
             <span className="material-icons">flutter_dash</span>
             <h4>New Species</h4>
           </NavLink>
-          <NavLink href="#">
+          <NavLink
+            to="/graphs"
+            className={activeItem === "/graphs" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/graphs")}
+          >
             <span className="material-icons">poll </span>
             <h4>Graphs</h4>
           </NavLink>
-          <NavLink href="/Birder" className={activeItem === "/entries" ? "active" : ""}
-            onClick={() => handleMenuItemClick("/entries")}>
+          <NavLink
+            to="/Birder"
+            className={activeItem === "/Birder" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/Birder")}
+          >
             <span className="material-icons">groups</span>
             <h4>Birders</h4>
           </NavLink>
