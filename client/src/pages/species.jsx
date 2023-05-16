@@ -162,6 +162,8 @@ function Species() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
         }}
       >
         <h2 className="header">

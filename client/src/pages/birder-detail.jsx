@@ -1,11 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
+
 import "../styles/birderdetail.css";
-import { logo, profile } from "../images";
-
-import { Link } from "react-router-dom";
-
+import { profile } from "../images";
 
 function BirderDetail() {
+  const { id } = useParams();
+  const location = useLocation();
+  
+  const [birder, setBirder] = useState(location.state?.birderDetail || {});
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      try {
+        // const res = await axios.get(
+        //   `http://localhost:8080/api/v1/species/${id}`
+        // );
+        const res = await axios.get(
+          `https://druk-ebirds.onrender.com/api/v1/users/${id}`
+        );
+
+        setBirder(res.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSpecies();
+  }, [id]);
+
     return (
         <div className='birder-detail-page-container'>
             <h2 className="birder-details-header">
@@ -23,15 +46,15 @@ function BirderDetail() {
                         <img src={profile} ></img>
                     </div>
                     <div className="name-description" >
-                        <h2 >Sonam</h2>
-                        <p >Traveller</p>
+                        <h2>{birder.name}</h2>
+            <p>{birder.profession}</p>
                     </div>
                     <div className="birder-detail">
                         <article className="mt-10 mb-14 flex items-end justify-end">
                             <ul>
                                 <li className="p-1">
                                     <span className="font-bold">DOB:</span>
-                                    <span className="ml-auto">02/03/2000</span>
+                                    <span className="ml-auto">{birder.dob}</span>
                                 </li>
                                 {/* <li className="p-1 bg-gray-100">
                                     <span className="font-bold">City:</span>
@@ -42,7 +65,7 @@ function BirderDetail() {
                                 <li className="p-1">
                                     <span className="font-bold">Country:</span>
                                     <span className="ml-auto" >
-                                        Bhutan
+                                        {birder.country}
                                     </span>
                                 </li>
                                 <li className="p-1">
@@ -61,7 +84,7 @@ function BirderDetail() {
                                 </li> */}
                                 <li className="p-1">
                                     <span className="font-bold">Email:</span>
-                                    <span className="ml-auto">example@gmail.com</span>
+                                    <span className="ml-auto">{birder.email}</span>
                                 </li>
                             </ul>
                         </article>
@@ -97,86 +120,97 @@ function BirderDetail() {
                             }}>
                                 200</h1>
 
-                        </div>
-                        <div className="states-species">
-                            <p className="states-species-text">Species Observed</p>
-
-                            <span class="material-symbols-outlined"
-                                style={{
-                                    fontSize: '4rem',
-                                    marginTop: '5rem',
-                                    marginLeft: '-6rem'
-                                }}>
-                                flutter_dash
-                            </span>
-
-                            <h1 style={{
-
-                                marginTop: '10rem',
-                                marginLeft: '-25%',
-                                textAlign: 'center',
-                            }}>
-                                200</h1>
-                        </div>
-                    </div>
-                </div>
             </div>
-
-            <div className="total-species-observed">
-                <div className="viewall-button-container">
-                    <button className="view-all-button">View all</button>
-                </div>
-                <h2 className="submitted-checklist">Submitted Checklists </h2>
-                <div className="submitted-species">
-                    <div className="first-species">
-                        <img src='VerditerFlycatcher2.jpg'
-                            style={{
-                                width: '170px',
-                                height: '110px',
-                                borderRadius: '15px',
-                                display: 'inline-block',
-                                verticalAlign: 'middle'
-                            }} />
-
-                        <span className='first-span'>
-                            <h4 >Tropical kingbird</h4>
-                            <p className="first-location">
-                                <span class="material-symbols-outlined" style={{display: "inline-block", verticalAlign: "middle", fontSize:"16px"}}>
-                                    location_on
-                                </span>
-                                <span style={{display: "inline-block", verticalAlign: "middle", fontSize:"11px", paddingLeft:'5px'}}>Gyalpozhing</span>
-                            </p>
-                            <h5 style={{marginTop:'1rem'}}>08 March 2023</h5>
-                        </span>
-
-                    </div>
-                    <div className="second-species">
-                        <img src='VerditerFlycatcher2.jpg' 
-                        style={{ 
-                            width: '170px', 
-                            height: '110px', 
-                            borderRadius: '15px',
-                            display: 'inline-block', 
-                            verticalAlign: 'middle' 
-                        }} />
-                         <span className='second-span'>
-                            <h4 >Tropical kingbird</h4>
-                            <p className="second-location">
-                                <span class="material-symbols-outlined" style={{display: "inline-block", verticalAlign: "middle", fontSize:"16px"}}>
-                                    location_on
-                                </span>
-                                <span style={{display: "inline-block", verticalAlign: "middle", fontSize:"11px", paddingLeft:'5px'}}>Gyalpozhing</span>
-                            </p>
-                            <h5 style={{marginTop:'1rem'}}>08 March 2023</h5>
-                        </span>
-                    </div>
-
-
-                </div>
-
-            </div>
-
+          </div>
         </div>
-    );
+      </div>
+
+      <div className="total-species-observed">
+        <div className="viewall-button-container">
+          <button className="view-all-button">View all</button>
+        </div>
+        <h2 className="submitted-checklist">Submitted Checklists </h2>
+        <div className="submitted-species">
+          <div className="first-species">
+            <img
+              src="VerditerFlycatcher2.jpg"
+              style={{
+                width: "170px",
+                height: "110px",
+                borderRadius: "15px",
+                display: "inline-block",
+                verticalAlign: "middle",
+              }}
+            />
+
+            <span className="first-span">
+              <h4>Tropical kingbird</h4>
+              <p className="first-location">
+                <span
+                  class="material-symbols-outlined"
+                  style={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    fontSize: "16px",
+                  }}
+                >
+                  location_on
+                </span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    fontSize: "11px",
+                    paddingLeft: "5px",
+                  }}
+                >
+                  Gyalpozhing
+                </span>
+              </p>
+              <h5 style={{ marginTop: "1rem" }}>08 March 2023</h5>
+            </span>
+          </div>
+          <div className="second-species">
+            <img
+              src="VerditerFlycatcher2.jpg"
+              style={{
+                width: "170px",
+                height: "110px",
+                borderRadius: "15px",
+                display: "inline-block",
+                verticalAlign: "middle",
+              }}
+            />
+            <span className="second-span">
+              <h4>Tropical kingbird</h4>
+              <p className="second-location">
+                <span
+                  class="material-symbols-outlined"
+                  style={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    fontSize: "16px",
+                  }}
+                >
+                  location_on
+                </span>
+                <span
+                  style={{
+                    display: "inline-block",
+                    verticalAlign: "middle",
+                    fontSize: "11px",
+                    paddingLeft: "5px",
+                  }}
+                >
+                  Gyalpozhing
+                </span>
+              </p>
+              <h5 style={{ marginTop: "1rem" }}>08 March 2023</h5>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 export default BirderDetail;
