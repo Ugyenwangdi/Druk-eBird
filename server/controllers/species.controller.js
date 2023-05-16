@@ -1,7 +1,6 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
-import axios from "axios";
 
 import Species from "../mongodb/models/species.js";
 import {
@@ -46,7 +45,7 @@ const getAllSpecies = async (req, res) => {
     let iucnStatus = req.query.iucn_status || "All";
     let group = req.query.group || "All";
     let residency = req.query.residency || "All";
-    
+
     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
