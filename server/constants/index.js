@@ -725,6 +725,7 @@ export const groupOptions = [
   "Grosbeak",
   "Bunting",
   "nan",
+  "",
 ];
 export const residencyOptions = [
   "Altitudinal migrant",

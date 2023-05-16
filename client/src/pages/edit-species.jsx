@@ -5,6 +5,12 @@ import axios from "axios";
 import "../styles/addspecies.css";
 
 function AddSpecies() {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const { id } = useParams();
   const location = useLocation();
 
@@ -89,6 +95,7 @@ function AddSpecies() {
     event.preventDefault();
     try {
       setLoading(true);
+
       // const res = await axios.patch(
       //   `http://localhost:8080/api/v1/species/${id}`,
       //   {
@@ -102,7 +109,8 @@ function AddSpecies() {
         {
           ...form,
           photos: [speciesImg],
-        }
+        },
+        { headers }
       ); // send patch request to server
 
       const data = await res.data.data;
@@ -126,7 +134,8 @@ function AddSpecies() {
 
       // Deployed
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`,
+        { headers }
       );
 
       setForm((prevSpecies) => ({
