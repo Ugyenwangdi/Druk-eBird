@@ -45,6 +45,7 @@ function Birder() {
                         </span>
                     </div>
                 </div>
+
                 <div className="all-birder">
                     <Link to="/birder-detail" className='checklist-link'>
 
@@ -52,54 +53,9 @@ function Birder() {
                             <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
                                 more_horiz
                             </span>
-                            <img src={profile} alt="" style={{ borderRadius: '15px', }} className="birder-profile" />
-                            
-                            <h2 className="birder-name">Sonam
-                                <p style={{ fontSize: '12px' }}>Photographer</p></h2>
-                            <div className="email-contact">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            mail
-                                        </span>
-                                        ex@gmail.com
-                                    </li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            call
-                                        </span>
-                                        +975-17728216
-                                    </li>
-                                </ul>
-                            </div>
 
-                            <div className="locatio-date">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            location_on
-                                        </span>
-                                        Gyalpozhing</li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            fact_check
-                                        </span>
-                                        10 completed checklists</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-                <div className="all-birder">
-                    <Link to="/birder-detail" className='checklist-link'>
-
-                        <div className="birder-container">
-                            <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
-                                more_horiz
-                            </span>
-                            
                             <img src={profile} alt="" className="birder-profile" />
-                            
+
                             <h2 className="birder-name">Sonam
                                 <p style={{ fontSize: '12px' }}>Photographer</p></h2>
                             <div className="email-contact">
@@ -112,9 +68,9 @@ function Birder() {
                                     </li>
                                     <li>
                                         <span class="material-symbols-outlined">
-                                            call
+                                            calendar_month
                                         </span>
-                                        +975-17728216
+                                        02/03/2000
                                     </li>
                                 </ul>
                             </div>
@@ -123,9 +79,9 @@ function Birder() {
                                 <ul>
                                     <li>
                                         <span class="material-symbols-outlined">
-                                            location_on
+                                            emoji_flags
                                         </span>
-                                        Gyalpozhing</li>
+                                        Bhutan</li>
                                     <li>
                                         <span class="material-symbols-outlined">
                                             fact_check
@@ -136,7 +92,53 @@ function Birder() {
                         </div>
                     </Link>
                 </div>
-            </div>
+                
+            </div><div className="all-birder">
+                    <Link to="/birder-detail" className='checklist-link'>
+
+                        <div className="birder-container">
+                            <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
+                                more_horiz
+                            </span>
+
+                            <img src={profile} alt="" className="birder-profile" />
+
+                            <h2 className="birder-name">Sonam
+                                <p style={{ fontSize: '12px' }}>Photographer</p></h2>
+                            <div className="email-contact">
+                                <ul>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            mail
+                                        </span>
+                                        ex@gmail.com
+                                    </li>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            calendar_month
+                                        </span>
+                                        02/03/2000
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="locatio-date">
+                                <ul>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            emoji_flags
+                                        </span>
+                                        Bhutan</li>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            fact_check
+                                        </span>
+                                        10 completed checklists</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
             <Pagination
                 page={page}
                 limit={obj.limit ? obj.limit : 0}
