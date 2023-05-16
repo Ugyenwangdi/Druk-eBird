@@ -30,15 +30,15 @@ function BirderDetail() {
                         <article className="mt-10 mb-14 flex items-end justify-end">
                             <ul>
                                 <li className="p-1">
-                                    <span className="font-bold">Age:</span>
-                                    <span className="ml-auto">33</span>
+                                    <span className="font-bold">DOB:</span>
+                                    <span className="ml-auto">02/03/2000</span>
                                 </li>
-                                <li className="p-1 bg-gray-100">
+                                {/* <li className="p-1 bg-gray-100">
                                     <span className="font-bold">City:</span>
                                     <span className="ml-auto" >
                                         Thimphu
                                     </span>
-                                </li>
+                                </li> */}
                                 <li className="p-1">
                                     <span className="font-bold">Country:</span>
                                     <span className="ml-auto" >
@@ -55,10 +55,10 @@ function BirderDetail() {
                                     <span className="font-bold">Birder ID:</span>
                                     <span className="ml-auto">#783747747</span>
                                 </li>
-                                <li className="p-1">
+                                {/* <li className="p-1">
                                     <span className="font-bold">Phone:</span>
                                     <span className="ml-auto">17532757</span>
-                                </li>
+                                </li> */}
                                 <li className="p-1">
                                     <span className="font-bold">Email:</span>
                                     <span className="ml-auto">example@gmail.com</span>
