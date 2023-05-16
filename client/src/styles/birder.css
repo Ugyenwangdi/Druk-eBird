@@ -238,15 +238,15 @@
     width: 85%;
   }
 
-  .birder-container {
-    width: 100%;
-    height: 30rem;
-  }
+    .birder-container {
+        width: 100%;
+        height: 30rem;
+    }
 
-  .birder-name {
-    margin-left: 35%;
-    margin-top: -24rem;
-  }
+    .birder-name {
+        margin-left: 35%;
+        margin-top: -24rem;
+    }
 
   .email-contact {
     display: flex;
@@ -262,7 +262,9 @@
     width: 50%;
     position: relative;
 
-    margin-left: 35%;
-    margin-top: 1rem;
-  }
+        margin-left: 35%;
+        margin-top: 1rem;
+
+    }
+
 }

@@ -69,8 +69,7 @@
   margin-top: 2rem;
 }
 .birder-detail ul li {
-  padding-top: 1rem;
-  /* border: 1px solid black; */
+  padding-top: 2rem;
 }
 .birder-detail ul li span:first-child {
   display: inline-block;
