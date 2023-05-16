@@ -46,7 +46,7 @@ const getAllSpecies = async (req, res) => {
     let iucnStatus = req.query.iucn_status || "All";
     let group = req.query.group || "All";
     let residency = req.query.residency || "All";
-
+    
     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
