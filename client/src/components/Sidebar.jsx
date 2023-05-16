@@ -1,131 +1,116 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/sidebar.css";
+import { NavLink } from "react-router-dom";
 
-function Sidebar({ user, googleUser, show }) {
+import axios from "axios";
+
+function Sidebar({ showSidebar, closeSidebar }) {
   // console.log("user: ", user);
 
+  // handling the clicked menu item
+  const [activeItem, setActiveItem] = useState("/");
+
+  useEffect(() => {
+    setActiveItem(window.location.pathname);
+  }, []);
+
+  const handleMenuItemClick = (menuItem) => {
+    setActiveItem(menuItem);
+  };
+
   const handleLogout = () => {
-    try {
-      if (googleUser) {
-        window.open(`http://localhost:8080/auth/logout`, "_self");
-      }
-      if (user) {
-        localStorage.removeItem("token");
-        window.location.reload();
-      }
-    } catch (err) {
-      console.error(err);
-    }
+    // Make a POST request to your backend to log out the user
+    axios
+      .post("http://localhost:8080/auth/logout")
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
+    // Remove the sessionId from local storage
+    localStorage.removeItem("token");
+
+    // Redirect the user to the login page
+    window.location = "/login";
   };
 
   return (
-    <aside style={{ display: show ? "block" : "none" }}>
-      <div className="sidebar">
-        <a href="/" className="active">
-          <span className="material-icons">grid_view</span>
-          <h4>Dashboard</h4>
-        </a>
-        <a href="/species">
-          <span className="material-icons">flutter_dash</span>
-          <h4>Species</h4>
-        </a>
-        <a href="/checklist">
-          <span className="material-icons">fact_check</span>
-          <h4>Checklists</h4>
-        </a>
-        <a href="/entries">
-          <span className="material-icons">login</span>
-          <h4>Entries</h4>
-        </a>
-        <a href="/new-species">
-          <span className="material-icons">flutter_dash</span>
-          <h4>New Species</h4>
-        </a>
-        <a href="#">
-          <span className="material-icons">poll </span>
-          <h4>Graphs</h4>
-        </a>
-        <a href="/Birder">
-          <span className="material-icons">groups</span>
-          <h4>Birders</h4>
-        </a>
-        <a href="#">
-          <span className="material-icons">settings</span>
-          <h4>Settings</h4>
-        </a>
-        <a href="#" onClick={handleLogout}>
-          <span className="material-icons">logout</span>
-          <h4>Logout</h4>
-        </a>
-      </div>
-      {/* <button id="close-btn">
-        <span className="material-icons">chevron_left</span>
-      </button> */}
-    </aside>
+    <main>
+      <aside
+        className={`sidebar ${showSidebar ? "show" : ""}`}
+        style={{
+          display: window.innerWidth >= 768 || showSidebar ? "block" : "none",
+        }}
+      >
+        <button id="close-btn" onClick={closeSidebar} className="close-button">
+          <span className="material-icons">close</span>
+        </button>
+        <div className="sidebar">
+          <NavLink
+            exact
+            to="/"
+            className={activeItem === "/" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/")}
+          >
+            <span className="material-icons">grid_view</span>
+            <h4>Dashboard</h4>
+          </NavLink>
+          <NavLink
+            to="/species"
+            className={activeItem === "/species" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/species")}
+          >
+            <span className="material-icons">flutter_dash</span>
+            <h4>Species</h4>
+          </NavLink>
+          <NavLink
+            to="/checklist"
+            className={activeItem === "/checklist" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/checklist")}
+          >
+            <span className="material-icons">fact_check</span>
+            <h4>Checklists</h4>
+          </NavLink>
+          <NavLink
+            to="/entries"
+            className={activeItem === "/entries" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/entries")}
+          >
+            <span className="material-icons">login</span>
+            <h4>Entries</h4>
+          </NavLink>
+          <NavLink href="/new-species"
+          className={activeItem === "/entries" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/entries")}>
+            <span className="material-icons">flutter_dash</span>
+            <h4>New Species</h4>
+          </NavLink>
+          <NavLink href="#">
+            <span className="material-icons">poll </span>
+            <h4>Graphs</h4>
+          </NavLink>
+          <NavLink href="/Birder" className={activeItem === "/entries" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/entries")}>
+            <span className="material-icons">groups</span>
+            <h4>Birders</h4>
+          </NavLink>
+          <NavLink
+            to="/settings"
+            className={activeItem === "/settings" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/settings")}
+          >
+            <span className="material-icons">settings</span>
+            <h4>Settings</h4>
+          </NavLink>
+          <a href="#" onClick={handleLogout}>
+            <span className="material-icons">logout</span>
+            <h4>Logout</h4>
+          </a>
+        </div>
+      </aside>
+    </main>
   );
 }
-
 export default Sidebar;
-
-// import React from "react";
-// // import "../styles/sidebar.css";
-
-// function Sidebar(userDetails) {
-//   const user = localStorage.getItem("token");
-
-//   const googleUser = userDetails?.googleUser;
-
-//   // console.log("user: ", user);
-
-//   const handleLogout = () => {
-//     try {
-//       if (googleUser) {
-//         window.open(`${process.env.REACT_APP_API_URL}/auth/logout`, "_self");
-//       }
-//       if (user) {
-//         localStorage.removeItem("token");
-//         window.location.reload();
-//       }
-//     } catch (err) {
-//       console.error(err);
-//     }
-//   };
-
-//   return (
-//     <div className="sidebar">
-//       <ul>
-//         <li>
-//           <a href="#">Dashboard</a>
-//         </li>
-//         <li>
-//           <a href="#">Species</a>
-//         </li>
-//         <li>
-//           <a href="#">Checklists</a>
-//         </li>
-//         <li>
-//           <a href="#">Entries</a>
-//         </li>
-//         <li>
-//           <a href="#">New Species</a>
-//         </li>
-//         <li>
-//           <a href="#">Graphs</a>
-//         </li>
-//         <li>
-//           <a href="#">Birders</a>
-//         </li>
-//         <li>
-//           <a href="#">Settings</a>
-//         </li>
-//         <li>
-//           <a href="#" onClick={handleLogout}>
-//             Logout
-//           </a>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default Sidebar;
