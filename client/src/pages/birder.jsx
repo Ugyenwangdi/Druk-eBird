@@ -45,7 +45,7 @@ function Birder() {
                         </span>
                     </div>
                 </div>
-                <div className="all-birder">
+                {/* <div className="all-birder">
                     <Link to="/birder-detail" className='checklist-link'>
 
                         <div className="birder-container">
@@ -53,6 +53,52 @@ function Birder() {
                                 more_horiz
                             </span>
                             <img src={profile} alt="" style={{ borderRadius: '15px', }} className="birder-profile" />
+                            
+                            <h2 className="birder-name">Sonam
+                                <p style={{ fontSize: '12px' }}>Photographer</p></h2>
+                            <div className="email-contact">
+                                <ul>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            mail
+                                        </span>
+                                        ex@gmail.com
+                                    </li>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            call
+                                        </span>
+                                        +975-17728216
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="locatio-date">
+                                <ul>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            location_on
+                                        </span>
+                                        Gyalpozhing</li>
+                                    <li>
+                                        <span class="material-symbols-outlined">
+                                            fact_check
+                                        </span>
+                                        10 completed checklists</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Link>
+                </div> */}
+                <div className="all-birder">
+                    <Link to="/birder-detail" className='checklist-link'>
+
+                        <div className="birder-container">
+                            <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
+                                more_horiz
+                            </span>
+                            
+                            <img src={profile} alt="" className="birder-profile" />
                             
                             <h2 className="birder-name">Sonam
                                 <p style={{ fontSize: '12px' }}>Photographer</p></h2>
