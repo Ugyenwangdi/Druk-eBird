@@ -2,18 +2,24 @@
 main {
   display: flex;
   grid-template-columns: 16rem auto 30rem;
-  gap: 2rem;
+  gap: 1rem;
+  padding-left: 9rem;
 }
 main aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 90.7vh;
+  height: 91.7vh;
+  width: 18rem;
+  position: fixed;
+  top: 5.5rem;
+  left: 0;
+  z-index: 3;
+  background-color: #136D66;
 }
 /* Visible only in mobile and tablets screens */
 main aside button#close-btn {
-  display: block;
-  width: 100%;
+  display: none;
 }
 main aside .sidebar {
   background: #136d66;
@@ -33,8 +39,8 @@ main aside .sidebar a span {
   margin-left: 2rem;
   transition: all 300ms ease;
 }
-main aside .sidebar a.active {
-  color: #ba760d;
+.sidebar a.active {
+  color: #ba760d !important;
 }
 main aside .sidebar a.active::before {
   content: "";
@@ -49,3 +55,26 @@ main aside .sidebar a:hover {
 main aside .sidebar h4 {
   font-weight: 500;
 }
+@media screen and (max-width: 1024px) {
+  main{
+    grid-template-columns: 1fr;
+    padding-left: 0;
+  }
+  main aside {
+    position: fixed;
+    left: 0;
+    z-index: 3;
+    background-color: #136D66;
+    width: 18rem;
+    height: 100vh;
+    box-shadow: .1rem 0 1rem #136D66;
+    display: none;
+  }
+  button:hover{
+    cursor: pointer;
+  }
+  main aside .sidebar{
+    margin-top: 4rem; 
+  }
+}
+

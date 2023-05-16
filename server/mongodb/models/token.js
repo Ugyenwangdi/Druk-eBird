@@ -13,6 +13,6 @@ const tokenSchema = new Schema({
   createdAt: { type: Date, default: Date.now, expires: 3600 },
 });
 
-const token = mongoose.model("token", tokenSchema);
+const AdminToken = mongoose.model("AdminToken", tokenSchema);
 
-export default token;
+export default AdminToken;

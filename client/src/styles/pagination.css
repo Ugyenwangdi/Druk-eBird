@@ -1,12 +1,13 @@
 .pagination_container {
-  position: absolute;
-  bottom: 2rem;
-  right: 4rem;
-  left: 0;
-  width: calc(100% - 20px);
+  position: relative;
+  bottom: -3rem;
+  left: 15rem;
+  /* left: 0; */
+  width: calc(80% - 20px);
   margin: 0 0;
   height: 45px;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   justify-content: flex-end;
   z-index: 100;

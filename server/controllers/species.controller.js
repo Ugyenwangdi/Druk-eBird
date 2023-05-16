@@ -1,9 +1,17 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
+import axios from "axios";
 
 import Species from "../mongodb/models/species.js";
-import { User, validateUser } from "../mongodb/models/user.js";
+import {
+  orderOptions,
+  familyOptions,
+  genusOptions,
+  iucnStatusOptions,
+  groupOptions,
+  residencyOptions,
+} from "../constants/index.js";
 
 dotenv.config();
 
@@ -23,76 +31,91 @@ cloudinary.config({
 //   }
 // };
 
-// Pagination
-
-// const getAllSpecies = async (req, res) => {
-//   try {
-//     const page = parseInt(req.query.page) || 1;
-//     const limit = parseInt(req.query.limit) || 10;
-
-//     const species = await Species.find({})
-//       .skip((page - 1) * limit)
-//       .limit(limit);
-
-//     res.status(200).json(species);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
-
 // Complex search with pagination
 const getAllSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 6;
-    const search = req.query.search || "";
+    const startsWith = req.query.starts_with || "";
+    let search = req.query.search || "";
+    const species = req.query.species || "";
+    const scientificName = req.query.scientific_name || "";
     let order = req.query.order || "All";
-
-    const orderOptions = [
-      "Galliformes",
-      "Charadriiformes",
-      "Anseriformes",
-      "Podicipediformes",
-      "Gaviiformes",
-      "Ciconiiformes",
-      "Pelecaniformes",
-      "Procellariiformes",
-      "Gruiformes",
-      "Suliformes",
-      "Coraciiformes",
-      "Bucerotiformes",
-      "Accipitriformes",
-      "Falconiformes",
-      "Piciformes",
-      "Passeriformes",
-      "Trogoniformes",
-      "Cuculiformes",
-      "Psittaciformes",
-      "Columbiformes",
-      "Caprimulgiformes",
-      "Strigiformes",
-      "Passerformes",
-      "nan",
-      "",
-    ];
-
+    let family = req.query.family || "All";
+    let genus = req.query.genus || "All";
+    let iucnStatus = req.query.iucn_status || "All";
+    let group = req.query.group || "All";
+    let residency = req.query.residency || "All";
+    
     order === "All"
       ? (order = [...orderOptions])
       : (order = req.query.order.split(","));
 
-    const species = await Species.find({
-      englishName: { $regex: search, $options: "i" },
+    family === "All"
+      ? (family = [...familyOptions])
+      : (family = req.query.family.split(","));
+
+    genus === "All"
+      ? (genus = [...genusOptions])
+      : (genus = req.query.genus.split(","));
+
+    iucnStatus === "All"
+      ? (iucnStatus = [...iucnStatusOptions])
+      : (iucnStatus = req.query.iucn_status.split(","));
+
+    group === "All"
+      ? (group = [...groupOptions])
+      : (group = req.query.group.split(","));
+
+    residency === "All"
+      ? (residency = [...residencyOptions])
+      : (residency = req.query.residency.split(","));
+
+    let searchQuery = {};
+
+    if (startsWith) {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: `^${startsWith}`, $options: "i" } },
+          { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        ],
+      };
+    } else if (search) {
+      searchQuery = {
+        englishName: { $regex: search, $options: "i" },
+      };
+    }
+    const foundSpecies = await Species.find({
+      ...searchQuery,
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     })
       .where("order")
       .in([...order])
+      .where("familyName")
+      .in([...family])
+      .where("genus")
+      .in([...genus])
+      .where("iucnStatus")
+      .in([...iucnStatus])
+      .where("group")
+      .in([...group])
+      .where("residency")
+      .in([...residency])
       .skip(page * limit)
-      .limit(limit);
-    // .sort({ _id: -1 });
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     const total = await Species.countDocuments({
+      ...searchQuery,
       order: { $in: [...order] },
-      englishName: { $regex: search, $options: "i" },
+      familyName: { $in: [...family] },
+      genus: { $in: [...genus] },
+      iucnStatus: { $in: [...iucnStatus] },
+      group: { $in: [...group] },
+      residency: { $in: [...residency] },
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     });
 
     const speciesTotal = await Species.countDocuments();
@@ -105,7 +128,12 @@ const getAllSpecies = async (req, res) => {
       page: page + 1,
       limit,
       orders: orderOptions,
-      species,
+      families: familyOptions,
+      genuses: genusOptions,
+      iucnstatuses: iucnStatusOptions,
+      groups: groupOptions,
+      residencies: residencyOptions,
+      species: foundSpecies,
     };
 
     res.status(200).json(response);
@@ -131,7 +159,7 @@ const getSpeciesDetail = async (req, res) => {
     res.status(200).json(species);
   } catch (error) {
     console.error(error);
-    res.status(400).send({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
 
@@ -210,7 +238,7 @@ const createSpecies = async (req, res) => {
 
 const updateSpecies = async (req, res) => {
   const speciesId = req.params.id;
-  // console.log(req.body);
+  console.log(req.body);
   const {
     englishName,
     scientificName,
@@ -236,6 +264,7 @@ const updateSpecies = async (req, res) => {
 
   try {
     let updatedSpecies = await Species.findById(speciesId);
+    // console.log(updateSpecies);
     if (!updatedSpecies) {
       return res.status(404).json({ message: "Species not found" });
     }
@@ -345,68 +374,110 @@ async function uploadPhoto(photoPath) {
   }
 }
 
+let imageCount = 0; // Initialize counter variable outside of the function
+
 async function uploadPhotos(photoArray) {
-  try {
-    const photoUrls = [];
-    for (const photoPath of photoArray) {
-      const photoUrl = await uploadPhoto(photoPath);
-      photoUrls.push(photoUrl);
-    }
-    return photoUrls;
-  } catch (error) {
-    console.error(error);
-    throw new Error("Failed to upload photos to Cloudinary");
+  const batchSize = 50;
+  const photoBatches = [];
+  for (let i = 0; i < photoArray.length; i += batchSize) {
+    photoBatches.push(photoArray.slice(i, i + batchSize));
   }
+
+  const photoUrls = [];
+  for (const batch of photoBatches) {
+    const batchResults = await Promise.all(
+      batch.map(async (photoPath) => {
+        try {
+          const photoUrl = await uploadPhoto(photoPath);
+          console.log(`Uploaded image ${++imageCount}: ${photoPath}`); // Increment counter and log image number
+          photoUrls.push(photoUrl);
+          return true;
+        } catch (error) {
+          console.error(error);
+          console.log(`Skipping photo: ${photoPath}`);
+          return false;
+        }
+      })
+    );
+
+    // Wait for 1 second before uploading the next batch
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+
+  return photoUrls;
 }
+
+// async function uploadPhotos(photoArray) {
+//   try {
+//     const photoUrls = [];
+//     for (const photoPath of photoArray) {
+//       try {
+//         const photoUrl = await uploadPhoto(photoPath);
+//         console.log(`Uploaded image ${++imageCount}: ${photoPath}`);
+//         photoUrls.push(photoUrl);
+//       } catch (error) {
+//         console.error(error);
+//         console.log(`Skipping photo: ${photoPath}`);
+//       }
+//     }
+//     return photoUrls;
+//   } catch (error) {
+//     console.error(error);
+//     throw new Error("Failed to upload photos to Cloudinary");
+//   }
+// }
 
 const uploadExcelFile = async (req, res) => {
   try {
     const workbook = xlsx.readFile(req.file.path);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const birdData = xlsx.utils.sheet_to_json(worksheet);
-    // console.log("bird Data: ", birdData);
 
-    let species = [];
+    let requests = [];
 
     for (const bird of birdData) {
       let photoUrls = [];
       if (bird.photos) {
         const photoArray = JSON.parse(bird.photos.replace(/'/g, ""));
         photoUrls = await uploadPhotos(photoArray);
-        // console.log("photoUrls: ", photoUrls);
       }
 
-      const newBird = new Species({
-        englishName: bird.englishName,
-        scientificName: bird.scientificName,
-        order: bird.order,
-        familyName: bird.familyName,
-        genus: bird.genus,
-        species: bird.species,
-        authority: bird.authority,
-        group: bird.group,
-        dzongkhaName: bird.dzongkhaName,
-        lhoName: bird.lhoName,
-        sharName: bird.sharName,
-        khengName: bird.khengName,
-        iucnStatus: bird.iucnStatus,
-        citesAppendix: bird.citesAppendix,
-        bhutanSchedule: bird.bhutanSchedule,
-        residency: bird.residency,
-        habitat: bird.habitat,
-        description: bird.description,
-        observations: bird.observations,
-        photos: photoUrls.map((url) => ({ url })),
-      });
+      const request = {
+        insertOne: {
+          document: {
+            englishName: bird.englishName,
+            scientificName: bird.scientificName,
+            order: bird.order,
+            familyName: bird.familyName,
+            genus: bird.genus,
+            species: bird.species,
+            authority: bird.authority,
+            group: bird.group,
+            dzongkhaName: bird.dzongkhaName,
+            lhoName: bird.lhoName,
+            sharName: bird.sharName,
+            khengName: bird.khengName,
+            iucnStatus: bird.iucnStatus,
+            citesAppendix: bird.citesAppendix,
+            bhutanSchedule: bird.bhutanSchedule,
+            residency: bird.residency,
+            habitat: bird.habitat,
+            description: bird.description,
+            observations: bird.observations,
+            photos: photoUrls.map((url) => ({ url })),
+          },
+        },
+      };
 
-      await newBird.save();
-      species.push(bird);
+      requests.push(request);
     }
 
-    console.log(`Uploaded species successfully!`);
+    const result = await Species.bulkWrite(requests);
+
+    console.log(`Uploaded ${result.insertedCount} species successfully!`);
 
     res.status(201).json({
-      data: species,
+      data: birdData,
       message: "Bird data uploaded successfully",
     });
   } catch (error) {

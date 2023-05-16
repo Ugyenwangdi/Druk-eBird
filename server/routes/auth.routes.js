@@ -1,11 +1,20 @@
 import express from "express";
 import passport from "passport";
 import {
+  baseRoute,
+  // validateSession,
+  checkAuthStatus,
+  authMiddleware,
   registerUser,
   loginUser,
   getUserByID,
   logoutUser,
   getAllUsers,
+  editAdminUser,
+  updateProfile,
+  updatePassword,
+  deactivateAccount,
+  deleteUser,
   secretPage,
   googleAuth,
   successGoogleLogin,
@@ -15,43 +24,30 @@ import {
 
 const router = express.Router();
 
-const ensureAuthenticated = (req, res, next) => {
-  if (req.session.user) {
-    return next();
-  } else {
-    return res.status(401).json({ error: "User not logged in!" });
-  }
-
-  // if (req.isAuthenticated()) {
-  //   return next();
-  // } else {
-  //   return res.status(401).json({ error: "User not logged in!" });
-  // }
-};
-
-// route to check if user is logged in
-router.get("/auth/checkLoggedIn", ensureAuthenticated, (req, res) => {
-  res.json({ message: "User is logged in" });
-});
+router.route("").get(authMiddleware, baseRoute);
+router.route("/auth/checkLoggedIn").get(authMiddleware, checkAuthStatus);
 
 // Google Authentication routes
 router.route("/auth/google").get(googleAuth);
 router.route("/auth/login/success").get(successGoogleLogin);
 router.route("/auth/login/failed").get(failedGoogleLogin);
-router
-  .route("/auth/google/callback")
-  .get(googleAuthCallback, successGoogleLogin);
+router.route("/auth/google/callback").get(googleAuthCallback);
 
-// Register and Login POST routes
-router.route("/auth/register").post(registerUser);
+// User Auth routes
+router.route("/auth/register-admin").post(authMiddleware, registerUser);
 router.route("/auth/login").post(loginUser);
 router.route("/auth/logout").post(logoutUser);
 
-// User GET routes
+// User routes
 router.route("/users").get(getAllUsers);
 router.route("/users/:id").get(getUserByID);
+router.route("/users/:id").patch(authMiddleware, editAdminUser);
+router.route("/users/:id").delete(authMiddleware, deleteUser);
+router.route("/users/:id/update-profile").patch(authMiddleware, updateProfile);
+router.route("/users/:id/deactivate").patch(authMiddleware, deactivateAccount);
+router.route("/users/:id/update-password").post(authMiddleware, updatePassword);
 
 // Secret route
-router.route("/secrets").get(ensureAuthenticated, secretPage);
+router.route("/secrets").get(authMiddleware, secretPage);
 
 export default router;
