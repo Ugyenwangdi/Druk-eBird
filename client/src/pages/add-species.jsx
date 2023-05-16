@@ -4,6 +4,12 @@ import axios from "axios";
 import "../styles/addspecies.css";
 
 function AddSpecies() {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const [form, setForm] = useState({
     englishName: "",
     scientificName: "",
@@ -74,7 +80,8 @@ function AddSpecies() {
         {
           ...form,
           photos: [speciesImg],
-        }
+        },
+        { headers }
       ); // post data to server
 
       setForm({
@@ -140,6 +147,7 @@ function AddSpecies() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );

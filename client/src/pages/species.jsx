@@ -19,6 +19,8 @@ import {
 import "../styles/species.css";
 
 function Species() {
+  const token = localStorage.getItem("token");
+
   const [speciesList, setSpeciesList] = useState([]);
   const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
@@ -86,9 +88,13 @@ function Species() {
         // const res = await axios.delete(
         //   `http://localhost:8080/api/v1/species/${id}`
         // );
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
         const res = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
+          { headers }
         );
 
         setSpeciesList((prevSpeciesList) =>
