@@ -35,7 +35,7 @@ function Species() {
   const [searchspecies, setSearchspecies] = useState("");
   const [searchscientific, setSearchscientific] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };

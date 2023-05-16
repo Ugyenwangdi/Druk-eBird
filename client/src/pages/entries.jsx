@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import "../styles/entries.css";
 import { logo } from "../images";
 
+import {
+  Pagination,
+
+} from "../components";
 function Entries() {
+  const [page, setPage] = useState(1);
+  const [obj, setObj] = useState({});
   return (
     <div className="page-container">
       <div className="button-container">
@@ -64,7 +70,7 @@ function Entries() {
               <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
               <td data-title="Date/Time">10.12.2022</td>
               <td data-title="Photo">
-                <img src={logo} alt="Bird Photo" className="bird-img" />
+                <img src={logo} alt="" className="bird-img" />
               </td>
               <td data-title="Number Observed">2 male</td>
             </tr>
@@ -76,7 +82,7 @@ function Entries() {
               <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
               <td data-title="Date/Time">10.12.2022</td>
               <td data-title="Photo">
-                <img src={logo} alt="Bird Photo" className="bird-img" />
+                <img src={logo} alt="" className="bird-img" />
               </td>
               <td data-title="Number Observed">2 male</td>
             </tr>
@@ -87,13 +93,19 @@ function Entries() {
               <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
               <td data-title="Date/Time">10.12.2022</td>
               <td data-title="Photo">
-                <img src={logo} alt="Bird Photo" className="bird-img" />
+                <img src={logo} alt="" className="bird-img" />
               </td>
               <td data-title="Number Observed">2 male</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <Pagination
+        page={page}
+        limit={obj.limit ? obj.limit : 0}
+        total={obj.foundTotal ? obj.foundTotal : 0}
+        setPage={(page) => setPage(page)}
+      />
     </div>
   );
 }

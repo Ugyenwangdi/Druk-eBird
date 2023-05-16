@@ -84,6 +84,10 @@
   cursor: pointer;
   object-fit: cover;
 }
+.species-container {
+  display: flex;
+  flex-direction: row;
+}
 
 .species-text {
   padding: 5px;
@@ -93,7 +97,8 @@
 
 .species-name {
   padding: 5px;
-  font-size: 25px;
+  font-size: 12px;
+  color: #808191;
   margin-left: 15px;
 }
 
@@ -123,14 +128,14 @@
 .species-des {
   padding: 5px;
   padding-top: 25px;
-  font-size: 20px;
+  font-size: 16px;
   margin-left: 15px;
 }
 
 .species-des-para {
-  padding: 5px;
+  padding-top: 5px;
   color: #808191;
   padding-top: 5px;
-  font-size: 20px;
+  font-size: 12px;
   margin-left: 15px;
 }
