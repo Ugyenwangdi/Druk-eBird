@@ -37,7 +37,7 @@ function Species() {
   const [searchspecies, setSearchspecies] = useState("");
   const [searchscientific, setSearchscientific] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -233,9 +233,12 @@ function Species() {
             </span>
           </div>
           <div className="filter-button" style={{ position: "relative" }}>
-            <button className="filter-more-btn" onClick={handleDropdown}>
+            <button className="filter-more-btn">
               More
-              <span className="material-symbols-outlined google-font-icon">
+              <span
+                className="material-symbols-outlined google-font-icon"
+                onClick={handleDropdown}
+              >
                 page_info
               </span>
             </button>

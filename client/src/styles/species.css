@@ -39,6 +39,7 @@
 }
 
 .species-search-bar {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 5px;
   width: 35%;
@@ -50,7 +51,7 @@
 }
 
 .species-search-bar:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .species-search-bar input {
@@ -79,6 +80,7 @@
 }
 
 .filter-select {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 3px;
   width: 100px;
@@ -90,7 +92,7 @@
 }
 
 .filter-select:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .species-container {
@@ -236,8 +238,6 @@
 }
 
 .export-button:is(:hover, :focus) {
-  border: 2px solid #ba760d;
-  background-color: #136d66;
   color: #ba760d;
 }
 
@@ -254,7 +254,6 @@
 
 .add-button:is(:hover, :focus) {
   color: #ba760d;
-  border: 1px solid #ba760d;
 }
 
 .dropdown-content {
@@ -272,6 +271,7 @@
 }
 
 .search-bar {
+  border: 1px solid transparent;
   background: var(--color-light);
   border-radius: var(--border-radius-2);
   display: flex;
@@ -285,7 +285,7 @@
   width: 100%;
 }
 .search-bar:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .material-icons {
@@ -304,6 +304,7 @@
 }
 
 .filter-button {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 0px 10px;
   width: 80px;
@@ -321,7 +322,7 @@
   line-height: 190%;
 }
 .filter-button:is(:hover, :focus) {
-  border: 3px solid #136d66;
+  border: 1px solid #136d66;
 }
 #order-dropdown,
 #family-dropdown,

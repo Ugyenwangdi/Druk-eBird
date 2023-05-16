@@ -1,7 +1,6 @@
 .page-container {
   display: block;
   width: 100%;
-  overflow-x: hidden;
   margin-right: 2rem;
 }
 
@@ -28,7 +27,7 @@
   justify-content: space-between;
   align-items: center;
   margin: 1.5rem 0;
-  width: 86rem;
+  width: 100%;
 }
 
 .enteries-search-bar {
