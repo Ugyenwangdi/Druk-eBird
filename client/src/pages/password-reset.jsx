@@ -56,7 +56,7 @@ const PasswordReset = () => {
       {validUrl ? (
         <div className="password_reset_container">
           <form className="form_contain" onSubmit={handleSubmit}>
-            <h1>Add New Password</h1>
+            <h1 style={{ marginTop: "10px" }}>Add New Password</h1>
             <input
               type="password"
               placeholder="Password"
