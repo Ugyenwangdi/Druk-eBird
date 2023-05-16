@@ -1,4 +1,4 @@
-.checklist-detail-page-container{
+.checklist-detail-page-container {
     border-radius: 15px;
     margin-top: 20px;
     border-color: #f7f7f7;
@@ -21,11 +21,12 @@
     margin-left: 2rem;
     padding: 0.5rem;
 }
-.checklist-detail-header{
-  display: flex;
-  justify-content: space-between;
-  line-height: 190%;
-  padding: 0 10px;
+
+.checklist-detail-header {
+    display: flex;
+    justify-content: space-between;
+    line-height: 190%;
+    padding: 0 10px;
 }
 
 
@@ -40,13 +41,19 @@
     margin-right: 5px;
 }
 
+.checklistdetail-container {
+    display: flex;
+    width: 100%;
+}
+
 .contaier-table {
+    flex: 1;
     margin-top: -25px;
-    width: 50rem;
+    width: 40%;
 }
 
 .checklist-detail {
-    border: .75px solid rgb(236, 235, 235);;
+    border: .75px solid rgb(236, 235, 235);
     border-collapse: collapse;
     width: 48rem;
     border-radius: 10px;
@@ -64,7 +71,7 @@
     padding-top: 2rem;
 }
 
-  
+
 
 .bird-img {
     height: 40px;
@@ -96,25 +103,23 @@
 }
 
 .card-container {
-    display:flex;
-    justify-content: flex-end;
-    position: relative;
-    /* border: .5px solid rgb(227, 225, 225); */
-    margin-left: 12rem;
-    margin-top: -13rem;
-    width: 85%;
+    display: flex;
+    flex: 1;
+
+    width: 90%;
     height: 60rem;
 
 }
 
 .card-detail {
-    width: 40%;
+    width: 90%;
     height: 50%;
     background: white;
-    margin-right: 2rem;
+    margin-top: 2rem;
+    margin-left: 1rem;
     border: .75px solid rgb(236, 235, 235);
     border-radius: 10px;
-    
+
 }
 
 .card-detail ul {
@@ -144,17 +149,17 @@
 
 
 .card-detail ul li span {
-    display: inline-block;
     margin-right: 0.5rem;
-  }
+}
 
 
 .card-detail .p-1 {
     padding: 0.25rem;
 }
+
 .detail-container {
-    position: relative; 
-  }
+    position: relative;
+}
 
 .detail-profile {
     position: absolute;
@@ -167,27 +172,42 @@
     border-radius: 50%;
 
 }
+
 .detail-text {
-    margin-top: 7rem; 
+    margin-top: 7rem;
     margin-left: 11rem;
     text-align: center;
-  }
-.name{
+}
+
+.name {
     font-size: 14px;
     color: black;
 }
-.description{
+
+.description {
     font-size: 12px;
 }
-@media(max-width:1024px){
-    .checklist-detail-container{
+
+@media(max-width:1024px) {
+    .checklist-detail-container {
         display: block;
         width: 95%;
         margin-right: 1rem;
     }
-    .checklist-detail{
-        width:95%;
+    .checklistdetail-container {
+        display: flex;
+        flex-direction: column;
     }
+    .contaier-table {
+        flex: 1;
+        margin-top: -25px;
+        width: 100%;
+    }
+
+    .checklist-detail {
+        width: 95%;
+    }
+
     .card-container {
         margin-top: 1rem;
         display: block;
@@ -196,41 +216,60 @@
         height: 50%;
         background: #ffffff;
         border-radius: 10px;
-        /* border: 1px solid rgb(209, 205, 205); */
+        border: 1px solid rgb(209, 205, 205);
     }
-    
-   
+
+    .card-detail {
+        /* width% ; */
+        height: 50%;
+        background: white;
+        margin-top: 2rem;
+        margin-left: 1rem;
+        border: .75px solid rgb(236, 235, 235);
+        border-radius: 10px;
+
+    }
+
+
 }
-@media(max-width:768px){
-    .container-table{
+
+@media(max-width:768px) {
+    
+
+    .container-table {
         display: block;
         width: 100%;
     }
-    
+
     .checklist-detail thead tr {
         display: none;
-    
-      }
-    
-      .checklist-detail thead tr{
+
+    }
+
+    .checklist-detail thead tr {
         display: none;
     }
-    .checklist-detail tr{
+
+    .checklist-detail tr {
         display: block;
     }
-    .checklist-detail th, .checklist-detail tr{
+
+    .checklist-detail th,
+    .checklist-detail tr {
         padding: .5em;
     }
-    .checklist-detail td{
+
+    .checklist-detail td {
         text-align: right;
         display: block;
     }
-    .checklist-detail td::before{
+
+    .checklist-detail td::before {
         content: attr(data-label) ": ";
         float: left;
     }
 
-    .card-container{
+    .card-container {
         width: 60%;
         height: 30%;
         margin-left: 20px;
@@ -246,7 +285,7 @@
         padding: 10px;
     }
 
-    
+
 
     .detail-container {
         display: flex;
@@ -266,17 +305,20 @@
     .name {
         margin-bottom: 5px;
     }
-    
-}
-@media(max-width:584px){
-  .detail-profile{
-    margin-left: 5%;
-  }
-  .detail-text{
-    margin-left: 20%;
 
-  }
-  .name{
-    margin-left: 20%;
-  }
+}
+
+@media(max-width:584px) {
+    .detail-profile {
+        margin-left: 5%;
+    }
+
+    .detail-text {
+        margin-left: 20%;
+
+    }
+
+    .name {
+        margin-left: 20%;
+    }
 }
