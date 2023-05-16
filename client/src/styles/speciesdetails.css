@@ -61,6 +61,7 @@
   border: 1px solid #ccc;
   border-radius: 2%;
   object-fit: cover;
+  cursor: pointer;
 }
 
 .species-image {

@@ -34,13 +34,12 @@
 } */
 
 
-
-.checklist-filter-container {
+/* .checklist-filter-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin: 1.5rem 0;
-}
+} */
 
 .checklist-search-bar {
   padding: 0.5rem;
