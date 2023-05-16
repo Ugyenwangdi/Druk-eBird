@@ -14,8 +14,13 @@ import {
   EditSpecies,
   SpeciesDetails,
   Checklist,
+  ChecklistDetail,
   Entries,
-  Settings,
+  NewSpecies,
+  NewSpeciesDetail, 
+   Birder,
+   BirderDetail,
+   Settings,
   AddAdmin,
   EditAdmin,
   UpdatePassword,
@@ -168,7 +173,12 @@ function App() {
               <Route path="/species/:id" element={<SpeciesDetails />} />
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
-              <Route path="/settings" element={<Settings />} />
+                <Route path="/checklist-detail" element={<ChecklistDetail />} />
+              <Route path="/new-species" element={<NewSpecies />} />
+              <Route path="/new-species-detail" element={<NewSpeciesDetail />} />
+              <Route path="/birder" element={<Birder />} />
+              <Route path="/birder-detail" element={<BirderDetail />} />
+ <Route path="/settings" element={<Settings />} />
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/password-update" element={<UpdatePassword />} />

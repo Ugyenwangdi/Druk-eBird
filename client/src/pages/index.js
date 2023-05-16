@@ -7,9 +7,13 @@ import Dashboard from "./dashboard";
 import SpeciesList from "./species";
 import { AddSpecies } from "./add-species";
 import EditSpecies from "./edit-species";
-import SpeciesDetails from "./species-details";
+import ChecklistDetail from "./checklist-detail";
 import Checklist from "./checklist";
 import Entries from "./entries";
+import NewSpecies from "./new-species";
+import NewSpeciesDetail from "./new-species-detail";
+import Birder from "./birder"
+import BirderDetail from "./birder-detail";
 import Settings from "./settings";
 import AddAdmin from "./add-admin";
 import EditAdmin from "./edit-admin";
@@ -26,9 +30,15 @@ export {
   EditSpecies,
   SpeciesDetails,
   Checklist,
+    ChecklistDetail,
   Entries,
-  Settings,
+    NewSpecies,
+  NewSpeciesDetail,
+  Birder,
+  BirderDetail,
+    Settings,
   AddAdmin,
   EditAdmin,
   UpdatePassword,
+
 };
