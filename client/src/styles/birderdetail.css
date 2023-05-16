@@ -165,7 +165,7 @@ hr {
 .total-species-observed {
   display: flex;
   flex-direction: column;
-  width: 81rem;
+  width: 100%;
   height: 17rem;
   margin-top: -9rem;
   background-color: #ffffff;
