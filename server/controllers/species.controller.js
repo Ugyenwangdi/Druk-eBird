@@ -103,8 +103,8 @@ const getAllSpecies = async (req, res) => {
       .where("residency")
       .in([...residency])
       .skip(page * limit)
-      .limit(limit);
-    // .sort({ createdAt: -1 });
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     const total = await Species.countDocuments({
       ...searchQuery,
