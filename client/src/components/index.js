@@ -7,7 +7,6 @@ import Pagination from "./Pagination";
 import Orders from "./Orders";
 import Families from "./Families";
 
-
 export {
   Sidebar,
   Topbar,
@@ -16,5 +15,5 @@ export {
   SpeciesListComponent,
   Pagination,
   Orders,
-  Families
+  Families,
 };
