@@ -10,7 +10,7 @@
 .signup_form_container {
   display: flex;
   border-radius: 10px;
-  padding: 50px;
+  margin-bottom: 20px;
 }
 
 .signup_left {

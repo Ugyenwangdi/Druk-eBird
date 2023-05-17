@@ -1,5 +1,7 @@
 import { useEffect, useState, Fragment, useCallback } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
+
 import "../styles/passwordreset.css";
 
 const UpdatePassword = () => {
@@ -76,44 +78,62 @@ const UpdatePassword = () => {
   }, [fetchCurrentUser]);
 
   return (
-    <Fragment>
-      <div className="password_reset_container">
-        <form className="form_contain" onSubmit={handleSubmit}>
-          <h1 style={{ margin: "15px 0" }}>Update Password</h1>
-          <input
-            type="password"
-            placeholder="Old Password"
-            name="oldPassword"
-            onChange={(e) => {
-              setMsg("");
-              setError("");
-              setOldPassword(e.target.value);
-            }}
-            value={oldPassword}
-            required
-            className="input"
-          />
-          <input
-            type="password"
-            placeholder="New Password"
-            name="newPassword"
-            onChange={(e) => {
-              setMsg("");
-              setError("");
-              setNewPassword(e.target.value);
-            }}
-            value={newPassword}
-            required
-            className="input"
-          />
-          {error && <div className="error_msg">{error}</div>}
-          {msg && <div className="success_msg">{msg}</div>}
-          <button type="submit" className="green_btn" disabled={isLoading}>
-            {isLoading ? "Updating..." : "Update Password"}
-          </button>
-        </form>
+    <div style={{ width: "100%" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "20px",
+          paddingBottom: "0px",
+        }}
+      >
+        <div className="species-header">
+          <Link to="/species">
+            <span className="material-icons back-arrow">arrow_back_ios</span>
+          </Link>
+          <h2>Update password</h2>
+        </div>
       </div>
-    </Fragment>
+      <Fragment>
+        <div className="password_reset_container">
+          <form className="form_contain" onSubmit={handleSubmit}>
+            <h1 style={{ margin: "15px 0" }}>Change my password</h1>
+            <input
+              type="password"
+              placeholder="Old Password"
+              name="oldPassword"
+              onChange={(e) => {
+                setMsg("");
+                setError("");
+                setOldPassword(e.target.value);
+              }}
+              value={oldPassword}
+              required
+              className="input"
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              name="newPassword"
+              onChange={(e) => {
+                setMsg("");
+                setError("");
+                setNewPassword(e.target.value);
+              }}
+              value={newPassword}
+              required
+              className="input"
+            />
+            {error && <div className="error_msg">{error}</div>}
+            {msg && <div className="success_msg">{msg}</div>}
+            <button type="submit" className="green_btn" disabled={isLoading}>
+              {isLoading ? "Updating..." : "Update Password"}
+            </button>
+          </form>
+        </div>
+      </Fragment>
+    </div>
   );
 };
 

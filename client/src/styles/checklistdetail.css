@@ -1,324 +1,304 @@
 .checklist-detail-page-container {
-    border-radius: 15px;
-    margin-top: 20px;
-    border-color: #f7f7f7;
-    background-color: #fcfcfc;
-    padding: 1%;
-    padding-bottom: 10px;
-    width: 100%;
-    /* width: 1295px; */
-    padding-bottom: 10%;
-    margin-bottom: 20px;
-    margin-right: 2rem;
+  border-radius: 15px;
+  margin-top: 20px;
+  border-color: #f7f7f7;
+  background-color: #fcfcfc;
+  padding: 1%;
+  padding-bottom: 10px;
+  width: 100%;
+  /* width: 1295px; */
+  padding-bottom: 10%;
+  margin-bottom: 20px;
+  margin-right: 2rem;
 }
 
 .checklist-detail-container {
-    height: 4rem;
-    width: 95%;
-    border: 0.5px solid #dcd8d8;
-    background-color: #ffffff;
-    margin-top: 3rem;
-    margin-left: 2rem;
-    padding: 0.5rem;
+  height: 4rem;
+  width: 96%;
+  border: 0.5px solid #dcd8d8;
+  background-color: #ffffff;
+  margin-top: 3rem;
+  margin-left: 2rem;
+  padding: 0.5rem;
 }
 
 .checklist-detail-header {
-    display: flex;
-    justify-content: space-between;
-    line-height: 190%;
-    padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  line-height: 190%;
+  padding: 0 10px;
 }
 
-
 .checklist-detail-container-text {
-    margin-top: -2rem;
-    margin-left: 3rem;
-    font-size: 14px;
+  margin-top: -2rem;
+  margin-left: 3rem;
+  font-size: 14px;
 }
 
 .location {
-    margin-bottom: 10rem;
-    margin-right: 5px;
+  margin-bottom: 10rem;
+  margin-right: 5px;
 }
 
 .checklistdetail-container {
-    display: flex;
-    width: 100%;
+  display: flex;
+  width: 100%;
 }
 
 .contaier-table {
-    flex: 1;
-    margin-top: -25px;
-    width: 40%;
+  flex: 1;
+  margin-top: -25px;
+  width: 40%;
 }
 
 .checklist-detail {
-    border: .75px solid rgb(236, 235, 235);
-    border-collapse: collapse;
-    width: 48rem;
-    border-radius: 10px;
-    margin-top: 2rem;
-    margin-left: 2rem;
-    height: 5em;
-    background-color: #ffffff;
-    border-radius: 10%;
-
-
+  border: 0.75px solid rgb(236, 235, 235);
+  border-collapse: collapse;
+  width: 48rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  margin-left: 2rem;
+  height: 5em;
+  background-color: #ffffff;
+  border-radius: 10%;
 }
 
 .checklist-detail td {
-    text-align: center;
-    padding-top: 2rem;
+  text-align: center;
+  padding-top: 2rem;
 }
 
-
-
 .bird-img {
-    height: 40px;
-    width: 40px;
+  height: 40px;
+  width: 40px;
 }
 
 .reject-btn {
-    width: 5rem;
-    height: 2rem;
-    margin-right: 8px;
-    border: 0.5px solid #e02828;
-    border-radius: 2rem;
+  width: 5rem;
+  height: 2rem;
+  margin-right: 8px;
+  border: 0.5px solid #a90b0b;
+  border-radius: 5px;
+  color: #a90b0b;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reject-btn:hover {
+  background-color: #a90b0b;
+  color: white;
 }
 
 .approve-btn {
-    width: 5rem;
-    height: 2rem;
-    background-color: #136D66;
-    color: white;
-    margin-left: 8px;
-    border-radius: 2rem;
+  width: 5rem;
+  height: 2rem;
+  background-color: #136d66;
+  color: white;
+  margin-left: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
+.approve-btn:hover {
+  color: #ba760d;
 }
 
 .details {
-    width: 30rem;
-    margin-left: 53rem;
-    margin-bottom: -50rem;
+  width: 30rem;
+  margin-left: 53rem;
+  margin-bottom: -50rem;
 }
 
 .card-container {
-    display: flex;
-    flex: 1;
+  display: flex;
+  flex: 1;
 
-    width: 90%;
-    height: 60rem;
-
+  width: 90%;
+  height: 60rem;
 }
 
 .card-detail {
-    width: 90%;
-    height: 50%;
-    background: white;
-    margin-top: 2rem;
-    margin-left: 1rem;
-    border: .75px solid rgb(236, 235, 235);
-    border-radius: 10px;
-
+  width: 94.6%;
+  height: 70%;
+  background: white;
+  margin-top: 2rem;
+  margin-left: 1rem;
+  border: 0.75px solid rgb(236, 235, 235);
+  border-radius: 10px;
 }
 
 .card-detail ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-
-
-
-
 .card-detail li {
-    display: flex;
-    align-items: center;
-    margin: 1rem;
-    font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  font-size: 14px;
 }
 
 .card-detail span {
-    flex: 1;
-    margin-right: 1rem;
+  flex: 1;
+  margin-right: 1rem;
 }
-
-
-
-
 
 .card-detail ul li span {
-    margin-right: 0.5rem;
+  margin-right: 0.5rem;
 }
 
-
 .card-detail .p-1 {
-    padding: 0.25rem;
+  padding: 0.25rem;
 }
 
 .detail-container {
-    position: relative;
+  width: 100%;
+  position: relative;
 }
 
 .detail-profile {
-    position: absolute;
-    bottom: 9rem;
-    /* bottom: 0;
-    right: 0; */
-    left: 68%;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
-
+  width: 25%;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 5%;
+  border-bottom-left-radius: 5%;
+  object-fit: cover;
 }
 
 .detail-text {
-    margin-top: 7rem;
-    margin-left: 11rem;
-    text-align: center;
+  margin-top: 2rem;
+  text-align: center;
 }
 
 .name {
-    font-size: 14px;
-    color: black;
+  font-size: 14px;
+  color: black;
 }
 
 .description {
-    font-size: 12px;
+  font-size: 12px;
 }
 
-@media(max-width:1024px) {
-    .checklist-detail-container {
-        display: block;
-        width: 95%;
-        margin-right: 1rem;
-    }
-    .checklistdetail-container {
-        display: flex;
-        flex-direction: column;
-    }
-    .contaier-table {
-        flex: 1;
-        margin-top: -25px;
-        width: 100%;
-    }
+@media (max-width: 1024px) {
+  .checklist-detail-container {
+    display: block;
+    width: 95%;
+    margin-right: 1rem;
+  }
+  .checklistdetail-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .contaier-table {
+    flex: 1;
+    margin-top: -25px;
+    width: 100%;
+  }
 
-    .checklist-detail {
-        width: 95%;
-    }
+  .checklist-detail {
+    width: 95%;
+  }
 
-    .card-container {
-        margin-top: 1rem;
-        display: block;
-        margin-left: 20px;
-        width: 50%;
-        height: 50%;
-        background: #ffffff;
-        border-radius: 10px;
-        border: 1px solid rgb(209, 205, 205);
-    }
+  .card-container {
+    margin-top: 1rem;
+    display: block;
+    margin-left: 20px;
+    width: 95.5%;
+    height: 50%;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid rgb(209, 205, 205);
+  }
 
-    .card-detail {
-        /* width% ; */
-        height: 50%;
-        background: white;
-        margin-top: 2rem;
-        margin-left: 1rem;
-        border: .75px solid rgb(236, 235, 235);
-        border-radius: 10px;
-
-    }
-
-
+  .card-detail {
+    background: white;
+    margin-top: 2rem;
+    margin-left: 1rem;
+    border: 0.75px solid rgb(236, 235, 235);
+    border-radius: 10px;
+  }
 }
 
-@media(max-width:768px) {
-    
+@media (max-width: 768px) {
+  .container-table {
+    display: block;
+    width: 100%;
+  }
 
-    .container-table {
-        display: block;
-        width: 100%;
-    }
+  .checklist-detail thead tr {
+    display: none;
+  }
 
-    .checklist-detail thead tr {
-        display: none;
+  .checklist-detail thead tr {
+    display: none;
+  }
 
-    }
+  .checklist-detail tr {
+    display: block;
+  }
 
-    .checklist-detail thead tr {
-        display: none;
-    }
+  .checklist-detail th,
+  .checklist-detail tr {
+    padding: 0.5em;
+  }
 
-    .checklist-detail tr {
-        display: block;
-    }
+  .checklist-detail td {
+    text-align: right;
+    display: block;
+  }
 
-    .checklist-detail th,
-    .checklist-detail tr {
-        padding: .5em;
-    }
+  .checklist-detail td::before {
+    content: attr(data-label) ": ";
+    float: left;
+  }
 
-    .checklist-detail td {
-        text-align: right;
-        display: block;
-    }
+  .card-container {
+    width: 96%;
+    height: 30%;
+    margin-left: 20px;
+    border-radius: 10px;
+    background: #ffffff;
+  }
 
-    .checklist-detail td::before {
-        content: attr(data-label) ": ";
-        float: left;
-    }
+  .card-detail li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    padding: 10px;
+  }
 
-    .card-container {
-        width: 60%;
-        height: 30%;
-        margin-left: 20px;
-        border-radius: 10px;
-        background: #ffffff;
-    }
+  .detail-container {
+    display: flex;
+    align-items: center;
+  }
 
-    .card-detail li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 5px;
-        padding: 10px;
-    }
+  .detail-profile {
+    max-width: 50px;
+    margin-right: 10px;
+  }
 
+  .detail-text {
+    flex-direction: column;
+  }
 
-
-    .detail-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .detail-profile {
-        max-width: 50px;
-        margin-right: 10px;
-    }
-
-    .detail-text {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .name {
-        margin-bottom: 5px;
-    }
-
+  .name {
+    margin-bottom: 5px;
+  }
 }
 
-@media(max-width:584px) {
-    .detail-profile {
-        margin-left: 5%;
-    }
+@media (max-width: 584px) {
+  .detail-profile {
+    margin-left: 5%;
+  }
 
-    .detail-text {
-        margin-left: 20%;
+  .detail-text {
+    margin-left: 20%;
+  }
 
-    }
-
-    .name {
-        margin-left: 20%;
-    }
+  .name {
+    margin-left: 20%;
+  }
 }

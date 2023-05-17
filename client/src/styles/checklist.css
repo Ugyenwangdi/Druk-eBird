@@ -20,6 +20,7 @@
   border-color: #f7f7f7;
   background-color: #fcfcfc;
   padding: 20px;
+  padding-bottom: 0px;
   width: 100%;
 }
 
@@ -62,6 +63,11 @@
   justify-content: center;
   color: var(--color-text-light-gray);
   cursor: pointer;
+  margin: 2px;
+}
+
+.checklist-filter-select:is(:hover, :focus) {
+  border: 1px solid #136d66;
 }
 
 .checklist-filter-dropdown-birdingSite {
@@ -88,21 +94,37 @@
   color: #ffffff;
   border: none;
   padding: 10px 10px;
-  border-radius: 7px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.checklist-table-head {
+  width: 100%;
+  margin-top: 10px;
+  height: 5rem;
+  table-layout: fixed;
 }
 
 .checklist-table {
   border: 0.5px solid #dcd8d8;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 5px;
   margin-top: 10px;
   height: 5rem;
   background-color: #ffffff;
   table-layout: fixed;
 }
 
+.checklist-table th {
+  padding: 1em;
+  text-align: center;
+}
+
+.checklist-table td {
+  padding: 1em;
+  text-align: center;
+}
 .custom-data {
   text-align: center;
   padding-bottom: 0;
@@ -118,21 +140,21 @@
 }
 
 @media (max-width: 1024px) {
-  .enteries-filter-container {
+  .checklist-filter-container {
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: space-between;
+    align-items: center;
     flex-direction: row;
     text-align: left;
     flex-wrap: wrap;
     /* width: 130%; */
   }
 
-  .checklist-search-bar,
+  /* .checklist-search-bar,
   .checklist-filter-dropdown {
     margin: 0.5em;
     width: 10rem;
-  }
+  } */
 }
 
 @media (max-width: 768px) {
@@ -144,18 +166,19 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
+    /* align-items: flex-start; */
+    flex-direction: row;
     text-align: left;
     /* align-items: stretch; */
     width: 100%;
     margin: 0;
+    gap: 1;
     overflow-x: hidden;
   }
 
-  .checklist-filter-container {
+  /* .checklist-filter-container {
     flex-wrap: wrap;
-  }
+  } */
 
   .checklist-filter-dropdown {
     margin-bottom: 10px;
@@ -187,7 +210,7 @@
     margin-right: 0;
   }
 
-  .checklist-table .main-head tr {
+  .checklist-table-head {
     display: none;
   }
 
@@ -212,7 +235,7 @@
     float: left;
   }
 
-  tbody tr:nth-child(even) {
+  /* tbody tr:nth-child(even) {
     background-color: #eaeaea;
-  }
+  } */
 }
