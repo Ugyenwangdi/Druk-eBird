@@ -38,6 +38,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(false);
   const [userData, setUserData] = useState({});
   const [isDeactivatedUser, setIsDeactivatedUser] = useState(false);
+  const [isNotAdmin, setIsNotAdmin] = useState(false);
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
 
   const validateToken = useCallback(async () => {
@@ -80,6 +81,7 @@ function App() {
       );
       setCurrentUser(response.data.user);
       setIsDeactivatedUser(response.data.user.isDeactivated);
+      setIsNotAdmin(response.data.user.userType === "user");
     } catch (error) {
       // Handle error
       console.error(error);
@@ -118,6 +120,14 @@ function App() {
       window.location = "/deactivated";
     }
   }, [checkedDeactivatedUser, isDeactivatedUser]);
+
+  useEffect(() => {
+    if (!checkedDeactivatedUser) return;
+    if (isNotAdmin) {
+      localStorage.removeItem("token");
+      window.location = "/not-admin";
+    }
+  }, [checkedDeactivatedUser, isNotAdmin]);
 
   // Sidebar and toggle connection
   const handleToggleSidebar = () => {
@@ -239,6 +249,35 @@ function App() {
                   }}
                 >
                   Your account has been deactivated and you cannot log in.
+                </p>
+                <Link to="/login" style={{ color: "blue" }}>
+                  Click here to login with different account
+                </Link>
+              </div>
+            }
+          />
+
+          <Route
+            path="/not-admin"
+            element={
+              <div
+                style={{
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  height: "100vh",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: "24px",
+                    color: "link",
+                    marginBottom: "20px",
+                  }}
+                >
+                  You are not an admin of Druk eBird!
                 </p>
                 <Link to="/login" style={{ color: "blue" }}>
                   Click here to login with different account
