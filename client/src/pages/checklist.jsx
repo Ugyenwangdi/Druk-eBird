@@ -103,42 +103,62 @@ function Checklist() {
             </span>
           </div>
         </div>
+        <div>
+          <table className="checklist-table-head">
+            <thead>
+              <tr>
+                <th>Sl.no</th>
+                <th>English Name</th>
+                <th>Birder</th>
+                <th>Birding Site</th>
+                <th>Data/Time</th>
+                <th>Photo</th>
+                <th>Numbers observed</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
       </div>
 
       <div>
         <Link to="/checklist-detail" className="checklist-link">
           <div>
             <table className="checklist-table">
-              <thead className="main-head">
+              {/* <thead>
                 <tr>
                   <th>Sl.no</th>
+                  <th>English Name</th>
                   <th>Birder</th>
-                  <th>Birding site</th>
+                  <th>Birding Site</th>
                   <th>Data/Time</th>
-                  <th>District</th>
-                  <th>Gewog</th>
-                  <th>Chiwog</th>
+                  <th>Photo</th>
+                  <th>Numbers observed</th>
                 </tr>
-              </thead>
+              </thead> */}
               <tbody>
-                <td data-label="Birder" className="custom-data">
-                  #Birder
-                </td>
-                <td data-label="Birding site" className="custom-data">
-                  Gyalpozhing,Mongar
-                </td>
-                <td data-label="Date/Time" className="custom-data">
-                  10.08.2022
-                </td>
-                <td data-label="District" className="custom-data">
-                  Mongar
-                </td>
-                <td data-label="Gewog" className="custom-data">
-                  Gyalppozhing
-                </td>
-                <td data-label="Chiwog" className="custom-data">
-                  Gyalpozhing
-                </td>
+                <tr>
+                  <td data-label="Birder" className="custom-data">
+                    1
+                  </td>
+                  <td data-label="Birder" className="custom-data">
+                    #Birder
+                  </td>
+                  <td data-label="Birding site" className="custom-data">
+                    Gyalpozhing, Mongar
+                  </td>
+                  <td data-label="Date/Time" className="custom-data">
+                    10.08.2022
+                  </td>
+                  <td data-label="District" className="custom-data">
+                    Mongar
+                  </td>
+                  <td data-label="Gewog" className="custom-data">
+                    Gyalppozhing
+                  </td>
+                  <td data-label="Chiwog" className="custom-data">
+                    Gyalpozhing
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -151,6 +171,9 @@ function Checklist() {
             <table className="checklist-table">
               <tbody>
                 <td data-label="Birder" className="custom-data">
+                  2
+                </td>
+                <td data-label="Birder" className="custom-data">
                   #Birder
                 </td>
                 <td data-label="Birding site" className="custom-data">
@@ -178,6 +201,9 @@ function Checklist() {
           <div>
             <table className="checklist-table">
               <tbody>
+                <td data-label="Birder" className="custom-data">
+                  3
+                </td>
                 <td data-label="Birder" className="custom-data">
                   #Birder
                 </td>

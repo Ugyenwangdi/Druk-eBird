@@ -117,6 +117,35 @@ function Settings() {
     }
   };
 
+  const cropImage = (imageDataUrl) => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      const image = new Image();
+
+      image.onload = () => {
+        const size = Math.min(image.width, image.height);
+        const x = (image.width - size) / 2;
+        const y = (image.height - size) / 2;
+
+        canvas.width = size;
+        canvas.height = size;
+
+        context.drawImage(image, x, y, size, size, 0, 0, size, size);
+
+        const croppedImageDataUrl = canvas.toDataURL("image/jpeg");
+
+        resolve(croppedImageDataUrl);
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+
+      image.src = imageDataUrl;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -128,11 +157,16 @@ function Settings() {
           Authorization: `Bearer ${token}`,
         };
 
+        let croppedImage = null;
+        if (userProfileImg) {
+          croppedImage = await cropImage(userProfileImg);
+        }
+
         const res = await axios.patch(
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
           {
             ...formData,
-            photo: userProfileImg,
+            photo: croppedImage,
           },
           { headers }
         ); // send patch request to server

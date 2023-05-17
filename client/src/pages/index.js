@@ -12,7 +12,7 @@ import ChecklistDetail from "./checklist-detail";
 import Checklist from "./checklist";
 import Entries from "./entries";
 import NewSpecies from "./new-species";
-import NewSpeciesDetail from "./new-species-detail";
+import NewSpeciesDetails from "./new-species-detail";
 import Birder from "./birder";
 import BirderDetail from "./birder-detail";
 import Settings from "./settings";
@@ -34,7 +34,7 @@ export {
   ChecklistDetail,
   Entries,
   NewSpecies,
-  NewSpeciesDetail,
+  NewSpeciesDetails,
   Birder,
   BirderDetail,
   Settings,

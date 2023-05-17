@@ -67,7 +67,7 @@ function SpeciesDetails() {
         <img
           className="species-image1"
           src={species.photos[0] ? species.photos[0].url : preview}
-          alt="Speciesphoto1"
+          alt="species1"
           onClick={toggleFullscreen}
         />
         <div className="species-image-column">

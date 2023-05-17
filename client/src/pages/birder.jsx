@@ -6,7 +6,7 @@ import { profile } from "../images";
 
 import { Link } from "react-router-dom";
 
-import { Pagination } from "../components";
+// import { Pagination } from "../components";
 
 function Birder() {
   //   const [page, setPage] = useState(1);
@@ -32,12 +32,22 @@ function Birder() {
 
   return (
     <div className="birders-page-container">
-      <div className="birder-button-container">
-        <button className="birder-export-button">Export Data</button>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
+        }}
+      >
+        <div className="birder-button-container">
+          <button className="birder-export-button">Export Data</button>
+        </div>
+        <h2 className="header">
+          Total Enteries <span className="birder-count">(700)</span>
+        </h2>
       </div>
-      <h2>
-        Total Enteries <span className="birder-count">(700)</span>
-      </h2>
       <div className="birder-page-container">
         <div className="birder-filter-container">
           <div className="birder-search-bar">
@@ -58,103 +68,159 @@ function Birder() {
           </div>
         </div>
         {data.map((birder) => (
-           <div className="all-birder">
-                    <Link to="/birder-detail" className='checklist-link'>
-
-                        <div className="birder-container">
-                            <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
-                                more_horiz
-                            </span>
-
-                            <img src={profile} alt="" className="birder-profile" />
-
-                            <h2 className="birder-name">{birder.name}
-                                <p style={{ fontSize: '12px' }}>Photographer</p></h2>
-                            <div className="email-contact">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            mail
-                                        </span>
-                                        {birder.email}
-                                    </li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            calendar_month
-                                        </span>
-                                        {birder.dob}
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="locatio-date">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            emoji_flags
-                                        </span>
-                                        {birder.country}</li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            fact_check
-                                        </span>
-                                        10 completed checklists</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </Link>
-                </div>
-           
-        ))}
-    
           <div className="all-birder">
-                    <Link to="/birder-detail" className='checklist-link'>
-
-                        <div className="birder-container">
-                            <span class="material-symbols-outlined" style={{ marginLeft: '95%', }}>
-                                more_horiz
-                            </span>
-
-                            <img src={profile} alt="" className="birder-profile" />
-
-                            <h2 className="birder-name">Sonam
-                                <p style={{ fontSize: '12px' }}>Photographer</p></h2>
-                            <div className="email-contact">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            mail
-                                        </span>
-                                        ex@gmail.com
-                                    </li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            calendar_month
-                                        </span>
-                                        02/03/2000
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div className="locatio-date">
-                                <ul>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            emoji_flags
-                                        </span>
-                                        {birder.country}</li>
-                                    <li>
-                                        <span class="material-symbols-outlined">
-                                            fact_check
-                                        </span>
-                                        10 completed checklists</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </Link>
+            <div className="checklist-link">
+              <div className="birder-container">
+                <span
+                  class="material-symbols-outlined"
+                  style={{ marginLeft: "95%", paddingRight: "18px" }}
+                >
+                  more_horiz
+                </span>
+                <span>
+                  <Link to="/birder-detail">
+                    <img src={profile} alt="" className="birder-profile" />
+                  </Link>
+                </span>
+                <h2 className="birder-name">
+                  {birder.name}
+                  <p style={{ fontSize: "12px" }}>{birder.profession}</p>
+                </h2>
+                <div className="email-contact">
+                  <ul>
+                    <li>
+                      <span class="material-symbols-outlined">mail</span>
+                      {birder.email}
+                    </li>
+                    <li>
+                      <span class="material-symbols-outlined">
+                        calendar_month
+                      </span>
+                      {birder.dob}
+                    </li>
+                  </ul>
                 </div>
 
-        
+                <div className="locatio-date">
+                  <ul>
+                    <li>
+                      <span class="material-symbols-outlined">emoji_flags</span>
+                      {birder.country}
+                    </li>
+                    <li>
+                      <span class="material-symbols-outlined">fact_check</span>
+                      10 completed checklists
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        <div className="all-birder">
+          <div className="checklist-link">
+            <div className="birder-container">
+              <span
+                class="material-symbols-outlined"
+                style={{ marginLeft: "95%", paddingRight: "18px" }}
+              >
+                more_horiz
+              </span>
+
+              <span>
+                <Link to="/birder-detail">
+                  <img src={profile} alt="" className="birder-profile" />
+                </Link>
+              </span>
+              <h2 className="birder-name">
+                Sonam
+                <p style={{ fontSize: "12px" }}>Photographer</p>
+              </h2>
+              <div className="email-contact">
+                <ul>
+                  <li>
+                    <span class="material-symbols-outlined">mail</span>
+                    ex@gmail.com
+                  </li>
+                  <li>
+                    <span class="material-symbols-outlined">
+                      calendar_month
+                    </span>
+                    02/03/2000
+                  </li>
+                </ul>
+              </div>
+
+              <div className="locatio-date">
+                <ul>
+                  <li>
+                    <span class="material-symbols-outlined">emoji_flags</span>
+                    Bhutan
+                  </li>
+                  <li>
+                    <span class="material-symbols-outlined">fact_check</span>
+                    10 completed checklists
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="all-birder">
+          <div className="checklist-link">
+            <div className="birder-container">
+              <span
+                class="material-symbols-outlined"
+                style={{
+                  marginLeft: "95%",
+                  paddingRight: "18px",
+                  cursor: "pointer",
+                }}
+              >
+                more_horiz
+              </span>
+
+              <span>
+                <Link to="/birder-detail">
+                  <img src={profile} alt="" className="birder-profile" />
+                </Link>
+              </span>
+              <h2 className="birder-name">
+                Sonam
+                <p style={{ fontSize: "12px" }}>Photographer</p>
+              </h2>
+              <div className="email-contact">
+                <ul>
+                  <li>
+                    <span class="material-symbols-outlined">mail</span>
+                    ex@gmail.com
+                  </li>
+                  <li>
+                    <span class="material-symbols-outlined">
+                      calendar_month
+                    </span>
+                    02/03/2000
+                  </li>
+                </ul>
+              </div>
+
+              <div className="locatio-date">
+                <ul>
+                  <li>
+                    <span class="material-symbols-outlined">emoji_flags</span>
+                    Bhutan
+                  </li>
+                  <li>
+                    <span class="material-symbols-outlined">fact_check</span>
+                    10 completed checklists
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       {/* <Pagination
         page={page}

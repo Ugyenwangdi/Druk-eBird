@@ -50,14 +50,14 @@ nav .profile-area .profile {
   display: flex;
   gap: 1rem;
   align-items: center;
-  margin-right: 2rem; ;
-
+  margin-right: 2rem;
 }
 nav .profile-area .profile-photo {
   display: block;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;
+  object-fit: cover;
   overflow: hidden;
 }
 nav .profile-area button {

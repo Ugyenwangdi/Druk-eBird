@@ -17,7 +17,7 @@ import {
   ChecklistDetail,
   Entries,
   NewSpecies,
-  NewSpeciesDetail,
+  NewSpeciesDetails,
   Birder,
   BirderDetail,
   Settings,
@@ -35,6 +35,8 @@ function App() {
   const [isValidToken, setIsValidtoken] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [tokenValidated, setTokenValidated] = useState(false);
+  const [currentUser, setCurrentUser] = useState(false);
+  const [userData, setUserData] = useState({});
   const [isDeactivatedUser, setIsDeactivatedUser] = useState(false);
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
 
@@ -76,7 +78,7 @@ function App() {
           },
         }
       );
-
+      setCurrentUser(response.data.user);
       setIsDeactivatedUser(response.data.user.isDeactivated);
     } catch (error) {
       // Handle error
@@ -85,7 +87,7 @@ function App() {
       setCheckedDeactivatedUser(true);
     }
   }, [token, tokenValidated]);
-
+  console.log("current: ", userData);
   useEffect(() => {
     validateToken();
   }, [validateToken]);
@@ -93,6 +95,21 @@ function App() {
   useEffect(() => {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (currentUser.id) {
+      const getAdminDetails = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`
+        );
+        const data = await response.json();
+        console.log(data);
+        setUserData(data);
+      };
+
+      getAdminDetails();
+    }
+  }, [currentUser.id]);
 
   useEffect(() => {
     if (!checkedDeactivatedUser) return;
@@ -157,7 +174,10 @@ function App() {
     <>
       {isValidToken && !isDeactivatedUser ? (
         <div>
-          <Topbar onToggleSidebar={handleToggleSidebar} />
+          <Topbar
+            onToggleSidebar={handleToggleSidebar}
+            currentUser={userData}
+          />
           <main>
             <Sidebar
               showSidebar={showSidebar}
@@ -177,7 +197,7 @@ function App() {
               <Route path="/new-species" element={<NewSpecies />} />
               <Route
                 path="/new-species-detail"
-                element={<NewSpeciesDetail />}
+                element={<NewSpeciesDetails />}
               />
               <Route path="/birder" element={<Birder />} />
               <Route path="/birder-detail" element={<BirderDetail />} />
