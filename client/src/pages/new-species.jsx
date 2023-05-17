@@ -1,81 +1,164 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import "../styles/newspecies.css";
+import "../styles/checklist.css";
 
-function NewSpecies() {
+function Checklist() {
+  // const[record,setRecord] = useState([])
 
+  //  const getData = () =>
+  //  {
+  //      fetch('https://jsonplaceholder.typicode.com/users')
+  //      .then(resposne=> resposne.json())
+  //      .then(res=>setRecord(res))
+  //  }
+
+  //  useEffect(() => {
+  //     getData();
+  //  },)
   return (
-    <div className='new-species-page-container'>
-      <div className="newspecies-button-container">
-        <button className="newspecies-export-button">Export Data</button>
+    <div className="checklists-page-container">
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
+        }}
+      >
+        <h2 className="header">
+          New Species <span className="checklist-count">(10)</span>
+        </h2>
+        <div className="checklist-button-container">
+          <button className="checklist-export-button">Export Data</button>
+        </div>
       </div>
-      <h2>Total Checklist <span className="newspecies-count">(700)</span></h2>
-      <div className='newspecies-page-container'>
-        <div className="newspecies-filter-container">
-          <select className="newspecies-filter-dropdown">
-            <option value="">Birder</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-
-          </select>
-          <select className="newspecies-filter-dropdown">
-            <option value="">Birding site</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-          </select>
-          <select className="newspecies-filter-dropdown">
-            <option value="">Date/Time</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-          </select>
-          <select className="newspecies-filter-dropdown">
-            <option value="">District</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-          </select>
-          <select className="newspecies-filter-dropdown">
-            <option value="">Gewog</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-          </select>
-          <select className="newspecies-filter-dropdown">
-            <option value="">Chiwog</option>
-            <option value="1">option 1</option>
-            <option value="2">option 2</option>
-            <option value="3">option 3</option>
-          </select>
+      <div className="checklist-page-container">
+        <div className="checklist-filter-container">
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">Birder</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">Birding site</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">Date/Time</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">District</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">Gewog</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+          <div className="checklist-filter-select">
+            <select className="checklist-filter-dropdown">
+              <option value="">Chiwog</option>
+              <option value="1">option 1</option>
+              <option value="2">option 2</option>
+              <option value="3">option 3</option>
+            </select>
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
+          </div>
+        </div>
+        <div>
+          <table className="checklist-table-head">
+            <thead>
+              <tr>
+                <th>Sl.no</th>
+                <th>English Name</th>
+                <th>Birder</th>
+                <th>Birding Site</th>
+                <th>Data/Time</th>
+                <th>Photo</th>
+                <th>Numbers observed</th>
+              </tr>
+            </thead>
+          </table>
         </div>
       </div>
 
       <div>
-        <Link to="/new-species-detail" className='newspecies-link'>
+        <Link to="/new-species-detail" className="checklist-link">
           <div>
-            <table className='newspecies-table'>
-              <thead className='main-head'>
+            <table className="checklist-table">
+              {/* <thead>
                 <tr>
-                  <th >Sl.no</th>
+                  <th>Sl.no</th>
+                  <th>English Name</th>
                   <th>Birder</th>
-                  <th>Birding site</th>
+                  <th>Birding Site</th>
                   <th>Data/Time</th>
-                  <th>District</th>
-                  <th>Gewog</th>
-                  <th>Chiwog</th>
+                  <th>Photo</th>
+                  <th>Numbers observed</th>
                 </tr>
-              </thead>
+              </thead> */}
               <tbody>
-                
-                <td data-label='Birder' className="data">#Birder</td>
-                <td data-label='Birding site' className="data">Gyalpozhing,Mongar</td>
-                <td data-label='Date/Time' className="data">10.08.2022</td>
-                <td data-label='District' className="data">Mongar</td>
-                <td data-label='Gewog' className="data">Gyalppozhing</td>
-                <td data-label='Chiwog' className="data">Gyalpozhing</td>
+                <tr>
+                  <td data-label="Birder" className="custom-data">
+                    1
+                  </td>
+                  <td data-label="Birder" className="custom-data">
+                    #Birder
+                  </td>
+                  <td data-label="Birding site" className="custom-data">
+                    Gyalpozhing, Mongar
+                  </td>
+                  <td data-label="Date/Time" className="custom-data">
+                    10.08.2022
+                  </td>
+                  <td data-label="District" className="custom-data">
+                    Mongar
+                  </td>
+                  <td data-label="Gewog" className="custom-data">
+                    Gyalppozhing
+                  </td>
+                  <td data-label="Chiwog" className="custom-data">
+                    Gyalpozhing
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -83,42 +166,69 @@ function NewSpecies() {
       </div>
 
       <div>
-        <Link to="/new-species-detail" className='newspecies-link'>
+        <Link to="/checklist-detail" className="checklist-link">
           <div>
-            <table className='newspecies-table'>
+            <table className="checklist-table">
               <tbody>
-                <td data-label='Birder' className="data">#Birder</td>
-                <td data-label='Birding site' className="data">Gyalpozhing,Mongar</td>
-                <td data-label='Date/Time' className="data">10.08.2022</td>
-                <td data-label='District' className="data">Mongar</td>
-                <td data-label='Gewog' className="data">Gyalppozhing</td>
-                <td data-label='Chiwog' className="data">Gyalpozhing</td>
+                <td data-label="Birder" className="custom-data">
+                  2
+                </td>
+                <td data-label="Birder" className="custom-data">
+                  #Birder
+                </td>
+                <td data-label="Birding site" className="custom-data">
+                  Gyalpozhing,Mongar
+                </td>
+                <td data-label="Date/Time" className="custom-data">
+                  10.08.2022
+                </td>
+                <td data-label="District" className="custom-data">
+                  Mongar
+                </td>
+                <td data-label="Gewog" className="custom-data">
+                  Gyalppozhing
+                </td>
+                <td data-label="Chiwog" className="custom-data">
+                  Gyalpozhing
+                </td>
               </tbody>
             </table>
           </div>
         </Link>
       </div>
       <div>
-        <Link to="/new-species-detail" className='newspecies-link'>
+        <Link to="/checklist-detail" className="checklist-link">
           <div>
-            <table className='newspecies-table'>
+            <table className="checklist-table">
               <tbody>
-                <td data-label='Birder' className="data">#Birder</td>
-                <td data-label='Birding site' className="data">Gyalpozhing,Mongar</td>
-                <td data-label='Date/Time' className="data">10.08.2022</td>
-                <td data-label='District' className="data">Mongar</td>
-                <td data-label='Gewog' className="data">Gyalppozhing</td>
-                <td data-label='Chiwog' className="data">Gyalpozhing</td>
+                <td data-label="Birder" className="custom-data">
+                  3
+                </td>
+                <td data-label="Birder" className="custom-data">
+                  #Birder
+                </td>
+                <td data-label="Birding site" className="custom-data">
+                  Gyalpozhing,Mongar
+                </td>
+                <td data-label="Date/Time" className="custom-data">
+                  10.08.2022
+                </td>
+                <td data-label="District" className="custom-data">
+                  Mongar
+                </td>
+                <td data-label="Gewog" className="custom-data">
+                  Gyalppozhing
+                </td>
+                <td data-label="Chiwog" className="custom-data">
+                  Gyalpozhing
+                </td>
               </tbody>
             </table>
           </div>
         </Link>
       </div>
-
     </div>
-
   );
-
 }
 
-export default NewSpecies;
+export default Checklist;

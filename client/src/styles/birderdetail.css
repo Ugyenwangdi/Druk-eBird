@@ -171,34 +171,33 @@ hr {
   border-radius: 10px;
 }
 .submitted-checklist {
-  font-size: 14px;
-  margin-left: 2rem;
-  display: inline-block;
-
-  margin-top: 2rem;
-  clear: both;
+  margin: 0;
 }
 
 .viewall-button-container {
-  position: absolute;
-  height: 2rem;
-  margin-top: 2rem;
-  margin-left: 73rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding-right: 20px;
+  padding-left: 20px;
+  padding-top: 10px;
 }
 
 .view-all-button {
   background-color: #136d66;
   color: #ffffff;
   border: none;
-  height: 2rem;
-  padding: 6px 10px;
+  padding: 10px 10px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
-  margin-bottom: 3rem;
-  margin-right: 1rem;
+  margin-left: auto;
 }
+
+.view-all-button:is(:hover, :focus) {
+  color: #ba760d;
+}
+
 .submitted-species {
   /* position: relative; */
   display: flex;
@@ -210,6 +209,7 @@ hr {
   width: 10rem;
   height: 10rem;
   margin: 2rem;
+  margin-top: 8px;
 }
 .first-span {
   display: inline-block;
@@ -231,6 +231,7 @@ hr {
   width: 10rem;
   height: 10rem;
   margin: 2rem;
+  margin-top: 8px;
 }
 .second-span {
   display: inline-block;
@@ -252,17 +253,6 @@ hr {
     display: flex;
     /* margin-left: 20rem;*/
     width: 100%;
-  }
-  .viewall-button-container {
-    position: absolute;
-    height: 2rem;
-    margin-top: 2rem;
-    margin-left: 73rem;
-    padding-right: 20px;
-    margin-left: 80%;
-  }
-  .view-all-button {
-    margin-left: 80%;
   }
 }
 @media (max-width: 768px) {
@@ -370,24 +360,11 @@ hr {
     margin-top: 2rem;
   }
 
-  .viewall-button-container {
-    position: relative;
-    height: 2rem;
-    margin-top: 2rem;
-    margin-left: 71rem;
-    padding-right: 20px;
-    margin-left: 70%;
-  }
-  .view-all-button {
-    margin-left: 70%;
-  }
   .submitted-checklist {
     display: flex;
     flex-direction: row;
     font-size: 14px;
-    margin-left: 2rem;
     display: inline-block;
-    margin-top: 2rem;
     clear: both;
     width: 50%;
   }
@@ -404,7 +381,7 @@ hr {
     align-items: center;
     width: 100%;
     height: auto;
-    margin: 2rem 0;
+    margin: 2rem;
   }
   .first-species img {
     width: 100px;
@@ -435,7 +412,7 @@ hr {
     align-items: center;
     width: 100%;
     height: auto;
-    margin: 2rem 0;
+    margin: 2rem;
   }
   .second-species img {
     width: 100px;

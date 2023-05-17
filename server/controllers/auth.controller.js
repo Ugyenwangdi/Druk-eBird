@@ -131,8 +131,9 @@ const getAllUsers = async (req, res) => {
   // console.log("user: ", req.user);
 
   try {
-    const users = await Admin.find({}).limit(req.query._end);
-
+    const users = await Admin.find({})
+      .limit(req.query._end)
+      .sort({ createdAt: -1 });
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
