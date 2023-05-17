@@ -15,6 +15,8 @@ function Settings() {
   const [loading, setLoading] = useState(false);
   const [deactivateLoading, setDeactivateLoading] = useState(false);
   const [userProfileImg, setUserProfileImg] = useState("");
+  const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
+  const [isNotAdmin, setIsNotAdmin] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -51,6 +53,8 @@ function Settings() {
     } catch (error) {
       // Handle error
       console.error(error);
+    } finally {
+      setCheckedDeactivatedUser(true);
     }
   }, [token]);
 
@@ -221,11 +225,20 @@ function Settings() {
         console.log(data);
         setFormData(data);
         setUserProfileImg(data.profile);
+        setIsNotAdmin(data.userType === "user");
       };
 
       getAdminDetails();
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    if (!checkedDeactivatedUser) return;
+    if (isNotAdmin) {
+      localStorage.removeItem("token");
+      window.location = "/not-admin";
+    }
+  }, [checkedDeactivatedUser, isNotAdmin]);
 
   return (
     <div className="setting-box">
