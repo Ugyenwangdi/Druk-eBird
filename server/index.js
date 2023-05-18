@@ -11,7 +11,8 @@ import connectDB from "./mongodb/connect.js";
 import { Admin } from "./mongodb/models/admin.js";
 import authRoute from "./routes/auth.routes.js";
 import passwordResetRoutes from "./routes/reset-password.routes.js";
-import speciesRouter from "./routes/species.routes.js";
+import speciesRoutes from "./routes/species.routes.js";
+import checklistRoutes from "./routes/checklist.routes.js";
 
 const app = express();
 app.setMaxListeners(15);
@@ -64,7 +65,8 @@ passport.deserializeUser(function (user, cb) {
 
 app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);
-app.use("/api/v1/species", speciesRouter);
+app.use("/api/v1/species", speciesRoutes);
+app.use("/api/v1/", checklistRoutes);
 
 const startServer = async () => {
   try {
