@@ -366,7 +366,7 @@ const editAdminUser = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   const userId = req.params.id;
-  console.log(req.body);
+  // console.log(req.body);
   const { name, email, photo } = req.body;
 
   // Check logged in user and the user to be updated are same
