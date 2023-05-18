@@ -1,9 +1,16 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
-import axios from "axios";
 
 import Species from "../mongodb/models/species.js";
+import {
+  orderOptions,
+  familyOptions,
+  genusOptions,
+  iucnStatusOptions,
+  groupOptions,
+  residencyOptions,
+} from "../constants/index.js";
 
 dotenv.config();
 
@@ -28,39 +35,16 @@ const getAllSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 6;
-    const search = req.query.search || "";
+    const startsWith = req.query.starts_with || "";
+    let search = req.query.search || "";
+    const species = req.query.species || "";
+    const scientificName = req.query.scientific_name || "";
     let order = req.query.order || "All";
     let family = req.query.family || "All";
-
-    const orderOptions = [
-      "Galliformes",
-      "Charadriiformes",
-      "Anseriformes",
-      "Podicipediformes",
-      "Gaviiformes",
-      "Ciconiiformes",
-      "Pelecaniformes",
-      "Procellariiformes",
-      "Gruiformes",
-      "Suliformes",
-      "Coraciiformes",
-      "Bucerotiformes",
-      "Accipitriformes",
-      "Falconiformes",
-      "Piciformes",
-      "Passeriformes",
-      "Trogoniformes",
-      "Cuculiformes",
-      "Psittaciformes",
-      "Columbiformes",
-      "Caprimulgiformes",
-      "Strigiformes",
-      "Passerformes",
-      "nan",
-      "",
-    ];
-
-    const familyOptions = ['Phasianidae', 'Turnicidae', 'Anatidae', 'Podicipedidae', 'Gaviidae', 'Laridae', 'Ciconiidae', 'Threskiornithidae', 'Ardeidae', 'Procellariidae', 'Scolopacidae', 'Ibidorhynchidae', 'Charadriidae', 'Rallidae', 'Rostratulidae', 'Recurvirostridae', 'Burhinidae', 'Glareolidae', 'Jacanidae', 'Phalacrocoracidae', 'Pelecanidae', 'Alcedinidae', 'Bucerotidae', 'Accipitridae', 'Falconidae', 'Pandionidae', 'Gruidae', 'Picidae', 'Indicatoridae', 'Megalaimidae', 'Upupidae', 'Coraciidae', 'Trogonidae', 'Meropidae', 'Cuculidae', 'Psittaculidae', 'Columbidae', 'Apodidae', 'Hemiprocnidae', 'Hirundinidae', 'Strigidae', 'Tytonidae', 'Caprimulgidae', 'Podargidae', 'Cinclidae', 'Muscicapidae', 'Dicruridae', 'Campephagidae', 'Vangidae', 'Monarchidae', 'Rhipiduridae', 'Stenostiridae', 'Pittidae', 'Eurylaimidae', 'Irenidae', 'Chloropseidae', 'Aegithinidae', 'Corvidae', 'Laniidae', 'Paridae', 'Turdidae', 'Sylviidae', 'Oriolidae', 'Artamidae', 'Sturnidae', 'Sittidae', 'Certhiidae', 'Tichodromidae', 'Troglodytidae', 'Aegithalidae', 'Phylloscopidae', 'Scotocercidae', 'Acrocephalidae', 'Locustellidae', 'Cittiidae', 'Cisticolidae', 'Regulidae', 'Zosteropidae', 'Leiothrichidae', 'Pycnonotidae', 'Pellorneidae', 'Timaliidae', 'Pnoepygidae', 'Elachuridae', 'Vireonidae', 'Dicaeidae', 'Nectariniidae', 'Motacillidae', 'Passeridae', 'Prunellidae', 'Alaudidae', 'Ploceidae', 'Estrildidae', 'Fringillidae', 'Emberizidae', 'Calcariidae', 'nan']
+    let genus = req.query.genus || "All";
+    let iucnStatus = req.query.iucn_status || "All";
+    let group = req.query.group || "All";
+    let residency = req.query.residency || "All";
 
     order === "All"
       ? (order = [...orderOptions])
@@ -70,21 +54,67 @@ const getAllSpecies = async (req, res) => {
       ? (family = [...familyOptions])
       : (family = req.query.family.split(","));
 
-    const species = await Species.find({
-      englishName: { $regex: search, $options: "i" },
+    genus === "All"
+      ? (genus = [...genusOptions])
+      : (genus = req.query.genus.split(","));
+
+    iucnStatus === "All"
+      ? (iucnStatus = [...iucnStatusOptions])
+      : (iucnStatus = req.query.iucn_status.split(","));
+
+    group === "All"
+      ? (group = [...groupOptions])
+      : (group = req.query.group.split(","));
+
+    residency === "All"
+      ? (residency = [...residencyOptions])
+      : (residency = req.query.residency.split(","));
+
+    let searchQuery = {};
+
+    if (startsWith) {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: `^${startsWith}`, $options: "i" } },
+          { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        ],
+      };
+    } else if (search) {
+      searchQuery = {
+        englishName: { $regex: search, $options: "i" },
+      };
+    }
+    const foundSpecies = await Species.find({
+      ...searchQuery,
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     })
       .where("order")
       .in([...order])
-      .where("familyName") // Add this line
-      .in([...family]) 
+      .where("familyName")
+      .in([...family])
+      .where("genus")
+      .in([...genus])
+      .where("iucnStatus")
+      .in([...iucnStatus])
+      .where("group")
+      .in([...group])
+      .where("residency")
+      .in([...residency])
       .skip(page * limit)
-      .limit(limit);
-    // .sort({ _id: -1 });
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     const total = await Species.countDocuments({
+      ...searchQuery,
       order: { $in: [...order] },
       familyName: { $in: [...family] },
-      englishName: { $regex: search, $options: "i" },
+      genus: { $in: [...genus] },
+      iucnStatus: { $in: [...iucnStatus] },
+      group: { $in: [...group] },
+      residency: { $in: [...residency] },
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     });
 
     const speciesTotal = await Species.countDocuments();
@@ -98,7 +128,11 @@ const getAllSpecies = async (req, res) => {
       limit,
       orders: orderOptions,
       families: familyOptions,
-      species,
+      genuses: genusOptions,
+      iucnstatuses: iucnStatusOptions,
+      groups: groupOptions,
+      residencies: residencyOptions,
+      species: foundSpecies,
     };
 
     res.status(200).json(response);
@@ -124,7 +158,7 @@ const getSpeciesDetail = async (req, res) => {
     res.status(200).json(species);
   } catch (error) {
     console.error(error);
-    res.status(400).send({ error: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
 

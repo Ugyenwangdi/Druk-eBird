@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -8,29 +8,23 @@ import { logo } from "../images";
 function Settings() {
   const token = localStorage.getItem("token");
 
-  const [previewImage, setPreviewImage] = useState(logo);
   const [data, setData] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deactivateLoading, setDeactivateLoading] = useState(false);
+  const [userProfileImg, setUserProfileImg] = useState("");
+  const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
+  const [isNotAdmin, setIsNotAdmin] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: currentUser?.name,
-    email: currentUser?.email,
-    country: currentUser?.country,
+    name: "",
+    email: "",
+    photo: "",
   });
 
-  const handleFileInputChange = (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.addEventListener("load", () => {
-      setPreviewImage(reader.result);
-    });
-
-    reader.readAsDataURL(file);
-  };
+  const deactivatedUser = currentUser.isDeactivated;
 
   const fetchData = async () => {
     try {
@@ -44,7 +38,7 @@ function Settings() {
     }
   };
 
-  const fetchCurrentUser = async () => {
+  const fetchCurrentUser = useCallback(async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
@@ -56,11 +50,34 @@ function Settings() {
       );
 
       setCurrentUser(response.data.user);
-
-      console.log(currentUser);
     } catch (error) {
       // Handle error
       console.error(error);
+    } finally {
+      setCheckedDeactivatedUser(true);
+    }
+  }, [token]);
+
+  const deactivateAccount = async (id) => {
+    if (window.confirm("Are you sure you want to deactivate your account?")) {
+      try {
+        setDeactivateLoading(true);
+        const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/deactivate`;
+
+        // add your JWT token to the headers object
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
+
+        const res = await axios.patch(url, {}, { headers });
+        setMsg(res.data.message);
+        console.log("Account deactivated successfully!");
+        localStorage.removeItem("token");
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setDeactivateLoading(false);
+      }
     }
   };
 
@@ -81,11 +98,6 @@ function Settings() {
     }
   };
 
-  useEffect(() => {
-    fetchCurrentUser();
-    fetchData();
-  }, []);
-
   const handleChange = ({ currentTarget: input }) => {
     setMsg("");
     setError("");
@@ -95,22 +107,93 @@ function Settings() {
     }));
   };
 
+  const handleFileInputChange = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    if (file) {
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setUserProfileImg(reader.result);
+      };
+    } else {
+      setUserProfileImg("");
+    }
+  };
+
+  const cropImage = (imageDataUrl) => {
+    return new Promise((resolve, reject) => {
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      const image = new Image();
+
+      image.onload = () => {
+        const size = Math.min(image.width, image.height);
+        const x = (image.width - size) / 2;
+        const y = (image.height - size) / 2;
+
+        canvas.width = size;
+        canvas.height = size;
+
+        context.drawImage(image, x, y, size, size, 0, 0, size, size);
+
+        const croppedImageDataUrl = canvas.toDataURL("image/jpeg");
+
+        resolve(croppedImageDataUrl);
+      };
+
+      image.onerror = (error) => {
+        reject(error);
+      };
+
+      image.crossOrigin = "anonymous"; // Set crossOrigin attribute to enable CORS
+      image.src = imageDataUrl;
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      // const url = "http://localhost:8080/api/v1/users/register";
-      const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`;
 
-      // add your JWT token to the headers object
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      console.log(formData);
+      if (!currentUser.googleId) {
+        // add your JWT token to the headers object
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
-      const res = await axios.patch(url, formData, { headers });
-      setMsg(res.data.message);
-      console.log(res);
+        let croppedImage = null;
+        console.log("userProfileImg:", userProfileImg);
+        // Check if the photo field has changed
+        // Check if the photo field has changed
+        const photoFieldChanged =
+          userProfileImg &&
+          (userProfileImg !== currentUser.photo || !formData.photo);
+
+        console.log(photoFieldChanged);
+
+        if (photoFieldChanged) {
+          // Only crop the image if the photo field has changed
+          croppedImage = await cropImage(userProfileImg);
+        }
+
+        const res = await axios.patch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
+          {
+            ...formData,
+            photo: photoFieldChanged ? croppedImage || "" : "",
+          },
+          { headers }
+        ); // send patch request to server
+
+        const data = await res.data.data;
+        setFormData(data);
+        setCurrentUser(data);
+        setMsg(res.data.message);
+        // console.log(res.data.message);
+      } else {
+        setError("You cannot update your google account");
+      }
     } catch (error) {
       if (
         error.response &&
@@ -124,53 +207,102 @@ function Settings() {
     }
   };
 
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchData();
+
+    if (deactivatedUser) {
+      window.location = "/login";
+    }
+  }, [fetchCurrentUser, deactivatedUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser?.name,
+        email: currentUser?.email,
+        photo: currentUser?.profile,
+      });
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser.id) {
+      const getAdminDetails = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`
+        );
+        const data = await response.json();
+        // console.log(data);
+        setFormData(data);
+        setUserProfileImg(data.profile);
+        setIsNotAdmin(data.userType === "user");
+      };
+
+      getAdminDetails();
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!checkedDeactivatedUser) return;
+    if (isNotAdmin) {
+      localStorage.removeItem("token");
+      window.location = "/not-admin";
+    }
+  }, [checkedDeactivatedUser, isNotAdmin]);
+
   return (
-    <div class="setting-box">
-      <div class="form-container">
+    <div className="setting-box">
+      <div className="form-container">
+        {error && <div className="error_msg">{error}</div>}
+        {msg && <div className="success_msg">{msg}</div>}
         <form onSubmit={handleSubmit}>
-          <div class="form-group">
-            <label for="name">Name:</label>
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
             <input
               type="text"
               id="name"
               name="name"
-              class="form-input"
+              className="form-input"
               onChange={handleChange}
               placeholder="Name"
-              value={currentUser.name}
+              value={formData.name}
             />
           </div>
 
-          <div class="form-group">
-            <label for="email">Email:</label>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
             <input
               type="email"
               id="email"
               name="email"
-              class="form-input"
+              className="form-input"
               placeholder="Email"
               onChange={handleChange}
-              value={currentUser.email}
+              value={formData.email}
             />
           </div>
-          <div class="profile-pic">
-            <img src={previewImage} id="photo"></img>
+          <div className="profile-pic">
+            <img
+              src={userProfileImg ? userProfileImg : logo}
+              id="photo"
+              alt="profile"
+            ></img>
             <input
               type="file"
+              name="photo"
+              accept="image/*"
               id="file"
               onChange={handleFileInputChange}
             ></input>
-            <label for="file" id="uploadBtn">
+            <label htmlFor="file" id="uploadBtn">
               Choose Photo
             </label>
           </div>
 
-          {error && <div className="error_msg">{error}</div>}
-          {msg && <div className="success_msg">{msg}</div>}
-
-          <div class="submit">
-            <button type="submit" class="form-button">
-              Save Changes
+          <div className="submit">
+            <button type="submit" className="form-button" disabled={loading}>
+              {loading ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
@@ -179,21 +311,21 @@ function Settings() {
       <br></br>
       <br></br>
       <br></br>
-      <div class="parent">
-        <div class="box-1">
+      <div className="parent">
+        <div className="box-1">
           <br></br>
-          <p style={{ fontSize: "16px" }}>Password</p> <br></br>
+          <p style={{ fontSize: "16px" }}>Update Password</p> <br></br>
           <p style={{ fontSize: "15px" }}>
-            You can reset or change your password <br></br> by clicking here{" "}
+            You can update your password by clicking here <br></br>
           </p>{" "}
           <br></br>
-          <Link to="/forgot-password">
-            <button type="submit" class="btn">
+          <Link to="/password-update">
+            <button type="submit" className="btn">
               Change
             </button>
           </Link>
         </div>
-        <div class="box-2">
+        <div className="box-2">
           <br></br>
           <p style={{ fontSize: "16px" }}>Deactivate account</p>
           <br></br>
@@ -202,8 +334,13 @@ function Settings() {
             certain
           </p>{" "}
           <br></br>
-          <button type="submit" class="deactivate-btn">
-            Deactivate
+          <button
+            type="submit"
+            className="deactivate-btn"
+            disabled={deactivateLoading}
+            onClick={() => deactivateAccount()}
+          >
+            {deactivateLoading ? "Deactivating..." : "Deactivate"}
           </button>
         </div>
       </div>{" "}
@@ -211,9 +348,9 @@ function Settings() {
       <br></br>
       {currentUser.userType === "root-user" && (
         <>
-          <div class="admin-button">
+          <div className="admin-button">
             <Link to="/add-admin">
-              <button class="addAdmin-btn">Add Admin</button>
+              <button className="addAdmin-btn">Add Admin</button>
             </Link>
           </div>
           <br></br>
@@ -222,19 +359,23 @@ function Settings() {
             Druk eBird Admins
           </h3>{" "}
           <br></br>
-          <table class="table">
+          <table className="table">
             <thead>
               <tr>
+                <th>#</th>
                 <th>Name</th>
                 <th>Email</th>
+                <th>User Type</th>
                 <th style={{ width: "15%" }}>Action</th>
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
+              {data.map((item, index) => (
                 <tr key={item._id}>
+                  <td data-label="SLNO">{index + 1}</td>
                   <td data-label="Name">{item.name}</td>
                   <td data-label="Email">{item.email}</td>
+                  <td data-label="UserType">{item.userType}</td>
                   <td data-label="Action">
                     <div
                       style={{
@@ -243,13 +384,13 @@ function Settings() {
                       }}
                     >
                       <button
-                        class="deleteBtn"
+                        className="deleteBtn"
                         onClick={() => deleteUser(item._id)}
                       >
                         Delete
                       </button>
 
-                      <button class="editBtn">
+                      <button className="editBtn">
                         <Link
                           to={`/admins/${item._id}/edit`}
                           state={{ adminDetail: item }}

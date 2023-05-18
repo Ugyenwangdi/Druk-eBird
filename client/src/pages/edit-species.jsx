@@ -5,6 +5,12 @@ import axios from "axios";
 import "../styles/addspecies.css";
 
 function AddSpecies() {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const { id } = useParams();
   const location = useLocation();
 
@@ -23,9 +29,10 @@ function AddSpecies() {
       sharName: "",
       khengName: "",
       iucnStatus: "",
-      legislation: "",
-      migrationStatus: "",
-      birdType: "",
+      citesAppendix: "",
+      bhutanSchedule: "",
+      residency: "",
+      habitat: "",
       description: "",
       observations: 0,
       photos: [],
@@ -88,6 +95,7 @@ function AddSpecies() {
     event.preventDefault();
     try {
       setLoading(true);
+
       // const res = await axios.patch(
       //   `http://localhost:8080/api/v1/species/${id}`,
       //   {
@@ -101,7 +109,8 @@ function AddSpecies() {
         {
           ...form,
           photos: [speciesImg],
-        }
+        },
+        { headers }
       ); // send patch request to server
 
       const data = await res.data.data;
@@ -125,7 +134,8 @@ function AddSpecies() {
 
       // Deployed
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${id}/photos/${photoId}`,
+        { headers }
       );
 
       setForm((prevSpecies) => ({
@@ -226,17 +236,23 @@ function AddSpecies() {
               placeholder="Enter IUCN Status"
             />
 
-            <div>Migratory/Non-migratory</div>
-            {/* <input type="text" placeholder="Enter Migratory/Non-migratory" /> */}
-            <select
-              className="select-status"
-              name="migrationStatus"
+            <div>Bhutan Schedule</div>
+            <input
+              type="text"
+              name="bhutanSchedule"
+              value={form.bhutanSchedule}
               onChange={handleChange}
-            >
-              <option value="">Select status</option>
-              <option value="Migratory">Migratory</option>
-              <option value="Non-migratory">Non Migratory</option>
-            </select>
+              placeholder="Bhutan Schedule"
+            />
+
+            <div>Habitat</div>
+            <input
+              type="text"
+              name="habitat"
+              value={form.habitat}
+              onChange={handleChange}
+              placeholder="Habitat"
+            />
 
             <div>Species Description</div>
             <input
@@ -303,35 +319,23 @@ function AddSpecies() {
               placeholder="Enter Kheng Name"
             />
 
-            <div>Legislation</div>
+            <div>Cites Appendix</div>
             <input
               type="text"
-              name="legislation"
-              value={form.legislation}
+              name="citesAppendix"
+              value={form.citesAppendix}
               onChange={handleChange}
-              placeholder="Enter Legislation"
+              placeholder="Enter cites appendix"
             />
 
-            <div>Waterbird/Landbird/Seabird</div>
-            {/* <input type="text" placeholder="Enter Waterbird/Landbird/Seabird" /> */}
-            <select
-              className="select-status"
-              name="birdType"
+            <div>Residency</div>
+            <input
+              type="text"
+              name="residency"
+              value={form.residency}
               onChange={handleChange}
-            >
-              <option className="select-status-item" value="">
-                Select type
-              </option>
-              <option className="select-status-item" value="Waterbird">
-                Waterbird
-              </option>
-              <option className="select-status-item" value="Landbird">
-                Landbird
-              </option>
-              <option className="select-status-item" value="Seabird">
-                Seabird
-              </option>
-            </select>
+              placeholder="Enter residency"
+            />
 
             <div>No. of Observation</div>
             <div className="number-input">

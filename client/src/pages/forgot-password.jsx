@@ -6,10 +6,12 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState("");
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       // const url = `http://localhost:8080/api/v1/password-reset`;
       const url = `${process.env.REACT_APP_API_URL}/api/v1/password-reset`;
 
@@ -25,6 +27,8 @@ const ForgotPassword = () => {
         setError(error.response.data.message);
         setMsg("");
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,15 +40,19 @@ const ForgotPassword = () => {
           type="email"
           placeholder="Email"
           name="email"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setMsg("");
+            setError("");
+            setEmail(e.target.value);
+          }}
           value={email}
           required
           className="input"
         />
         {error && <div className="error_msg">{error}</div>}
         {msg && <div className="success_msg">{msg}</div>}
-        <button type="submit" className="green_btn">
-          Submit
+        <button type="submit" className="green_btn" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </form>
     </div>

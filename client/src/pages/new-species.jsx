@@ -28,7 +28,7 @@ function Checklist() {
         }}
       >
         <h2 className="header">
-          Total Checklist <span className="checklist-count">(700)</span>
+          New Species <span className="checklist-count">(10)</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
@@ -106,7 +106,7 @@ function Checklist() {
       </div>
 
       <div>
-        <Link to="/checklist-detail" className="checklist-link">
+        <Link to="/new-species-detail" className="checklist-link">
           <div>
             <table className="checklist-table">
               {/* <thead>
@@ -153,7 +153,7 @@ function Checklist() {
             <table className="checklist-table">
               <tbody>
                 <td data-label="Birder" className="custom-data">
-                  #2 Birder
+                  #1 Birder
                 </td>
                 <td data-label="Birding site" className="custom-data">
                   Gyalpozhing,Mongar
@@ -181,7 +181,7 @@ function Checklist() {
             <table className="checklist-table">
               <tbody>
                 <td data-label="Birder" className="custom-data">
-                  #3 Birder
+                  #2 Birder
                 </td>
                 <td data-label="Birding site" className="custom-data">
                   Gyalpozhing,Mongar

@@ -4,6 +4,12 @@ import axios from "axios";
 import "../styles/addspecies.css";
 
 function AddSpecies() {
+  const token = localStorage.getItem("token");
+
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const [form, setForm] = useState({
     englishName: "",
     scientificName: "",
@@ -18,9 +24,10 @@ function AddSpecies() {
     sharName: "",
     khengName: "",
     iucnStatus: "",
-    legislation: "",
-    migrationStatus: "",
-    birdType: "",
+    citesAppendix: "",
+    bhutanSchedule: "",
+    residency: "",
+    habitat: "",
     description: "",
     observations: 0,
     photos: [],
@@ -73,7 +80,8 @@ function AddSpecies() {
         {
           ...form,
           photos: [speciesImg],
-        }
+        },
+        { headers }
       ); // post data to server
 
       setForm({
@@ -90,9 +98,10 @@ function AddSpecies() {
         sharName: "",
         khengName: "",
         iucnStatus: "",
-        legislation: "",
-        migrationStatus: "",
-        birdType: "",
+        citesAppendix: "",
+        bhutanSchedule: "",
+        residency: "",
+        habitat: "",
         description: "",
         observations: 0,
         photos: [],
@@ -138,6 +147,7 @@ function AddSpecies() {
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -245,17 +255,23 @@ function AddSpecies() {
               placeholder="Enter IUCN Status"
             />
 
-            <div>Migratory/Non-migratory</div>
-            {/* <input type="text" placeholder="Enter Migratory/Non-migratory" /> */}
-            <select
-              className="select-status"
-              name="migrationStatus"
+            <div>Bhutan Schedule</div>
+            <input
+              type="text"
+              name="bhutanSchedule"
+              value={form.bhutanSchedule}
               onChange={handleChange}
-            >
-              <option value="">Select status</option>
-              <option value="Migratory">Migratory</option>
-              <option value="Non-migratory">Non Migratory</option>
-            </select>
+              placeholder="Bhutan Schedule"
+            />
+
+            <div>Habitat</div>
+            <input
+              type="text"
+              name="habitat"
+              value={form.habitat}
+              onChange={handleChange}
+              placeholder="Habitat"
+            />
 
             <div>Species Description</div>
             <input
@@ -322,35 +338,23 @@ function AddSpecies() {
               placeholder="Enter Kheng Name"
             />
 
-            <div>Legislation</div>
+            <div>Cites Appendix</div>
             <input
               type="text"
-              name="legislation"
-              value={form.legislation}
+              name="citesAppendix"
+              value={form.citesAppendix}
               onChange={handleChange}
-              placeholder="Enter Legislation"
+              placeholder="Enter cites appendix"
             />
 
-            <div>Waterbird/Landbird/Seabird</div>
-            {/* <input type="text" placeholder="Enter Waterbird/Landbird/Seabird" /> */}
-            <select
-              className="select-status"
-              name="birdType"
+            <div>Residency</div>
+            <input
+              type="text"
+              name="residency"
+              value={form.residency}
               onChange={handleChange}
-            >
-              <option className="select-status-item" value="">
-                Select type
-              </option>
-              <option className="select-status-item" value="Waterbird">
-                Waterbird
-              </option>
-              <option className="select-status-item" value="Landbird">
-                Landbird
-              </option>
-              <option className="select-status-item" value="Seabird">
-                Seabird
-              </option>
-            </select>
+              placeholder="Enter residency"
+            />
 
             <div>No. of Observation</div>
             <div className="number-input">
@@ -426,12 +430,13 @@ function AddSpecies() {
         <span>OR</span>
 
         <div className="file-upload-container">
-          <div>Upload Excel File</div>
+          <div>Upload Excel File (*.xlsx)</div>
           <form onSubmit={handleFileSubmit}>
             <input
               className="select-file"
               type="file"
               id="file"
+              accept=".xlsx"
               onChange={handleFileChange}
             />
             <button

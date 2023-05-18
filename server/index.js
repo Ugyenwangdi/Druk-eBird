@@ -4,26 +4,29 @@ dotenv.config();
 import express from "express";
 import cors from "cors";
 import passport from "passport";
+import session from "express-session";
+import bodyParser from "body-parser";
 
 import connectDB from "./mongodb/connect.js";
-import userRouter from "./routes/user.routes.js";
-import passwordResetRoutes from "./routes/passwordReset.js";
-import authRoute from "./routes/googleauth.js";
-import speciesRouter from "./routes/species.routes.js";
-
-import cookieSession from "cookie-session";
-import passportStrategy from "./passport.js";
+import { Admin } from "./mongodb/models/admin.js";
+import authRoute from "./routes/auth.routes.js";
+import passwordResetRoutes from "./routes/reset-password.routes.js";
+import speciesRoutes from "./routes/species.routes.js";
+import checklistRoutes from "./routes/checklist.routes.js";
 
 const app = express();
 app.setMaxListeners(15);
 app.use(express.json({ limit: "50mb" }));
-app.use(cors());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(
-  cookieSession({
-    name: "session",
-    keys: ["drukebird"],
-    maxAge: 24 * 60 * 60 * 100,
+  session({
+    secret: process.env.PASSPORT_LONG_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    // cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
   })
 );
 
@@ -33,20 +36,37 @@ app.use(passport.session());
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    methods: "GET,POST,PUT,DELETE",
+    methods: "GET,POST,PUT,DELETE, PATCH",
     credentials: true,
   })
 );
 
-app.get("/", (req, res) => {
-  res.send({ message: "Hello World!" });
+passport.use(Admin.createStrategy());
+
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, {
+      id: user.id,
+      name: user.name,
+      email: user.email, // what we want to retrieve when we call req.user
+      googleId: user.googleId,
+      userType: user.userType,
+      isDeactivated: user.isDeactivated,
+      profile: user.profile, //
+    });
+  });
 });
 
-// routes
-app.use("/api/v1/users", userRouter);
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
+
+app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);
-app.use("/auth", authRoute);
-app.use("/api/v1/species", speciesRouter);
+app.use("/api/v1/species", speciesRoutes);
+app.use("/api/v1/", checklistRoutes);
 
 const startServer = async () => {
   try {
