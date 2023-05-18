@@ -68,7 +68,7 @@ function NewSpeciesDetails() {
                 <td data-label="Description">Sonam</td>
                 <td data-label="Count total">2</td>
                 <td data-label="Photo">
-                  <img src={logo} alt="Bird" className="bird" />
+                  <img src={logo} alt="Bird" className="bird-img" />
                 </td>
                 <td data-label="Action">
                   <button className="reject-btn" onClick={() => handleReject()}>

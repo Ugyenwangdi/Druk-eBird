@@ -146,6 +146,7 @@ function Settings() {
         reject(error);
       };
 
+      image.crossOrigin = "anonymous"; // Set crossOrigin attribute to enable CORS
       image.src = imageDataUrl;
     });
   };
@@ -162,7 +163,17 @@ function Settings() {
         };
 
         let croppedImage = null;
-        if (userProfileImg) {
+        console.log("userProfileImg:", userProfileImg);
+        // Check if the photo field has changed
+        // Check if the photo field has changed
+        const photoFieldChanged =
+          userProfileImg &&
+          (userProfileImg !== currentUser.photo || !formData.photo);
+
+        console.log(photoFieldChanged);
+
+        if (photoFieldChanged) {
+          // Only crop the image if the photo field has changed
           croppedImage = await cropImage(userProfileImg);
         }
 
@@ -170,7 +181,7 @@ function Settings() {
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
           {
             ...formData,
-            photo: croppedImage,
+            photo: photoFieldChanged ? croppedImage || "" : "",
           },
           { headers }
         ); // send patch request to server
@@ -179,7 +190,7 @@ function Settings() {
         setFormData(data);
         setCurrentUser(data);
         setMsg(res.data.message);
-        console.log(res.data.message);
+        // console.log(res.data.message);
       } else {
         setError("You cannot update your google account");
       }
@@ -222,7 +233,7 @@ function Settings() {
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`
         );
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setFormData(data);
         setUserProfileImg(data.profile);
         setIsNotAdmin(data.userType === "user");
