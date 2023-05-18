@@ -5,14 +5,22 @@ import { CSVLink } from "react-csv";
 
 import {
   Search,
+  Searchspecies,
+  Searchscientific,
   SpeciesListComponent,
   Pagination,
   Orders,
-  Families
+  Families,
+  Genuses,
+  Iucnstatuses,
+  Groups,
+  Residencies,
 } from "../components";
 import "../styles/species.css";
 
 function Species() {
+  const token = localStorage.getItem("token");
+
   const [speciesList, setSpeciesList] = useState([]);
   const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
@@ -20,8 +28,14 @@ function Species() {
   const [speciesCount, setSpeciesCount] = useState(0);
   const [filterOrder, setFilterOrder] = useState([]);
   const [filterFamily, setFilterFamily] = useState([]);
+  const [filterGenus, setFilterGenus] = useState([]);
+  const [filterIucnstatus, setFilterIucnstatus] = useState([]);
+  const [filterGroup, setFilterGroup] = useState([]);
+  const [filterResidency, setFilterResidency] = useState([]);
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [englishName, setEnglishName] = useState("");
+  const [searchspecies, setSearchspecies] = useState("");
+  const [searchscientific, setSearchscientific] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const handleDropdown = () => {
@@ -32,13 +46,13 @@ function Species() {
     const fetchSpeciesList = async () => {
       try {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
-        const url = `${process.env.REACT_APP_API_URL
-          }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&search=${search}`;
+        const url = `${
+          process.env.REACT_APP_API_URL
+        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${englishName}&species=${searchspecies}&scientific_name=${searchscientific}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
         // console.log("Species data:", data.species)
-
 
         setSpeciesCount(data.speciesTotal);
         setObj(data);
@@ -48,11 +62,21 @@ function Species() {
       }
     };
     fetchSpeciesList();
-  }, [filterOrder, filterFamily, page, search]);
+  }, [
+    filterOrder,
+    filterFamily,
+    filterIucnstatus,
+    filterGenus,
+    filterGroup,
+    filterResidency,
+    page,
+    englishName,
+    searchspecies,
+    searchscientific,
+  ]);
 
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
-
 
   const handleDelete = async (id) => {
     try {
@@ -64,9 +88,13 @@ function Species() {
         // const res = await axios.delete(
         //   `http://localhost:8080/api/v1/species/${id}`
         // );
+        const headers = {
+          Authorization: `Bearer ${token}`,
+        };
 
         const res = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`
+          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
+          { headers }
         );
 
         setSpeciesList((prevSpeciesList) =>
@@ -134,6 +162,8 @@ function Species() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
         }}
       >
         <h2 className="header">
@@ -156,7 +186,7 @@ function Species() {
         <div className="species-filter-container">
           <div className="species-search-bar">
             <span className="material-icons google-font-icon">search</span>
-            <Search setSearch={(search) => setSearch(search)} />
+            <Search setSearch={(englishName) => setEnglishName(englishName)} />
           </div>
           <div className="filter-select" id="order">
             <Orders
@@ -169,46 +199,48 @@ function Species() {
             </span>
           </div>
           <div className="filter-select" id="family">
-
-            <Families filterFamily={filterFamily}
+            <Families
+              filterFamily={filterFamily}
               families={obj.families ? obj.families : []}
-              setFilterFamily={(family) => setFilterFamily(family)} />
-            {/* <select className="species-filter-dropdown">
-              <option value="">Family</option>
-              <option value="1">Family 1</option>
-              <option value="2">Family 2</option>
-              <option value="3">Family 3</option>
-            </select> */}
+              setFilterFamily={(family) => setFilterFamily(family)}
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
           <div className="filter-select" id="genus">
-            <select className="species-filter-dropdown">
-              <option value="">Genus</option>
-              <option value="1">Genus 1</option>
-              <option value="2">Genus 2</option>
-              <option value="3">Genus 3</option>
-            </select>
+            <Genuses
+              filterGenus={filterGenus}
+              genuses={obj.genuses ? obj.genuses : []}
+              setFilterGenus={(genus) => setFilterGenus(genus)}
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
-          <div className="filter-select" id="iucnstatus">
-            <select className="species-filter-dropdown">
-              <option value="">IUCN Status</option>
-              <option value="1">IUCN Status 1</option>
-              <option value="2">IUCN Status 2</option>
-              <option value="3">IUCN Status 3</option>
-            </select>
+          <div
+            className="filter-select"
+            id="iucnstatus"
+            style={{ width: "120px" }}
+          >
+            <Iucnstatuses
+              filterIucnstatus={filterIucnstatus}
+              iucnstatuses={obj.iucnstatuses ? obj.iucnstatuses : []}
+              setFilterIucnstatus={(iucnstatus) =>
+                setFilterIucnstatus(iucnstatus)
+              }
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
           <div className="filter-button" style={{ position: "relative" }}>
-            <button className="filter-more-btn" onClick={handleDropdown}>
+            <button className="filter-more-btn">
               More
-              <span className="material-symbols-outlined google-font-icon">
+              <span
+                className="material-symbols-outlined google-font-icon"
+                onClick={handleDropdown}
+              >
                 page_info
               </span>
             </button>
@@ -219,13 +251,21 @@ function Species() {
                   <span className="material-icons google-font-icon">
                     search
                   </span>
-                  <input type="text" placeholder="Enter scientific name" />
+                  <Searchscientific
+                    setSearchscientific={(searchscientific) =>
+                      setSearchscientific(searchscientific)
+                    }
+                  />
                 </div>
                 <div className="search-bar">
                   <span className="material-icons google-font-icon">
                     search
                   </span>
-                  <input type="text" placeholder="Enter species name" />
+                  <Searchspecies
+                    setSearchspecies={(searchspecies) =>
+                      setSearchspecies(searchspecies)
+                    }
+                  />
                 </div>
                 <div className="filter-select" id="order-dropdown">
                   <Orders
@@ -238,56 +278,55 @@ function Species() {
                   </span>
                 </div>
                 <div className="filter-select" id="family-dropdown">
-                  <select className="species-filter-dropdown">
-                    <option value="">Family</option>
-                    <option value="1">Family 1</option>
-                    <option value="2">Family 2</option>
-                    <option value="3">Family 3</option>
-                  </select>
+                  <Families
+                    filterFamily={filterFamily}
+                    families={obj.families ? obj.families : []}
+                    setFilterFamily={(family) => setFilterFamily(family)}
+                  />
                   <span className="material-icons google-font-icon">
                     arrow_drop_down
                   </span>
                 </div>
                 <div className="filter-select" id="genus-dropdown">
-                  <select className="species-filter-dropdown">
-                    <option value="">Genus</option>
-                    <option value="1">Genus 1</option>
-                    <option value="2">Genus 2</option>
-                    <option value="3">Genus 3</option>
-                  </select>
+                  <Genuses
+                    filterGenus={filterGenus}
+                    genuses={obj.genuses ? obj.genuses : []}
+                    setFilterGenus={(genus) => setFilterGenus(genus)}
+                  />
                   <span className="material-icons google-font-icon">
                     arrow_drop_down
                   </span>
                 </div>
                 <div className="filter-select" id="group-dropdown">
-                  <select className="species-filter-dropdown">
-                    <option value="">Group</option>
-                    <option value="1">Group 1</option>
-                    <option value="2">Group 2</option>
-                    <option value="3">Group 3</option>
-                  </select>
+                  <Groups
+                    filterGroup={filterGroup}
+                    groups={obj.groups ? obj.groups : []}
+                    setFilterGroup={(group) => setFilterGroup(group)}
+                  />
                   <span className="material-icons google-font-icon">
                     arrow_drop_down
                   </span>
                 </div>
                 <div className="filter-select" id="iucnstatus-dropdown">
-                  <select className="species-filter-dropdown">
-                    <option value="">IUCN Status</option>
-                    <option value="1">IUCN Status 1</option>
-                    <option value="2">IUCN Status 2</option>
-                    <option value="3">IUCN Status 3</option>
-                  </select>
+                  <Iucnstatuses
+                    filterIucnstatus={filterIucnstatus}
+                    iucnstatuses={obj.iucnstatuses ? obj.iucnstatuses : []}
+                    setFilterIucnstatus={(iucnstatus) =>
+                      setFilterIucnstatus(iucnstatus)
+                    }
+                  />
                   <span className="material-icons google-font-icon">
                     arrow_drop_down
                   </span>
                 </div>
                 <div className="filter-select" id="residency-dropdown">
-                  <select className="species-filter-dropdown">
-                    <option value="">Residency</option>
-                    <option value="1">Residency 1</option>
-                    <option value="2">Residency 2</option>
-                    <option value="3">Residency 3</option>
-                  </select>
+                  <Residencies
+                    filterResidency={filterResidency}
+                    residencies={obj.residencies ? obj.residencies : []}
+                    setFilterResidency={(residency) =>
+                      setFilterResidency(residency)
+                    }
+                  />
                   <span className="material-icons google-font-icon">
                     arrow_drop_down
                   </span>

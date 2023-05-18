@@ -4,7 +4,7 @@
   padding-right: 20px;
 }
 .header {
-  padding: 20px 0;
+  padding: 10px 0;
 }
 .species-count {
   font-size: 14px;
@@ -21,7 +21,7 @@
   border-radius: 15px;
   border-color: #f7f7f7;
   background-color: #fcfcfc;
-  padding: 1%;
+  padding: 20px;
   padding-bottom: 10px;
   max-width: 100%;
   width: 100%;
@@ -34,11 +34,11 @@
   gap: 10px;
   justify-content: space-between;
   align-items: center;
-  margin: 1.5rem 0;
-  padding-bottom: 10px;
+  padding-bottom: 25px;
 }
 
 .species-search-bar {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 5px;
   width: 35%;
@@ -50,7 +50,7 @@
 }
 
 .species-search-bar:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .species-search-bar input {
@@ -79,6 +79,7 @@
 }
 
 .filter-select {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 3px;
   width: 100px;
@@ -90,7 +91,7 @@
 }
 
 .filter-select:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .species-container {
@@ -236,8 +237,6 @@
 }
 
 .export-button:is(:hover, :focus) {
-  border: 2px solid #ba760d;
-  background-color: #136d66;
   color: #ba760d;
 }
 
@@ -254,7 +253,6 @@
 
 .add-button:is(:hover, :focus) {
   color: #ba760d;
-  border: 1px solid #ba760d;
 }
 
 .dropdown-content {
@@ -272,6 +270,7 @@
 }
 
 .search-bar {
+  border: 1px solid transparent;
   background: var(--color-light);
   border-radius: var(--border-radius-2);
   display: flex;
@@ -285,14 +284,14 @@
   width: 100%;
 }
 .search-bar:is(:hover, :focus) {
-  border: 2px solid #136d66;
+  border: 1px solid #136d66;
 }
 
 .material-icons {
   margin-right: 5px;
 }
 
-input[type="text"] {
+.search-bar input[type="text"] {
   padding: 5px;
 }
 
@@ -304,6 +303,7 @@ input[type="text"] {
 }
 
 .filter-button {
+  border: 1px solid transparent;
   background: var(--color-light);
   padding: 0px 10px;
   width: 80px;
@@ -321,7 +321,7 @@ input[type="text"] {
   line-height: 190%;
 }
 .filter-button:is(:hover, :focus) {
-  border: 3px solid #136d66;
+  border: 1px solid #136d66;
 }
 #order-dropdown,
 #family-dropdown,
