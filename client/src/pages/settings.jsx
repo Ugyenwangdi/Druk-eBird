@@ -170,7 +170,7 @@ function Settings() {
           userProfileImg &&
           (userProfileImg !== currentUser.photo || !formData.photo);
 
-        console.log(photoFieldChanged);
+        console.log("changed: ", photoFieldChanged);
 
         if (photoFieldChanged) {
           // Only crop the image if the photo field has changed
