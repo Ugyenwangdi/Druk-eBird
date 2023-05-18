@@ -430,12 +430,13 @@ function AddSpecies() {
         <span>OR</span>
 
         <div className="file-upload-container">
-          <div>Upload Excel File</div>
+          <div>Upload Excel File (*.xlsx)</div>
           <form onSubmit={handleFileSubmit}>
             <input
               className="select-file"
               type="file"
               id="file"
+              accept=".xlsx"
               onChange={handleFileChange}
             />
             <button
