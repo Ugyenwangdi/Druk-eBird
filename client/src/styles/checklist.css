@@ -97,6 +97,11 @@
   cursor: pointer;
   font-size: 14px;
 }
+.checklist-table-container{
+  display: flex;
+  flex-direction: column;
+  margin-top: 2rem;
+}
 
 .checklist-table {
   border: 0.5px solid #dcd8d8;
