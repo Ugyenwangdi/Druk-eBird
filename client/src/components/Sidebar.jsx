@@ -49,7 +49,7 @@ function Sidebar({ showSidebar, closeSidebar }) {
         </button>
         <div className="sidebar">
           <NavLink
-            exact
+            exact="true"
             to="/"
             className={activeItem === "/" ? "active" : ""}
             onClick={() => handleMenuItemClick("/")}

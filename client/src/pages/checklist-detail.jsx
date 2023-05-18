@@ -27,7 +27,10 @@ function ChecklistDetail() {
       </h2>
 
       <div className="checklist-detail-container">
-        <span class="material-symbols-outlined" style={{ marginTop: ".5rem" }}>
+        <span
+          className="material-symbols-outlined"
+          style={{ marginTop: ".5rem" }}
+        >
           distance
         </span>
         <p className="checklist-detail-container-text">
@@ -115,7 +118,7 @@ function ChecklistDetail() {
           </table>
         </div>
         <div className="card-container">
-          <card className="card-detail">
+          <div className="card-detail">
             <article className="mt-10 mb-14 flex items-end justify-end">
               <ul>
                 <li className="p-1 ">
@@ -147,7 +150,7 @@ function ChecklistDetail() {
                 </li>
               </ul>
             </article>
-          </card>
+          </div>
         </div>
       </div>
     </div>
