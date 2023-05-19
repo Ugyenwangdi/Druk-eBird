@@ -188,6 +188,12 @@ const createSpecies = async (req, res) => {
 
   // console.log(photo);
 
+  if (!englishName || !scientificName) {
+    return res
+      .status(400)
+      .json({ message: "English name and Scientific name are required" });
+  }
+
   try {
     const newSpecies = new Species({
       englishName,

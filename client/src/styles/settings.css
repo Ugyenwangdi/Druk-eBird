@@ -57,7 +57,7 @@ body {
   right: 17%;
   transform: translate(50%, -50%);
   border-radius: 50%;
-  border: 1px solid grey;
+  border: 3px solid grey;
   display: flex; /* Added display property */
   justify-content: center; /* Added justify-content property */
   align-items: center;
@@ -78,7 +78,7 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: grey;
+  background-color: rgb(33, 31, 31);
   display: flex;
   align-items: center;
   justify-content: center;

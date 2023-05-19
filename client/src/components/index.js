@@ -13,7 +13,6 @@ import Residencies from "./Residencies";
 import Searchspecies from "./Searchspecies";
 import Searchscientific from "./Searchscientific";
 
-
 export {
   Sidebar,
   Topbar,
@@ -29,4 +28,5 @@ export {
   Residencies,
   Searchspecies,
   Searchscientific,
+
 };
