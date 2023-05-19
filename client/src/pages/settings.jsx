@@ -284,35 +284,10 @@ function Settings() {
           </div>
 
 
-          {/* <div className="profile-pic">
-            <img
-              src={userProfileImg ? userProfileImg : logo}
-              id="photo"
-              alt="profile"
-            ></img>
-          
-          </div>
-          <div className="camera">
-            <label htmlFor="file" id="uploadBtn">
-                  <span class="material-symbols-outlined">
-                    photo_camera
-                  </span>
-            </label>
-              <input
-                type="file"
-                name="photo"
-                accept="image/*"
-                id="file"
-                onChange={handleFileInputChange}
-                style={{ display: 'none' }}
 
-              />
-              
-            </div> */}
-          {/* <div className="profile-container"> */}
-            <div className="profile-pic">
-              <img src={userProfileImg ? userProfileImg : logo} id="photo" alt="profile" />
-              <div className="camera">
+          <div className="profile-pic">
+            <img src={userProfileImg ? userProfileImg : logo} id="photo" alt="profile" />
+            <div className="camera">
               <label htmlFor="file" id="uploadBtn">
                 <span className="material-symbols-outlined">photo_camera</span>
               </label>
@@ -325,16 +300,7 @@ function Settings() {
                 style={{ display: 'none' }}
               />
             </div>
-            </div>
-
-            
-          {/* </div> */}
-
-
-
-
-
-
+          </div>
 
 
           <div className="submit">
