@@ -203,6 +203,7 @@ function Settings() {
         setFormData(data);
         fetchCurrentUser();
         setMsg(res.data.message);
+        setPhotoFieldChanged(false);
         // console.log(res.data.message);
       } else {
         setError("You cannot update your google account");
