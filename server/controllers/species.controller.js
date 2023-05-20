@@ -81,7 +81,11 @@ const getAllSpecies = async (req, res) => {
       };
     } else if (search) {
       searchQuery = {
-        englishName: { $regex: search, $options: "i" },
+        $or: [
+          { englishName: { $regex: search, $options: "i" } },
+          { species: { $regex: search, $options: "i" } },
+          { scientificName: { $regex: search, $options: "i" } },
+        ],
       };
     }
     const foundSpecies = await Species.find({
