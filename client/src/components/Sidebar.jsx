@@ -41,7 +41,7 @@ function Sidebar({ showSidebar, closeSidebar }) {
       <aside
         className={`sidebar ${showSidebar ? "show" : ""}`}
         style={{
-          display: window.innerWidth >= 768|| showSidebar ? "block" : "none",
+          display: window.innerWidth >= 768 || showSidebar ? "block" : "none",
         }}
       >
         <button id="close-btn" onClick={closeSidebar} className="close-button">
