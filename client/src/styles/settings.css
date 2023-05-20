@@ -57,7 +57,7 @@ body {
   right: 17%;
   transform: translate(50%, -50%);
   border-radius: 50%;
-  border: 3px solid grey;
+  border: 3px solid #136d66;
   display: flex; /* Added display property */
   justify-content: center; /* Added justify-content property */
   align-items: center;
@@ -78,7 +78,7 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: rgb(33, 31, 31);
+  background-color: #136d66;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +96,9 @@ body {
   cursor: pointer;
   text-align: center;
 }
-
+#uploadBtn:is(:hover, :focus) {
+  color: #ba760d;
+}
 .parent {
   padding: 0 70px;
   font-family: sans-serif;
