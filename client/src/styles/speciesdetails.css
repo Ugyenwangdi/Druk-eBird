@@ -54,7 +54,17 @@
   border-radius: 2%;
   object-fit: cover;
 }
-
+.species-image-more {
+  position: relative;
+  width: 80%;
+  max-width: 200px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 2%;
+  filter: grayscale(100%);
+  cursor: pointer;
+  object-fit: cover;
+}
 
 
 
@@ -75,17 +85,7 @@
 }
 
 
-.species-image-more {
-  position: relative;
-  width: 80%;
-  max-width: 200px;
-  margin: 20px;
-  border: 1px solid #ccc;
-  border-radius: 2%;
-  filter: grayscale(100%);
-  cursor: pointer;
-  object-fit: cover;
-}
+
 .species-container {
   display: flex;
   flex-direction: row;
@@ -144,12 +144,13 @@
 @media(max-width:768px){
   .species-images {
     display: flex;
-    flex-wrap: wrap; /* Add this line to wrap the elements */
+    flex-wrap: wrap; 
+    align-items: center;
   }
   
   .species-image1 {
-    width: 100%;
-    max-width: 400px;
+    width: 80%;
+    max-width: 450px;
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 2%;
@@ -161,24 +162,41 @@
     width: 100%; 
     display: flex;
     justify-content: start;
-    flex-direction: row;
+    /* align-items: center; */
+    flex-direction: column;
   }
   
   .species-image {
     width: 80%;
-    max-width: 200px;
+    max-width: 450px;
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 2%;
     object-fit: cover;
   }
+  .species-image-more {
+    position: relative;
+    width: 80%;
+    max-width: 450px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 2%;
+    filter: grayscale(100%);
+    cursor: pointer;
+    object-fit: cover;
+  }
   
   .map {
-    width: 70%;
+    width: 80%;
+    max-width: 450px;
     height: 500px;
     display: flex;
     flex-direction: column;
+    margin: 20px;
     padding-top: 20px;
     padding-right: 10px;
+  }
+  .location {
+    height: 90%;
   }
 }
