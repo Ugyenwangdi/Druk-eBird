@@ -13,10 +13,13 @@ function Settings() {
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [fetchCurrentUserLoading, setFetchCurrentUserLoading] = useState(false);
   const [deactivateLoading, setDeactivateLoading] = useState(false);
   const [userProfileImg, setUserProfileImg] = useState("");
+  const [userProfilePreview, setUserProfilePreview] = useState("");
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
   const [isNotAdmin, setIsNotAdmin] = useState(false);
+  const [photoFieldChanged, setPhotoFieldChanged] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -40,6 +43,7 @@ function Settings() {
 
   const fetchCurrentUser = useCallback(async () => {
     try {
+      setFetchCurrentUserLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
         {
@@ -55,6 +59,7 @@ function Settings() {
       console.error(error);
     } finally {
       setCheckedDeactivatedUser(true);
+      setFetchCurrentUserLoading(false);
     }
   }, [token]);
 
@@ -101,6 +106,7 @@ function Settings() {
   const handleChange = ({ currentTarget: input }) => {
     setMsg("");
     setError("");
+
     setFormData((prevState) => ({
       ...prevState,
       [input.name]: input.value,
@@ -108,16 +114,21 @@ function Settings() {
   };
 
   const handleFileInputChange = (event) => {
+    setMsg("");
+    setError("");
     const file = event.target.files[0];
     const reader = new FileReader();
 
     if (file) {
       reader.readAsDataURL(file);
       reader.onloadend = () => {
+        setUserProfilePreview(reader.result);
         setUserProfileImg(reader.result);
+        setPhotoFieldChanged(true);
       };
     } else {
-      setUserProfileImg("");
+      setUserProfilePreview("");
+      setPhotoFieldChanged(false);
     }
   };
 
@@ -136,9 +147,7 @@ function Settings() {
         canvas.height = size;
 
         context.drawImage(image, x, y, size, size, 0, 0, size, size);
-
         const croppedImageDataUrl = canvas.toDataURL("image/jpeg");
-
         resolve(croppedImageDataUrl);
       };
 
@@ -153,6 +162,12 @@ function Settings() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!currentUser.id) {
+      setError("User ID is missing. Please try again later.");
+      return;
+    }
+
     try {
       setLoading(true);
 
@@ -164,31 +179,29 @@ function Settings() {
 
         let croppedImage = null;
         console.log("userProfileImg:", userProfileImg);
-        // Check if the photo field has changed
-        // Check if the photo field has changed
-        const photoFieldChanged =
-          userProfileImg &&
-          (userProfileImg !== currentUser.photo || !formData.photo);
 
+        // Check if the photo field has changed
         console.log("changed: ", photoFieldChanged);
 
         if (photoFieldChanged) {
           // Only crop the image if the photo field has changed
-          croppedImage = await cropImage(userProfileImg);
+          croppedImage = await cropImage(userProfilePreview);
         }
+
+        console.log("id: ", currentUser.id);
 
         const res = await axios.patch(
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/update-profile`,
           {
             ...formData,
-            photo: photoFieldChanged ? croppedImage || "" : "",
+            photo: photoFieldChanged ? croppedImage : "",
           },
           { headers }
         ); // send patch request to server
 
         const data = await res.data.data;
         setFormData(data);
-        setCurrentUser(data);
+        fetchCurrentUser();
         setMsg(res.data.message);
         // console.log(res.data.message);
       } else {
