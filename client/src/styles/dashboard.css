@@ -1,8 +1,8 @@
 .mainn-content {
-  background: #F4F4F4;
+  background: #f4f4f4;
   padding-right: 1rem;
 }
-.dashboard-cards{
+.dashboard-cards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 5rem;
@@ -15,21 +15,21 @@
   padding: 1.5rem;
   border-radius: 15px;
 }
-.card-single div:last-child span{
+.card-single div:last-child span {
   font-size: 3.1rem;
   margin-left: 2rem;
   color: rgb(162, 162, 162);
 }
-.card-single div:first-child span{
+.card-single div:first-child span {
   font-size: 1.2rem;
   color: rgb(162, 162, 162);
 }
-.grid-item{
+.grid-item {
   padding-bottom: 2rem;
   display: flex;
   align-items: center;
 }
-.grid-item span{
+.grid-item span {
   margin-right: 10px;
 }
 .grid-item span {
@@ -41,7 +41,7 @@
   padding-bottom: 2rem;
 }
 .up-arrow-icon {
-  background-color: #136D66;
+  background-color: #136d66;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -52,7 +52,7 @@
   margin-right: 10px;
 }
 .up-arrow-icon .material-icons {
-  font-size: 20px; 
+  font-size: 20px;
   color: #fff;
   margin-left: 5px;
 }
@@ -63,14 +63,14 @@
 
 .percentage-change {
   font-size: 1.5rem;
-  color: #136D66;
+  color: #136d66;
   margin-right: 10px;
 }
 .comparison-text {
   font-size: 1.2rem;
 }
 /* charts */
-.graphBox{
+.graphBox {
   position: relative;
   width: 100%;
   padding-top: 3.5rem;
@@ -79,14 +79,14 @@
   grid-gap: 30px;
   min-height: 200px;
 }
-.graphBox .box{
+.graphBox .box {
   position: relative;
   background-color: #fff;
   padding: 20px;
   width: 100%;
   border-radius: 15px;
 }
-.recent-grid{
+.recent-grid {
   margin-top: 3.5rem;
   display: grid;
   grid-gap: 2rem;
@@ -96,7 +96,7 @@
   background-color: #fff;
   border-radius: 15px;
 }
-.card-header{
+.card-header {
   padding: 1rem;
 }
 .card-header {
@@ -105,66 +105,66 @@
   align-items: center;
   border-bottom: 1px solid #f0f0f0;
 }
-.card-header span{
-  color: #136D66;
+.card-header span {
+  color: #136d66;
 }
 .card-header button {
-  background-color:#136D66;
+  background-color: #136d66;
   border-radius: 5px;
   color: #fff;
   font-size: 1rem;
-  padding: .5rem 1rem;
-  border: 1px solid #136D66;
+  padding: 0.5rem 1rem;
+  border: 1px solid #136d66;
 }
-.eBirder{
+.eBirder {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .5rem .7rem;
+  padding: 0.5rem 0.7rem;
 }
-.birders-pic{
+.birders-pic {
   width: 40px;
   height: 40px;
 }
-.bird-pic{
+.bird-pic {
   width: 40px;
   height: 40px;
 }
-.info{
+.info {
   display: flex;
   align-items: center;
 }
-.info img{
+.info img {
   border-radius: 20%;
   margin-right: 1rem;
 }
-.info h4{
+.info h4 {
   font-size: 1.2rem;
   font-weight: 700;
   color: #222;
 }
-.info small{
+.info small {
   font-weight: 600;
   color: grey;
   font-size: 1rem;
 }
-.more-info span{
+.more-info span {
   display: inline-block;
-  margin-left: .5rem;
+  margin-left: 0.5rem;
   color: #919191;
 }
-.sighting-date span{
-  color: #136D66;
+.sighting-date span {
+  color: #136d66;
   font-size: 14px;
 }
-.explore-birds{
+.explore-birds {
   display: flex;
   flex-direction: column;
   background-color: #fff;
   border-radius: 15px;
   margin-top: 3rem;
 }
-.section-header{
+.section-header {
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -173,17 +173,17 @@
   padding: 1rem;
 }
 
-.buttons-container span{
+.buttons-container span {
   margin-top: 1rem;
-  color: #136D66;
+  color: #136d66;
 }
 .section-header button {
-  background-color:#136D66;
+  background-color: #136d66;
   border-radius: 5px;
   color: #fff;
   font-size: 1rem;
-  padding: .5rem 1rem;
-  border: 1px solid #136D66;
+  padding: 0.5rem 1rem;
+  border: 1px solid #136d66;
 }
 .section-header {
   display: flex;
@@ -205,8 +205,8 @@
   justify-content: space-between;
   padding: 1rem;
 }
-.arrow{
-  color: #136D66;
+.arrow {
+  color: #136d66;
   margin-top: 9rem;
 }
 .popular-img {
@@ -228,17 +228,23 @@ button {
   align-self: flex-end;
   color: #919191;
 }
+
+.name-button-container {
+  justify-content: space-between;
+  display: flex;
+}
+
 .popular-img button {
-  background-color:#DADEFA;
+  background-color: #dadefa;
   border-radius: 5px;
-  color:#136D66;
+  color: #136d66;
   font-size: 1rem;
-  padding: .5rem 1rem;
-  border: 1px solid #DADEFA;
+  padding: 0.5rem 1rem;
+  border: 1px solid #dadefa;
   margin-left: 10rem;
 }
 @media (min-width: 768px) {
-  .popular-img{
+  .popular-img {
     flex-basis: 48%;
     max-width: 48%;
   }
@@ -250,14 +256,14 @@ button {
     max-width: 30%;
   }
 }
-@media (max-width: 991px){
-  .graphBox{
+@media (max-width: 991px) {
+  .graphBox {
     grid-template-columns: 1fr;
     height: auto;
   }
 }
 @media only screen and (max-width: 960px) {
-  .dashboard-cards{
+  .dashboard-cards {
     grid-template-columns: repeat(3, 1fr);
   }
   .recent-grid {
@@ -265,25 +271,25 @@ button {
   }
 }
 @media only screen and (max-width: 768px) {
-  .dashboard-cards{
+  .dashboard-cards {
     grid-template-columns: repeat(2, 1fr);
   }
   .recent-grid {
     grid-template-columns: 100%;
   }
-  .popular-img button{
-    margin-left:0rem;
+  .popular-img button {
+    margin-left: 0rem;
   }
-  .arrow{
+  .arrow {
     margin-top: 4rem;
   }
 }
-@media only screen and (max-width: 768px){
-  .mainn-content{
+@media only screen and (max-width: 768px) {
+  .mainn-content {
     width: 100%;
     /* margin-left: 2rem; */
   }
-  .dashboard-cards{
+  .dashboard-cards {
     grid-template-columns: 100%;
   }
 }
@@ -292,8 +298,8 @@ button {
     grid-template-columns: 1fr;
   }
 }
-@media only screen and (max-width: 560px){
-  .dashboard-cards{
+@media only screen and (max-width: 560px) {
+  .dashboard-cards {
     grid-template-columns: 100%;
   }
 }
