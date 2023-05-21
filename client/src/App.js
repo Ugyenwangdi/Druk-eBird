@@ -24,6 +24,7 @@ import {
   AddAdmin,
   EditAdmin,
   UpdatePassword,
+  AddChecklist,
 } from "./pages";
 
 function App() {
@@ -237,6 +238,9 @@ function App() {
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/password-update" element={<UpdatePassword />} />
+
+              <Route path="/checklists/add" element={<AddChecklist />} />
+
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

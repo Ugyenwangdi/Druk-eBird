@@ -150,10 +150,7 @@ const getSpeciesDetail = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const species = await Species.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const species = await Species.findById(id);
 
     if (!species) {
       return res.status(404).send({ error: "Species not found" });
