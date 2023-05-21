@@ -355,6 +355,10 @@ function Species({ searchQuery, setSearchClickId }) {
           setPage={(page) => setPage(page)}
         />
       </div>
+
+      <Link to="/checklists/add">
+        <button className="add-button">Add Checklist</button>
+      </Link>
     </div>
   );
 }

@@ -20,6 +20,8 @@ import AddAdmin from "./add-admin";
 import EditAdmin from "./edit-admin";
 import UpdatePassword from "./update-password";
 
+import { AddChecklist } from "./add-checklist";
+
 export {
   Signup,
   Login,
@@ -41,4 +43,5 @@ export {
   AddAdmin,
   EditAdmin,
   UpdatePassword,
+  AddChecklist,
 };
