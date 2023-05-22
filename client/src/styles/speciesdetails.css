@@ -31,7 +31,7 @@
   display: flex;
 }
 .species-image1 {
-  width: 100%;
+  width: 33.3%;
   max-width: 400px;
   margin: 20px;
   border: 1px solid #ccc;
@@ -141,6 +141,9 @@
   font-size: 12px;
   margin-left: 15px;
 }
+
+
+
 @media(max-width:768px){
   .species-images {
     display: flex;
@@ -168,7 +171,7 @@
   
   .species-image {
     width: 80%;
-    max-width: 450px;
+    max-width: 350px;
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 2%;
@@ -177,7 +180,7 @@
   .species-image-more {
     position: relative;
     width: 80%;
-    max-width: 450px;
+    max-width: 350px;
     margin: 20px;
     border: 1px solid #ccc;
     border-radius: 2%;
@@ -199,4 +202,74 @@
   .location {
     height: 90%;
   }
+}
+
+
+
+
+
+/* .species-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+}
+
+.species-table th,
+.species-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+.species-table td:first-child {
+  font-size: 14px;
+  font-weight: bold;
+  
+
+}
+.species-table td:nth-child(2) {
+  font-weight: bold;
+  color: orangered;
+  margin-left: 100rem;
+
+}
+.species-table span{
+  font-size: 14px;
+}
+ */
+
+
+
+
+
+.species-table {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-collapse:collapse;
+  border-radius: 50px;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* gap: 10px; */
+  /* width: 500px; */
+}
+
+.table-cell {
+  padding: 10px;
+  border: 1px solid #136d66;
+}
+
+.table-cell:first-child {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.table-cell:nth-child(2) {
+  font-weight: bold;
+  color: rgb(172, 50, 5);
+}
+
+.table-cell span {
+  font-size: 14px;
 }
