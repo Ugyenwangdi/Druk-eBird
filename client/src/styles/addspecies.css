@@ -64,6 +64,13 @@
 
 .select-photo {
   color: var(--color-gray-light);
+  
+}
+#add-photo{
+  height: 98%;
+  width: 98%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .select-status {
@@ -217,7 +224,7 @@
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 9999;
 }
