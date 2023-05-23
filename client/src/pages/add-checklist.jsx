@@ -171,7 +171,7 @@ function AddChecklist() {
       )}
 
       <div className="species-header">
-        <Link to="/species">
+        <Link to="/checklist">
           <span className="material-icons back-arrow">arrow_back_ios</span>
         </Link>
         <h2>Add Species</h2>
@@ -301,7 +301,7 @@ function AddChecklist() {
         </div>
         <div className="speciesbuttoncontainer">
           <div className="button-container-addspecies">
-            <Link to="/species">
+            <Link to="/checklist">
               <button className="cancle-button">Cancel</button>
             </Link>
             <button className="addnew-button" type="submit">

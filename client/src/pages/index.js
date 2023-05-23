@@ -21,6 +21,7 @@ import EditAdmin from "./edit-admin";
 import UpdatePassword from "./update-password";
 
 import { AddChecklist } from "./add-checklist";
+import { AnalyzeChecklist } from "./analyze-checklist";
 
 export {
   Signup,
@@ -44,4 +45,5 @@ export {
   EditAdmin,
   UpdatePassword,
   AddChecklist,
+  AnalyzeChecklist,
 };
