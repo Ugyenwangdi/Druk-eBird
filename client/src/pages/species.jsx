@@ -15,6 +15,7 @@ import {
   Iucnstatuses,
   Groups,
   Residencies,
+  DeleteSpeciesModal,
 } from "../components";
 import "../styles/species.css";
 
@@ -78,39 +79,44 @@ function Species() {
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
 
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [speciesToDelete, setSpeciesToDelete] = useState(null);
+
   const handleDelete = async (id) => {
     try {
       const speciesToDelete = speciesList.find((species) => species._id === id);
-      const confirmation = window.confirm(
-        `Are you sure you want to delete ${speciesToDelete.englishName}?`
+      setSpeciesToDelete(speciesToDelete);
+      setShowDeleteModal(true);
+    } catch (err) {
+      setError(err.response.data.error);
+      setMsg("");
+    }
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${speciesToDelete._id}`
       );
-      if (confirmation) {
-        // const res = await axios.delete(
-        //   `http://localhost:8080/api/v1/species/${id}`
-        // );
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
 
-        const res = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
-          { headers }
-        );
-
-        setSpeciesList((prevSpeciesList) =>
-          prevSpeciesList.filter((species) => species._id !== id)
-        );
-        setSpeciesCount(speciesList.length);
-        setMsg(res.data.message);
-        setError("");
-      }
+      setSpeciesList((prevSpeciesList) =>
+        prevSpeciesList.filter((species) => species._id !== speciesToDelete._id)
+      );
+      setSpeciesCount(speciesList.length);
+      setMsg(res.data.message);
+      setError("");
     } catch (err) {
       setError(err.response.data.error);
       setMsg("");
     } finally {
-      setError("");
-      setMsg("");
+      setShowDeleteModal(false);
+      setSpeciesToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setSpeciesToDelete(null);
   };
 
   const headers = [
@@ -341,6 +347,13 @@ function Species() {
             speciesObj={speciesList ? speciesList : []}
             deleteSpecies={handleDelete}
           />
+          {showDeleteModal && speciesToDelete && (
+            <DeleteSpeciesModal
+              speciesName={speciesToDelete.englishName}
+              onDelete={confirmDelete}
+              onCancel={cancelDelete}
+            />
+          )}
         </div>
         <Pagination
           page={page}
