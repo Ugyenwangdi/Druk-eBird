@@ -83,7 +83,7 @@ const EditAdmin = () => {
         }}
       >
         <div className="species-header">
-          <Link to="/species">
+          <Link to="/settings">
             <span className="material-icons back-arrow">arrow_back_ios</span>
           </Link>
           <h2>Edit admin</h2>

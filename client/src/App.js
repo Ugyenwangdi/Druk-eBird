@@ -25,6 +25,7 @@ import {
   EditAdmin,
   UpdatePassword,
   AddChecklist,
+  AnalyzeChecklist,
 } from "./pages";
 
 function App() {
@@ -240,6 +241,10 @@ function App() {
               <Route path="/password-update" element={<UpdatePassword />} />
 
               <Route path="/checklists/add" element={<AddChecklist />} />
+              <Route
+                path="/checklists/analyze"
+                element={<AnalyzeChecklist />}
+              />
 
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
