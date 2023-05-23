@@ -2,7 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { preview } from "../images";
 
-const SpeciesListComponent = ({ speciesObj, deleteSpecies }) => {
+const SpeciesListComponent = ({
+  speciesObj,
+  deleteSpecies,
+  setSearchClickedId,
+}) => {
   return (
     <>
       {speciesObj.map((species) => (
@@ -12,6 +16,7 @@ const SpeciesListComponent = ({ speciesObj, deleteSpecies }) => {
           <Link
             to={`/species/${species._id}`}
             state={{ speciesDetail: species }}
+            onClick={() => setSearchClickedId(species._id)}
           >
             {species.photos[0] ? (
               <span

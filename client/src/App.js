@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { Route, Routes, Navigate, Link } from "react-router-dom";
+import { Route, Routes, useNavigate, Navigate, Link } from "react-router-dom";
 import axios from "axios";
 
 import { Sidebar, Topbar } from "./components";
@@ -24,10 +24,12 @@ import {
   AddAdmin,
   EditAdmin,
   UpdatePassword,
+  AddChecklist,
+  AnalyzeChecklist,
 } from "./pages";
 
 function App() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   // const [loading, setLoading] = useState(true);
@@ -40,6 +42,18 @@ function App() {
   const [isDeactivatedUser, setIsDeactivatedUser] = useState(false);
   const [isNotAdmin, setIsNotAdmin] = useState(false);
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchClickedId, setSearchClickedId] = useState("");
+
+  useEffect(() => {
+    if (searchQuery) {
+      navigate("/species");
+    }
+
+    if (searchClickedId) {
+      setSearchQuery("");
+    }
+  }, [searchQuery, navigate]);
 
   const validateToken = useCallback(async () => {
     try {
@@ -187,6 +201,8 @@ function App() {
           <Topbar
             onToggleSidebar={handleToggleSidebar}
             currentUser={userData}
+            setSearchQuery={setSearchQuery}
+            searchQuery={searchQuery}
           />
           <main>
             <Sidebar
@@ -197,7 +213,15 @@ function App() {
             />
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/species" element={<SpeciesList />} />
+              <Route
+                path="/species"
+                element={
+                  <SpeciesList
+                    searchQuery={searchQuery}
+                    setSearchClickedId={setSearchClickedId}
+                  />
+                }
+              />
               <Route path="/species/add" element={<AddSpecies />} />
               <Route path="/species/:id/edit" element={<EditSpecies />} />
               <Route path="/species/:id" element={<SpeciesDetails />} />
@@ -215,6 +239,13 @@ function App() {
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/password-update" element={<UpdatePassword />} />
+
+              <Route path="/checklists/add" element={<AddChecklist />} />
+              <Route
+                path="/checklists/analyze"
+                element={<AnalyzeChecklist />}
+              />
+
               <Route path="/*" element={<Navigate replace to="/" />} />
             </Routes>
           </main>

@@ -206,6 +206,13 @@ function Checklist() {
         </div>
       </div>
 
+      <Link to="/checklists/add">
+        <button className="add-button">Add Checklist</button>
+      </Link>
+
+      <Link to="/checklists/analyze">
+        <button className="add-button">Analyze Checklist</button>
+      </Link>
     </div>
   );
 }

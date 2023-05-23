@@ -1,7 +1,18 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { logo, profile } from "../images";
 import "../styles/topbar.css";
 
-function TopBar({ onToggleSidebar, currentUser }) {
+function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchQuery) {
+      navigate("/species");
+    }
+  }, [searchQuery, navigate]);
+
   return (
     <nav>
       <div className="container">
@@ -9,8 +20,9 @@ function TopBar({ onToggleSidebar, currentUser }) {
         <div className="search-bar">
           <span className="material-icons">search</span>
           <input
-            type="search"
-            placeholder="Search Bird Species, Birding sites, Birders etc"
+            type="text"
+            placeholder="Search Bird names "
+            onChange={({ currentTarget: input }) => setSearchQuery(input.value)}
           />
         </div>
         <div className="profile-area">
