@@ -105,28 +105,49 @@ function Checklist() {
         </div>
       </div>
 
-      <div>
-        <Link to="/new-species-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              {/* <thead>
-                <tr>
-                  <th>Sl.no</th>
-                  <th>English Name</th>
-                  <th>Birder</th>
-                  <th>Birding Site</th>
-                  <th>Data/Time</th>
-                  <th>Photo</th>
-                  <th>Numbers observed</th>
-                </tr>
-              </thead> */}
-              <tbody>
-                <tr>
+      <div className="checklist-table-container">
+        <div>
+          <Link to="/new-species-detail" className="checklist-link">
+            <div>
+              <table className="checklist-table">
+
+                <tbody>
+                  <tr>
+                    <td data-label="Birder" className="custom-data">
+                      #1 Birder
+                    </td>
+                    <td data-label="Birding site" className="custom-data">
+                      Gyalpozhing, Mongar
+                    </td>
+                    <td data-label="Date/Time" className="custom-data">
+                      10.08.2022
+                    </td>
+                    <td data-label="District" className="custom-data">
+                      Mongar
+                    </td>
+                    <td data-label="Gewog" className="custom-data">
+                      Gyalppozhing
+                    </td>
+                    <td data-label="Chiwog" className="custom-data">
+                      Gyalpozhing
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </Link>
+        </div>
+
+        <div>
+          <Link to="/checklist-detail" className="checklist-link">
+            <div>
+              <table className="checklist-table">
+                <tbody>
                   <td data-label="Birder" className="custom-data">
                     #1 Birder
                   </td>
                   <td data-label="Birding site" className="custom-data">
-                    Gyalpozhing, Mongar
+                    Gyalpozhing,Mongar
                   </td>
                   <td data-label="Date/Time" className="custom-data">
                     10.08.2022
@@ -140,68 +161,39 @@ function Checklist() {
                   <td data-label="Chiwog" className="custom-data">
                     Gyalpozhing
                   </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </Link>
-      </div>
-
-      <div>
-        <Link to="/checklist-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              <tbody>
-                <td data-label="Birder" className="custom-data">
-                  #1 Birder
-                </td>
-                <td data-label="Birding site" className="custom-data">
-                  Gyalpozhing,Mongar
-                </td>
-                <td data-label="Date/Time" className="custom-data">
-                  10.08.2022
-                </td>
-                <td data-label="District" className="custom-data">
-                  Mongar
-                </td>
-                <td data-label="Gewog" className="custom-data">
-                  Gyalppozhing
-                </td>
-                <td data-label="Chiwog" className="custom-data">
-                  Gyalpozhing
-                </td>
-              </tbody>
-            </table>
-          </div>
-        </Link>
-      </div>
-      <div>
-        <Link to="/checklist-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              <tbody>
-                <td data-label="Birder" className="custom-data">
-                  #2 Birder
-                </td>
-                <td data-label="Birding site" className="custom-data">
-                  Gyalpozhing,Mongar
-                </td>
-                <td data-label="Date/Time" className="custom-data">
-                  10.08.2022
-                </td>
-                <td data-label="District" className="custom-data">
-                  Mongar
-                </td>
-                <td data-label="Gewog" className="custom-data">
-                  Gyalppozhing
-                </td>
-                <td data-label="Chiwog" className="custom-data">
-                  Gyalpozhing
-                </td>
-              </tbody>
-            </table>
-          </div>
-        </Link>
+                </tbody>
+              </table>
+            </div>
+          </Link>
+        </div>
+        <div>
+          <Link to="/checklist-detail" className="checklist-link">
+            <div>
+              <table className="checklist-table">
+                <tbody>
+                  <td data-label="Birder" className="custom-data">
+                    #2 Birder
+                  </td>
+                  <td data-label="Birding site" className="custom-data">
+                    Gyalpozhing,Mongar
+                  </td>
+                  <td data-label="Date/Time" className="custom-data">
+                    10.08.2022
+                  </td>
+                  <td data-label="District" className="custom-data">
+                    Mongar
+                  </td>
+                  <td data-label="Gewog" className="custom-data">
+                    Gyalppozhing
+                  </td>
+                  <td data-label="Chiwog" className="custom-data">
+                    Gyalpozhing
+                  </td>
+                </tbody>
+              </table>
+            </div>
+          </Link>
+        </div>
       </div>
     </div>
   );

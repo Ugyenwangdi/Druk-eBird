@@ -70,6 +70,7 @@ function Dashboard() {
     }
   }, [token, tokenValidated]);
 
+
   useEffect(() => {
     validateToken();
   }, [validateToken]);

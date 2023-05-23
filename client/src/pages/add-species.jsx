@@ -374,7 +374,7 @@ function AddSpecies() {
             <div>Image</div>
             <input
               className="select-photo"
-              id="photo"
+              id="add-photo"
               name="photo"
               accept="image/*"
               type="file"
