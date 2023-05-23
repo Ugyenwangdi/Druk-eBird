@@ -22,6 +22,10 @@ import "../styles/species.css";
 function Species({ searchQuery, setSearchClickId }) {
   const token = localStorage.getItem("token");
 
+  const apiToken = {
+    Authorization: `Bearer ${token}`,
+  };
+
   const [speciesList, setSpeciesList] = useState([]);
   const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
@@ -101,7 +105,8 @@ function Species({ searchQuery, setSearchClickId }) {
   const confirmDelete = async () => {
     try {
       const res = await axios.delete(
-        `${process.env.REACT_APP_API_URL}/api/v1/species/${speciesToDelete._id}`
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${speciesToDelete._id}`,
+        { headers: apiToken }
       );
 
       setSpeciesList((prevSpeciesList) =>
