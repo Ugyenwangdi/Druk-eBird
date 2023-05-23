@@ -6,7 +6,6 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 5rem;
-  margin-top: 1rem;
 }
 .card-single {
   display: flex;
@@ -220,10 +219,7 @@
   height: 70%;
   border-radius: 1rem;
 }
-.popular-img h3,
-button {
-  margin-top: 10px;
-}
+
 .popular-img span {
   align-self: flex-end;
   color: #919191;
