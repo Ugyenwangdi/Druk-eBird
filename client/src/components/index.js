@@ -12,6 +12,7 @@ import Groups from "./Groups";
 import Residencies from "./Residencies";
 import Searchspecies from "./Searchspecies";
 import Searchscientific from "./Searchscientific";
+import DeleteSpeciesModal from "./DeleteSpeciesModal";
 
 export {
   Sidebar,
@@ -28,5 +29,6 @@ export {
   Residencies,
   Searchspecies,
   Searchscientific,
-
+  DeleteSpeciesModal,
+  
 };
