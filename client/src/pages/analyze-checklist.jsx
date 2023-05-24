@@ -47,7 +47,7 @@ function AnalyzeChecklist() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 5000); // Fetch the updated statistics every 5 seconds
+    const interval = setInterval(fetchData, 10000); // Fetch the updated statistics every 5 seconds
 
     return () => {
       clearInterval(interval); // Cleanup the interval when the component unmounts
@@ -58,68 +58,22 @@ function AnalyzeChecklist() {
     prepareChartData();
   }, [checklists]);
 
-  // Perform real-time analysis and prepare data for charts
-  const analyzeChecklists = () => {
-    // Calculate the number of checklists submitted in the current month
-    const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
-    const currentYear = new Date().getFullYear();
-    const currentMonthChecklists = checklists.filter(
-      (checklist) =>
-        new Date(checklist.selectedDate).getMonth() + 1 === currentMonth &&
-        new Date(checklist.selectedDate).getFullYear() === currentYear
+  const prepareChartData = async () => {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-checklists`
     );
 
-    // Calculate the number of checklists submitted in the previous month
-    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Get previous month (1-12)
-    const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-    const previousMonthChecklists = checklists.filter(
-      (checklist) =>
-        new Date(checklist.selectedDate).getMonth() + 1 === previousMonth &&
-        new Date(checklist.selectedDate).getFullYear() === previousYear
-    );
+    const responseData = await response.json();
+    console.log("district checklists: ", responseData);
 
-    // Calculate the percentage increase or decrease in checklist submissions
-    const currentMonthCount = currentMonthChecklists.length;
-    const previousMonthCount = previousMonthChecklists.length;
-    const percentageChange =
-      currentMonthCount !== 0 && previousMonthCount !== 0
-        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
-        : 0;
-
-    setCurrentMonthCount(currentMonthCount);
-    setPreviousMonthCount(previousMonthCount);
-    setPercentageChange(percentageChange);
-
-    console.log("Current Month Checklists:", currentMonthCount);
-    console.log("Previous Month Checklists:", previousMonthCount);
-    console.log("Percentage Change:", percentageChange);
-  };
-
-  useEffect(() => {
-    analyzeChecklists();
-  }, [checklists]);
-
-  const prepareChartData = () => {
-    if (!checklists.length) {
-      return;
+    if (!response.ok) {
+      setError(response.message);
     }
+    const { analysisResult, labels, data } = responseData;
 
-    const groupedData = checklists.reduce((acc, checklist) => {
-      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
-
-      if (!acc[endpointLocation]) {
-        acc[endpointLocation] = 0;
-      }
-
-      acc[endpointLocation]++;
-
-      return acc;
-    }, {});
-
-    const sortedData = Object.entries(groupedData).sort((a, b) => b[1] - a[1]); // Sort the data based on the count in descending order
-
-    const labels = sortedData.map((entry) => entry[0]);
-    const data = sortedData.map((entry) => entry[1]);
+    setCurrentMonthCount(analysisResult.currentMonthCount);
+    setPreviousMonthCount(analysisResult.previousMonthCount);
+    setPercentageChange(analysisResult.percentageChange);
 
     const chartData = {
       labels: labels,

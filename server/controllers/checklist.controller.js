@@ -40,8 +40,8 @@ const getAllChecklist = async (req, res) => {
     }
 
     const foundChecklists = await ChecklistTest.find(searchQuery)
-      // .skip(page * limit)
-      // .limit(limit)
+      .skip(page * limit)
+      .limit(limit)
       .sort({ createdAt: -1 });
 
     const total = await ChecklistTest.countDocuments(searchQuery);
@@ -62,6 +62,7 @@ const getAllChecklist = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 const getChecklistDetail = async (req, res) => {
   const { id } = req.params;
 
@@ -303,6 +304,70 @@ const analyzeChecklists = (req, res) => {
   }
 };
 
+const analyzeDistrictChecklists = async (req, res) => {
+  try {
+    const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
+
+    // Calculate the number of checklists submitted in the current month
+    const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
+    const currentYear = new Date().getFullYear();
+    const currentMonthChecklists = checklists.filter(
+      (checklist) =>
+        new Date(checklist.selectedDate).getMonth() + 1 === currentMonth &&
+        new Date(checklist.selectedDate).getFullYear() === currentYear
+    );
+
+    // Calculate the number of checklists submitted in the previous month
+    const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Get previous month (1-12)
+    const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+    const previousMonthChecklists = checklists.filter(
+      (checklist) =>
+        new Date(checklist.selectedDate).getMonth() + 1 === previousMonth &&
+        new Date(checklist.selectedDate).getFullYear() === previousYear
+    );
+
+    // Calculate the percentage increase or decrease in checklist submissions
+    const currentMonthCount = currentMonthChecklists.length;
+    const previousMonthCount = previousMonthChecklists.length;
+    const percentageChange =
+      currentMonthCount !== 0 && previousMonthCount !== 0
+        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+        : 0;
+
+    const analysisResult = {
+      currentMonthCount,
+      previousMonthCount,
+      percentageChange,
+    };
+
+    if (checklists.length === 0) {
+      return res.status(404).json({ message: "No checklists found." });
+    }
+
+    const groupedData = checklists.reduce((acc, checklist) => {
+      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+
+      if (!acc[endpointLocation]) {
+        acc[endpointLocation] = 0;
+      }
+
+      acc[endpointLocation]++;
+
+      return acc;
+    }, {});
+
+    const sortedData = Object.entries(groupedData).sort((a, b) => b[1] - a[1]);
+
+    const labels = sortedData.map((entry) => entry[0]);
+    const data = sortedData.map((entry) => entry[1]);
+
+    return res.json({ analysisResult, labels, data });
+  } catch (error) {
+    console.error("Error retrieving checklist data:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 export {
   getAllChecklist,
   getChecklistDetail,
@@ -310,4 +375,5 @@ export {
   deleteChecklist,
   uploadExcelFile,
   analyzeChecklists,
+  analyzeDistrictChecklists,
 };

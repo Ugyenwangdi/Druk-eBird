@@ -9,6 +9,7 @@ import {
   uploadExcelFile,
   deleteChecklist,
   analyzeChecklists,
+  analyzeDistrictChecklists,
 } from "../controllers/checklist.controller.js";
 
 const router = express.Router();
@@ -20,5 +21,6 @@ router.route("/:id").delete(deleteChecklist);
 
 router.post("/fileupload", upload.single("file"), uploadExcelFile);
 router.post("/analyze", upload.single("file"), analyzeChecklists);
+router.route("/analyze/district-checklists").get(analyzeDistrictChecklists);
 
 export default router;
