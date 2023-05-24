@@ -47,6 +47,11 @@ function AnalyzeChecklist() {
 
   useEffect(() => {
     fetchData();
+    const interval = setInterval(fetchData, 5000); // Fetch the updated statistics every 5 seconds
+
+    return () => {
+      clearInterval(interval); // Cleanup the interval when the component unmounts
+    };
   }, []);
 
   useEffect(() => {
@@ -100,7 +105,7 @@ function AnalyzeChecklist() {
     }
 
     const groupedData = checklists.reduce((acc, checklist) => {
-      const endpointLocation = checklist.endpointLocation;
+      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
 
       if (!acc[endpointLocation]) {
         acc[endpointLocation] = 0;
@@ -129,6 +134,69 @@ function AnalyzeChecklist() {
 
     setChartData(chartData);
   };
+
+  // const prepareChartData = () => {
+  //   if (!checklists.length) {
+  //     return;
+  //   }
+
+  //   const dzongkhags = [
+  //     "Thimphu",
+  //     "Paro",
+  //     "Punakha",
+  //     "Wangdue Phodrang",
+  //     "Trongsa",
+  //     "Bumthang",
+  //     "Lhuentse",
+  //     "Mongar",
+  //     "Trashigang",
+  //     "Trashiyangtse",
+  //     "Samdrup Jongkhar",
+  //     "Pemagatshel",
+  //     "Zhemgang",
+  //     "Sarpang",
+  //     "Tsirang",
+  //     "Dagana",
+  //     "Chukha",
+  //     "Haa",
+  //     "Gasa",
+  //     "Samtse",
+  //   ];
+
+  //   const groupedData = checklists.reduce((acc, checklist) => {
+  //     const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+
+  //     if (!dzongkhags.includes(endpointLocation)) {
+  //       return acc; // Skip if endpointLocation is not in dzongkhags
+  //     }
+
+  //     if (!acc[endpointLocation]) {
+  //       acc[endpointLocation] = 0;
+  //     }
+
+  //     acc[endpointLocation]++;
+
+  //     return acc;
+  //   }, {});
+
+  //   const sortedData = Object.entries(groupedData).sort((a, b) => b[1] - a[1]); // Sort the data based on the count in descending order
+
+  //   const labels = sortedData.map((entry) => entry[0]);
+  //   const data = sortedData.map((entry) => entry[1]);
+
+  //   const chartData = {
+  //     labels: labels,
+  //     datasets: [
+  //       {
+  //         label: "Number of Checklists",
+  //         data: data,
+  //         backgroundColor: "rgba(19, 109, 102, 1)",
+  //       },
+  //     ],
+  //   };
+
+  //   setChartData(chartData);
+  // };
 
   const handleFileChange = (e) => {
     setMsg("");
