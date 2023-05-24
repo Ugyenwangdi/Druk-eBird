@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "../styles/sidebar.css";
 import { NavLink } from "react-router-dom";
 
+import LogoutModal from "./LogoutModal";
+
 import axios from "axios";
 
 function Sidebar({ showSidebar, closeSidebar }) {
@@ -18,7 +20,15 @@ function Sidebar({ showSidebar, closeSidebar }) {
     setActiveItem(menuItem);
   };
 
-  const handleLogout = () => {
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const handleLogoutConfirmation = () => {
+    setShowLogoutModal(true);
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutModal(false);
+  };
+  const handleLogoutConfirm = () => {
     // Make a POST request to your backend to log out the user
     axios
       .post("http://localhost:8080/auth/logout")
@@ -113,12 +123,19 @@ function Sidebar({ showSidebar, closeSidebar }) {
             <span className="material-icons">settings</span>
             <h4>Settings</h4>
           </NavLink>
-          <a href="#" onClick={handleLogout}>
+          <a href="#" onClick={handleLogoutConfirmation}>
             <span className="material-icons">logout</span>
             <h4>Logout</h4>
           </a>
         </div>
       </aside>
+      {showLogoutModal && (
+        <LogoutModal
+          message="Are you sure you want to Logout?"
+          onConfirm={handleLogoutConfirm}
+          onCancel={handleLogoutCancel}
+        />
+      )}
     </main>
   );
 }

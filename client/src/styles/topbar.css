@@ -45,6 +45,10 @@ nav .profile-area {
   align-items: center;
   justify-content: space-between;
   gap: 10rem;
+  cursor: pointer;
+}
+nav .profile-area:hover {
+  color: #ba760d;
 }
 nav .profile-area .profile {
   display: flex;
@@ -62,4 +66,36 @@ nav .profile-area .profile-photo {
 }
 nav .profile-area button {
   display: none;
+}
+
+/* Dropdown Menu */
+nav .profile-area .profile:hover .dropdown-menu {
+  display: block;
+}
+
+nav .profile-area .dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 12%;
+  background-color: #136D66;
+  border: 1px solid #136D66;
+  border-radius: 4px;
+  padding: 0.5rem;
+  z-index: 10;
+}
+
+nav .profile-area .dropdown-menu button {
+  display: block;
+  padding: 0.5rem;
+  border: none;
+  background-color: transparent;
+  color: white;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+}
+
+nav .profile-area .dropdown-menu button:hover {
+  color: #ba760d;
 }
