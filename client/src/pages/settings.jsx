@@ -316,10 +316,12 @@ function Settings() {
             />
           </div>
 
-
-
           <div className="profile-pic">
-            <img src={userProfileImg ? userProfileImg : logo} id="photo" alt="profile" />
+            <img
+              src={userProfileImg ? userProfileImg : logo}
+              id="photo"
+              alt="profile"
+            />
             <div className="camera">
               <label htmlFor="file" id="uploadBtn">
                 <span className="material-symbols-outlined">photo_camera</span>
@@ -330,11 +332,10 @@ function Settings() {
                 accept="image/*"
                 id="file"
                 onChange={handleFileInputChange}
-                style={{ display: 'none' }}
+                style={{ display: "none" }}
               />
             </div>
           </div>
-
 
           <div className="submit">
             <button type="submit" className="form-button" disabled={loading}>
@@ -437,6 +438,7 @@ function Settings() {
                         <Link
                           to={`/admins/${item._id}/edit`}
                           state={{ adminDetail: item }}
+                          className="editLink"
                         >
                           Edit
                         </Link>

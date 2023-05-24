@@ -43,6 +43,10 @@ body {
   width: fit-content;
   text-align: center;
 }
+
+.form-button:is(:hover, :focus) {
+  color: #ba760d;
+}
 .submit {
   width: 25%;
   margin-left: 2rem;
@@ -136,12 +140,17 @@ body {
   background-color: #136d66;
   color: white;
   border: none;
-  border-radius: 0.2rem;
+  border-radius: 5px;
   font-size: 14px;
   text-align: right;
   cursor: pointer;
   padding: 0.5rem;
 }
+
+.btn:is(:hover, :focus) {
+  color: #ba760d;
+}
+
 .text {
   color: #4b5767;
   font-weight: 500;
@@ -150,11 +159,18 @@ body {
   background-color: white;
   color: #c80909;
   border: solid 1px #dee4ed;
-  border-radius: 0.3rem;
+  border-radius: 5px;
   font-size: 14px;
   text-align: right;
   padding: 0.5rem;
   cursor: pointer;
+}
+
+.deactivate-btn:is(:hover, :focus) {
+  color: white;
+  border-radius: 5px;
+  border: none;
+  background-color: #c80909;
 }
 .admin-button {
   text-align: right;
@@ -169,6 +185,11 @@ body {
   border: none;
   cursor: pointer;
 }
+
+.addAdmin-btn:is(:hover, :focus) {
+  color: #ba760d;
+}
+
 /* admin table */
 * {
   box-sizing: border-box;
@@ -207,6 +228,13 @@ body {
   width: 68px;
 }
 
+.deleteBtn:is(:hover, :focus) {
+  color: white;
+  border-radius: 5px;
+  border: none;
+  background-color: #c80909;
+}
+
 .editBtn {
   padding: 6px 12px;
   font-size: 14px;
@@ -217,6 +245,17 @@ body {
   width: 68px;
   cursor: pointer;
 }
+
+.editBtn:hover,
+.editBtn:focus,
+.editBtn:hover .editLink,
+.editBtn:focus .editLink {
+  color: white;
+  border-radius: 5px;
+  border: none;
+  background-color: #136d66;
+}
+
 /*responsive*/
 
 @media (max-width: 500px) {
