@@ -156,13 +156,23 @@ function Checklist() {
         ))}
       </div>
 
-      <Link to="/checklists/add">
-        <button className="add-button">Add Checklist</button>
-      </Link>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
+        }}
+      >
+        <Link to="/checklists/add">
+          <button className="add-button">Add Checklist</button>
+        </Link>
 
-      <Link to="/checklists/analyze">
-        <button className="add-button">Analyze Checklist</button>
-      </Link>
+        <Link to="/checklists/analyze">
+          <button className="add-button">Analyze Checklist</button>
+        </Link>
+      </div>
     </div>
   );
 }
