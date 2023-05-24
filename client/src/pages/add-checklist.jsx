@@ -21,7 +21,7 @@ function AddChecklist() {
       longitude: "789.012",
     },
     birder: "John Doe 2",
-    endpointLocation: "Endpoint Location 2",
+    endpointLocation: "Mongar, Gyalpozhing, chiwog",
     photos: [],
   });
 
@@ -109,7 +109,7 @@ function AddChecklist() {
           longitude: "789.012",
         },
         birder: "John Doe 2",
-        endpointLocation: "Endpoint Location 2",
+        endpointLocation: "Mongar, Kengkhar, chiwog",
         photos: [],
       }); // reset form
       setBirdImg("");

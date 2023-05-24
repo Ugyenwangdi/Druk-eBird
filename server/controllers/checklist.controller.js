@@ -40,8 +40,8 @@ const getAllChecklist = async (req, res) => {
     }
 
     const foundChecklists = await ChecklistTest.find(searchQuery)
-      .skip(page * limit)
-      .limit(limit)
+      // .skip(page * limit)
+      // .limit(limit)
       .sort({ createdAt: -1 });
 
     const total = await ChecklistTest.countDocuments(searchQuery);
@@ -51,8 +51,8 @@ const getAllChecklist = async (req, res) => {
       error: false,
       foundTotal: total,
       checklistTotal,
-      page: page + 1,
-      limit,
+      // page: page + 1,
+      // limit,
       checklists: foundChecklists,
     };
 
