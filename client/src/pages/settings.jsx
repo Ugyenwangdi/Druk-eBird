@@ -4,6 +4,7 @@ import axios from "axios";
 
 import "../styles/settings.css";
 import { logo } from "../images";
+import { DeactivateModal } from "../components";
 
 function Settings() {
   const token = localStorage.getItem("token");
@@ -20,6 +21,9 @@ function Settings() {
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
   const [isNotAdmin, setIsNotAdmin] = useState(false);
   const [photoFieldChanged, setPhotoFieldChanged] = useState(false);
+  const [showDeactivateModal, setShowDeactivateModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteUserId, setDeleteUserId] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -63,44 +67,60 @@ function Settings() {
     }
   }, [token]);
 
-  const deactivateAccount = async (id) => {
-    if (window.confirm("Are you sure you want to deactivate your account?")) {
-      try {
-        setDeactivateLoading(true);
-        const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/deactivate`;
+  const handleDeactivateConfirmation = async () => {
+    try {
+      setDeactivateLoading(true);
+      const url = `${process.env.REACT_APP_API_URL}/users/${currentUser.id}/deactivate`;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
 
-        // add your JWT token to the headers object
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
-
-        const res = await axios.patch(url, {}, { headers });
-        setMsg(res.data.message);
-        console.log("Account deactivated successfully!");
-        localStorage.removeItem("token");
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setDeactivateLoading(false);
-      }
+      const res = await axios.patch(url, {}, { headers });
+      setMsg(res.data.message);
+      console.log("Account deactivated successfully!");
+      localStorage.removeItem("token");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeactivateLoading(false);
+      setShowDeactivateModal(false);
     }
   };
 
-  const deleteUser = async (id) => {
-    if (window.confirm("Are you sure you want to delete this user?")) {
-      try {
-        await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`, {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log("Deleted successfully!");
-        setData(data.filter((item) => item._id !== id));
-      } catch (error) {
-        console.log(error);
-      }
+  const handleDeactivateCancel = () => {
+    setShowDeactivateModal(false);
+  };
+
+  const handleDeactivateAccount = () => {
+    setShowDeactivateModal(true);
+  };
+
+  const handleDeleteConfirmation = async () => {
+    try {
+      setDeactivateLoading(true);
+      const url = `${process.env.REACT_APP_API_URL}/users/${deleteUserId}`;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+
+      await axios.delete(url, { headers });
+      console.log("User deleted successfully!");
+      setData(data.filter((item) => item._id !== deleteUserId));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setDeactivateLoading(false);
     }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+  };
+
+  const handleDeleteUser = (userId) => {
+    setDeleteUserId(userId);
+    setShowDeleteModal(true);
   };
 
   const handleChange = ({ currentTarget: input }) => {
@@ -354,12 +374,19 @@ function Settings() {
             type="submit"
             className="deactivate-btn"
             disabled={deactivateLoading}
-            onClick={() => deactivateAccount()}
+            onClick={handleDeactivateAccount}
           >
             {deactivateLoading ? "Deactivating..." : "Deactivate"}
           </button>
         </div>
       </div>{" "}
+      {showDeactivateModal && (
+        <DeactivateModal
+          message="Are you sure you want to deactivate your account?"
+          onConfirm={handleDeactivateConfirmation}
+          onCancel={handleDeactivateCancel}
+        />
+      )}
       <br></br>
       <br></br>
       {currentUser.userType === "root-user" && (
@@ -401,7 +428,7 @@ function Settings() {
                     >
                       <button
                         className="deleteBtn"
-                        onClick={() => deleteUser(item._id)}
+                        onClick={() => handleDeleteUser(item._id)}
                       >
                         Delete
                       </button>
@@ -422,6 +449,13 @@ function Settings() {
           </table>
           <br></br>
         </>
+      )}
+      {showDeleteModal && (
+        <DeactivateModal
+          message="Are you sure you want to delete this user?"
+          onConfirm={handleDeleteConfirmation}
+          onCancel={handleDeleteCancel}
+        />
       )}
     </div>
   );
