@@ -64,9 +64,8 @@
 
 .select-photo {
   color: var(--color-gray-light);
-  
 }
-#add-photo{
+#add-photo {
   height: 98%;
   width: 98%;
   object-fit: cover;
