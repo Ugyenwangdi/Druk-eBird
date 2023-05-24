@@ -136,7 +136,7 @@ function Dashboard() {
       ],
       datasets: [
         {
-          label: "# of Votes",
+          label: "#No. of checklists",
           data: [12, 19, 3, 5, 2, 3, 20],
           borderWidth: 1,
           backgroundColor: "rgba(128, 128, 128, 0.6)",
@@ -156,7 +156,7 @@ function Dashboard() {
       ],
       datasets: [
         {
-          label: "# of Votes",
+          label: "#No. of checklists",
           data: [12, 19, 3, 5, 2, 3, 20],
           borderWidth: 1,
           backgroundColor: "rgba(19, 109, 102, 1)",
