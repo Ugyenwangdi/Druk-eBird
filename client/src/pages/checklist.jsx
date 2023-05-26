@@ -4,27 +4,35 @@ import axios from "axios";
 
 import "../styles/checklist.css";
 
+import { Pagination } from "../components";
+
 function Checklist() {
   const [checklists, setChecklists] = useState([]);
+  const [checklistTotal, setChecklistTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [foundTotal, setFoundTotal] = useState(0);
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}`
       );
-      console.log("response: ", response);
-
+      // console.log("response: ", response);
+      setChecklistTotal(response.data.checklistTotal);
+      setLimit(response.data.limit);
+      setFoundTotal(response.data.foundTotal);
       setChecklists(Object.values(response.data.checklists));
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log(checklists);
+  // console.log("chcklists: ", checklists);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,7 +51,8 @@ function Checklist() {
         }}
       >
         <h2 className="header">
-          Total Checklist <span className="checklist-count">(700)</span>
+          Total Checklist{" "}
+          <span className="checklist-count">({checklistTotal})</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
@@ -121,39 +130,48 @@ function Checklist() {
       </div>
 
       <div className="checklist-table-container">
-        {checklists.map((item, index) => (
-          <div key={item._id}>
-            <Link to="/checklist-detail" className="checklist-link">
-              <div>
-                <table className="checklist-table">
-                  <tbody>
-                    <tr>
-                      <td data-label="Birder" className="custom-data">
-                        #1 {item.birder}
-                      </td>
-                      <td data-label="Birding site" className="custom-data">
-                        Lat. {item.currentLocation.latitude} Lon.{" "}
-                        {item.currentLocation.longitude}
-                      </td>
-                      <td data-label="Date/Time" className="custom-data">
-                        {convertDate(item.selectedDate)}
-                      </td>
-                      <td data-label="District" className="custom-data">
-                        {item.endpointLocation.split(",")[0]?.trim() || "none"}
-                      </td>
-                      <td data-label="Gewog" className="custom-data">
-                        {item.endpointLocation.split(",")[1]?.trim() || "none"}
-                      </td>
-                      <td data-label="Chiwog" className="custom-data">
-                        {item.endpointLocation.split(",")[2]?.trim() || "none"}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Link>
-          </div>
-        ))}
+        {checklists.map((item, index) => {
+          const serialNumber = (page - 1) * limit + index + 1;
+          return (
+            <div key={item._id}>
+              <Link to="/checklist-detail" className="checklist-link">
+                <div>
+                  <table className="checklist-table">
+                    <tbody>
+                      <tr>
+                        <td data-label="Serial Number" className="custom-data">
+                          {serialNumber}
+                        </td>
+                        <td data-label="Birder" className="custom-data">
+                          {item.birder}
+                        </td>
+                        <td data-label="Birding site" className="custom-data">
+                          Lat. {item.currentLocation.latitude} Lon.{" "}
+                          {item.currentLocation.longitude}
+                        </td>
+                        <td data-label="Date/Time" className="custom-data">
+                          {convertDate(item.selectedDate)}
+                        </td>
+                        <td data-label="District" className="custom-data">
+                          {item.endpointLocation.split(",")[0]?.trim() ||
+                            "none"}
+                        </td>
+                        <td data-label="Gewog" className="custom-data">
+                          {item.endpointLocation.split(",")[1]?.trim() ||
+                            "none"}
+                        </td>
+                        <td data-label="Chiwog" className="custom-data">
+                          {item.endpointLocation.split(",")[2]?.trim() ||
+                            "none"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Link>
+            </div>
+          );
+        })}
       </div>
 
       <div
@@ -173,6 +191,13 @@ function Checklist() {
           <button className="add-button">Analyze Checklist</button>
         </Link>
       </div>
+
+      <Pagination
+        page={page}
+        limit={limit ? limit : 0}
+        total={foundTotal ? foundTotal : 0}
+        setPage={(page) => setPage(page)}
+      />
     </div>
   );
 }
