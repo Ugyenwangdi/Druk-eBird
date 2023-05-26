@@ -174,7 +174,7 @@ function AddChecklist() {
         <Link to="/checklist">
           <span className="material-icons back-arrow">arrow_back_ios</span>
         </Link>
-        <h2>Add Species</h2>
+        <h2>Add Checklist</h2>
       </div>
 
       <form onSubmit={handleSubmit}>

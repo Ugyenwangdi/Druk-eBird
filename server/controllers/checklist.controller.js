@@ -12,6 +12,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const getCount = async (req, res) => {
+  try {
+    const count = await ChecklistTest.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve count" });
+  }
+};
+
 const getAllChecklist = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
@@ -51,8 +60,8 @@ const getAllChecklist = async (req, res) => {
       error: false,
       foundTotal: total,
       checklistTotal,
-      // page: page + 1,
-      // limit,
+      page: page + 1,
+      limit,
       checklists: foundChecklists,
     };
 
@@ -304,27 +313,31 @@ const analyzeChecklists = (req, res) => {
   }
 };
 
-const analyzeDistrictChecklists = async (req, res) => {
+const analyzeDistrictEntries = async (req, res) => {
   try {
     const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
 
     // Calculate the number of checklists submitted in the current month
     const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
     const currentYear = new Date().getFullYear();
-    const currentMonthChecklists = checklists.filter(
-      (checklist) =>
-        new Date(checklist.selectedDate).getMonth() + 1 === currentMonth &&
-        new Date(checklist.selectedDate).getFullYear() === currentYear
-    );
+    const currentMonthChecklists = [];
 
     // Calculate the number of checklists submitted in the previous month
     const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Get previous month (1-12)
     const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-    const previousMonthChecklists = checklists.filter(
-      (checklist) =>
-        new Date(checklist.selectedDate).getMonth() + 1 === previousMonth &&
-        new Date(checklist.selectedDate).getFullYear() === previousYear
-    );
+    const previousMonthChecklists = [];
+
+    checklists.forEach((checklist) => {
+      const selectedDate = new Date(checklist.selectedDate);
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth() + 1;
+
+      if (month === currentMonth && year === currentYear) {
+        currentMonthChecklists.push(checklist);
+      } else if (month === previousMonth && year === previousYear) {
+        previousMonthChecklists.push(checklist);
+      }
+    });
 
     // Calculate the percentage increase or decrease in checklist submissions
     const currentMonthCount = currentMonthChecklists.length;
@@ -334,7 +347,126 @@ const analyzeDistrictChecklists = async (req, res) => {
         ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
         : 0;
 
-    const analysisResult = {
+    const changeResult = {
+      currentMonthCount,
+      previousMonthCount,
+      percentageChange,
+    };
+
+    if (checklists.length === 0) {
+      return res.status(404).json({ message: "No entries found." });
+    }
+
+    const monthlyData = {};
+
+    checklists.forEach((checklist) => {
+      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+      const selectedDate = new Date(checklist.selectedDate);
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth() + 1;
+
+      if (!monthlyData[year]) {
+        monthlyData[year] = {};
+      }
+
+      if (!monthlyData[year][month]) {
+        monthlyData[year][month] = {};
+      }
+
+      if (!monthlyData[year][month][endpointLocation]) {
+        monthlyData[year][month][endpointLocation] = 0;
+      }
+
+      monthlyData[year][month][endpointLocation]++;
+    });
+
+    const result = [];
+
+    for (const year in monthlyData) {
+      for (const month in monthlyData[year]) {
+        const monthData = monthlyData[year][month];
+        const labels = Object.keys(monthData);
+        const data = Object.values(monthData);
+
+        // Sort labels and data arrays in descending order
+        const sortedData = data.slice().sort((a, b) => b - a);
+        const sortedLabels = labels
+          .slice()
+          .sort((a, b) => data[labels.indexOf(b)] - data[labels.indexOf(a)]);
+
+        result.push({
+          year: parseInt(year),
+          month: parseInt(month),
+          labels: sortedLabels,
+          data: sortedData,
+        });
+      }
+    }
+
+    // Calculate the overall total count of checklists
+    let overallTotalCount = 0;
+    result.forEach((monthlyResult) => {
+      monthlyResult.data.forEach((count) => {
+        overallTotalCount += count;
+      });
+    });
+
+    const responseData = {
+      changeResult,
+      result,
+      overallTotalCount,
+    };
+
+    return res.json(responseData);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+const analyzeDistrictChecklists = async (req, res) => {
+  try {
+    const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
+
+    // Calculate the number of checklists submitted in the current month
+    const currentMonth = new Date().getMonth(); // Get current month (0-11)
+    const currentYear = new Date().getFullYear();
+    const currentMonthChecklists = [];
+    const currentMonthChecklistNames = new Set();
+
+    // Calculate the number of checklists submitted in the previous month
+    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
+    const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+    const previousMonthChecklists = [];
+    const previousMonthChecklistNames = new Set();
+
+    checklists.forEach((checklist) => {
+      const checklistName = checklist.checklistName;
+      const selectedDate = new Date(checklist.selectedDate);
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+
+      if (month === currentMonth && year === currentYear) {
+        if (!currentMonthChecklistNames.has(checklistName)) {
+          currentMonthChecklists.push(checklist);
+          currentMonthChecklistNames.add(checklistName);
+        }
+      } else if (month === previousMonth && year === previousYear) {
+        if (!previousMonthChecklistNames.has(checklistName)) {
+          previousMonthChecklists.push(checklist);
+          previousMonthChecklistNames.add(checklistName);
+        }
+      }
+    });
+
+    // Calculate the percentage increase or decrease in checklist submissions
+    const currentMonthCount = currentMonthChecklists.length;
+    const previousMonthCount = previousMonthChecklists.length;
+    const percentageChange =
+      currentMonthCount !== 0 && previousMonthCount !== 0
+        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+        : 0;
+
+    const changeResult = {
       currentMonthCount,
       previousMonthCount,
       percentageChange,
@@ -344,31 +476,220 @@ const analyzeDistrictChecklists = async (req, res) => {
       return res.status(404).json({ message: "No checklists found." });
     }
 
-    const groupedData = checklists.reduce((acc, checklist) => {
-      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+    const monthlyData = {};
 
-      if (!acc[endpointLocation]) {
-        acc[endpointLocation] = 0;
+    checklists.forEach((checklist) => {
+      const checklistName = checklist.checklistName;
+      const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+      const selectedDate = new Date(checklist.selectedDate);
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+
+      if (!monthlyData[year]) {
+        monthlyData[year] = {};
       }
 
-      acc[endpointLocation]++;
+      if (!monthlyData[year][month]) {
+        monthlyData[year][month] = {};
+      }
 
-      return acc;
-    }, {});
+      if (!monthlyData[year][month][endpointLocation]) {
+        monthlyData[year][month][endpointLocation] = new Set();
+      }
 
-    const sortedData = Object.entries(groupedData).sort((a, b) => b[1] - a[1]);
+      monthlyData[year][month][endpointLocation].add(checklistName);
+    });
 
-    const labels = sortedData.map((entry) => entry[0]);
-    const data = sortedData.map((entry) => entry[1]);
+    const result = [];
 
-    return res.json({ analysisResult, labels, data });
+    for (const year in monthlyData) {
+      for (const month in monthlyData[year]) {
+        const monthData = monthlyData[year][month];
+        const labels = [];
+        const data = [];
+
+        for (const endpointLocation in monthData) {
+          const checklistNames = monthData[endpointLocation];
+          labels.push(endpointLocation);
+          data.push(checklistNames.size);
+        }
+
+        // Sort labels and data arrays in descending order
+        const sortedData = data.slice().sort((a, b) => b - a);
+        const sortedLabels = labels
+          .slice()
+          .sort((a, b) => data[labels.indexOf(b)] - data[labels.indexOf(a)]);
+
+        result.push({
+          year: parseInt(year),
+          month: getMonthName(parseInt(month)),
+          labels: sortedLabels,
+          data: sortedData,
+        });
+      }
+    }
+
+    // Calculate the overall total count of checklists
+    let overallTotalCount = 0;
+    result.forEach((monthlyResult) => {
+      monthlyResult.data.forEach((count) => {
+        overallTotalCount += count;
+      });
+    });
+
+    const responseData = {
+      changeResult,
+      result,
+      overallTotalCount,
+    };
+
+    return res.json(responseData);
   } catch (error) {
-    console.error("Error retrieving checklist data:", error);
     return res.status(500).json({ message: "Internal server error." });
   }
 };
 
+// Helper function to get the month name
+function getMonthName(month) {
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return monthNames[month];
+}
+
+// const analyzeDistrictChecklists = async (req, res) => {
+//   try {
+//     const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
+
+//     // Calculate the number of checklists submitted in the current month
+//     const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
+//     const currentYear = new Date().getFullYear();
+//     const currentMonthChecklists = checklists.filter(
+//       (checklist) =>
+//         new Date(checklist.selectedDate).getMonth() + 1 === currentMonth &&
+//         new Date(checklist.selectedDate).getFullYear() === currentYear
+//     );
+
+//     // Calculate the number of checklists submitted in the previous month
+//     const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Get previous month (1-12)
+//     const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
+//     const previousMonthChecklists = checklists.filter(
+//       (checklist) =>
+//         new Date(checklist.selectedDate).getMonth() + 1 === previousMonth &&
+//         new Date(checklist.selectedDate).getFullYear() === previousYear
+//     );
+
+//     // Calculate the percentage increase or decrease in checklist submissions
+//     const currentMonthCount = currentMonthChecklists.length;
+//     const previousMonthCount = previousMonthChecklists.length;
+//     const percentageChange =
+//       currentMonthCount !== 0 && previousMonthCount !== 0
+//         ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+//         : 0;
+
+//     const changeResult = {
+//       currentMonthCount,
+//       previousMonthCount,
+//       percentageChange,
+//     };
+
+//     if (checklists.length === 0) {
+//       return res.status(404).json({ message: "No checklists found." });
+//     }
+
+//     const monthlyData = {};
+
+//     checklists.forEach((checklist) => {
+//       const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
+//       const selectedDate = new Date(checklist.selectedDate);
+//       const year = selectedDate.getFullYear();
+//       const month = selectedDate.getMonth() + 1;
+
+//       if (!monthlyData[year]) {
+//         monthlyData[year] = {};
+//       }
+
+//       if (!monthlyData[year][month]) {
+//         monthlyData[year][month] = {};
+//       }
+
+//       if (!monthlyData[year][month][endpointLocation]) {
+//         monthlyData[year][month][endpointLocation] = 0;
+//       }
+
+//       monthlyData[year][month][endpointLocation]++;
+//     });
+
+//     const result = [];
+
+//     for (const year in monthlyData) {
+//       for (const month in monthlyData[year]) {
+//         const monthData = monthlyData[year][month];
+//         const sortedData = Object.entries(monthData).sort(
+//           (a, b) => b[1] - a[1]
+//         );
+
+//         const labels = sortedData.map((entry) => entry[0]);
+//         const data = sortedData.map((entry) => entry[1]);
+
+//         result.push({
+//           year: parseInt(year),
+//           month: parseInt(month),
+//           labels,
+//           data,
+//         });
+//       }
+//     }
+
+//     return res.json({ changeResult, result });
+//   } catch (error) {
+//     console.error("Error retrieving checklist data:", error);
+//     return res.status(500).json({ message: "Internal server error." });
+//   }
+// };
+
+const analyzeTopBirders = async (req, res) => {
+  try {
+    const topBirders = await ChecklistTest.aggregate([
+      {
+        $group: {
+          _id: "$birder",
+          totalChecklists: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          totalChecklists: -1,
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          birder: "$_id",
+          totalChecklists: 1,
+        },
+      },
+    ]);
+
+    res.json(topBirders);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to get top birders" });
+  }
+};
+
 export {
+  getCount,
   getAllChecklist,
   getChecklistDetail,
   createChecklist,
@@ -376,4 +697,6 @@ export {
   uploadExcelFile,
   analyzeChecklists,
   analyzeDistrictChecklists,
+  analyzeDistrictEntries,
+  analyzeTopBirders,
 };

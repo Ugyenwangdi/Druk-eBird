@@ -20,15 +20,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// const getAllSpecies = async (req, res) => {
-//   try {
-//     const species = await Species.find({});
-//     res.status(200).json(species);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const getCount = async (req, res) => {
+  try {
+    const count = await Species.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    console.error("Failed to fetch species count:", error);
+    res.status(500).json({ error: "Failed to fetch species count" });
+  }
+};
 
 // Complex search with pagination
 const getAllSpecies = async (req, res) => {
@@ -511,6 +511,7 @@ const uploadExcelFile = async (req, res) => {
 };
 
 export {
+  getCount,
   getAllSpecies,
   getSpeciesDetail,
   createSpecies,

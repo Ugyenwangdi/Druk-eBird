@@ -42,6 +42,8 @@ function Species({ searchQuery, setSearchClickId }) {
   const [searchspecies, setSearchspecies] = useState("");
   const [searchscientific, setSearchscientific] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [speciesToDelete, setSpeciesToDelete] = useState(null);
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -87,9 +89,6 @@ function Species({ searchQuery, setSearchClickId }) {
 
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
-
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [speciesToDelete, setSpeciesToDelete] = useState(null);
 
   const handleDelete = async (id) => {
     try {
