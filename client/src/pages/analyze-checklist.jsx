@@ -6,7 +6,6 @@ import {
   Chart,
   CategoryScale,
   LinearScale,
-  BarController,
   BarElement,
   Title,
   Tooltip,
@@ -18,8 +17,12 @@ import "../styles/addspecies.css";
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function AnalyzeChecklist() {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = getMonthName(currentDate.getMonth() + 1);
+
   const [file, setFile] = useState(null);
-  const [checklistResult, setChecklistResult] = useState({});
+  const [checklistResult, setChecklistResult] = useState([]);
   const [birders, setBirders] = useState([]);
 
   const [msg, setMsg] = useState("");
@@ -31,13 +34,18 @@ function AnalyzeChecklist() {
   const [currentMonthCount, setCurrentMonthCount] = useState(0);
   const [previousMonthCount, setPreviousMonthCount] = useState(0);
   const [percentageChange, setPercentageChange] = useState(0);
+  const [years, setYears] = useState([]);
+  const [months, setMonths] = useState([]);
+
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/v1/checklists`
       );
-      console.log("response: ", response);
+      // console.log("response: ", response);
 
       setChecklists(Object.values(response.data.checklists));
     } catch (error) {
@@ -47,7 +55,7 @@ function AnalyzeChecklist() {
 
   useEffect(() => {
     fetchData();
-    const interval = setInterval(fetchData, 10000); // Fetch the updated statistics every 5 seconds
+    const interval = setInterval(fetchData, 10000); // Fetch the updated statistics every 10 seconds
 
     return () => {
       clearInterval(interval); // Cleanup the interval when the component unmounts
@@ -56,7 +64,9 @@ function AnalyzeChecklist() {
 
   useEffect(() => {
     prepareChartData();
-  }, [checklists]);
+  }, [checklists, selectedYear, selectedMonth]);
+
+  console.log(years);
 
   const prepareChartData = async () => {
     const response = await fetch(
@@ -69,25 +79,68 @@ function AnalyzeChecklist() {
     if (!response.ok) {
       setError(response.message);
     }
-    const { analysisResult, labels, data } = responseData;
+    const { changeResult, result, overallTotalCount } = responseData;
 
-    setCurrentMonthCount(analysisResult.currentMonthCount);
-    setPreviousMonthCount(analysisResult.previousMonthCount);
-    setPercentageChange(analysisResult.percentageChange);
+    setCurrentMonthCount(changeResult.currentMonthCount);
+    setPreviousMonthCount(changeResult.previousMonthCount);
+    setPercentageChange(changeResult.percentageChange);
+    setChecklistResult(result);
 
-    const chartData = {
-      labels: labels,
-      datasets: [
-        {
-          label: "Number of Checklists",
-          data: data,
-          backgroundColor: "rgba(19, 109, 102, 1)",
-        },
-      ],
-    };
+    // Filter the result data based on the selected year and month
+    const filteredData = result.filter(
+      (data) => data.year === selectedYear && data.month === selectedMonth
+    );
 
-    setChartData(chartData);
+    console.log("filteredData: ", filteredData);
+    console.log("selectedYear: ", selectedYear);
+    console.log("selectedMonth: ", selectedMonth);
+    console.log("result: ", result);
+
+    const uniqueYears = [...new Set(result.map((data) => data.year))];
+    const uniqueMonths = [...new Set(result.map((data) => data.month))];
+    setYears(uniqueYears);
+    setMonths(uniqueMonths);
+
+    if (filteredData.length > 0) {
+      // Extract the labels and data for the selected year and month
+      const labels = filteredData[0].labels;
+      const data = filteredData[0].data;
+
+      const chartData = {
+        labels: labels,
+        datasets: [
+          {
+            label: `Number of Checklists: ${filteredData[0].year} (year), month: ${filteredData[0].month} (month)`,
+            data: data,
+            backgroundColor: "rgba(19, 109, 102, 1)",
+          },
+        ],
+      };
+
+      setChartData(chartData);
+    } else {
+      setChartData(null); // Set chartData to null to display an empty chart
+    }
   };
+
+  // Helper function to get the month name
+  function getMonthName(month) {
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+    return monthNames[month];
+  }
 
   // const prepareChartData = () => {
   //   if (!checklists.length) {
@@ -251,53 +304,108 @@ function AnalyzeChecklist() {
           <p>Change: {percentageChange}% from prvious month</p>
         </div>
 
-        <div className="chart-container">
-          <h2>Checklist Chart</h2>
-          {chartData ? (
-            <Bar
-              data={chartData}
-              options={{
-                scales: {
-                  x: {
-                    grid: {
-                      display: false,
+        <div>
+          <label htmlFor="year">Select Year:</label>
+          <select
+            id="year"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+          >
+            {years.map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="month">Select Month:</label>
+          <select
+            id="month"
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+          >
+            {months.map((month) => (
+              <option key={month} value={month}>
+                {month}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="chart-wrapper">
+          <div className="chart-container">
+            <h2>Checklist Chart</h2>
+            {chartData !== null ? (
+              <Bar
+                data={chartData}
+                options={{
+                  responsive: true,
+                  scales: {
+                    x: {
+                      grid: {
+                        display: false,
+                      },
                     },
-                  },
-                  y: {
-                    grid: {
-                      display: false,
-                    },
-                  },
-                },
-                plugins: {
-                  legend: {
-                    display: true,
-                  },
-                  tooltip: {
-                    callbacks: {
-                      label: (context) => {
-                        let labelText = context.dataset.label || "";
-                        if (context.parsed.y !== null) {
-                          labelText += ": " + context.parsed.y + " checklists";
-                        }
-                        return labelText;
+                    y: {
+                      grid: {
+                        display: false,
                       },
                     },
                   },
-                },
-                layout: {
-                  padding: {
-                    left: 10,
-                    right: 10,
-                    top: 10,
-                    bottom: 10,
+                  plugins: {
+                    legend: {
+                      display: true,
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: (context) => {
+                          let labelText = context.dataset.label || "";
+                          if (context.parsed.y !== null) {
+                            labelText +=
+                              ": " + context.parsed.y + " checklists";
+                          }
+                          return labelText;
+                        },
+                      },
+                    },
                   },
-                },
-              }}
-            />
-          ) : (
-            <p>Loading chart data...</p>
-          )}
+                  layout: {
+                    padding: {
+                      left: 10,
+                      right: 10,
+                      top: 10,
+                      bottom: 10,
+                    },
+                  },
+                }}
+              />
+            ) : (
+              <Bar
+                data={{
+                  labels: [],
+                  datasets: [],
+                }}
+                options={{
+                  responsive: true,
+                  scales: {
+                    x: {
+                      display: true,
+                      grid: {
+                        display: false,
+                      },
+                    },
+                    y: {
+                      display: true,
+                      grid: {
+                        display: false,
+                      },
+                    },
+                  },
+                }}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

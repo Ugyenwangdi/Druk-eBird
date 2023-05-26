@@ -239,6 +239,13 @@
   border: 1px solid #dadefa;
   margin-left: 10rem;
 }
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 @media (min-width: 768px) {
   .popular-img {
     flex-basis: 48%;
