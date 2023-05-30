@@ -282,6 +282,8 @@ function Dashboard() {
     }
   };
 
+  console.log("Checklists: ", checklists);
+
   useEffect(() => {
     fetchChecklistData();
     const interval = setInterval(fetchChecklistData, 10000);
@@ -784,19 +786,28 @@ function Dashboard() {
                     <div class="info">
                       <img
                         src={
-                          item.photos[0]
-                            ? item.photos[0].url
+                          item.StartbirdingData[0].photo
+                            ? item.StartbirdingData[0].photo
                             : VerditerFlycatcher
                         }
                         class="bird-pic"
                       />
                       <div>
-                        <h4>{item.birdName}</h4>
-                        <small>{item.endpointLocation}</small>
+                        <h4>{item.BirdName}</h4>
+                        <small>
+                          {
+                            item.StartbirdingData[0].EndpointLocation[0]
+                              .dzongkhag
+                          }{" "}
+                          {item.StartbirdingData[0].EndpointLocation[0].gewog}{" "}
+                          {item.StartbirdingData[0].EndpointLocation[0].village}
+                        </small>
                       </div>
                     </div>
                     <div class="sighting-date">
-                      <span>{convertDate(item.selectedDate)}</span>
+                      <span>
+                        {convertDate(item.StartbirdingData[0].selectedDate)}
+                      </span>
                     </div>
                   </div>
                 ))}
