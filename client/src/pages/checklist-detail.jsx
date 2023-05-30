@@ -1,10 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useLocation } from "react-router-dom";
+import axios from "axios";
 import "../styles/checklistdetail.css";
 import { logo, profile } from "../images";
 
-import { Link } from "react-router-dom";
-
 function ChecklistDetail() {
+  const { id } = useParams();
+  console.log(id);
+  const location = useLocation();
+  const [showFullscreen, setShowFullscreen] = useState(false);
+
+  const [checklist, setChecklist] = useState(
+    [location.state?.ChecklistDetail] || [{ photo: [] }]
+  );
+
+  useEffect(() => {
+    const fetchSpecies = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/api/v1/checklists/${id}`
+        );
+
+        setChecklist(Object.values(response.data));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchSpecies();
+  }, [id]);
+
+  console.log("checklist detail? ", checklist);
+
   const handleApprove = () => {
     // Add logic to handle approve action
     console.log("Approved");
@@ -34,7 +60,10 @@ function ChecklistDetail() {
           distance
         </span>
         <p className="checklist-detail-container-text">
-          Gyalpozhing Mongar Highway
+          {checklist.StartbirdingData[0].EndpointLocation[0].dzongkhag} {", "}
+          {checklist.StartbirdingData[0].EndpointLocation[0].gewog}
+          {", "}
+          {checklist.StartbirdingData[0].EndpointLocation[0].village}
         </p>
       </div>
       <div className="checklistdetail-container">
@@ -69,7 +98,9 @@ function ChecklistDetail() {
                 <td data-label="Sl.no">1</td>
                 <td data-label="Bird">Spotted Dov</td>
                 <td data-label="Description">Sonam</td>
-                <td data-label="Count total">2</td>
+                <td data-label="Count total">
+                  {checklist.StartbirdingData[0].count}
+                </td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird" className="bird-img" />
                 </td>
@@ -91,7 +122,9 @@ function ChecklistDetail() {
                 <td data-label="Sl.no">1</td>
                 <td data-label="Bird">Spotted Dov</td>
                 <td data-label="Description">Sonam</td>
-                <td data-label="Count total">2</td>
+                <td data-label="Count total">
+                  {String(checklist.StartbirdingData[0].count.total)}
+                </td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird " className="bird-img" />
                 </td>
@@ -139,11 +172,17 @@ function ChecklistDetail() {
 
                     <div className="detail-text">
                       <img
-                        src={profile}
+                        src={
+                          checklist.StartbirdingData[0].photo
+                            ? checklist.StartbirdingData[0].photo
+                            : profile
+                        }
                         className="detail-profile"
                         alt="detail"
                       />
-                      <p className="name">Wangchuk</p>
+                      <p className="name">
+                        {checklist.StartbirdingData[0].observer}
+                      </p>
                       <p className="description">Nature photographer</p>
                     </div>
                   </div>
