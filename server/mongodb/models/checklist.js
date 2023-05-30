@@ -1,27 +1,112 @@
 import mongoose from "mongoose";
+import moment from "moment";
 
-const checklistTestSchema = new mongoose.Schema(
+const currentLocation = new mongoose.Schema({
+  latitude: {
+    type: Number,
+    required: [true, "latitude"],
+    default: 0,
+  },
+  longitude: {
+    type: Number,
+    required: [true, "longitude"],
+    default: 0,
+  },
+});
+
+const EndpointLocation = new mongoose.Schema({
+  dzongkhag: {
+    type: String,
+    default: "null",
+  },
+  gewog: {
+    type: String,
+    default: "null",
+  },
+  village: {
+    type: String,
+    default: "null",
+  },
+});
+
+const detailSchema = new mongoose.Schema({
+  selectedDate: {
+    type: String,
+    required: [true, "Date"],
+    default: moment().format("YYYY-MM-DD"),
+  },
+  selectedTime: {
+    type: String,
+    required: [true, "Time"],
+    default: moment().format("HH:mm:ss"),
+  },
+  observer: {
+    type: String,
+    required: [true, "observer"],
+    default: "null",
+  },
+  currentLocation: currentLocation,
+  count: {
+    adult: { type: Number },
+    juvenile: { type: Number },
+    total: { type: Number },
+  },
+  photo: {
+    type: String,
+    default: "null",
+  },
+  EndpointLocation: [EndpointLocation],
+  approvalStatus: {
+    type: String,
+    default: "none",
+  },
+});
+
+const BirdsSchema = new mongoose.Schema(
   {
-    checklistName: { type: String, required: true },
-    birdName: { type: String, required: false },
-    count: {
-      adult: { type: Number },
-      juvenile: { type: Number },
-      total: { type: Number },
+    CheckListName: {
+      type: String,
+      required: [true, "CheckListName"],
+      default: "null",
     },
-    selectedDate: { type: Date, required: false },
-    selectedTime: { type: String, required: false },
-    currentLocation: {
-      latitude: { type: String, required: false },
-      longitude: { type: String, required: false },
+    BirdName: {
+      type: String,
+      required: [true, "BirdName"],
+      default: "null",
     },
-    birder: { type: String, required: false },
-    endpointLocation: { type: String, required: false },
-    photos: [{ url: { type: String } }],
+    StartbirdingData: [detailSchema],
   },
   { _id: true, timestamps: true }
 );
 
-const ChecklistTest = mongoose.model("ChecklistTest", checklistTestSchema);
+const ChecklistTest = mongoose.model("ChecklistTest", BirdsSchema);
 
 export default ChecklistTest;
+
+// import mongoose from "mongoose";
+
+// const checklistTestSchema = new mongoose.Schema(
+//   {
+//     checklistName: { type: String, required: true },
+//     birdName: { type: String, required: false },
+//     count: {
+//       adult: { type: Number },
+//       juvenile: { type: Number },
+//       total: { type: Number },
+//     },
+//     selectedDate: { type: Date, required: false },
+//     selectedTime: { type: String, required: false },
+//     currentLocation: {
+//       latitude: { type: String, required: false },
+//       longitude: { type: String, required: false },
+//     },
+//     birder: { type: String, required: false },
+//     endpointLocation: { type: String, required: false },
+//     photos: [{ url: { type: String } }],
+//   },
+//   { _id: true, timestamps: true }
+// );
+
+// const ChecklistTest = mongoose.model("ChecklistTest", checklistTestSchema);
+
+// export default ChecklistTest;
