@@ -227,7 +227,7 @@ function App() {
               <Route path="/species/:id" element={<SpeciesDetails />} />
               <Route path="/entries" element={<Entries />} />
               <Route path="/checklist" element={<Checklist />} />
-              <Route path="/checklist-detail" element={<ChecklistDetail />} />
+              <Route path="/checklists/:id" element={<ChecklistDetail />} />
               <Route path="/new-species" element={<NewSpecies />} />
               <Route
                 path="/new-species-detail"
