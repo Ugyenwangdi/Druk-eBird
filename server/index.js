@@ -66,7 +66,7 @@ passport.deserializeUser(function (user, cb) {
 app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);
 app.use("/api/v1/species", speciesRoutes);
-app.use("/api/v1/", checklistRoutes);
+app.use("/api/v1/checklists", checklistRoutes);
 
 const startServer = async () => {
   try {

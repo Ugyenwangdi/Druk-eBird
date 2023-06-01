@@ -1,20 +1,66 @@
-import React from "react";
+import { useState } from "react";
 import "../styles/checklistdetail.css";
+import "../styles/newspeciesdetail.css";
+
+
 import { logo, profile } from "../images";
 
 import { Link } from "react-router-dom";
+const Modal = ({ isOpen, onClose }) => {
+  const [newName, setNewName] = useState('');
+
+  const handleSave = () => {
+    // Handle save logic here
+    onClose();
+  };
+
+  const handleCancel = () => {
+    // Handle cancel logic here
+    onClose();
+  };
+
+  return (
+    <>
+      {isOpen && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <label htmlFor="newName">New Name:</label>
+            <input type="text" id="newName" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            <div className="modal-buttons">
+              <button onClick={handleSave}>Save</button>
+              <button onClick={handleCancel}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
 
 function NewSpeciesDetails() {
   const handleApprove = () => {
-    // Add logic to handle approve action
     console.log("Approved");
   };
 
-  // Define handleReject function
   const handleReject = () => {
-    // Add logic to handle reject action
     console.log("Rejected");
   };
+  const handleAdd = () => {
+    console.log("Added");
+  };
+
+
+  const [showDialog, setShowDialog] = useState(false);
+
+  const openDialog = () => {
+    setShowDialog(true);
+  };
+
+  const closeDialog = () => {
+    setShowDialog(false);
+  };
+
   return (
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
@@ -64,7 +110,26 @@ function NewSpeciesDetails() {
             <tbody>
               <tr>
                 <td data-label="Sl.no">1</td>
-                <td data-label="Bird">Spotted Dov</td>
+                <td>
+                  <span style={{ marginRight: '0.5rem' }}>Spotted Dov</span>
+                  <a href="#" onClick={openDialog}>
+                    <span className="material-symbols-outlined"
+                      style={{
+                        fontSize: '20px',
+                        color: 'black'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.color = '#ba760d';
+
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.color = 'black';
+                      }}>
+                      edit
+                    </span>
+                  </a>
+                  <Modal isOpen={showDialog} onClose={closeDialog} />
+                </td>
                 <td data-label="Description">Sonam</td>
                 <td data-label="Count total">2</td>
                 <td data-label="Photo">
@@ -82,12 +147,33 @@ function NewSpeciesDetails() {
                       Approve
                     </button>
                   </a>
+                  <button className="add-btn" onClick={() => handleAdd()}>
+                    Add
+                  </button>
                 </td>
               </tr>
               <tr>
                 <td data-label="Sl.no">1</td>
-                <td data-label="Bird">Spotted Dov</td>
-                <td data-label="Description">Sonam</td>
+                <td>
+                  <span style={{ marginRight: '0.5rem' }}>Spotted Dov</span>
+                  <a href="#" onClick={openDialog}>
+                    <span className="material-symbols-outlined"
+                      style={{
+                        fontSize: '20px',
+                        color: "black"
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.color = '#ba760d';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.color = 'black';
+                      }}>
+                      edit
+                    </span>
+                  </a>
+                  <Modal isOpen={showDialog} onClose={closeDialog} />
+                </td>
+                <td data-label="Description" >Sonam</td>
                 <td data-label="Count total">2</td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird" className="bird-img" />
@@ -101,7 +187,7 @@ function NewSpeciesDetails() {
                       Reject
                     </button>
                   </a>
-                  <a href="/add-species">
+                  <a href="/approved">
                     <button
                       className="approve-btn"
                       onClick={() => handleApprove()}
@@ -109,6 +195,15 @@ function NewSpeciesDetails() {
                       Approve
                     </button>
                   </a>
+                  <a href="/add-species">
+                    <button
+                      className="add-btn"
+                      onClick={() => handleAdd()}
+                    >
+                      Add
+                    </button>
+                  </a>
+
                 </td>
               </tr>
             </tbody>

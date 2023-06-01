@@ -15,11 +15,16 @@ import {
   Iucnstatuses,
   Groups,
   Residencies,
+  DeleteSpeciesModal,
 } from "../components";
 import "../styles/species.css";
 
-function Species() {
+function Species({ searchQuery, setSearchClickId }) {
   const token = localStorage.getItem("token");
+
+  const apiToken = {
+    Authorization: `Bearer ${token}`,
+  };
 
   const [speciesList, setSpeciesList] = useState([]);
   const [obj, setObj] = useState({});
@@ -37,10 +42,14 @@ function Species() {
   const [searchspecies, setSearchspecies] = useState("");
   const [searchscientific, setSearchscientific] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [speciesToDelete, setSpeciesToDelete] = useState(null);
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  console.log(searchQuery);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
@@ -48,7 +57,9 @@ function Species() {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
         const url = `${
           process.env.REACT_APP_API_URL
-        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${englishName}&species=${searchspecies}&scientific_name=${searchscientific}`;
+        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
+          englishName || searchQuery
+        }&species=${searchspecies}&scientific_name=${searchscientific}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
@@ -73,6 +84,7 @@ function Species() {
     englishName,
     searchspecies,
     searchscientific,
+    searchQuery,
   ]);
 
   // console.log("obj:", obj)
@@ -81,36 +93,39 @@ function Species() {
   const handleDelete = async (id) => {
     try {
       const speciesToDelete = speciesList.find((species) => species._id === id);
-      const confirmation = window.confirm(
-        `Are you sure you want to delete ${speciesToDelete.englishName}?`
+      setSpeciesToDelete(speciesToDelete);
+      setShowDeleteModal(true);
+    } catch (err) {
+      setError(err.response.data.error);
+      setMsg("");
+    }
+  };
+
+  const confirmDelete = async () => {
+    try {
+      const res = await axios.delete(
+        `${process.env.REACT_APP_API_URL}/api/v1/species/${speciesToDelete._id}`,
+        { headers: apiToken }
       );
-      if (confirmation) {
-        // const res = await axios.delete(
-        //   `http://localhost:8080/api/v1/species/${id}`
-        // );
-        const headers = {
-          Authorization: `Bearer ${token}`,
-        };
 
-        const res = await axios.delete(
-          `${process.env.REACT_APP_API_URL}/api/v1/species/${id}`,
-          { headers }
-        );
-
-        setSpeciesList((prevSpeciesList) =>
-          prevSpeciesList.filter((species) => species._id !== id)
-        );
-        setSpeciesCount(speciesList.length);
-        setMsg(res.data.message);
-        setError("");
-      }
+      setSpeciesList((prevSpeciesList) =>
+        prevSpeciesList.filter((species) => species._id !== speciesToDelete._id)
+      );
+      setSpeciesCount(speciesList.length);
+      setMsg(res.data.message);
+      setError("");
     } catch (err) {
       setError(err.response.data.error);
       setMsg("");
     } finally {
-      setError("");
-      setMsg("");
+      setShowDeleteModal(false);
+      setSpeciesToDelete(null);
     }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setSpeciesToDelete(null);
   };
 
   const headers = [
@@ -340,7 +355,15 @@ function Species() {
           <SpeciesListComponent
             speciesObj={speciesList ? speciesList : []}
             deleteSpecies={handleDelete}
+            setSearchClickId={setSearchClickId}
           />
+          {showDeleteModal && speciesToDelete && (
+            <DeleteSpeciesModal
+              speciesName={speciesToDelete.englishName}
+              onDelete={confirmDelete}
+              onCancel={cancelDelete}
+            />
+          )}
         </div>
         <Pagination
           page={page}
