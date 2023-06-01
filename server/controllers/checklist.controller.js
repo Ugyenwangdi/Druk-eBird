@@ -12,7 +12,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const getCount = async (req, res) => {
+const getChecklistCount = async (req, res) => {
   try {
     const count = await ChecklistTest.countDocuments();
     res.status(200).json({ count });
@@ -28,54 +28,56 @@ const getAllChecklist = async (req, res) => {
     const startsWith = req.query.starts_with || "";
     const search = req.query.search || "";
 
-    let searchQuery = {};
+    let searchQuery = { "StartbirdingData.status": "submittedchecklist" };
 
     if (startsWith) {
-      searchQuery = {
-        $or: [
-          { CheckListName: { $regex: `^${startsWith}`, $options: "i" } },
-          { CheckListName: { $regex: `.* ${startsWith}`, $options: "i" } },
-        ],
-      };
+      searchQuery.$or = [
+        { CheckListName: { $regex: `^${startsWith}`, $options: "i" } },
+        { CheckListName: { $regex: `.* ${startsWith}`, $options: "i" } },
+      ];
     } else if (search) {
-      searchQuery = {
-        $or: [
-          { CheckListName: { $regex: search, $options: "i" } },
-          { BirdName: { $regex: search, $options: "i" } },
-          {
-            "StartbirdingData.EndpointLocation.dzongkhag": {
-              $regex: search,
-              $options: "i",
-            },
+      searchQuery.$or = [
+        { CheckListName: { $regex: search, $options: "i" } },
+        { BirdName: { $regex: search, $options: "i" } },
+        {
+          "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: search,
+            $options: "i",
           },
-          {
-            "StartbirdingData.EndpointLocation.gewog": {
-              $regex: search,
-              $options: "i",
-            },
+        },
+        {
+          "StartbirdingData.EndpointLocation.gewog": {
+            $regex: search,
+            $options: "i",
           },
-          {
-            "StartbirdingData.EndpointLocation.village": {
-              $regex: search,
-              $options: "i",
-            },
+        },
+        {
+          "StartbirdingData.EndpointLocation.village": {
+            $regex: search,
+            $options: "i",
           },
-          { "StartbirdingData.observer": { $regex: search, $options: "i" } },
-        ],
-      };
+        },
+        { "StartbirdingData.observer": { $regex: search, $options: "i" } },
+      ];
     }
 
     const foundChecklists = await ChecklistTest.find(searchQuery)
-      // .skip(page * limit)
+      .skip(page * limit)
       // .limit(limit)
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .maxTimeMS(30000);
 
     const total = await ChecklistTest.countDocuments(searchQuery);
+    const entriesTotal = await ChecklistTest.countDocuments({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+    });
     const checklistTotal = await ChecklistTest.countDocuments();
 
     const response = {
       error: false,
       foundTotal: total,
+      entriesTotal: entriesTotal,
       checklistTotal,
       page: page + 1,
       limit,
@@ -153,6 +155,7 @@ const updateChecklist = async (req, res) => {
   const {
     CheckListName,
     BirdName,
+    status,
     selectedDate,
     selectedTime,
     observer,
@@ -180,6 +183,7 @@ const updateChecklist = async (req, res) => {
 
     if (checklist.StartbirdingData && checklist.StartbirdingData.length > 0) {
       const startBirdingData = checklist.StartbirdingData[0];
+      startBirdingData.status = status || startBirdingData.status;
       startBirdingData.selectedDate =
         selectedDate || startBirdingData.selectedDate;
       startBirdingData.selectedTime =
@@ -193,13 +197,13 @@ const updateChecklist = async (req, res) => {
           longitude || startBirdingData.currentLocation.longitude;
       }
 
-      startBirdingData.count.adult = adult || startBirdingData.count.adult;
-      startBirdingData.count.juvenile =
-        juvenile || startBirdingData.count.juvenile;
-      startBirdingData.count.total = total || startBirdingData.count.total;
+      startBirdingData.JAcount.Adult = adult || startBirdingData.JAcount.Adult;
+      startBirdingData.JAcount.Juvenile =
+        juvenile || startBirdingData.JAcount.Juvenile;
+      startBirdingData.Totalcount = total || startBirdingData.Totalcount;
 
-      startBirdingData.approvalStatus =
-        approvalStatus || startBirdingData.approvalStatus;
+      startBirdingData.Approvedstatus =
+        approvalStatus || startBirdingData.Approvedstatus;
 
       if (photo) {
         const photoUrl = await uploadPhoto(photo);
@@ -265,6 +269,7 @@ const uploadExcelFile = async (req, res) => {
         BirdName: data.BirdName,
         StartbirdingData: [
           {
+            status: "submittedchecklist",
             selectedDate: new Date(data.SelectedDate),
             selectedTime: data.SelectedTime,
             observer: data.Birder,
@@ -272,10 +277,11 @@ const uploadExcelFile = async (req, res) => {
               latitude: data.Latitude,
               longitude: data.Longitude,
             },
-            count: {
+            Approvedstatus: "approved",
+            TotalCount: data.Total,
+            JAcount: {
               adult: data.Adult,
               juvenile: data.Juvenile,
-              total: data.Total,
             },
             photo: photoUrl,
             EndpointLocation: [
@@ -487,57 +493,194 @@ const analyzeDistrictEntries = async (req, res) => {
   }
 };
 
+// const analyzeDistrictSpecies = async (req, res) => {
+//   try {
+//     const checklists = await ChecklistTest.find({
+//       "StartbirdingData.status": "submittedchecklist",
+//       "StartbirdingData.Approvedstatus": "approved",
+//     }).maxTimeMS(30000); // Fetch all checklists (increase timeout if needed)
+
+//     const currentMonth = new Date().getMonth(); // Get current month (0-11)
+//     const currentYear = new Date().getFullYear();
+//     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
+//     const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+//     const currentMonthBirdNames = new Set();
+//     const previousMonthBirdNames = new Set();
+
+//     checklists.forEach((checklist) => {
+//       const selectedDate = new Date(checklist.StartbirdingData[0].selectedDate);
+//       const year = selectedDate.getFullYear();
+//       const month = selectedDate.getMonth();
+
+//       if (month === currentMonth && year === currentYear) {
+//         currentMonthBirdNames.add(checklist.BirdName);
+//       } else if (month === previousMonth && year === previousYear) {
+//         previousMonthBirdNames.add(checklist.BirdName);
+//       }
+//     });
+
+//     const currentMonthSpeciesCount = currentMonthBirdNames.size;
+//     const previousMonthSpeciesCount = previousMonthBirdNames.size;
+
+//     const percentageChange =
+//       previousMonthSpeciesCount !== 0
+//         ? ((currentMonthSpeciesCount - previousMonthSpeciesCount) /
+//             previousMonthSpeciesCount) *
+//           100
+//         : 0;
+
+//     const changeResult = {
+//       currentMonthCount: currentMonthSpeciesCount,
+//       previousMonthCount: previousMonthSpeciesCount,
+//       percentageChange: percentageChange,
+//     };
+
+//     return res.json({ changeResult });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       error: "An error occurred while retrieving the bird species count.",
+//     });
+//   }
+// };
+
 const analyzeDistrictSpecies = async (req, res) => {
   try {
-    const checklists = await ChecklistTest.find().maxTimeMS(30000); // Fetch all checklists (increase timeout if needed)
+    const checklists = await ChecklistTest.find({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+    })
+      .maxTimeMS(30000)
+      .lean(); // Increase timeout to 30 seconds
 
+    // Calculate the number of checklists submitted in the current month
     const currentMonth = new Date().getMonth(); // Get current month (0-11)
     const currentYear = new Date().getFullYear();
+    const currentMonthChecklists = [];
+    const currentMonthChecklistNames = new Set();
+
+    // Calculate the number of checklists submitted in the previous month
     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
     const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    const currentMonthBirdNames = new Set();
-    const previousMonthBirdNames = new Set();
+    const previousMonthChecklists = [];
+    const previousMonthChecklistNames = new Set();
 
     checklists.forEach((checklist) => {
+      const checklistName = checklist.BirdName;
       const selectedDate = new Date(checklist.StartbirdingData[0].selectedDate);
       const year = selectedDate.getFullYear();
       const month = selectedDate.getMonth();
 
       if (month === currentMonth && year === currentYear) {
-        currentMonthBirdNames.add(checklist.BirdName);
+        if (!currentMonthChecklistNames.has(checklistName)) {
+          currentMonthChecklists.push(checklist);
+          currentMonthChecklistNames.add(checklistName);
+        }
       } else if (month === previousMonth && year === previousYear) {
-        previousMonthBirdNames.add(checklist.BirdName);
+        if (!previousMonthChecklistNames.has(checklistName)) {
+          previousMonthChecklists.push(checklist);
+          previousMonthChecklistNames.add(checklistName);
+        }
       }
     });
 
-    const currentMonthSpeciesCount = currentMonthBirdNames.size;
-    const previousMonthSpeciesCount = previousMonthBirdNames.size;
-
+    // Calculate the percentage increase or decrease in checklist submissions
+    const currentMonthCount = currentMonthChecklists.length;
+    const previousMonthCount = previousMonthChecklists.length;
     const percentageChange =
-      previousMonthSpeciesCount !== 0
-        ? ((currentMonthSpeciesCount - previousMonthSpeciesCount) /
-            previousMonthSpeciesCount) *
-          100
+      currentMonthCount !== 0 && previousMonthCount !== 0
+        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
         : 0;
 
     const changeResult = {
-      currentMonthCount: currentMonthSpeciesCount,
-      previousMonthCount: previousMonthSpeciesCount,
-      percentageChange: percentageChange,
+      currentMonthCount,
+      previousMonthCount,
+      percentageChange,
     };
 
-    return res.json({ changeResult });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({
-      error: "An error occurred while retrieving the bird species count.",
+    if (checklists.length === 0) {
+      return res.status(404).json({ message: "No checklists found." });
+    }
+
+    const monthlyData = {};
+
+    checklists.forEach((checklist) => {
+      const endpointLocation =
+        checklist.StartbirdingData[0].EndpointLocation[0].dzongkhag;
+      const selectedDate = new Date(checklist.StartbirdingData[0].selectedDate);
+      const year = selectedDate.getFullYear();
+      const month = selectedDate.getMonth();
+
+      if (!monthlyData[year]) {
+        monthlyData[year] = {};
+      }
+
+      if (!monthlyData[year][month]) {
+        monthlyData[year][month] = {};
+      }
+
+      if (!monthlyData[year][month][endpointLocation]) {
+        monthlyData[year][month][endpointLocation] = new Set();
+      }
+
+      monthlyData[year][month][endpointLocation].add(checklist.BirdName);
     });
+
+    const result = [];
+
+    for (const year in monthlyData) {
+      for (const month in monthlyData[year]) {
+        const monthData = monthlyData[year][month];
+        const labels = [];
+        const data = [];
+
+        for (const endpointLocation in monthData) {
+          const checklistNames = monthData[endpointLocation];
+          labels.push(endpointLocation);
+          data.push(checklistNames.size);
+        }
+
+        // Sort labels and data arrays in descending order
+        const sortedData = data.slice().sort((a, b) => b - a);
+        const sortedLabels = labels
+          .slice()
+          .sort((a, b) => data[labels.indexOf(b)] - data[labels.indexOf(a)]);
+
+        result.push({
+          year: parseInt(year),
+          month: getMonthName(parseInt(month)),
+          labels: sortedLabels,
+          data: sortedData,
+        });
+      }
+    }
+
+    // Calculate the overall total count of checklists
+    let overallTotalCount = 0;
+    result.forEach((monthlyResult) => {
+      monthlyResult.data.forEach((count) => {
+        overallTotalCount += count;
+      });
+    });
+
+    const responseData = {
+      changeResult,
+      result,
+      overallTotalCount,
+    };
+
+    return res.json(responseData);
+  } catch (error) {
+    return res.status(500).json({ message: "Internal server error." });
   }
 };
 
 const analyzeDistrictChecklists = async (req, res) => {
   try {
-    const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
+    const checklists = await ChecklistTest.find({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+    }).maxTimeMS(30000); // Increase timeout to 30 seconds
 
     // Calculate the number of checklists submitted in the current month
     const currentMonth = new Date().getMonth(); // Get current month (0-11)
@@ -899,6 +1042,34 @@ function getMonthName(month) {
 //   }
 // };
 
+const getTotalBirdingSites = async (req, res) => {
+  try {
+    // Query the database to get all documents
+    const checklists = await ChecklistTest.find({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+    }).maxTimeMS(30000);
+
+    const uniqueLocations = new Set();
+
+    checklists.forEach((checklist) => {
+      checklist.StartbirdingData.forEach((detail) => {
+        detail.EndpointLocation.forEach((location) => {
+          uniqueLocations.add(location);
+        });
+      });
+    });
+
+    // Count the number of unique locations
+    const count = uniqueLocations.size;
+
+    return res.json({ count });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "Internal server error." });
+  }
+};
+
 const analyzeTopBirders = async (req, res) => {
   try {
     const topBirders = await ChecklistTest.aggregate([
@@ -929,7 +1100,7 @@ const analyzeTopBirders = async (req, res) => {
 };
 
 export {
-  getCount,
+  getChecklistCount,
   getAllChecklist,
   getChecklistDetail,
   createChecklist,
@@ -940,5 +1111,6 @@ export {
   analyzeDistrictSpecies,
   analyzeDistrictChecklists,
   analyzeDistrictEntries,
+  getTotalBirdingSites,
   analyzeTopBirders,
 };

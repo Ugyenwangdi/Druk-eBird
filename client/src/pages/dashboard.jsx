@@ -15,6 +15,8 @@ import {
 import { profile, VerditerFlycatcher } from "../images";
 import "../styles/dashboard.css";
 
+Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
 function Dashboard() {
   const token = localStorage.getItem("token");
 
@@ -30,18 +32,29 @@ function Dashboard() {
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
   const [checklistCount, setChecklistCount] = useState(0);
   const [checklistResult, setChecklistResult] = useState([]);
+  const [speciesResult, setSpeciesResult] = useState([]);
   const [entriesCount, setEntriesCount] = useState(0);
   const [speciesCount, setSpeciesCount] = useState(0);
+  const [birdingSitesCount, setBirdingSitesCount] = useState(0);
   const [topBirders, setTopBirders] = useState([]);
   const [checklists, setChecklists] = useState([]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
 
-  const [chartData, setChartData] = useState(null);
+  const [checklistChartData, setChecklistChartData] = useState(null);
+  const [speciesChartData, setSpeciesChartData] = useState(null);
+
   const [currentMonthChecklistCount, setCurrentMonthChecklistCount] =
     useState(0);
-  const [previousMonthCount, setPreviousMonthCount] = useState(0);
+  const [previousMonthChecklistCount, setPreviousMonthChecklistCount] =
+    useState(0);
+
+  const [currentMonthSpeciesCount, setCurrentMonthSpeciesCount] = useState(0);
+  const [previousMonthSpeciesCount, setPreviousMonthSpeciesCount] = useState(0);
+
   const [checklistPercentageChange, setChecklistPercentageChange] = useState(0);
+  const [speciesPercentageChange, setSpeciesPercentageChange] = useState(0);
+
   const [years, setYears] = useState([]);
   const [months, setMonths] = useState([]);
 
@@ -53,6 +66,8 @@ function Dashboard() {
     useState(currentYear);
   const [checklistSelectedMonth, setChecklistSelectedMonth] =
     useState(currentMonth);
+
+  console.log("currentMonth: ", currentMonth);
 
   const validateToken = useCallback(async () => {
     try {
@@ -142,99 +157,6 @@ function Dashboard() {
     }
   }, [checkedDeactivatedUser, isNotAdmin]);
 
-  // const chartRef1 = useRef(null);
-  // const chartRef2 = useRef(null);
-  // let chartInstance1 = null;
-  // let chartInstance2 = null;
-
-  // const createChart = (canvasRef, type, data, options) => {
-  //   Chart.register(
-  //     CategoryScale,
-  //     LinearScale,
-  //     BarElement,
-  //     Title,
-  //     Tooltip,
-  //     Legend
-  //   );
-
-  //   return new Chart(canvasRef, {
-  //     type: type,
-  //     data: data,
-  //     options: options,
-  //   });
-  // };
-
-  // const createCharts = () => {
-  //   const chart1 = createChart(chartRef1.current, "bar", {
-  //     labels: [
-  //       "Mongar",
-  //       "Bumthang",
-  //       "Thimphu",
-  //       "Trongsa",
-  //       "Gasa",
-  //       "Paro",
-  //       "Tashigang",
-  //     ],
-  //     datasets: [
-  //       {
-  //         label: "#No. of checklists",
-  //         data: [12, 19, 3, 5, 2, 3, 20],
-  //         borderWidth: 1,
-  //         backgroundColor: "rgba(128, 128, 128, 0.6)",
-  //       },
-  //     ],
-  //   });
-
-  //   const chart2 = createChart(chartRef2.current, "bar", {
-  //     labels: [
-  //       "Mongar",
-  //       "Bumthang",
-  //       "Thimphu",
-  //       "Trongsa",
-  //       "Gasa",
-  //       "Paro",
-  //       "Tashigang",
-  //     ],
-  //     datasets: [
-  //       {
-  //         label: "#No. of checklists",
-  //         data: [12, 19, 3, 5, 2, 3, 20],
-  //         borderWidth: 1,
-  //         backgroundColor: "rgba(19, 109, 102, 1)",
-  //       },
-  //     ],
-  //   });
-
-  //   chartInstance1 = chart1;
-  //   chartInstance2 = chart2;
-  // };
-
-  // const destroyCharts = () => {
-  //   if (chartInstance1) {
-  //     chartInstance1.destroy();
-  //     chartInstance1 = null;
-  //   }
-  //   if (chartInstance2) {
-  //     chartInstance2.destroy();
-  //     chartInstance2 = null;
-  //   }
-  // };
-
-  // const handleResize = () => {
-  //   destroyCharts();
-  //   createCharts();
-  // };
-
-  // useEffect(() => {
-  //   createCharts();
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //     destroyCharts();
-  //   };
-  // }, []);
-
   const fetchCount = async () => {
     // Fetch species count
     fetch(`${process.env.REACT_APP_API_URL}/api/v1/species/get-count`)
@@ -249,6 +171,24 @@ function Dashboard() {
 
   useEffect(() => {
     fetchCount();
+  }, []);
+
+  const fetchBirdingSitesCount = async () => {
+    // Fetch species count
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/birdingsites-count`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setBirdingSitesCount(data.count);
+      })
+      .catch((error) => {
+        setError("Failed to fetch species count:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchBirdingSitesCount();
   }, []);
 
   const fetchTopBirders = async () => {
@@ -274,7 +214,7 @@ function Dashboard() {
         `${process.env.REACT_APP_API_URL}/api/v1/checklists?limit=5`
       );
       // console.log("response: ", response);
-      setEntriesCount(response.data.checklistTotal);
+      setEntriesCount(response.data.entriesTotal);
 
       setChecklists(Object.values(response.data.checklists));
     } catch (error) {
@@ -286,7 +226,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchChecklistData();
-    const interval = setInterval(fetchChecklistData, 10000);
+    const interval = setInterval(fetchChecklistData, 10000); // 60 seconds
 
     return () => {
       clearInterval(interval); // Cleanup the interval when the component unmounts
@@ -304,7 +244,7 @@ function Dashboard() {
 
   const prepareSpeciesChartData = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-checklists`
+      `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-species`
     );
 
     const responseData = await response.json();
@@ -315,11 +255,11 @@ function Dashboard() {
     }
     const { changeResult, result, overallTotalCount } = responseData;
 
-    setChecklistCount(overallTotalCount);
-    setCurrentMonthChecklistCount(changeResult.currentMonthCount);
-    setPreviousMonthCount(changeResult.previousMonthCount);
-    setChecklistPercentageChange(changeResult.percentageChange);
-    setChecklistResult(result);
+    setSpeciesCount(overallTotalCount);
+    setCurrentMonthSpeciesCount(changeResult.currentMonthCount);
+    setPreviousMonthSpeciesCount(changeResult.previousMonthCount);
+    setSpeciesPercentageChange(changeResult.percentageChange);
+    setSpeciesResult(result);
 
     // Filter the result data based on the selected year and month
     const filteredData = result.filter(
@@ -328,8 +268,8 @@ function Dashboard() {
     );
 
     console.log("filteredData: ", filteredData);
-    console.log("selectedYear: ", checklistSelectedYear);
-    console.log("selectedMonth: ", checklistSelectedMonth);
+    console.log("species selectedYear: ", speciesSelectedYear);
+    console.log("species selectedMonth: ", speciesSelectedMonth);
     console.log("result: ", result);
 
     const uniqueYears = [...new Set(result.map((data) => data.year))];
@@ -346,16 +286,16 @@ function Dashboard() {
         labels: labels,
         datasets: [
           {
-            label: `Number of Checklists:  ${filteredData[0].month}, ${filteredData[0].year}`,
+            label: `Number of Species:  ${filteredData[0].month}, ${filteredData[0].year}`,
             data: data,
             backgroundColor: "rgba(19, 109, 102, 1)",
           },
         ],
       };
 
-      setChartData(chartData);
+      setSpeciesChartData(chartData);
     } else {
-      setChartData(null); // Set chartData to null to display an empty chart
+      setSpeciesChartData(null); // Set chartData to null to display an empty chart
     }
   };
 
@@ -378,7 +318,7 @@ function Dashboard() {
 
     setChecklistCount(overallTotalCount);
     setCurrentMonthChecklistCount(changeResult.currentMonthCount);
-    setPreviousMonthCount(changeResult.previousMonthCount);
+    setPreviousMonthChecklistCount(changeResult.previousMonthCount);
     setChecklistPercentageChange(changeResult.percentageChange);
     setChecklistResult(result);
 
@@ -415,9 +355,9 @@ function Dashboard() {
         ],
       };
 
-      setChartData(chartData);
+      setChecklistChartData(chartData);
     } else {
-      setChartData(null); // Set chartData to null to display an empty chart
+      setChecklistChartData(null); // Set chartData to null to display an empty chart
     }
   };
 
@@ -489,7 +429,7 @@ function Dashboard() {
           <div class="card-single">
             <div>
               <span>Birding sites</span>
-              <h1>546</h1>
+              <h1>{birdingSitesCount}</h1>
             </div>
             <div>
               <span className="material-icons">language</span>
@@ -508,7 +448,7 @@ function Dashboard() {
         <div className="graphBox">
           <div className="box">
             <div className="grid-item">
-              <h3>Species Leader</h3>
+              <h3>Species Leaders</h3>
               <span>
                 <label htmlFor="year">Current Year</label>{" "}
                 <select
@@ -539,7 +479,7 @@ function Dashboard() {
               </span>
             </div>
             <div class="percentage-container">
-              <div class="percentage-value">{currentMonthChecklistCount}</div>
+              <div class="percentage-value">{currentMonthSpeciesCount}</div>
               <span className="up-arrow-icon">
                 <span className="material-icons">
                   {" "}
@@ -548,15 +488,14 @@ function Dashboard() {
                     : "arrow_downward"}
                 </span>
               </span>
-              <div class="percentage-change">{checklistPercentageChange}%</div>
+              <div class="percentage-change">{speciesPercentageChange}%</div>
               <div class="comparison-text">than last month</div>
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
-                <h2>Checklist Chart</h2>
-                {chartData !== null ? (
+                {speciesChartData !== null ? (
                   <Bar
-                    data={chartData}
+                    data={speciesChartData}
                     options={{
                       responsive: true,
                       scales: {
@@ -581,7 +520,7 @@ function Dashboard() {
                               let labelText = context.dataset.label || "";
                               if (context.parsed.y !== null) {
                                 labelText +=
-                                  ": " + context.parsed.y + " checklists";
+                                  ": " + context.parsed.y + " species";
                               }
                               return labelText;
                             },
@@ -628,7 +567,7 @@ function Dashboard() {
           </div>
           <div className="box">
             <div className="grid-item">
-              <h3>Checklists Leader</h3>
+              <h3>Checklists Leaders</h3>
               <span>
                 <label htmlFor="year">Current Year</label>{" "}
                 <select
@@ -672,10 +611,9 @@ function Dashboard() {
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
-                <h2>Checklist Chart</h2>
-                {chartData !== null ? (
+                {checklistChartData !== null ? (
                   <Bar
-                    data={chartData}
+                    data={checklistChartData}
                     options={{
                       responsive: true,
                       scales: {
