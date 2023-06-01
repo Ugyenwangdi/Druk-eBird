@@ -167,7 +167,5 @@
     content: attr(data-title) ": ";
     float: left;
   }
-  /* tbody tr:nth-child(even) {
-    background-color: #eaeaea;
-  } */
+  
 }

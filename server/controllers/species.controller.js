@@ -20,15 +20,15 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// const getAllSpecies = async (req, res) => {
-//   try {
-//     const species = await Species.find({});
-//     res.status(200).json(species);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: error.message });
-//   }
-// };
+const getCount = async (req, res) => {
+  try {
+    const count = await Species.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    console.error("Failed to fetch species count:", error);
+    res.status(500).json({ error: "Failed to fetch species count" });
+  }
+};
 
 // Complex search with pagination
 const getAllSpecies = async (req, res) => {
@@ -79,40 +79,62 @@ const getAllSpecies = async (req, res) => {
           { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
         ],
       };
-    } else if (search) {
+    } else {
       searchQuery = {
-        englishName: { $regex: search, $options: "i" },
+        $or: [
+          { englishName: { $regex: search, $options: "i" } },
+          { species: { $regex: search, $options: "i" } },
+          { scientificName: { $regex: search, $options: "i" } },
+        ],
       };
     }
     const foundSpecies = await Species.find({
+      $or: [
+        { order: { $in: [...order] } },
+        { order: "" },
+        { familyName: { $in: [...family] } },
+        { familyName: "" },
+        { genus: { $in: [...genus] } },
+        { genus: "" },
+        { iucnStatus: { $in: [...iucnStatus] } },
+        { iucnStatus: "" },
+        { group: { $in: [...group] } },
+        { group: "" },
+        { residency: { $in: [...residency] } },
+        { residency: "" },
+        { species: { $regex: species, $options: "i" } },
+        { species: "" },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+        { scientificName: "" },
+      ],
       ...searchQuery,
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     })
-      .where("order")
-      .in([...order])
-      .where("familyName")
-      .in([...family])
-      .where("genus")
-      .in([...genus])
-      .where("iucnStatus")
-      .in([...iucnStatus])
-      .where("group")
-      .in([...group])
-      .where("residency")
-      .in([...residency])
+      .sort({ createdAt: -1 })
       .skip(page * limit)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+      .limit(limit);
 
     const total = await Species.countDocuments({
+      $or: [
+        { order: { $in: [...order] } },
+        { order: "" },
+        { familyName: { $in: [...family] } },
+        { familyName: "" },
+        { genus: { $in: [...genus] } },
+        { genus: "" },
+        { iucnStatus: { $in: [...iucnStatus] } },
+        { iucnStatus: "" },
+        { group: { $in: [...group] } },
+        { group: "" },
+        { residency: { $in: [...residency] } },
+        { residency: "" },
+        { species: { $regex: species, $options: "i" } },
+        { species: "" },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+        { scientificName: "" },
+      ],
       ...searchQuery,
-      order: { $in: [...order] },
-      familyName: { $in: [...family] },
-      genus: { $in: [...genus] },
-      iucnStatus: { $in: [...iucnStatus] },
-      group: { $in: [...group] },
-      residency: { $in: [...residency] },
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     });
@@ -146,10 +168,7 @@ const getSpeciesDetail = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const species = await Species.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const species = await Species.findById(id);
 
     if (!species) {
       return res.status(404).send({ error: "Species not found" });
@@ -187,6 +206,12 @@ const createSpecies = async (req, res) => {
   } = req.body;
 
   // console.log(photo);
+
+  if (!englishName || !scientificName) {
+    return res
+      .status(400)
+      .json({ message: "English name and Scientific name are required" });
+  }
 
   try {
     const newSpecies = new Species({
@@ -486,6 +511,7 @@ const uploadExcelFile = async (req, res) => {
 };
 
 export {
+  getCount,
   getAllSpecies,
   getSpeciesDetail,
   createSpecies,

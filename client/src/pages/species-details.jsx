@@ -13,6 +13,8 @@ function SpeciesDetails() {
     location.state?.speciesDetails || { photos: [] }
   );
 
+  
+
   useEffect(() => {
     const fetchSpecies = async () => {
       try {
@@ -90,87 +92,101 @@ function SpeciesDetails() {
           ></iframe>
         </div>
       </div>
-      {/* <div className="species-container"> */}
-      <div className="species-text">Species: </div>
-      <div className="species-name">
-        <span style={{ paddingTop: "40px" }}>{species.englishName}</span>
-      </div>
-      <div className="species-location">
-        <span className="material-icons" style={{ color: "black" }}>
-          location_on
-        </span>
-      </div>
 
-      <div className="species-des">Scientific Name:</div>
-      <div className="species-des-para">{species.scientificName}</div>
+      <div className="species-table">
+        <div className="table-row">
+          <div className="table-cell">Species Name</div>
+          <div className="table-cell">{species.englishName}</div>
+        </div>
 
-      <div className="species-des">Order:</div>
-      <div className="species-des-para">{species.order}</div>
-
-      <div className="species-des">Family Name:</div>
-      <div className="species-des-para">{species.familyName}</div>
-
-      <div className="species-des">Genus:</div>
-      <div className="species-des-para">{species.genus}</div>
-
-      <div className="species-des">Species:</div>
-      <div className="species-des-para">{species.species}</div>
-
-      <div className="species-des">Authority:</div>
-      <div className="species-des-para">{species.authority}</div>
-
-      <div className="species-des">Group:</div>
-      <div className="species-des-para">{species.group}</div>
-
-      <div className="species-des">Dzongkha Name:</div>
-      <div className="species-des-para">{species.dzongkhaName}</div>
-
-      <div className="species-des">Lho Name:</div>
-      <div className="species-des-para">{species.lhoName}</div>
-
-      <div className="species-des">Shar Name:</div>
-      <div className="species-des-para">{species.sharName}</div>
-
-      <div className="species-des">Kheng Name:</div>
-      <div className="species-des-para">{species.khengName}</div>
-
-      <div className="species-des">IUCN Status:</div>
-      <div className="species-des-para">{species.iucnStatus}</div>
-
-      <div className="species-des">Cites Appendix:</div>
-      <div className="species-des-para">{species.citesAppendix}</div>
-
-      <div className="species-des">Bhutan Schedule:</div>
-      <div className="species-des-para">{species.bhutanSchedule}</div>
-
-      <div className="species-des">Residency:</div>
-      <div className="species-des-para">{species.residency}</div>
-
-      <div className="species-des">Habitat:</div>
-      <div className="species-des-para">{species.habitat}</div>
-
-      <div className="species-des">Stats:</div>
-      <div className="species-des-para">300 Observations</div>
-
-      <div className="species-des">Description:</div>
-      <div className="species-des-para">{species.description}</div>
-      {/* </div> */}
-
-      {/* 
-      {species.photos &&
-        species.photos.map((p) => (
-          <div key={p._id} style={{ display: "flex" }}>
-            <div>
-              <img
-                src={p.url}
-                alt={p.englishName}
-                style={{
-                  width: "200px",
-                }}
-              />
-            </div>
+        <div className="table-row">
+          <div className="table-cell">
+            <span className="material-icons" style={{ color: "black" }}>
+              location_on
+            </span>
+            Location
           </div>
-        ))} */}
+          <div className="table-cell"></div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Scientific Name</div>
+          <div className="table-cell">{species.scientificName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Order</div>
+          <div className="table-cell">{species.order}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Family Name</div>
+          <div className="table-cell">{species.familyName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Genus</div>
+          <div className="table-cell">{species.genus}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Species</div>
+          <div className="table-cell">{species.species}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Authority</div>
+          <div className="table-cell">{species.authority}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Group</div>
+          <div className="table-cell">{species.group}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Dzongkha Name</div>
+          <div className="table-cell">{species.dzongkhaName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Lho Name</div>
+          <div className="table-cell">{species.lhoName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Shar Name</div>
+          <div className="table-cell">{species.sharName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Kheng Name</div>
+          <div className="table-cell">{species.khengName}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">IUCN Status</div>
+          <div className="table-cell">{species.iucnStatus}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Cites Appendix</div>
+          <div className="table-cell">{species.citesAppendix}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Bhutan Schedule</div>
+          <div className="table-cell">{species.bhutanSchedule}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Residency</div>
+          <div className="table-cell">{species.residency}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Habitat</div>
+          <div className="table-cell">{species.habitat}</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Stats</div>
+          <div className="table-cell">300 Observations</div>
+        </div>
+        <div className="table-row">
+          <div className="table-cell">Description</div>
+          <div className="table-cell">{species.description}</div>
+        </div>
+      </div>
+  
+  
+
+
+
+
     </div>
   );
 }

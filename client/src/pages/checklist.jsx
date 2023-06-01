@@ -1,21 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import "../styles/checklist.css";
 
+import { Pagination } from "../components";
+
 function Checklist() {
-  // const[record,setRecord] = useState([])
+  const [checklists, setChecklists] = useState([]);
+  const [checklistTotal, setChecklistTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [foundTotal, setFoundTotal] = useState(0);
 
-  //  const getData = () =>
-  //  {
-  //      fetch('https://jsonplaceholder.typicode.com/users')
-  //      .then(resposne=> resposne.json())
-  //      .then(res=>setRecord(res))
-  //  }
+  useEffect(() => {
+    fetchData();
+  }, [page]);
 
-  //  useEffect(() => {
-  //     getData();
-  //  },)
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}`
+      );
+      // console.log("response: ", response);
+      setChecklistTotal(response.data.checklistTotal);
+      setLimit(response.data.limit);
+      setFoundTotal(response.data.foundTotal);
+      setChecklists(Object.values(response.data.checklists));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // console.log("chcklists: ", checklists);
+
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="checklists-page-container">
       <div
@@ -28,7 +51,8 @@ function Checklist() {
         }}
       >
         <h2 className="header">
-          Total Checklist <span className="checklist-count">(700)</span>
+          Total Checklist{" "}
+          <span className="checklist-count">({checklistTotal})</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
@@ -60,7 +84,7 @@ function Checklist() {
           </div>
           <div className="checklist-filter-select">
             <select className="checklist-filter-dropdown">
-              <option value="">Date/Time</option>
+              <option value="">Date</option>
               <option value="1">option 1</option>
               <option value="2">option 2</option>
               <option value="3">option 3</option>
@@ -105,104 +129,82 @@ function Checklist() {
         </div>
       </div>
 
-      <div>
-        <Link to="/checklist-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              {/* <thead>
-                <tr>
-                  <th>Sl.no</th>
-                  <th>English Name</th>
-                  <th>Birder</th>
-                  <th>Birding Site</th>
-                  <th>Data/Time</th>
-                  <th>Photo</th>
-                  <th>Numbers observed</th>
-                </tr>
-              </thead> */}
-              <tbody>
-                <tr>
-                  <td data-label="Birder" className="custom-data">
-                    #1 Birder
-                  </td>
-                  <td data-label="Birding site" className="custom-data">
-                    Gyalpozhing, Mongar
-                  </td>
-                  <td data-label="Date/Time" className="custom-data">
-                    10.08.2022
-                  </td>
-                  <td data-label="District" className="custom-data">
-                    Mongar
-                  </td>
-                  <td data-label="Gewog" className="custom-data">
-                    Gyalppozhing
-                  </td>
-                  <td data-label="Chiwog" className="custom-data">
-                    Gyalpozhing
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div className="checklist-table-container">
+        {checklists.map((item, index) => {
+          const serialNumber = (page - 1) * limit + index + 1;
+          return (
+            <div key={item._id}>
+              <Link to="/checklist-detail" className="checklist-link" >
+                <div>
+                  <table className="checklist-table">
+                    <tbody>
+                      <tr>
+                        <td data-label="Serial Number" className="custom-data">
+                          {/* {serialNumber} */}
+                          #1
+                        </td>
+                        <td data-label="Birder" className="custom-data">
+                          {/* {item.birder} */}
+                          sonam
+                        </td>
+                        <td data-label="Birding site" className="custom-data">
+                          {/* Lat. {item.currentLocation.latitude} Lon.{" "}
+                          {item.currentLocation.longitude} */}
+                          Location
+                        </td>
+                        <td data-label="Date/Time" className="custom-data">
+                          Date
+                          {/* {convertDate(item.selectedDate)} */}
+                        </td>
+                        <td data-label="District" className="custom-data">
+                          {/* {item.endpointLocation.split(",")[0]?.trim() ||
+                            "none"} */}
+                            District
+                        </td>
+                        <td data-label="Gewog" className="custom-data">
+                          {/* {item.endpointLocation.split(",")[1]?.trim() ||
+                            "none"} */}
+                            Gewog
+                        </td>
+                        <td data-label="Chiwog" className="custom-data">
+                          {/* {item.endpointLocation.split(",")[2]?.trim() ||
+                            "none"} */}
+                            chiwog
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
+        }}
+      >
+        <Link to="/checklists/add">
+          <button className="add-button">Add Checklist</button>
+        </Link>
+
+        <Link to="/checklists/analyze">
+          <button className="add-button">Analyze Checklist</button>
         </Link>
       </div>
 
-      <div>
-        <Link to="/checklist-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              <tbody>
-                <td data-label="Birder" className="custom-data">
-                  #2 Birder
-                </td>
-                <td data-label="Birding site" className="custom-data">
-                  Gyalpozhing,Mongar
-                </td>
-                <td data-label="Date/Time" className="custom-data">
-                  10.08.2022
-                </td>
-                <td data-label="District" className="custom-data">
-                  Mongar
-                </td>
-                <td data-label="Gewog" className="custom-data">
-                  Gyalppozhing
-                </td>
-                <td data-label="Chiwog" className="custom-data">
-                  Gyalpozhing
-                </td>
-              </tbody>
-            </table>
-          </div>
-        </Link>
-      </div>
-      <div>
-        <Link to="/checklist-detail" className="checklist-link">
-          <div>
-            <table className="checklist-table">
-              <tbody>
-                <td data-label="Birder" className="custom-data">
-                  #3 Birder
-                </td>
-                <td data-label="Birding site" className="custom-data">
-                  Gyalpozhing,Mongar
-                </td>
-                <td data-label="Date/Time" className="custom-data">
-                  10.08.2022
-                </td>
-                <td data-label="District" className="custom-data">
-                  Mongar
-                </td>
-                <td data-label="Gewog" className="custom-data">
-                  Gyalppozhing
-                </td>
-                <td data-label="Chiwog" className="custom-data">
-                  Gyalpozhing
-                </td>
-              </tbody>
-            </table>
-          </div>
-        </Link>
-      </div>
+      <Pagination
+        page={page}
+        limit={limit ? limit : 0}
+        total={foundTotal ? foundTotal : 0}
+        setPage={(page) => setPage(page)}
+      />
     </div>
   );
 }

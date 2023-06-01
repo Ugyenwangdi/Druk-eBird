@@ -21,7 +21,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `/auth/google/callback`,
+      callbackURL: `${process.env.BASE_URL}/auth/google/callback`,
       scope: ["profile", "email"],
     },
     function (accessToken, refreshToken, profile, cb) {
@@ -284,7 +284,7 @@ const getUserByID = async (req, res) => {
 
 const editAdminUser = async (req, res) => {
   const { id } = req.params;
-  console.log(req.body.isDeactivated);
+  // console.log(req.body.isDeactivated);
 
   // Check if the user is authorized to add new users
   if (req.user.userType !== "root-user") {
@@ -293,7 +293,7 @@ const editAdminUser = async (req, res) => {
   }
 
   const name = req.body.name;
-  console.log(name);
+  // console.log(name);
   if (/^\d/.test(name) || /^\d+$/.test(name)) {
     return res
       .status(400)

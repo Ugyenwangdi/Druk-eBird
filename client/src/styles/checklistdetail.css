@@ -54,7 +54,7 @@
 .checklist-detail {
   border: 0.75px solid rgb(236, 235, 235);
   border-collapse: collapse;
-  width: 48rem;
+  width: 60rem;
   border-radius: 10px;
   margin-top: 2rem;
   margin-left: 2rem;
@@ -66,6 +66,7 @@
 .checklist-detail td {
   text-align: center;
   padding-top: 2rem;
+  
 }
 
 .bird-img {
