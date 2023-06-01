@@ -60,10 +60,11 @@ function ChecklistDetail() {
           distance
         </span>
         <p className="checklist-detail-container-text">
-          {checklist.StartbirdingData[0].EndpointLocation[0].dzongkhag} {", "}
+          Dzongkhag
+          {/* {checklist.StartbirdingData[0].EndpointLocation[0].dzongkhag} {", "}
           {checklist.StartbirdingData[0].EndpointLocation[0].gewog}
           {", "}
-          {checklist.StartbirdingData[0].EndpointLocation[0].village}
+          {checklist.StartbirdingData[0].EndpointLocation[0].village} */}
         </p>
       </div>
       <div className="checklistdetail-container">
@@ -99,7 +100,7 @@ function ChecklistDetail() {
                 <td data-label="Bird">Spotted Dov</td>
                 <td data-label="Description">Sonam</td>
                 <td data-label="Count total">
-                  {checklist.StartbirdingData[0].count}
+                  4{/* {checklist.StartbirdingData[0].count} */}
                 </td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird" className="bird-img" />
@@ -123,7 +124,7 @@ function ChecklistDetail() {
                 <td data-label="Bird">Spotted Dov</td>
                 <td data-label="Description">Sonam</td>
                 <td data-label="Count total">
-                  {String(checklist.StartbirdingData[0].count.total)}
+                  {String(checklist[3][0].Totalcount)}
                 </td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird " className="bird-img" />
@@ -172,16 +173,18 @@ function ChecklistDetail() {
 
                     <div className="detail-text">
                       <img
-                        src={
-                          checklist.StartbirdingData[0].photo
-                            ? checklist.StartbirdingData[0].photo
-                            : profile
-                        }
+                        // src={
+                        //   checklist.StartbirdingData[0].photo
+                        //     ? checklist.StartbirdingData[0].photo
+                        //     : profile
+                        // }
+                        src={profile}
                         className="detail-profile"
                         alt="detail"
                       />
                       <p className="name">
-                        {checklist.StartbirdingData[0].observer}
+                        Birder
+                        {/* {checklist.StartbirdingData[0].observer} */}
                       </p>
                       <p className="description">Nature photographer</p>
                     </div>
