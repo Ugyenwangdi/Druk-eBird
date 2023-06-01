@@ -52,7 +52,7 @@ function Checklist() {
       >
         <h2 className="header">
           Total Checklist
-          <span className="checklist-count">({checklistTotal})</span>
+          <span className="checklist-count">({foundTotal})</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
