@@ -1042,6 +1042,7 @@ function getMonthName(month) {
 //   }
 // };
 
+//
 const getTotalBirdingSites = async (req, res) => {
   try {
     // Query the database to get all documents
