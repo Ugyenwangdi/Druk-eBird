@@ -13,6 +13,22 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
     if (searchQuery) {
       navigate("/species");
     }
+
+    // Add the event listener here
+    const handleMouseMove = (e) => {
+      const topbarNav = document.querySelector(".topbar-nav");
+      const x = e.pageX - topbarNav.offsetLeft;
+      const y = e.pageY - topbarNav.offsetTop;
+      topbarNav.style.setProperty("--cursorX", x + "px");
+      topbarNav.style.setProperty("--cursorY", y + "px");
+    };
+
+    document.addEventListener("mousemove", handleMouseMove);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+    };
   }, [searchQuery, navigate]);
 
   const handleDropdownToggle = () => {
@@ -52,7 +68,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
   };
 
   return (
-    <nav>
+    <nav className="topbar-nav">
       <div className="container">
         <img src={logo} className="logo" alt="" />
         <div className="search-bar">
@@ -74,8 +90,13 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
             <h5>{currentUser.name ? currentUser.name : "User"}</h5>
             {showDropdown && (
               <div className="dropdown-menu">
-                <button onClick={handleNavigateToSettings}>Settings</button>
-                <button onClick={handleLogoutConfirmation}>Logout</button>
+                <button onClick={handleNavigateToSettings}>
+                  <span class="material-symbols-outlined">settings</span>
+                  Settings
+                </button>
+                <button onClick={handleLogoutConfirmation}>
+                  <span class="material-symbols-outlined">logout</span>Logout
+                </button>
               </div>
             )}
           </div>
