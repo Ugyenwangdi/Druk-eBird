@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { logo, profile } from "../images";
 import LogoutModal from "./LogoutModal";
@@ -63,6 +63,9 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
             onChange={({ currentTarget: input }) => setSearchQuery(input.value)}
           />
         </div>
+        <Link to="/notifications" className="notification">
+          <span className="material-icons">notifications</span>
+        </Link>
         <div className="profile-area">
           <div className="profile">
             <div className="profile-photo" onClick={handleDropdownToggle}>
@@ -94,4 +97,5 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
     </nav>
   );
 }
+
 export default TopBar;

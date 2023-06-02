@@ -99,3 +99,38 @@ nav .profile-area .dropdown-menu button {
 nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
+
+/* Add this CSS code to your stylesheet */
+
+.notification {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: 50%;
+  cursor: pointer;
+}
+
+.notification .material-icons {
+  font-size: 24px;
+  color: #000;
+}
+
+.notification .material-icons:hover {
+  font-size: 24px;
+  color: #ba760d;
+}
+
+.notification-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: red;
+  color: #fff;
+  font-size: 12px;
+}

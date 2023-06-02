@@ -26,6 +26,7 @@ import {
   UpdatePassword,
   AddChecklist,
   AnalyzeChecklist,
+  Notification,
 } from "./pages";
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
   useEffect(() => {
     if (searchQuery) {
       navigate("/species");
+      navigate("/notifications")
     }
 
     if (searchClickedId) {
@@ -239,6 +241,7 @@ function App() {
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/password-update" element={<UpdatePassword />} />
+              <Route path="/notifications" element={<Notification />} />
 
               <Route path="/checklists/add" element={<AddChecklist />} />
               <Route

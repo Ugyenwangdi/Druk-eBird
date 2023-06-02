@@ -102,9 +102,24 @@ function Settings() {
       const headers = {
         Authorization: `Bearer ${token}`,
       };
+      const response = await axios.get(url, { headers });
+      const deleteuseremail = response.data.email;
 
       await axios.delete(url, { headers });
       console.log("User deleted successfully!");
+      const sendNotification = async (message) => {
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
+            message: message,
+          });
+        } catch (error) {
+          console.error("Failed to send notification:", error);
+        }
+      };      
+      // Create a new notification
+      const notificationMessage = `${currentUser.email} has deleted the ${deleteuseremail} at ${new Date().toLocaleString()}`;
+      await sendNotification(notificationMessage);
+      console.log(notificationMessage);
       setData(data.filter((item) => item._id !== deleteUserId));
       setShowDeleteModal(false);
     } catch (error) {
