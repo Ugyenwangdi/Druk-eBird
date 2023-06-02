@@ -90,7 +90,6 @@ body {
   z-index: 1;
   overflow: visible;
 }
-
 #uploadBtn {
   display: flex;
   flex-direction: column;

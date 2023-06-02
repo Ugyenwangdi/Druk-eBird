@@ -392,9 +392,6 @@ function Dashboard() {
         }}
       >
         <h2 className="header">Dashboard</h2>
-        <div className="checklist-button-container">
-          <button className="checklist-export-button">Export Data</button>
-        </div>
       </div>
 
       <div class="mainn-content">
@@ -757,8 +754,6 @@ function Dashboard() {
           <div class="section-header">
             <h3>Explore Birds</h3>
             <div class="buttons-container">
-              <button>All</button>
-              <button>Popular</button>
               <span class="material-icons">arrow_forward</span>
             </div>
           </div>
