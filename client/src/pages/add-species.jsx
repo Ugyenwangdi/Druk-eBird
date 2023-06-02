@@ -68,6 +68,16 @@ function AddSpecies() {
     try {
       setLoading(true);
 
+      if (!form.englishName || !form.scientificName) {
+        setError("English name and Scientific name is required!");
+      }
+      if (form.englishName.length < 2) {
+        setError("Please provide a name with atleast 2 letters!");
+      }
+      if (form.scientificName.length < 2) {
+        setError("Please provide a name with atleast 2 letters!");
+      }
+
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/v1/species`,
         {

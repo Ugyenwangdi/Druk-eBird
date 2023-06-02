@@ -176,7 +176,7 @@ function App() {
       }
     };
 
-    const mediaQuery = window.matchMedia("(max-width: 768px)");
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
     setShowSidebar(mediaQuery.matches);
 
     mediaQuery.addEventListener("change", handleResize);
