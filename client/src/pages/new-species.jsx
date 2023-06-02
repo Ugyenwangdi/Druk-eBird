@@ -138,7 +138,7 @@ function Checklist() {
         </div>
 
         <div>
-          <Link to="/checklist-detail" className="checklist-link">
+          <Link to="/new-species-detail" className="checklist-link">
             <div>
               <table className="checklist-table">
                 <tbody>
@@ -166,7 +166,7 @@ function Checklist() {
           </Link>
         </div>
         <div>
-          <Link to="/checklist-detail" className="checklist-link">
+          <Link to="/new-species-detail" className="checklist-link">
             <div>
               <table className="checklist-table">
                 <tbody>
