@@ -19,6 +19,7 @@ import Settings from "./settings";
 import AddAdmin from "./add-admin";
 import EditAdmin from "./edit-admin";
 import UpdatePassword from "./update-password";
+import Notification from "./notifications";
 
 import { AddChecklist } from "./add-checklist";
 import { AnalyzeChecklist } from "./analyze-checklist";
@@ -46,4 +47,5 @@ export {
   UpdatePassword,
   AddChecklist,
   AnalyzeChecklist,
+  Notification,
 };
