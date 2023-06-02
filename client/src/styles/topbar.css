@@ -156,7 +156,6 @@ nav .profile-area .dropdown-menu button span {
 nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
-<<<<<<< HEAD
 
 /* Add this CSS code to your stylesheet */
 
@@ -191,55 +190,4 @@ nav .profile-area .dropdown-menu button:hover {
   background-color: red;
   color: #fff;
   font-size: 12px;
-=======
-@media (max-width: 768px) {
-  nav .profile-area .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 5%;
-    width: 15%;
-    background-color: #ecebeb;
-    border-radius: 4px;
-    padding: 0.5rem;
-    z-index: 10;
-  }
-  nav .profile-area .dropdown-menu button {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent;
-    text-align: right;
-    cursor: pointer;
-    width: 100%;
-  }
-  nav .profile-area .dropdown-menu button span {
-    margin-right: 0.2rem;
-  }
-}
-@media (max-width: 617px) {
-  nav .profile-area .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 10%;
-    width: 20%;
-    background-color: #ecebeb;
-    border-radius: 4px;
-    padding: 0.5rem;
-    z-index: 10;
-  }
-  nav .profile-area .dropdown-menu button {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem;
-    border: none;
-    background-color: transparent;
-    text-align: right;
-    cursor: pointer;
-    width: 100%;
-  }
-  nav .profile-area .dropdown-menu button span {
-    margin-right: 0.2rem;
-  }
->>>>>>> 614adddb41b8d19fe331dfe8ce12ade9ca8e439e
 }
