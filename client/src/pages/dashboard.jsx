@@ -35,6 +35,7 @@ function Dashboard() {
   const [birdingSitesCount, setBirdingSitesCount] = useState(0);
   const [topBirders, setTopBirders] = useState([]);
   const [checklists, setChecklists] = useState([]);
+  const [selectedData, setSelectedData] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
 
@@ -209,9 +210,9 @@ function Dashboard() {
   const fetchChecklistData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?limit=5`
+        `${process.env.REACT_APP_API_URL}/api/v1/entries?limit=5`
       );
-      // console.log("response: ", response);
+      console.log("response: ", response);
       setEntriesCount(response.data.entriesTotal);
 
       setChecklists(Object.values(response.data.checklists));
@@ -220,7 +221,7 @@ function Dashboard() {
     }
   };
 
-  // console.log("Checklists: ", checklists);
+  console.log("Checklists: ", checklists);
 
   useEffect(() => {
     fetchChecklistData();
@@ -269,7 +270,7 @@ function Dashboard() {
     }
     const { changeResult, result, overallTotalCount } = responseData;
 
-    setSpeciesCount(overallTotalCount);
+    // setSpeciesCount(overallTotalCount);
     setCurrentMonthSpeciesCount(changeResult.currentMonthCount);
     setPreviousMonthSpeciesCount(changeResult.previousMonthCount);
     setSpeciesPercentageChange(changeResult.percentageChange);
@@ -279,6 +280,8 @@ function Dashboard() {
       (data) =>
         data.year === speciesSelectedYear && data.month === speciesSelectedMonth
     );
+
+    setSelectedData(filteredData);
 
     // console.log("filteredData: ", filteredData);
     // console.log("species selectedYear: ", speciesSelectedYear);
@@ -299,7 +302,7 @@ function Dashboard() {
         labels: labels,
         datasets: [
           {
-            label: `Number of Species:  ${filteredData[0].month}, ${filteredData[0].year}`,
+            label: `No. of Species observed:  ${filteredData[0].month}, ${filteredData[0].year}`,
             data: data,
             backgroundColor: "rgba(19, 109, 102, 1)",
           },
@@ -379,7 +382,7 @@ function Dashboard() {
         labels: labels,
         datasets: [
           {
-            label: `Number of Checklists:  ${filteredData[0].month}, ${filteredData[0].year}`,
+            label: `No. of Checklists:  ${filteredData[0].month}, ${filteredData[0].year}`,
             data: data,
             backgroundColor: "rgba(19, 109, 102, 1)",
           },
@@ -548,7 +551,12 @@ function Dashboard() {
                               let labelText = context.dataset.label || "";
                               if (context.parsed.y !== null) {
                                 labelText +=
-                                  ": " + context.parsed.y + " species";
+                                  ", " + context.parsed.y + " species";
+                                const index = context.dataIndex;
+                                const label = context.chart.data.labels[index];
+                                const birdNames =
+                                  selectedData[0].birdNames[label];
+                                labelText += " (" + birdNames.join(", ") + ")";
                               }
                               return labelText;
                             },
@@ -665,11 +673,8 @@ function Dashboard() {
                             label: (context) => {
                               let labelText = context.dataset.label || "";
                               if (context.parsed.y !== null) {
-                                labelText += ": " + context.parsed.y;
                                 labelText +=
-                                  context.parsed.y > 1
-                                    ? " checklists"
-                                    : " checklist";
+                                  ": " + context.parsed.y + " checklists";
                               }
                               return labelText;
                             },
