@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import { BarController } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import {
   Chart,
@@ -31,13 +30,12 @@ function Dashboard() {
   const [isNotAdmin, setIsNotAdmin] = useState(false);
   const [checkedDeactivatedUser, setCheckedDeactivatedUser] = useState(false);
   const [checklistCount, setChecklistCount] = useState(0);
-  const [checklistResult, setChecklistResult] = useState([]);
-  const [speciesResult, setSpeciesResult] = useState([]);
   const [entriesCount, setEntriesCount] = useState(0);
   const [speciesCount, setSpeciesCount] = useState(0);
   const [birdingSitesCount, setBirdingSitesCount] = useState(0);
   const [topBirders, setTopBirders] = useState([]);
   const [checklists, setChecklists] = useState([]);
+  const [selectedData, setSelectedData] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
 
@@ -58,6 +56,9 @@ function Dashboard() {
   const [years, setYears] = useState([]);
   const [months, setMonths] = useState([]);
 
+  const [checklistYears, setChecklistYears] = useState([]);
+  const [checklistMonths, setChecklistMonths] = useState([]);
+
   const [speciesSelectedYear, setSpeciesSelectedYear] = useState(currentYear);
   const [speciesSelectedMonth, setSpeciesSelectedMonth] =
     useState(currentMonth);
@@ -66,8 +67,6 @@ function Dashboard() {
     useState(currentYear);
   const [checklistSelectedMonth, setChecklistSelectedMonth] =
     useState(currentMonth);
-
-  console.log("currentMonth: ", currentMonth);
 
   const validateToken = useCallback(async () => {
     try {
@@ -133,7 +132,7 @@ function Dashboard() {
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`
         );
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setIsNotAdmin(data.userType === "user");
       };
 
@@ -196,7 +195,7 @@ function Dashboard() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/top-birders`
       );
-      console.log("response: ", response);
+      // console.log("response: ", response);
 
       setTopBirders(Object.values(response.data.slice(0, 5)));
     } catch (error) {
@@ -211,9 +210,9 @@ function Dashboard() {
   const fetchChecklistData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?limit=5`
+        `${process.env.REACT_APP_API_URL}/api/v1/entries?limit=5`
       );
-      // console.log("response: ", response);
+      console.log("response: ", response);
       setEntriesCount(response.data.entriesTotal);
 
       setChecklists(Object.values(response.data.checklists));
@@ -227,7 +226,6 @@ function Dashboard() {
   useEffect(() => {
     fetchChecklistData();
     const interval = setInterval(fetchChecklistData, 10000); // 60 seconds
-
     return () => {
       clearInterval(interval); // Cleanup the interval when the component unmounts
     };
@@ -242,24 +240,40 @@ function Dashboard() {
     prepareSpeciesChartData();
   }, [checklists, speciesSelectedYear, speciesSelectedMonth]);
 
+  useEffect(() => {
+    if (!months.includes(currentMonth)) {
+      if (months.length > 0) {
+        if (!speciesSelectedMonth) {
+          setSpeciesSelectedMonth(months[months.length - 1]);
+        }
+        if (!speciesSelectedYear) {
+          setSpeciesSelectedYear(years[years.length - 1]);
+        }
+      } else {
+        // Handle the case when the months array is empty
+        setSpeciesSelectedYear("");
+        setSpeciesSelectedMonth("");
+      }
+    }
+  }, [currentMonth, months, years]);
+
   const prepareSpeciesChartData = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-species`
     );
 
     const responseData = await response.json();
-    console.log("district checklists: ", responseData);
+    // console.log("district checklists: ", responseData);
 
     if (!response.ok) {
       setError(response.message);
     }
     const { changeResult, result, overallTotalCount } = responseData;
 
-    setSpeciesCount(overallTotalCount);
+    // setSpeciesCount(overallTotalCount);
     setCurrentMonthSpeciesCount(changeResult.currentMonthCount);
     setPreviousMonthSpeciesCount(changeResult.previousMonthCount);
     setSpeciesPercentageChange(changeResult.percentageChange);
-    setSpeciesResult(result);
 
     // Filter the result data based on the selected year and month
     const filteredData = result.filter(
@@ -267,10 +281,12 @@ function Dashboard() {
         data.year === speciesSelectedYear && data.month === speciesSelectedMonth
     );
 
-    console.log("filteredData: ", filteredData);
-    console.log("species selectedYear: ", speciesSelectedYear);
-    console.log("species selectedMonth: ", speciesSelectedMonth);
-    console.log("result: ", result);
+    setSelectedData(filteredData);
+
+    // console.log("filteredData: ", filteredData);
+    // console.log("species selectedYear: ", speciesSelectedYear);
+    // console.log("species selectedMonth: ", speciesSelectedMonth);
+    // console.log("result: ", result);
 
     const uniqueYears = [...new Set(result.map((data) => data.year))];
     const uniqueMonths = [...new Set(result.map((data) => data.month))];
@@ -286,7 +302,7 @@ function Dashboard() {
         labels: labels,
         datasets: [
           {
-            label: `Number of Species:  ${filteredData[0].month}, ${filteredData[0].year}`,
+            label: `No. of Species observed:  ${filteredData[0].month}, ${filteredData[0].year}`,
             data: data,
             backgroundColor: "rgba(19, 109, 102, 1)",
           },
@@ -303,13 +319,32 @@ function Dashboard() {
     prepareChecklistChartData();
   }, [checklists, checklistSelectedYear, checklistSelectedMonth]);
 
+  useEffect(() => {
+    if (!checklistMonths.includes(currentMonth)) {
+      if (checklistMonths.length > 0) {
+        if (!checklistSelectedMonth) {
+          setChecklistSelectedMonth(
+            checklistMonths[checklistMonths.length - 1]
+          );
+        }
+        if (!checklistSelectedYear) {
+          setChecklistSelectedYear(checklistYears[checklistYears.length - 1]);
+        }
+      } else {
+        // Handle the case when the months array is empty
+        setChecklistSelectedYear("");
+        setChecklistSelectedMonth("");
+      }
+    }
+  }, [currentMonth, checklistMonths, checklistYears]);
+
   const prepareChecklistChartData = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-checklists`
     );
 
     const responseData = await response.json();
-    console.log("district checklists: ", responseData);
+    // console.log("district checklists: ", responseData);
 
     if (!response.ok) {
       setError(response.message);
@@ -320,7 +355,6 @@ function Dashboard() {
     setCurrentMonthChecklistCount(changeResult.currentMonthCount);
     setPreviousMonthChecklistCount(changeResult.previousMonthCount);
     setChecklistPercentageChange(changeResult.percentageChange);
-    setChecklistResult(result);
 
     // Filter the result data based on the selected year and month
     const filteredData = result.filter(
@@ -329,15 +363,15 @@ function Dashboard() {
         data.month === checklistSelectedMonth
     );
 
-    console.log("filteredData: ", filteredData);
-    console.log("selectedYear: ", checklistSelectedYear);
-    console.log("selectedMonth: ", checklistSelectedMonth);
-    console.log("result: ", result);
+    // console.log("filteredData: ", filteredData);
+    // console.log("selectedYear: ", checklistSelectedYear);
+    // console.log("selectedMonth: ", checklistSelectedMonth);
+    // console.log("result: ", result);
 
     const uniqueYears = [...new Set(result.map((data) => data.year))];
     const uniqueMonths = [...new Set(result.map((data) => data.month))];
-    setYears(uniqueYears);
-    setMonths(uniqueMonths);
+    setChecklistYears(uniqueYears);
+    setChecklistMonths(uniqueMonths);
 
     if (filteredData.length > 0) {
       // Extract the labels and data for the selected year and month
@@ -348,7 +382,7 @@ function Dashboard() {
         labels: labels,
         datasets: [
           {
-            label: `Number of Checklists:  ${filteredData[0].month}, ${filteredData[0].year}`,
+            label: `No. of Checklists:  ${filteredData[0].month}, ${filteredData[0].year}`,
             data: data,
             backgroundColor: "rgba(19, 109, 102, 1)",
           },
@@ -517,7 +551,12 @@ function Dashboard() {
                               let labelText = context.dataset.label || "";
                               if (context.parsed.y !== null) {
                                 labelText +=
-                                  ": " + context.parsed.y + " species";
+                                  ", " + context.parsed.y + " species";
+                                const index = context.dataIndex;
+                                const label = context.chart.data.labels[index];
+                                const birdNames =
+                                  selectedData[0].birdNames[label];
+                                labelText += " (" + birdNames.join(", ") + ")";
                               }
                               return labelText;
                             },
@@ -574,7 +613,7 @@ function Dashboard() {
                     setChecklistSelectedYear(parseInt(e.target.value))
                   }
                 >
-                  {years.map((year) => (
+                  {checklistYears.map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>
@@ -586,7 +625,7 @@ function Dashboard() {
                   value={checklistSelectedMonth}
                   onChange={(e) => setChecklistSelectedMonth(e.target.value)}
                 >
-                  {months.map((month) => (
+                  {checklistMonths.map((month) => (
                     <option key={month} value={month}>
                       {month}
                     </option>
