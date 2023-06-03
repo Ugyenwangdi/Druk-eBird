@@ -49,7 +49,7 @@ function App() {
   useEffect(() => {
     if (searchQuery) {
       navigate("/species");
-      navigate("/notifications")
+      // navigate("/notifications");
     }
 
     if (searchClickedId) {

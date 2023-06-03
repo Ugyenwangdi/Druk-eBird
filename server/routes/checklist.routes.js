@@ -5,11 +5,12 @@ import upload from "../utils/multer.js";
 import {
   getChecklistCount,
   createChecklist,
-  getAllChecklist,
+  getAllEntries,
   getChecklistDetail,
   updateChecklist,
   uploadExcelFile,
   deleteChecklist,
+  getChecklists,
   analyzeChecklists,
   analyzeDistrictSpecies,
   analyzeDistrictChecklists,
@@ -20,19 +21,29 @@ import {
 
 const router = express.Router();
 
-router.route("/get-count").get(getChecklistCount);
-router.route("/").get(getAllChecklist);
-router.route("/:id").get(getChecklistDetail);
-router.route("/:id").patch(updateChecklist);
-router.route("/").post(createChecklist);
-router.route("/:id").delete(deleteChecklist);
+router.route("/checklists/get-count").get(getChecklistCount);
+router.route("/entries").get(getAllEntries);
+router.route("/checklists").get(getChecklists);
 
-router.post("/fileupload", upload.single("file"), uploadExcelFile);
-router.post("/analyze", upload.single("file"), analyzeChecklists);
-router.route("/analyze/district-species").get(analyzeDistrictSpecies);
-router.route("/analyze/district-checklists").get(analyzeDistrictChecklists);
-router.route("/analyze/district-entries").get(analyzeDistrictEntries);
-router.route("/analyze/birdingsites-count").get(getTotalBirdingSites);
-router.route("/analyze/top-birders").get(analyzeTopBirders);
+router.route("/checklists/:id").get(getChecklistDetail);
+router.route("/checklists/:id").patch(updateChecklist);
+router.route("/checklists").post(createChecklist);
+router.route("/checklists/:id").delete(deleteChecklist);
+
+router.post("/checklists/fileupload", upload.single("file"), uploadExcelFile);
+router.post("/checklists/analyze", upload.single("file"), analyzeChecklists);
+router
+  .route("/checklists/analyze/district-species")
+  .get(analyzeDistrictSpecies);
+router
+  .route("/checklists/analyze/district-checklists")
+  .get(analyzeDistrictChecklists);
+router
+  .route("/checklists/analyze/district-entries")
+  .get(analyzeDistrictEntries);
+router
+  .route("/checklists/analyze/birdingsites-count")
+  .get(getTotalBirdingSites);
+router.route("/checklists/analyze/top-birders").get(analyzeTopBirders);
 
 export default router;
