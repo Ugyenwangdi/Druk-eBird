@@ -17,6 +17,10 @@ main aside {
   z-index: 3;
   background-color: #136D66;
 }
+
+
+
+
 /* Visible only in mobile and tablets screens */
 main aside button#close-btn {
   display: none;
@@ -76,5 +80,10 @@ main aside .sidebar h4 {
   main aside .sidebar{
     margin-top: 4rem; 
   }
+  .sidebar.visible {
+    display: block;
+  }
+  
+ 
 }
 
