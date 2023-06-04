@@ -13,6 +13,7 @@ import authRoute from "./routes/auth.routes.js";
 import passwordResetRoutes from "./routes/reset-password.routes.js";
 import speciesRoutes from "./routes/species.routes.js";
 import checklistRoutes from "./routes/checklist.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
 
 const app = express();
 app.setMaxListeners(15);
@@ -66,7 +67,8 @@ passport.deserializeUser(function (user, cb) {
 app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);
 app.use("/api/v1/species", speciesRoutes);
-app.use("/api/v1/checklists", checklistRoutes);
+app.use("/api/v1", checklistRoutes);
+app.use("/notifications", notificationRoutes);
 
 const startServer = async () => {
   try {

@@ -14,33 +14,71 @@ function ChecklistDetail() {
     [location.state?.ChecklistDetail] || [{ photo: [] }]
   );
 
-  useEffect(() => {
-    const fetchSpecies = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/v1/checklists/${id}`
+  console.log(
+    "bird count? ",
+    checklist[0].entries[0].StartbirdingData[0].selectedTime
+  );
+
+  // Create a Set to store unique bird names
+  const uniqueBirdNames = new Set();
+  checklist[0].entries.forEach((item) => {
+    uniqueBirdNames.add(item.BirdName);
+  });
+
+  const uniqueSpeciesCount = uniqueBirdNames.size;
+  const handleApprove = async (id) => {
+    try {
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists/${id}`,
+        {
+          approvalStatus: "approved",
+        }
+      );
+      console.log("Approved", data);
+
+      // Update the checklist state
+      setChecklist((prevChecklist) => {
+        const updatedChecklist = [...prevChecklist];
+        const entryIndex = updatedChecklist[0].entries.findIndex(
+          (entry) => entry._id === id
         );
-
-        setChecklist(Object.values(response.data));
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSpecies();
-  }, [id]);
-
-  console.log("checklist detail? ", checklist);
-
-  const handleApprove = () => {
-    // Add logic to handle approve action
-    console.log("Approved");
+        updatedChecklist[0].entries[
+          entryIndex
+        ].StartbirdingData[0].Approvedstatus = "approved";
+        return updatedChecklist;
+      });
+    } catch (error) {
+      console.log("Error occurred while approving checklist:", error);
+    }
   };
 
   // Define handleReject function
-  const handleReject = () => {
-    // Add logic to handle reject action
-    console.log("Rejected");
+  const handleReject = async (id) => {
+    try {
+      const { data } = await axios.patch(
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists/${id}`,
+        {
+          approvalStatus: "rejected",
+        }
+      );
+      console.log("Rejected", data);
+
+      // Update the checklist state
+      setChecklist((prevChecklist) => {
+        const updatedChecklist = [...prevChecklist];
+        const entryIndex = updatedChecklist[0].entries.findIndex(
+          (entry) => entry._id === id
+        );
+        updatedChecklist[0].entries[
+          entryIndex
+        ].StartbirdingData[0].Approvedstatus = "rejected";
+        return updatedChecklist;
+      });
+    } catch (error) {
+      console.log("Error occurred while rejecting checklist:", error);
+    }
   };
+
   return (
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
@@ -60,11 +98,25 @@ function ChecklistDetail() {
           distance
         </span>
         <p className="checklist-detail-container-text">
-          Dzongkhag
-          {/* {checklist.StartbirdingData[0].EndpointLocation[0].dzongkhag} {", "}
-          {checklist.StartbirdingData[0].EndpointLocation[0].gewog}
-          {", "}
-          {checklist.StartbirdingData[0].EndpointLocation[0].village} */}
+          {checklist[0]._id.village && (
+            <>
+              {checklist[0]._id.village}
+              {", "}
+            </>
+          )}
+
+          {checklist[0]._id.gewog && (
+            <>
+              {checklist[0]._id.gewog}
+              {", "}
+            </>
+          )}
+          {checklist[0]._id.dzongkhag && (
+            <>
+              {checklist[0]._id.dzongkhag}
+              {", "}
+            </>
+          )}
         </p>
       </div>
       <div className="checklistdetail-container">
@@ -95,59 +147,70 @@ function ChecklistDetail() {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td data-label="Sl.no">1</td>
-                <td data-label="Bird">Spotted Dov</td>
-                <td data-label="Description">Sonam</td>
-                <td data-label="Count total">
-                  4{/* {checklist.StartbirdingData[0].count} */}
-                </td>
-                <td data-label="Photo">
-                  <img src={logo} alt="Bird" className="bird-img" />
-                </td>
-                <td data-label="Action">
-                  <button className="reject-btn" onClick={() => handleReject()}>
-                    Reject
-                  </button>
-                  <a href="/add-species">
-                    <button
-                      className="approve-btn"
-                      onClick={() => handleApprove()}
-                    >
-                      Approve
-                    </button>
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <td data-label="Sl.no">1</td>
-                <td data-label="Bird">Spotted Dov</td>
-                <td data-label="Description">Sonam</td>
-                <td data-label="Count total">
-                  {String(checklist[3][0].Totalcount)}
-                </td>
-                <td data-label="Photo">
-                  <img src={logo} alt="Bird " className="bird-img" />
-                </td>
-                <td data-label="Action">
-                  <a href="/reject-request">
-                    <button
-                      className="reject-btn"
-                      onClick={() => handleReject()}
-                    >
-                      Reject
-                    </button>
-                  </a>
-                  <a href="/add-species">
-                    <button
-                      className="approve-btn"
-                      onClick={() => handleApprove()}
-                    >
-                      Approve
-                    </button>
-                  </a>
-                </td>
-              </tr>
+              {checklist[0].entries.map((item, index) => {
+                return (
+                  <tr key={index}>
+                    <td data-label="Sl.no">{index + 1}</td>
+                    <td data-label="Bird">{item.BirdName}</td>
+                    <td data-label="Description">
+                      {item.StartbirdingData[0].Remarks}
+                    </td>
+                    <td data-label="Count total">
+                      {item.StartbirdingData[0].Totalcount}
+                    </td>
+                    <td data-label="Photo">
+                      <img
+                        src={
+                          item.StartbirdingData[0].photo
+                            ? item.StartbirdingData[0].photo
+                            : logo
+                        }
+                        alt="Bird"
+                        className="bird-img"
+                      />
+                    </td>
+                    <td data-label="Action">
+                      <button
+                        className={`${
+                          checklist[0].entries[index].StartbirdingData[0]
+                            .Approvedstatus === "rejected"
+                            ? "reject-btn-disabled"
+                            : "reject-btn"
+                        }`}
+                        onClick={() => handleReject(item._id)}
+                        disabled={
+                          checklist[0].entries[index].StartbirdingData[0]
+                            .Approvedstatus === "rejected"
+                        }
+                      >
+                        {checklist[0].entries[index].StartbirdingData[0]
+                          .Approvedstatus === "rejected"
+                          ? "Rejected"
+                          : "Reject"}
+                      </button>
+
+                      <button
+                        className={`${
+                          checklist[0].entries[index].StartbirdingData[0]
+                            .Approvedstatus === "approved"
+                            ? "approve-btn-disabled"
+                            : "approve-btn"
+                        }`}
+                        onClick={() => handleApprove(item._id)}
+                        disabled={
+                          checklist[0].entries[index].StartbirdingData[0]
+                            .Approvedstatus === "approved"
+                        }
+                      >
+                        {checklist[0].entries[index].StartbirdingData[0]
+                          .Approvedstatus === "approved"
+                          ? "Approved"
+                          : "Approve"}
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -156,16 +219,47 @@ function ChecklistDetail() {
             <article className="mt-10 mb-14 flex items-end justify-end">
               <ul>
                 <li className="p-1 ">
-                  <span className="font-bold">Species reported:</span> {3}
+                  <span className="font-bold">Species reported:</span>{" "}
+                  {uniqueSpeciesCount}
                 </li>
                 <li className="p-1 bg-gray-100">
-                  <span className="font-bold">Duration</span> {"2hrs"}
+                  <span className="font-bold">Time</span>{" "}
+                  {checklist[0].entries[0].StartbirdingData[0].selectedTime && (
+                    <>
+                      {checklist[0].entries[0].StartbirdingData[0].selectedTime}
+                    </>
+                  )}
                 </li>
                 <li className="p-1 ">
-                  <span className="font-bold">Kilometer</span> {"3km"}
+                  <span className="font-bold">Date</span>{" "}
+                  {checklist[0]._id.selectedDate && (
+                    <>{checklist[0]._id.selectedDate}</>
+                  )}
                 </li>
                 <li className="p-1 ">
-                  <span className="font-bold">Altitude</span> {"1400m"}
+                  <span className="font-bold">Latitude</span>{" "}
+                  {checklist[0].entries[0].StartbirdingData[0].currentLocation
+                    .latitude && (
+                    <>
+                      {
+                        checklist[0].entries[0].StartbirdingData[0]
+                          .currentLocation.latitude
+                      }
+                    </>
+                  )}
+                </li>
+
+                <li className="p-1 ">
+                  <span className="font-bold">Longitude</span>{" "}
+                  {checklist[0].entries[0].StartbirdingData[0].currentLocation
+                    .longitude && (
+                    <>
+                      {
+                        checklist[0].entries[0].StartbirdingData[0]
+                          .currentLocation.longitude
+                      }
+                    </>
+                  )}
                 </li>
                 <li className="p-1">
                   <div className="detail-container">
@@ -183,10 +277,11 @@ function ChecklistDetail() {
                         alt="detail"
                       />
                       <p className="name">
-                        Birder
-                        {/* {checklist.StartbirdingData[0].observer} */}
+                        {checklist[0]._id.village && (
+                          <>{checklist[0]._id.observer}</>
+                        )}
                       </p>
-                      <p className="description">Nature photographer</p>
+                      <p className="description">Birder</p>
                     </div>
                   </div>
                 </li>
