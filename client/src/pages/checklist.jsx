@@ -20,19 +20,19 @@ function Checklist() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=`
       );
-      // console.log("response: ", response);
-      setChecklistTotal(response.data.checklistTotal);
-      setLimit(response.data.limit);
+      console.log("response: ", response.data);
+
       setFoundTotal(response.data.foundTotal);
+      setChecklistTotal(response.data.totalChecklists);
       setChecklists(Object.values(response.data.checklists));
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log("chcklists: ", checklists);
+  console.log("checklists: ", checklists);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -52,7 +52,7 @@ function Checklist() {
       >
         <h2 className="header">
           Total Checklist
-          <span className="checklist-count">({foundTotal})</span>
+          <span className="checklist-count">({checklistTotal})</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
@@ -133,9 +133,9 @@ function Checklist() {
         {checklists.map((item, index) => {
           const serialNumber = (page - 1) * limit + index + 1;
           return (
-            <div key={item._id}>
+            <div key={index}>
               <Link
-                to={`/checklists/${item._id}`}
+                to={`/checklists/${item._id.checklistName}`}
                 className="checklist-link"
                 state={{ ChecklistDetail: item }}
               >
@@ -144,32 +144,40 @@ function Checklist() {
                     <tbody>
                       <tr>
                         <td data-label="Birder" className="custom-data">
-                          #{serialNumber} {item.StartbirdingData[0].observer}
+                          #{serialNumber} {item._id.observer}
                         </td>
                         <td data-label="Birding site" className="custom-data">
-                          {
-                            item.StartbirdingData[0].EndpointLocation[0]
-                              .dzongkhag
-                          }
-                          {", "}
-                          {item.StartbirdingData[0].EndpointLocation[0].gewog}
-                          {", "}
-                          {item.StartbirdingData[0].EndpointLocation[0].village}
+                          {item._id.village && (
+                            <>
+                              {item._id.village}
+                              {", "}
+                            </>
+                          )}
+
+                          {item._id.gewog && (
+                            <>
+                              {item._id.gewog}
+                              {", "}
+                            </>
+                          )}
+                          {item._id.dzongkhag && (
+                            <>
+                              {item._id.dzongkhag}
+                              {", "}
+                            </>
+                          )}
                         </td>
                         <td data-label="Date/Time" className="custom-data">
-                          {convertDate(item.StartbirdingData[0].selectedDate)}
+                          {convertDate(item._id.selectedDate) || "none"}
                         </td>
                         <td data-label="District" className="custom-data">
-                          {item.StartbirdingData[0].EndpointLocation[0].dzongkhag?.trim() ||
-                            "none"}
+                          {item._id.dzongkhag || "none"}
                         </td>
                         <td data-label="Gewog" className="custom-data">
-                          {item.StartbirdingData[0].EndpointLocation[0].gewog?.trim() ||
-                            "none"}
+                          {item._id.gewog || "none"}
                         </td>
                         <td data-label="Chiwog" className="custom-data">
-                          {item.StartbirdingData[0].EndpointLocation[0].village?.trim() ||
-                            "none"}
+                          {item._id.village || "none"}
                         </td>
                       </tr>
                     </tbody>

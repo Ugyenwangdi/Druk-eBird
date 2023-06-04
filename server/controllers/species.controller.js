@@ -31,7 +31,7 @@ const getCount = async (req, res) => {
 };
 
 // Complex search with pagination
-const getAllSpecies = async (req, res) => {
+const getSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 6;
@@ -114,6 +114,139 @@ const getAllSpecies = async (req, res) => {
       .sort({ createdAt: -1 })
       .skip(page * limit)
       .limit(limit);
+
+    const total = await Species.countDocuments({
+      $or: [
+        { order: { $in: [...order] } },
+        { order: "" },
+        { familyName: { $in: [...family] } },
+        { familyName: "" },
+        { genus: { $in: [...genus] } },
+        { genus: "" },
+        { iucnStatus: { $in: [...iucnStatus] } },
+        { iucnStatus: "" },
+        { group: { $in: [...group] } },
+        { group: "" },
+        { residency: { $in: [...residency] } },
+        { residency: "" },
+        { species: { $regex: species, $options: "i" } },
+        { species: "" },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+        { scientificName: "" },
+      ],
+      ...searchQuery,
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
+    });
+
+    const speciesTotal = await Species.countDocuments();
+    // console.log(`Total number of species: ${speciesTotal}`);
+
+    const response = {
+      error: false,
+      foundTotal: total,
+      speciesTotal,
+      page: page + 1,
+      limit,
+      orders: orderOptions,
+      families: familyOptions,
+      genuses: genusOptions,
+      iucnstatuses: iucnStatusOptions,
+      groups: groupOptions,
+      residencies: residencyOptions,
+      species: foundSpecies,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const getAllSpecies = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 6;
+    const startsWith = req.query.starts_with || "";
+    let search = req.query.search || "";
+    const species = req.query.species || "";
+    const scientificName = req.query.scientific_name || "";
+    let order = req.query.order || "All";
+    let family = req.query.family || "All";
+    let genus = req.query.genus || "All";
+    let iucnStatus = req.query.iucn_status || "All";
+    let group = req.query.group || "All";
+    let residency = req.query.residency || "All";
+
+    order === "All"
+      ? (order = [...orderOptions])
+      : (order = req.query.order.split(","));
+
+    family === "All"
+      ? (family = [...familyOptions])
+      : (family = req.query.family.split(","));
+
+    genus === "All"
+      ? (genus = [...genusOptions])
+      : (genus = req.query.genus.split(","));
+
+    iucnStatus === "All"
+      ? (iucnStatus = [...iucnStatusOptions])
+      : (iucnStatus = req.query.iucn_status.split(","));
+
+    group === "All"
+      ? (group = [...groupOptions])
+      : (group = req.query.group.split(","));
+
+    residency === "All"
+      ? (residency = [...residencyOptions])
+      : (residency = req.query.residency.split(","));
+
+    let searchQuery = {};
+
+    if (startsWith) {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: `^${startsWith}`, $options: "i" } },
+          { englishName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        ],
+      };
+    } else {
+      searchQuery = {
+        $or: [
+          { englishName: { $regex: search, $options: "i" } },
+          { species: { $regex: search, $options: "i" } },
+          { scientificName: { $regex: search, $options: "i" } },
+        ],
+      };
+    }
+    const foundSpecies = await Species.find({
+      $or: [
+        { order: { $in: [...order] } },
+        { order: "" },
+        { familyName: { $in: [...family] } },
+        { familyName: "" },
+        { genus: { $in: [...genus] } },
+        { genus: "" },
+        { iucnStatus: { $in: [...iucnStatus] } },
+        { iucnStatus: "" },
+        { group: { $in: [...group] } },
+        { group: "" },
+        { residency: { $in: [...residency] } },
+        { residency: "" },
+        { species: { $regex: species, $options: "i" } },
+        { species: "" },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+        { scientificName: "" },
+      ],
+      ...searchQuery,
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
+    });
+    // .sort({ createdAt: -1 })
+    // .skip(page * limit)
+    // .limit(limit);
 
     const total = await Species.countDocuments({
       $or: [

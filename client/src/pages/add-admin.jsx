@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { logo } from "../images";
@@ -7,6 +7,74 @@ import "../styles/signup.css";
 
 const AddAdmin = () => {
   const token = localStorage.getItem("token");
+  const [currentUser, setCurrentUser] = useState({});
+  const [fetchCurrentUserLoading, setFetchCurrentUserLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    photo: "",
+  });
+
+  const fetchData = async () => {
+    try {
+      // const response = await fetch("http://localhost:8080/api/v1/users/");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/`);
+
+      const jsonData = await response.json();
+      setData(Object.values(jsonData));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      setFetchCurrentUserLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setCurrentUser(response.data.user);
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchData();
+  }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser?.name,
+        email: currentUser?.email,
+        photo: currentUser?.profile,
+      });
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser.id) {
+      const getAdminDetails = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.email}`
+        );
+        const data = await response.json();
+        // console.log(data);
+        setFormData(data);
+      };
+
+      getAdminDetails();
+    }
+  }, [currentUser]);
 
   const [data, setData] = useState({
     name: "",
@@ -39,6 +107,19 @@ const AddAdmin = () => {
       const res = await axios.post(url, data, { headers });
       setMsg(res.data.message);
       console.log(res);
+      const sendNotification = async (notification) => {
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
+            message: notification,
+          });
+        } catch (error) {
+          console.error("Failed to send notification:", error);
+        }
+      };
+      // Create a new notification
+      const notificationMessage = `${currentUser.email} has added the ${data.name} at ${new Date().toLocaleString()}`;
+      await sendNotification(notificationMessage);
+      console.log(notificationMessage);
       setData({ name: "", email: "", country: "", password: "" });
     } catch (error) {
       if (
