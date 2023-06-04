@@ -110,7 +110,7 @@ function AddSpecies() {
         photos: [],
       }); // reset form
       setSpeciesImg("");
-      document.getElementById("photo").value = "";
+      // document.getElementById("photo").value = "";
 
       setMsg(res.data.message);
       console.log(res.data.message);

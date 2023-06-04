@@ -110,7 +110,6 @@ function Checklist() {
           <Link to="/new-species-detail" className="checklist-link">
             <div>
               <table className="checklist-table">
-
                 <tbody>
                   <tr>
                     <td data-label="Birder" className="custom-data">

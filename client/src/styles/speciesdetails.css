@@ -45,7 +45,6 @@
   justify-content: center;
   flex-direction: column;
 }
-
 .species-image {
   width: 80%;
   max-width: 200px;
@@ -199,8 +198,6 @@
   }
 }
 
-
-
 .species-table {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -212,7 +209,6 @@
 .table-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
- 
 }
 
 /* .table-cell {
@@ -229,9 +225,9 @@
   border-radius: 2px;
   box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
   transition: background-color 0.3s ease;
-  box-shadow: 0 0 0 1px rgba(124, 130, 129, 0.5), 0 0 2px 1px rgba(125, 139, 138, 0.2), inset 0 0 1px rgba(131, 107, 107, 0.2);
+  box-shadow: 0 0 0 1px rgba(124, 130, 129, 0.5),
+    0 0 2px 1px rgba(125, 139, 138, 0.2), inset 0 0 1px rgba(131, 107, 107, 0.2);
 }
-
 
 .table-row:hover {
   animation: fadeIn 0.3s ease;
@@ -246,13 +242,6 @@
   }
 }
 
-
-
-
-
-
-
-
 .table-cell:first-child {
   font-size: 14px;
   font-weight: bold;
@@ -266,5 +255,3 @@
 .table-cell span {
   font-size: 14px;
 }
-
- 

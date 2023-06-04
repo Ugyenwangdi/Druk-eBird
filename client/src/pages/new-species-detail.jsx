@@ -1,13 +1,12 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "../styles/checklistdetail.css";
 import "../styles/newspeciesdetail.css";
-
-
 import { logo, profile } from "../images";
 
 import { Link } from "react-router-dom";
+
 const Modal = ({ isOpen, onClose }) => {
-  const [newName, setNewName] = useState('');
+  const [newName, setNewName] = useState("");
 
   const handleSave = () => {
     // Handle save logic here
@@ -25,7 +24,12 @@ const Modal = ({ isOpen, onClose }) => {
         <div className="modal-overlay">
           <div className="modal">
             <label htmlFor="newName">New Name:</label>
-            <input type="text" id="newName" value={newName} onChange={(e) => setNewName(e.target.value)} />
+            <input
+              type="text"
+              id="newName"
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+            />
             <div className="modal-buttons">
               <button onClick={handleSave}>Save</button>
               <button onClick={handleCancel}>Cancel</button>
@@ -37,7 +41,6 @@ const Modal = ({ isOpen, onClose }) => {
   );
 };
 
-
 function NewSpeciesDetails() {
   const handleApprove = () => {
     console.log("Approved");
@@ -46,10 +49,10 @@ function NewSpeciesDetails() {
   const handleReject = () => {
     console.log("Rejected");
   };
+
   const handleAdd = () => {
     console.log("Added");
   };
-
 
   const [showDialog, setShowDialog] = useState(false);
 
@@ -111,20 +114,21 @@ function NewSpeciesDetails() {
               <tr>
                 <td data-label="Sl.no">1</td>
                 <td>
-                  <span style={{ marginRight: '0.5rem' }}>Spotted Dov</span>
+                  <span style={{ marginRight: "0.5rem" }}>Spotted Dov</span>
                   <a href="#" onClick={openDialog}>
-                    <span className="material-symbols-outlined"
+                    <span
+                      className="material-symbols-outlined"
                       style={{
-                        fontSize: '20px',
-                        color: 'black'
+                        fontSize: "20px",
+                        color: "black",
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.color = '#ba760d';
-
+                        e.target.style.color = "#ba760d";
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.color = 'black';
-                      }}>
+                        e.target.style.color = "black";
+                      }}
+                    >
                       edit
                     </span>
                   </a>
@@ -155,25 +159,27 @@ function NewSpeciesDetails() {
               <tr>
                 <td data-label="Sl.no">1</td>
                 <td>
-                  <span style={{ marginRight: '0.5rem' }}>Spotted Dov</span>
+                  <span style={{ marginRight: "0.5rem" }}>Spotted Dov</span>
                   <a href="#" onClick={openDialog}>
-                    <span className="material-symbols-outlined"
+                    <span
+                      className="material-symbols-outlined"
                       style={{
-                        fontSize: '20px',
-                        color: "black"
+                        fontSize: "20px",
+                        color: "black",
                       }}
                       onMouseEnter={(e) => {
-                        e.target.style.color = '#ba760d';
+                        e.target.style.color = "#ba760d";
                       }}
                       onMouseLeave={(e) => {
-                        e.target.style.color = 'black';
-                      }}>
+                        e.target.style.color = "black";
+                      }}
+                    >
                       edit
                     </span>
                   </a>
                   <Modal isOpen={showDialog} onClose={closeDialog} />
                 </td>
-                <td data-label="Description" >Sonam</td>
+                <td data-label="Description">Sonam</td>
                 <td data-label="Count total">2</td>
                 <td data-label="Photo">
                   <img src={logo} alt="Bird" className="bird-img" />
@@ -196,14 +202,10 @@ function NewSpeciesDetails() {
                     </button>
                   </a>
                   <a href="/add-species">
-                    <button
-                      className="add-btn"
-                      onClick={() => handleAdd()}
-                    >
+                    <button className="add-btn" onClick={() => handleAdd()}>
                       Add
                     </button>
                   </a>
-
                 </td>
               </tr>
             </tbody>

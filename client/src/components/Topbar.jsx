@@ -16,18 +16,18 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
 
     // Add the event listener here
     const handleMouseMove = (e) => {
-      const spiderWeb = document.querySelector('.spider-web');
-      const x = e.pageX - spiderWeb.offsetLeft;
-      const y = e.pageY - spiderWeb.offsetTop;
-      spiderWeb.style.setProperty('--cursorX', x + 'px');
-      spiderWeb.style.setProperty('--cursorY', y + 'px');
+      const topbarNav = document.querySelector(".topbar-nav");
+      const x = e.pageX - topbarNav.offsetLeft;
+      const y = e.pageY - topbarNav.offsetTop;
+      topbarNav.style.setProperty("--cursorX", x + "px");
+      topbarNav.style.setProperty("--cursorY", y + "px");
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener("mousemove", handleMouseMove);
 
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener("mousemove", handleMouseMove);
     };
   }, [searchQuery, navigate]);
 
@@ -68,14 +68,14 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
   };
 
   return (
-    <nav className="spider-web">
+    <nav className="topbar-nav">
       <div className="container">
         <img src={logo} className="logo" alt="" />
         <div className="search-bar">
           <span className="material-icons">search</span>
           <input
             type="text"
-            placeholder="Search Bird names"
+            placeholder="Search Bird names "
             onChange={({ currentTarget: input }) => setSearchQuery(input.value)}
           />
         </div>
@@ -90,12 +90,13 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
             <h5>{currentUser.name ? currentUser.name : "User"}</h5>
             {showDropdown && (
               <div className="dropdown-menu">
-                <button onClick={handleNavigateToSettings}><span class="material-symbols-outlined">
-                  settings
-                </span>Settings</button>
-                <button onClick={handleLogoutConfirmation}><span class="material-symbols-outlined">
-                  logout
-                </span>Logout</button>
+                <button onClick={handleNavigateToSettings}>
+                  <span class="material-symbols-outlined">settings</span>
+                  Settings
+                </button>
+                <button onClick={handleLogoutConfirmation}>
+                  <span class="material-symbols-outlined">logout</span>Logout
+                </button>
               </div>
             )}
           </div>
