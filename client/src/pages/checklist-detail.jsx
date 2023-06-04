@@ -83,7 +83,7 @@ function ChecklistDetail() {
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
         <div>
-          <Link to="/checklist">
+          <Link to="/checklists">
             <span className="material-icons back-arrow">arrow_back_ios</span>
           </Link>
           Checklist Details

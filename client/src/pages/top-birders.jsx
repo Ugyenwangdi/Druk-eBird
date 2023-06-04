@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 // import { Pagination } from "../components";
 
-function Birder() {
+function TopBirders() {
   //   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
 
@@ -249,4 +249,4 @@ function Birder() {
   );
 }
 
-export default Birder;
+export default TopBirders;
