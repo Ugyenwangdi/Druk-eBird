@@ -117,7 +117,7 @@ function Settings() {
         }
       };      
       // Create a new notification
-      const notificationMessage = `${currentUser.email} has deleted the ${deleteuseremail} at ${new Date().toLocaleString()}`;
+      const notificationMessage = `**${deleteuseremail}** has been deleted by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
       console.log(notificationMessage);
       setData(data.filter((item) => item._id !== deleteUserId));
