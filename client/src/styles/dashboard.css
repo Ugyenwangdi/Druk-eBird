@@ -28,13 +28,70 @@
   display: flex;
   align-items: center;
 }
-.grid-item span {
-  margin-right: 10px;
+
+.grid-item {
+  display: flex;
 }
-.grid-item span {
-  color: gray;
-  margin-left: 10px;
+
+/* species leader dropdown */
+.flex-container {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
 }
+
+.flex-item {
+  display: flex;
+  align-items: center;
+  margin-left: 2px; 
+}
+
+label {
+  margin-right: 4px; 
+}
+.gray-select {
+  background-color: rgb(216, 212, 212);
+  border-radius: 2px;
+}
+
+
+.material-icons {
+  margin-left: 4px; 
+}
+.icon-label {
+  cursor: pointer;
+}
+
+
+/* checklist leader dropdown */
+
+.checklist-flex {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+}
+
+.checklist-wrapper {
+  display: flex;
+  align-items: center;
+  margin-left: 2px; 
+}
+
+label {
+  margin-right: 4px;
+  color: gray; 
+}
+
+.material-icons {
+  margin-left: 0px; 
+}
+
+
+
+
+
+
+
 .percentage-container {
   display: flex;
   padding-bottom: 2rem;

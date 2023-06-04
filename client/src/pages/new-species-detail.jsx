@@ -119,7 +119,7 @@ function NewSpeciesDetails() {
                     <span
                       className="material-symbols-outlined"
                       style={{
-                        fontSize: "20px",
+                        fontSize: "18px",
                         color: "black",
                       }}
                       onMouseEnter={(e) => {
@@ -164,7 +164,7 @@ function NewSpeciesDetails() {
                     <span
                       className="material-symbols-outlined"
                       style={{
-                        fontSize: "20px",
+                        fontSize: "18px",
                         color: "black",
                       }}
                       onMouseEnter={(e) => {
