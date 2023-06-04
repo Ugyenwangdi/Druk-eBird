@@ -24,12 +24,20 @@ nav:after {
 }
 
 nav:before {
-  background-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.4) 5%, transparent 10%);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.4) 5%,
+    transparent 10%
+  );
   animation: spider-web-animation 2s linear infinite;
 }
 
 nav:after {
-  background-image: radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0.6) 10%, transparent 12%);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.6) 10%,
+    transparent 12%
+  );
   animation: spider-web-animation-reverse 2s linear infinite;
 }
 
@@ -118,7 +126,6 @@ nav .profile-area button {
 /* Dropdown Menu */
 nav .profile-area .profile:hover .dropdown-menu {
   display: block;
-  
 }
 
 nav .profile-area .dropdown-menu {
@@ -142,15 +149,14 @@ nav .profile-area .dropdown-menu button {
   cursor: pointer;
   width: 100%;
 }
-nav .profile-area .dropdown-menu button span{
+nav .profile-area .dropdown-menu button span {
   margin-right: 0.5rem;
 }
-
 
 nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
-@media(max-width: 768px){
+@media (max-width: 768px) {
   nav .profile-area .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -171,11 +177,11 @@ nav .profile-area .dropdown-menu button:hover {
     cursor: pointer;
     width: 100%;
   }
-  nav .profile-area .dropdown-menu button span{
-    margin-right: 0.2rem
+  nav .profile-area .dropdown-menu button span {
+    margin-right: 0.2rem;
   }
 }
-@media(max-width: 617px){
+@media (max-width: 617px) {
   nav .profile-area .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -196,7 +202,7 @@ nav .profile-area .dropdown-menu button:hover {
     cursor: pointer;
     width: 100%;
   }
-  nav .profile-area .dropdown-menu button span{
-    margin-right: 0.2rem
+  nav .profile-area .dropdown-menu button span {
+    margin-right: 0.2rem;
   }
 }

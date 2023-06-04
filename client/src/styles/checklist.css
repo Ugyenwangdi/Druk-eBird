@@ -132,6 +132,11 @@
   color: black;
 }
 
+.custom-data {
+  text-align: center;
+  padding-bottom: 0;
+}
+
 .checklist-link {
   text-decoration: none;
 }

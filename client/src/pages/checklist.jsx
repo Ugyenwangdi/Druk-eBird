@@ -32,7 +32,7 @@ function Checklist() {
     }
   };
 
-  // console.log("chcklists: ", checklists);
+  console.log("chcklists: ", checklists);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -51,8 +51,8 @@ function Checklist() {
         }}
       >
         <h2 className="header">
-          Total Checklist{" "}
-          <span className="checklist-count">({checklistTotal})</span>
+          Total Checklist
+          <span className="checklist-count">({foundTotal})</span>
         </h2>
         <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
@@ -117,7 +117,7 @@ function Checklist() {
           </div>
           <div className="checklist-filter-select">
             <select className="checklist-filter-dropdown">
-              <option value="">Chiwog</option>
+              <option value="">Village</option>
               <option value="1">option 1</option>
               <option value="2">option 2</option>
               <option value="3">option 3</option>
@@ -134,42 +134,42 @@ function Checklist() {
           const serialNumber = (page - 1) * limit + index + 1;
           return (
             <div key={item._id}>
-              <Link to="/checklist-detail" className="checklist-link" >
+              <Link
+                to={`/checklists/${item._id}`}
+                className="checklist-link"
+                state={{ ChecklistDetail: item }}
+              >
                 <div>
                   <table className="checklist-table">
                     <tbody>
                       <tr>
-                        <td data-label="Serial Number" className="custom-data">
-                          {/* {serialNumber} */}
-                          #1
-                        </td>
                         <td data-label="Birder" className="custom-data">
-                          {/* {item.birder} */}
-                          sonam
+                          #{serialNumber} {item.StartbirdingData[0].observer}
                         </td>
                         <td data-label="Birding site" className="custom-data">
-                          {/* Lat. {item.currentLocation.latitude} Lon.{" "}
-                          {item.currentLocation.longitude} */}
-                          Location
+                          {
+                            item.StartbirdingData[0].EndpointLocation[0]
+                              .dzongkhag
+                          }
+                          {", "}
+                          {item.StartbirdingData[0].EndpointLocation[0].gewog}
+                          {", "}
+                          {item.StartbirdingData[0].EndpointLocation[0].village}
                         </td>
                         <td data-label="Date/Time" className="custom-data">
-                          Date
-                          {/* {convertDate(item.selectedDate)} */}
+                          {convertDate(item.StartbirdingData[0].selectedDate)}
                         </td>
                         <td data-label="District" className="custom-data">
-                          {/* {item.endpointLocation.split(",")[0]?.trim() ||
-                            "none"} */}
-                            District
+                          {item.StartbirdingData[0].EndpointLocation[0].dzongkhag?.trim() ||
+                            "none"}
                         </td>
                         <td data-label="Gewog" className="custom-data">
-                          {/* {item.endpointLocation.split(",")[1]?.trim() ||
-                            "none"} */}
-                            Gewog
+                          {item.StartbirdingData[0].EndpointLocation[0].gewog?.trim() ||
+                            "none"}
                         </td>
                         <td data-label="Chiwog" className="custom-data">
-                          {/* {item.endpointLocation.split(",")[2]?.trim() ||
-                            "none"} */}
-                            chiwog
+                          {item.StartbirdingData[0].EndpointLocation[0].village?.trim() ||
+                            "none"}
                         </td>
                       </tr>
                     </tbody>

@@ -181,12 +181,6 @@ function SpeciesDetails() {
           <div className="table-cell">{species.description}</div>
         </div>
       </div>
-  
-  
-
-
-
-
     </div>
   );
 }
