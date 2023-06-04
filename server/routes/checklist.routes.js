@@ -11,6 +11,7 @@ import {
   uploadExcelFile,
   deleteChecklist,
   getChecklists,
+  getNewSpecies,
   analyzeChecklists,
   analyzeDistrictSpecies,
   analyzeDistrictChecklists,
@@ -24,6 +25,7 @@ const router = express.Router();
 router.route("/checklists/get-count").get(getChecklistCount);
 router.route("/entries").get(getAllEntries);
 router.route("/checklists").get(getChecklists);
+router.route("/newspecies").get(getNewSpecies);
 
 router.route("/checklists/:id").get(getChecklistDetail);
 router.route("/checklists/:id").patch(updateChecklist);

@@ -27,6 +27,7 @@ import {
   AddChecklist,
   AnalyzeChecklist,
   Notification,
+  TopBirders,
 } from "./pages";
 
 function App() {
@@ -228,20 +229,18 @@ function App() {
               <Route path="/species/:id/edit" element={<EditSpecies />} />
               <Route path="/species/:id" element={<SpeciesDetails />} />
               <Route path="/entries" element={<Entries />} />
-              <Route path="/checklist" element={<Checklist />} />
+              <Route path="/checklists" element={<Checklist />} />
               <Route path="/checklists/:id" element={<ChecklistDetail />} />
               <Route path="/new-species" element={<NewSpecies />} />
-              <Route
-                path="/new-species-detail"
-                element={<NewSpeciesDetails />}
-              />
-              <Route path="/birder" element={<Birder />} />
+              <Route path="/new-species/:id" element={<NewSpeciesDetails />} />
+              <Route path="/birders" element={<Birder />} />
               <Route path="/birder-detail" element={<BirderDetail />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />
               <Route path="/password-update" element={<UpdatePassword />} />
               <Route path="/notifications" element={<Notification />} />
+              <Route path="/top-birders" element={<TopBirders />} />
 
               <Route path="/checklists/add" element={<AddChecklist />} />
               <Route

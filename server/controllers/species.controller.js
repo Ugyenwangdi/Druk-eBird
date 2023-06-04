@@ -645,6 +645,7 @@ const uploadExcelFile = async (req, res) => {
 
 export {
   getCount,
+  getSpecies,
   getAllSpecies,
   getSpeciesDetail,
   createSpecies,
