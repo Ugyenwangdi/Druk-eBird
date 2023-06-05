@@ -70,6 +70,33 @@ function Dashboard() {
   const [checklistSelectedMonth, setChecklistSelectedMonth] =
     useState(currentMonth);
 
+
+
+
+    const toggleDropdown = (dropdownId) => {
+      const dropdownMenu = document.getElementById(dropdownId);
+      dropdownMenu.classList.toggle("show");
+    };
+  
+    const selectYear = (year) => {
+      setSpeciesSelectedYear(year);
+      setChecklistSelectedYear(year);
+      const dropdownMenu = document.getElementById("year-dropdown-menu");
+      dropdownMenu.classList.remove("show");
+    };
+  
+    const selectMonth = (month) => {
+      setSpeciesSelectedMonth(month);
+      setChecklistSelectedMonth(month);
+      const dropdownMenu = document.getElementById("month-dropdown-menu");
+      dropdownMenu.classList.remove("show");
+    };
+
+
+
+
+  console.log("currentMonth: ", currentMonth);
+
   const validateToken = useCallback(async () => {
     try {
       const res = await axios.get(
@@ -438,49 +465,49 @@ function Dashboard() {
 
       <div class="mainn-content">
         <div class="dashboard-cards">
-          <div class="card-single">
+          <div class="card-single" style={{background:'#AC92EB'}}> 
             <div>
-              <span>Entries</span>
+              <span style={{color:'black'}}>Entries</span>
               <h1>{entriesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">login</span>
+              <span className="material-icons" style={{color:'black'}}>login</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#4FC1EB'}}>
             <div>
-              <span>Species</span>
+              <span style={{color:'black'}}>Species</span>
               <h1>{speciesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">flutter_dash</span>
+              <span className="material-icons" style={{color:'black'}}>flutter_dash</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#A0D568'}}>
             <div>
-              <span>Checklists</span>
+              <span style={{color:'black'}}>Checklists</span>
               <h1>{checklistCount}</h1>
             </div>
             <div>
-              <span className="material-icons">fact_check</span>
+              <span className="material-icons" style={{color:'black'}}>fact_check</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#FFCE54'}}>
             <div>
-              <span>Birding sites</span>
+              <span style={{color:'black'}}>Birding sites</span>
               <h1>{birdingSitesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">language</span>
+              <span className="material-icons" style={{color:'black'}}>language</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#ED5564'}}>
             <div>
-              <span>eBirders</span>
+              <span style={{color:'black'}}>eBirders</span>
               <h1>5,732</h1>
             </div>
             <div>
-              <span className="material-icons">groups</span>
+              <span className="material-icons" style={{color:'black'}}>groups</span>
             </div>
           </div>
         </div>
@@ -488,35 +515,50 @@ function Dashboard() {
           <div className="box">
             <div className="grid-item">
               <h3>Species Leaders</h3>
-              <span>
-                <label htmlFor="year">Current Year</label>{" "}
-                <select
-                  id="year"
-                  value={speciesSelectedYear}
-                  onChange={(e) =>
-                    setSpeciesSelectedYear(parseInt(e.target.value))
-                  }
-                >
-                  {years.map((year) => (
-                    <option key={year} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
-                <select
-                  id="month"
-                  value={speciesSelectedMonth}
-                  onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
-                >
-                  {months.map((month) => (
-                    <option key={month} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>{" "}
-              </span>
+              <div className="flex-container">
+                <label htmlFor="year">Current Year:</label>{" "}
+                <div className="flex-item">
+                  <select
+                    id="year"
+                    className="gray-select"
+                    value={speciesSelectedYear}
+                    onChange={(e) => setSpeciesSelectedYear(parseInt(e.target.value))}
+                  >
+                    {years.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>{" "}
+                  <span className="material-icons">expand_more
+                  
+                  </span>
+
+                </div>
+              </div>
+              
+              <div className="flex-container">
+                <label htmlFor="month">Current Month:</label>{""}
+                <div className="flex-item">
+                  <select
+                    id="month"
+                    className="gray-select"
+
+                    value={speciesSelectedMonth}
+                    onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
+                  >
+                    {months.map((month) => (
+                      <option key={month} value={month}>
+                        {month}
+                      </option>
+                    ))}
+                  </select>{" "}
+                    <span className="material-icons">expand_more</span>
+                 
+                </div>
+              </div>
             </div>
+
             <div class="percentage-container">
               <div class="percentage-value">{currentMonthSpeciesCount}</div>
               <span className="up-arrow-icon">
@@ -525,7 +567,7 @@ function Dashboard() {
                   {speciesPercentageChange >= 0
                     ? "arrow_upward"
                     : "arrow_downward"}
-                </span>
+                </span>{" "}
               </span>
               <div class="percentage-change">{speciesPercentageChange}%</div>
               <div class="comparison-text">than last month</div>
@@ -611,25 +653,37 @@ function Dashboard() {
           </div>
           <div className="box">
             <div className="grid-item">
-              <h3>Checklists Leaders</h3>
-              <span>
-                <label htmlFor="year">Current Year</label>{" "}
+            <h3>Checklists Leaders</h3>
+              <div className="checklist-flex">
+              <label htmlFor="year">Current Year: </label>{" "}
+
+                <div className="checklist-wrapper">
                 <select
                   id="year"
+                  className="gray-select"
                   value={checklistSelectedYear}
                   onChange={(e) =>
                     setChecklistSelectedYear(parseInt(e.target.value))
                   }
                 >
-                  {checklistYears.map((year) => (
+
+                  {years.map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>
                   ))}
                 </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
+                <span className="material-icons">expand_more</span>
+
+                </div>
+              </div>
+              <div className="checklist-flex">
+              <label htmlFor="month">Current Month:</label>{" "}
+
+                <div className="checklist-wrapper">
                 <select
                   id="month"
+                  className="gray-select"
                   value={checklistSelectedMonth}
                   onChange={(e) => setChecklistSelectedMonth(e.target.value)}
                 >
@@ -639,7 +693,13 @@ function Dashboard() {
                     </option>
                   ))}
                 </select>{" "}
-              </span>
+                <span className="material-icons">expand_more</span>
+
+                </div>
+              </div>
+            
+                
+                
             </div>
             <div class="percentage-container">
               <div class="percentage-value"> {currentMonthChecklistCount}</div>
