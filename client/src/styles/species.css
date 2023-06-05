@@ -1,3 +1,8 @@
+.page-container {
+  display: flex;
+  justify-content: center;
+}
+
 .total-species-container {
   width: 100%;
   margin: 0;
@@ -335,10 +340,13 @@
 }
 
 /* CSS for mobile devices */
-@media only screen and (max-width: 767px) {
+@media(max-width: 767px) {
+  
   .total-species-container {
-    max-width: 100%;
-    padding: 0 10px;
+    
+    padding-right: 0;
+    padding-left: 2%;
+    box-sizing: border-box;
   }
   .species-page-container {
     width: 100%;
@@ -366,7 +374,7 @@
 /* CSS for tablet devices */
 @media only screen and (min-width: 768px) and (max-width: 1023px) {
   .total-species-container {
-    max-width: 100%;
+    width: 100%;
     padding: 0 10px;
   }
   .species-page-container {
