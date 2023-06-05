@@ -28,7 +28,11 @@ const getAllEntries = async (req, res) => {
     const startsWith = req.query.starts_with || "";
     const search = req.query.search || "";
 
-    let searchQuery = { "StartbirdingData.status": "submittedchecklist" };
+    let searchQuery = {
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+    };
 
     if (startsWith) {
       searchQuery.$or = [
@@ -96,7 +100,7 @@ const getChecklistDetail = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const checklist = await ChecklistTest.findById(id);
+    const checklist = await ChecklistTest.findById(id).maxTimeMS(30000);
 
     if (!checklist) {
       return res.status(404).send({ error: "Checklist not found" });
@@ -172,10 +176,10 @@ const updateChecklist = async (req, res) => {
     village,
   } = req.body;
 
-  console.log(approvalStatus);
+  console.log(BirdName);
 
   try {
-    const checklist = await ChecklistTest.findById(id);
+    const checklist = await ChecklistTest.findById(id).maxTimeMS(30000);
 
     if (!checklist) {
       return res.status(404).json({ message: "Checklist not found" });
@@ -239,7 +243,9 @@ const deleteChecklist = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const checklist = await ChecklistTest.findByIdAndDelete(id);
+    const checklist = await ChecklistTest.findByIdAndDelete(id).maxTimeMS(
+      30000
+    );
 
     if (!checklist) {
       return res.status(404).send({ error: "Checklist not found" });
@@ -325,7 +331,10 @@ const getChecklists = async (req, res) => {
     let searchQuery = {
       "StartbirdingData.status": "submittedchecklist",
       // "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: {
+        $ne: "Unknown Birds",
+        $not: { $regex: "New bird", $options: "i" },
+      },
     };
 
     if (startsWith) {
@@ -358,7 +367,6 @@ const getChecklists = async (req, res) => {
         { "StartbirdingData.observer": { $regex: search, $options: "i" } },
       ];
     }
-
     const groupedChecklists = await ChecklistTest.aggregate([
       { $match: searchQuery },
       {
@@ -367,6 +375,7 @@ const getChecklists = async (req, res) => {
             checklistName: "$CheckListName",
             observer: "$StartbirdingData.observer",
             selectedDate: "$StartbirdingData.selectedDate",
+            selectedTime: "$StartbirdingData.selectedTime",
             dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
             gewog: "$StartbirdingData.EndpointLocation.gewog",
             village: "$StartbirdingData.EndpointLocation.village",
@@ -374,8 +383,29 @@ const getChecklists = async (req, res) => {
           entries: { $push: "$$ROOT" },
         },
       },
-      // Sort the grouped checklists by selectedDate in descending order
-      { $sort: { "_id.selectedDate": -1 } },
+      // Unwind the array fields before sorting
+      { $unwind: "$entries" },
+      // Sort by selectedDate and selectedTime
+      {
+        $sort: {
+          "entries.StartbirdingData.selectedDate": -1,
+          "entries.StartbirdingData.selectedTime": -1,
+        },
+      },
+      // Group again to regroup the sorted entries
+      {
+        $group: {
+          _id: {
+            checklistName: "$_id.checklistName",
+            observer: "$_id.observer",
+            selectedDate: "$_id.selectedDate",
+            dzongkhag: "$_id.dzongkhag",
+            gewog: "$_id.gewog",
+            village: "$_id.village",
+          },
+          entries: { $push: "$entries" },
+        },
+      },
       { $skip: page * limit },
       { $limit: limit },
     ]);
@@ -388,6 +418,7 @@ const getChecklists = async (req, res) => {
             checklistName: "$CheckListName",
             observer: "$StartbirdingData.observer",
             selectedDate: "$StartbirdingData.selectedDate",
+            selectedTime: "$StartbirdingData.selectedTime",
             dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
             gewog: "$StartbirdingData.EndpointLocation.gewog",
             village: "$StartbirdingData.EndpointLocation.village",
@@ -399,7 +430,6 @@ const getChecklists = async (req, res) => {
 
     const foundTotal = groupedChecklists.length;
     const totalChecklists = totalGroupedChecklists.length;
-
     const entriesTotal = await ChecklistTest.countDocuments(searchQuery);
 
     const response = {
@@ -418,6 +448,255 @@ const getChecklists = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getNewSpecies = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 6;
+    const startsWith = req.query.starts_with || "";
+    const search = req.query.search || "";
+
+    let searchQuery = {
+      "StartbirdingData.status": "submittedchecklist",
+      $or: [
+        { BirdName: { $regex: "New bird", $options: "i" } },
+        { BirdName: "Unknown Birds" },
+      ],
+    };
+
+    if (startsWith) {
+      searchQuery.$or = [
+        { CheckListName: { $regex: `^${startsWith}`, $options: "i" } },
+        { CheckListName: { $regex: `.* ${startsWith}`, $options: "i" } },
+      ];
+    } else if (search) {
+      searchQuery.$or = [
+        { CheckListName: { $regex: search, $options: "i" } },
+        { BirdName: { $regex: search, $options: "i" } },
+        {
+          "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.gewog": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.village": {
+            $regex: search,
+            $options: "i",
+          },
+        },
+        { "StartbirdingData.observer": { $regex: search, $options: "i" } },
+      ];
+    }
+    const groupedChecklists = await ChecklistTest.aggregate([
+      { $match: searchQuery },
+      {
+        $group: {
+          _id: {
+            checklistName: "$CheckListName",
+            observer: "$StartbirdingData.observer",
+            selectedDate: "$StartbirdingData.selectedDate",
+            selectedTime: "$StartbirdingData.selectedTime",
+            dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
+            gewog: "$StartbirdingData.EndpointLocation.gewog",
+            village: "$StartbirdingData.EndpointLocation.village",
+          },
+          entries: { $push: "$$ROOT" },
+        },
+      },
+      // Unwind the array fields before sorting
+      { $unwind: "$entries" },
+      // Sort by selectedDate and selectedTime
+      {
+        $sort: {
+          "entries.StartbirdingData.selectedDate": -1,
+          "entries.StartbirdingData.selectedTime": -1,
+        },
+      },
+      // Group again to regroup the sorted entries
+      {
+        $group: {
+          _id: {
+            checklistName: "$_id.checklistName",
+            observer: "$_id.observer",
+            selectedDate: "$_id.selectedDate",
+            dzongkhag: "$_id.dzongkhag",
+            gewog: "$_id.gewog",
+            village: "$_id.village",
+          },
+          entries: { $push: "$entries" },
+        },
+      },
+      { $skip: page * limit },
+      { $limit: limit },
+    ]);
+
+    const totalGroupedChecklists = await ChecklistTest.aggregate([
+      { $match: searchQuery },
+      {
+        $group: {
+          _id: {
+            checklistName: "$CheckListName",
+            observer: "$StartbirdingData.observer",
+            selectedDate: "$StartbirdingData.selectedDate",
+            selectedTime: "$StartbirdingData.selectedTime",
+            dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
+            gewog: "$StartbirdingData.EndpointLocation.gewog",
+            village: "$StartbirdingData.EndpointLocation.village",
+          },
+          entries: { $push: "$$ROOT" },
+        },
+      },
+    ]);
+
+    const foundTotal = groupedChecklists.length;
+    const totalChecklists = totalGroupedChecklists.length;
+    const entriesTotal = await ChecklistTest.countDocuments(searchQuery);
+
+    const response = {
+      error: false,
+      foundTotal: foundTotal,
+      entriesTotal: entriesTotal,
+      totalChecklists,
+      page: page + 1,
+      limit,
+      checklists: groupedChecklists,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// const getNewSpecies = async (req, res) => {
+//   try {
+//     const page = parseInt(req.query.page) - 1 || 0;
+//     const limit = parseInt(req.query.limit) || 6;
+//     const startsWith = req.query.starts_with || "";
+//     const search = req.query.search || "";
+
+//     let searchQuery = {
+//       "StartbirdingData.status": "submittedchecklist",
+//       BirdName: "Unknown Birds",
+//     };
+
+//     if (startsWith) {
+//       searchQuery.$or = [
+//         { CheckListName: { $regex: `^${startsWith}`, $options: "i" } },
+//         { CheckListName: { $regex: `.* ${startsWith}`, $options: "i" } },
+//       ];
+//     } else if (search) {
+//       searchQuery.$or = [
+//         { CheckListName: { $regex: search, $options: "i" } },
+//         { BirdName: { $regex: search, $options: "i" } },
+//         {
+//           "StartbirdingData.EndpointLocation.dzongkhag": {
+//             $regex: search,
+//             $options: "i",
+//           },
+//         },
+//         {
+//           "StartbirdingData.EndpointLocation.gewog": {
+//             $regex: search,
+//             $options: "i",
+//           },
+//         },
+//         {
+//           "StartbirdingData.EndpointLocation.village": {
+//             $regex: search,
+//             $options: "i",
+//           },
+//         },
+//         { "StartbirdingData.observer": { $regex: search, $options: "i" } },
+//       ];
+//     }
+
+//     const groupedChecklists = await ChecklistTest.aggregate([
+//       { $match: searchQuery },
+//       {
+//         $group: {
+//           _id: {
+//             checklistName: "$CheckListName",
+//             observer: "$StartbirdingData.observer",
+//             selectedDate: "$StartbirdingData.selectedDate",
+//             selectedTime: "$StartbirdingData.selectedTime",
+//             dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
+//             gewog: "$StartbirdingData.EndpointLocation.gewog",
+//             village: "$StartbirdingData.EndpointLocation.village",
+//           },
+//           entries: { $push: "$$ROOT" },
+//         },
+//       },
+//       { $unwind: "$entries" },
+//       {
+//         $sort: {
+//           "entries.StartbirdingData.selectedDate": -1,
+//           "entries.StartbirdingData.selectedTime": -1,
+//         },
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             checklistName: "$_id.checklistName",
+//             observer: "$_id.observer",
+//             selectedDate: "$_id.selectedDate",
+//             dzongkhag: "$_id.dzongkhag",
+//             gewog: "$_id.gewog",
+//             village: "$_id.village",
+//           },
+//           entries: { $push: "$entries" },
+//         },
+//       },
+//       { $skip: page * limit },
+//       { $limit: limit },
+//     ]);
+
+//     const totalGroupedChecklists = await ChecklistTest.aggregate([
+//       { $match: searchQuery },
+//       {
+//         $group: {
+//           _id: {
+//             checklistName: "$CheckListName",
+//             observer: "$StartbirdingData.observer",
+//             selectedDate: "$StartbirdingData.selectedDate",
+//             selectedTime: "$StartbirdingData.selectedTime",
+//             dzongkhag: "$StartbirdingData.EndpointLocation.dzongkhag",
+//             gewog: "$StartbirdingData.EndpointLocation.gewog",
+//             village: "$StartbirdingData.EndpointLocation.village",
+//           },
+//           entries: { $push: "$$ROOT" },
+//         },
+//       },
+//     ]);
+
+//     const foundTotal = groupedChecklists.length;
+//     const totalChecklists = totalGroupedChecklists.length;
+//     const entriesTotal = await ChecklistTest.countDocuments(searchQuery);
+
+//     const response = {
+//       error: false,
+//       foundTotal: foundTotal,
+//       entriesTotal: entriesTotal,
+//       totalChecklists,
+//       page: page + 1,
+//       limit,
+//       checklists: groupedChecklists,
+//     };
+
+//     res.status(200).json(response);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: error.message });
+//   }
+// };
 
 // Handle the request to analyze checklists
 const analyzeChecklists = (req, res) => {
@@ -581,63 +860,12 @@ const analyzeDistrictEntries = async (req, res) => {
   }
 };
 
-// const analyzeDistrictSpecies = async (req, res) => {
-//   try {
-//     const checklists = await ChecklistTest.find({
-//       "StartbirdingData.status": "submittedchecklist",
-//       "StartbirdingData.Approvedstatus": "approved",
-//     }).maxTimeMS(30000); // Fetch all checklists (increase timeout if needed)
-
-//     const currentMonth = new Date().getMonth(); // Get current month (0-11)
-//     const currentYear = new Date().getFullYear();
-//     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
-//     const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-//     const currentMonthBirdNames = new Set();
-//     const previousMonthBirdNames = new Set();
-
-//     checklists.forEach((checklist) => {
-//       const selectedDate = new Date(checklist.StartbirdingData[0].selectedDate);
-//       const year = selectedDate.getFullYear();
-//       const month = selectedDate.getMonth();
-
-//       if (month === currentMonth && year === currentYear) {
-//         currentMonthBirdNames.add(checklist.BirdName);
-//       } else if (month === previousMonth && year === previousYear) {
-//         previousMonthBirdNames.add(checklist.BirdName);
-//       }
-//     });
-
-//     const currentMonthSpeciesCount = currentMonthBirdNames.size;
-//     const previousMonthSpeciesCount = previousMonthBirdNames.size;
-
-//     const percentageChange =
-//       previousMonthSpeciesCount !== 0
-//         ? ((currentMonthSpeciesCount - previousMonthSpeciesCount) /
-//             previousMonthSpeciesCount) *
-//           100
-//         : 0;
-
-//     const changeResult = {
-//       currentMonthCount: currentMonthSpeciesCount,
-//       previousMonthCount: previousMonthSpeciesCount,
-//       percentageChange: percentageChange,
-//     };
-
-//     return res.json({ changeResult });
-//   } catch (error) {
-//     console.error(error);
-//     return res.status(500).json({
-//       error: "An error occurred while retrieving the bird species count.",
-//     });
-//   }
-// };
-
 const analyzeDistrictSpecies = async (req, res) => {
   try {
     const checklists = await ChecklistTest.find({
       "StartbirdingData.status": "submittedchecklist",
       "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: { $ne: "Unknown Birds" },
     })
       .maxTimeMS(30000)
       .lean(); // Increase timeout to 30 seconds
@@ -678,9 +906,13 @@ const analyzeDistrictSpecies = async (req, res) => {
     const previousMonthCount = previousMonthChecklists.length;
     const percentageChange =
       currentMonthCount !== 0 && previousMonthCount !== 0
-        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+        ? parseFloat(
+            (
+              ((currentMonthCount - previousMonthCount) / previousMonthCount) *
+              100
+            ).toFixed(2)
+          )
         : 0;
-
     const changeResult = {
       currentMonthCount,
       previousMonthCount,
@@ -772,53 +1004,8 @@ const analyzeDistrictChecklists = async (req, res) => {
     const checklists = await ChecklistTest.find({
       "StartbirdingData.status": "submittedchecklist",
       "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: { $ne: "Unknown Birds" },
     }).maxTimeMS(30000); // Increase timeout to 30 seconds
-
-    // Calculate the number of checklists submitted in the current month
-    const currentMonth = new Date().getMonth(); // Get current month (0-11)
-    const currentYear = new Date().getFullYear();
-    const currentMonthChecklists = [];
-    const currentMonthChecklistNames = new Set();
-
-    // Calculate the number of checklists submitted in the previous month
-    const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
-    const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-    const previousMonthChecklists = [];
-    const previousMonthChecklistNames = new Set();
-
-    checklists.forEach((checklist) => {
-      const checklistName = checklist.CheckListName;
-      const selectedDate = new Date(checklist.StartbirdingData[0].selectedDate);
-      const year = selectedDate.getFullYear();
-      const month = selectedDate.getMonth();
-
-      if (month === currentMonth && year === currentYear) {
-        if (!currentMonthChecklistNames.has(checklistName)) {
-          currentMonthChecklists.push(checklist);
-          currentMonthChecklistNames.add(checklistName);
-        }
-      } else if (month === previousMonth && year === previousYear) {
-        if (!previousMonthChecklistNames.has(checklistName)) {
-          previousMonthChecklists.push(checklist);
-          previousMonthChecklistNames.add(checklistName);
-        }
-      }
-    });
-
-    // Calculate the percentage increase or decrease in checklist submissions
-    const currentMonthCount = currentMonthChecklists.length;
-    const previousMonthCount = previousMonthChecklists.length;
-    const percentageChange =
-      currentMonthCount !== 0 && previousMonthCount !== 0
-        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
-        : 0;
-
-    const changeResult = {
-      currentMonthCount,
-      previousMonthCount,
-      percentageChange,
-    };
 
     if (checklists.length === 0) {
       return res.status(404).json({ message: "No checklists found." });
@@ -886,6 +1073,43 @@ const analyzeDistrictChecklists = async (req, res) => {
       });
     });
 
+    // Get the current month and previous month data from the result array
+    const currentMonthData = result.find(
+      (monthlyResult) =>
+        monthlyResult.year === new Date().getFullYear() &&
+        monthlyResult.month === getMonthName(new Date().getMonth())
+    );
+    const previousMonthData = result.find(
+      (monthlyResult) =>
+        monthlyResult.year === new Date().getFullYear() &&
+        monthlyResult.month ===
+          getMonthName(
+            new Date().getMonth() - 1 >= 0 ? new Date().getMonth() - 1 : 11
+          )
+    );
+
+    // Get the count of checklists for the current month
+    const currentMonthCount = currentMonthData
+      ? currentMonthData.data.reduce((sum, count) => sum + count, 0)
+      : 0;
+
+    // Get the count of checklists for the previous month
+    const previousMonthCount = previousMonthData
+      ? previousMonthData.data.reduce((sum, count) => sum + count, 0)
+      : 0;
+
+    // Calculate the percentage change
+    const percentageChange =
+      previousMonthCount !== 0
+        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+        : 0;
+
+    const changeResult = {
+      currentMonthCount,
+      previousMonthCount,
+      percentageChange,
+    };
+
     const responseData = {
       changeResult,
       result,
@@ -897,133 +1121,6 @@ const analyzeDistrictChecklists = async (req, res) => {
     return res.status(500).json({ message: "Internal server error." });
   }
 };
-
-// My TestSchema
-// const analyzeDistrictChecklists = async (req, res) => {
-//   try {
-//     const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
-
-//     // Calculate the number of checklists submitted in the current month
-//     const currentMonth = new Date().getMonth(); // Get current month (0-11)
-//     const currentYear = new Date().getFullYear();
-//     const currentMonthChecklists = [];
-//     const currentMonthChecklistNames = new Set();
-
-//     // Calculate the number of checklists submitted in the previous month
-//     const previousMonth = currentMonth === 0 ? 11 : currentMonth - 1; // Get previous month (0-11)
-//     const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-//     const previousMonthChecklists = [];
-//     const previousMonthChecklistNames = new Set();
-
-//     checklists.forEach((checklist) => {
-//       const checklistName = checklist.checklistName;
-//       const selectedDate = new Date(checklist.selectedDate);
-//       const year = selectedDate.getFullYear();
-//       const month = selectedDate.getMonth();
-
-//       if (month === currentMonth && year === currentYear) {
-//         if (!currentMonthChecklistNames.has(checklistName)) {
-//           currentMonthChecklists.push(checklist);
-//           currentMonthChecklistNames.add(checklistName);
-//         }
-//       } else if (month === previousMonth && year === previousYear) {
-//         if (!previousMonthChecklistNames.has(checklistName)) {
-//           previousMonthChecklists.push(checklist);
-//           previousMonthChecklistNames.add(checklistName);
-//         }
-//       }
-//     });
-
-//     // Calculate the percentage increase or decrease in checklist submissions
-//     const currentMonthCount = currentMonthChecklists.length;
-//     const previousMonthCount = previousMonthChecklists.length;
-//     const percentageChange =
-//       currentMonthCount !== 0 && previousMonthCount !== 0
-//         ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
-//         : 0;
-
-//     const changeResult = {
-//       currentMonthCount,
-//       previousMonthCount,
-//       percentageChange,
-//     };
-
-//     if (checklists.length === 0) {
-//       return res.status(404).json({ message: "No checklists found." });
-//     }
-
-//     const monthlyData = {};
-
-//     checklists.forEach((checklist) => {
-//       const checklistName = checklist.checklistName;
-//       const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
-//       const selectedDate = new Date(checklist.selectedDate);
-//       const year = selectedDate.getFullYear();
-//       const month = selectedDate.getMonth();
-
-//       if (!monthlyData[year]) {
-//         monthlyData[year] = {};
-//       }
-
-//       if (!monthlyData[year][month]) {
-//         monthlyData[year][month] = {};
-//       }
-
-//       if (!monthlyData[year][month][endpointLocation]) {
-//         monthlyData[year][month][endpointLocation] = new Set();
-//       }
-
-//       monthlyData[year][month][endpointLocation].add(checklistName);
-//     });
-
-//     const result = [];
-
-//     for (const year in monthlyData) {
-//       for (const month in monthlyData[year]) {
-//         const monthData = monthlyData[year][month];
-//         const labels = [];
-//         const data = [];
-
-//         for (const endpointLocation in monthData) {
-//           const checklistNames = monthData[endpointLocation];
-//           labels.push(endpointLocation);
-//           data.push(checklistNames.size);
-//         }
-
-//         // Sort labels and data arrays in descending order
-//         const sortedData = data.slice().sort((a, b) => b - a);
-//         const sortedLabels = labels
-//           .slice()
-//           .sort((a, b) => data[labels.indexOf(b)] - data[labels.indexOf(a)]);
-
-//         result.push({
-//           year: parseInt(year),
-//           month: getMonthName(parseInt(month)),
-//           labels: sortedLabels,
-//           data: sortedData,
-//         });
-//       }
-//     }
-
-//     // Calculate the overall total count of checklists
-//     let overallTotalCount = 0;
-//     result.forEach((monthlyResult) => {
-//       monthlyResult.data.forEach((count) => {
-//         overallTotalCount += count;
-//       });
-//     });
-
-//     const responseData = {
-//       changeResult,
-//       result,
-//       overallTotalCount,
-//     };
-
-//     return res.json(responseData);
-//   } catch (error) {
-//     return res.status(500).json({ message: "Internal server error." });
-//   }
-// };
 
 // Helper function to get the month name
 function getMonthName(month) {
@@ -1044,104 +1141,13 @@ function getMonthName(month) {
   return monthNames[month];
 }
 
-// const analyzeDistrictChecklists = async (req, res) => {
-//   try {
-//     const checklists = await ChecklistTest.find().maxTimeMS(30000); // Increase timeout to 30 seconds
-
-//     // Calculate the number of checklists submitted in the current month
-//     const currentMonth = new Date().getMonth() + 1; // Get current month (1-12)
-//     const currentYear = new Date().getFullYear();
-//     const currentMonthChecklists = checklists.filter(
-//       (checklist) =>
-//         new Date(checklist.selectedDate).getMonth() + 1 === currentMonth &&
-//         new Date(checklist.selectedDate).getFullYear() === currentYear
-//     );
-
-//     // Calculate the number of checklists submitted in the previous month
-//     const previousMonth = currentMonth === 1 ? 12 : currentMonth - 1; // Get previous month (1-12)
-//     const previousYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-//     const previousMonthChecklists = checklists.filter(
-//       (checklist) =>
-//         new Date(checklist.selectedDate).getMonth() + 1 === previousMonth &&
-//         new Date(checklist.selectedDate).getFullYear() === previousYear
-//     );
-
-//     // Calculate the percentage increase or decrease in checklist submissions
-//     const currentMonthCount = currentMonthChecklists.length;
-//     const previousMonthCount = previousMonthChecklists.length;
-//     const percentageChange =
-//       currentMonthCount !== 0 && previousMonthCount !== 0
-//         ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
-//         : 0;
-
-//     const changeResult = {
-//       currentMonthCount,
-//       previousMonthCount,
-//       percentageChange,
-//     };
-
-//     if (checklists.length === 0) {
-//       return res.status(404).json({ message: "No checklists found." });
-//     }
-
-//     const monthlyData = {};
-
-//     checklists.forEach((checklist) => {
-//       const endpointLocation = checklist.endpointLocation.split(",")[0].trim();
-//       const selectedDate = new Date(checklist.selectedDate);
-//       const year = selectedDate.getFullYear();
-//       const month = selectedDate.getMonth() + 1;
-
-//       if (!monthlyData[year]) {
-//         monthlyData[year] = {};
-//       }
-
-//       if (!monthlyData[year][month]) {
-//         monthlyData[year][month] = {};
-//       }
-
-//       if (!monthlyData[year][month][endpointLocation]) {
-//         monthlyData[year][month][endpointLocation] = 0;
-//       }
-
-//       monthlyData[year][month][endpointLocation]++;
-//     });
-
-//     const result = [];
-
-//     for (const year in monthlyData) {
-//       for (const month in monthlyData[year]) {
-//         const monthData = monthlyData[year][month];
-//         const sortedData = Object.entries(monthData).sort(
-//           (a, b) => b[1] - a[1]
-//         );
-
-//         const labels = sortedData.map((entry) => entry[0]);
-//         const data = sortedData.map((entry) => entry[1]);
-
-//         result.push({
-//           year: parseInt(year),
-//           month: parseInt(month),
-//           labels,
-//           data,
-//         });
-//       }
-//     }
-
-//     return res.json({ changeResult, result });
-//   } catch (error) {
-//     console.error("Error retrieving checklist data:", error);
-//     return res.status(500).json({ message: "Internal server error." });
-//   }
-// };
-
 const getTotalBirdingSites = async (req, res) => {
   try {
     // Query the database to get all documents
     const checklists = await ChecklistTest.find({
       "StartbirdingData.status": "submittedchecklist",
       "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: { $ne: "Unknown Birds" },
     }).maxTimeMS(30000);
 
     const uniqueLocations = [];
@@ -1202,6 +1208,33 @@ const analyzeTopBirders = async (req, res) => {
   }
 };
 
+// Controller function to get bird counts by month
+
+const getSpeciesCountsByMonth = async (req, res) => {
+  try {
+    const checklists = await ChecklistTest.find({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+      BirdName: { $ne: "Unknown Birds" },
+    }).maxTimeMS(30000);
+
+    // Group checklists by year
+    const groupedChecklists = {};
+    checklists.forEach((checklist) => {
+      const year = new Date(checklist.createdAt).getFullYear();
+      if (!groupedChecklists[year]) {
+        groupedChecklists[year] = [];
+      }
+      groupedChecklists[year].push(checklist);
+    });
+
+    return res.status(200).json(groupedChecklists);
+  } catch (error) {
+    console.error("Error grouping checklists by year:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export {
   getChecklistCount,
   getAllEntries,
@@ -1211,10 +1244,12 @@ export {
   deleteChecklist,
   uploadExcelFile,
   getChecklists,
+  getNewSpecies,
   analyzeChecklists,
   analyzeDistrictSpecies,
   analyzeDistrictChecklists,
   analyzeDistrictEntries,
   getTotalBirdingSites,
   analyzeTopBirders,
+  getSpeciesCountsByMonth,
 };

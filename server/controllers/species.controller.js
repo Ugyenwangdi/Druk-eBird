@@ -167,7 +167,7 @@ const getSpecies = async (req, res) => {
 const getAllSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 10;
     const startsWith = req.query.starts_with || "";
     let search = req.query.search || "";
     const species = req.query.species || "";
@@ -244,9 +244,10 @@ const getAllSpecies = async (req, res) => {
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     })
-    .sort({ createdAt: -1 })
-    .skip(page * limit)
-    .limit(limit);
+      .sort({ createdAt: -1 })
+      .skip(page * limit)
+      .limit(limit);
+
 
     const total = await Species.countDocuments({
       $or: [
@@ -645,6 +646,7 @@ const uploadExcelFile = async (req, res) => {
 
 export {
   getCount,
+  getSpecies,
   getAllSpecies,
   getSpeciesDetail,
   createSpecies,
