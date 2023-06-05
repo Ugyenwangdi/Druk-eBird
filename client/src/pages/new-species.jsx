@@ -1,21 +1,43 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
 
 import "../styles/checklist.css";
+import { Pagination } from "../components";
 
-function Checklist() {
-  // const[record,setRecord] = useState([])
+function NewSpecies() {
+  const [newSpecies, setNewSpecies] = useState([]);
+  const [newSpeciesTotal, setNewSpeciesTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(6);
+  const [foundTotal, setFoundTotal] = useState(0);
 
-  //  const getData = () =>
-  //  {
-  //      fetch('https://jsonplaceholder.typicode.com/users')
-  //      .then(resposne=> resposne.json())
-  //      .then(res=>setRecord(res))
-  //  }
+  useEffect(() => {
+    fetchData();
+  }, [page, limit]);
 
-  //  useEffect(() => {
-  //     getData();
-  //  },)
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=${limit}`
+      );
+      console.log("response: ", response.data);
+      setLimit(response.data.limit);
+      setFoundTotal(response.data.foundTotal);
+      setNewSpeciesTotal(response.data.totalChecklists);
+      setNewSpecies(Object.values(response.data.checklists));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log("limit: ", limit);
+
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
   return (
     <div className="checklists-page-container">
       <div
@@ -106,38 +128,65 @@ function Checklist() {
       </div>
 
       <div className="checklist-table-container">
-        <div>
-          <Link to="/new-species-detail" className="checklist-link">
-            <div>
-              <table className="checklist-table">
-                <tbody>
-                  <tr>
-                    <td data-label="Birder" className="custom-data">
-                      #1 Birder
-                    </td>
-                    <td data-label="Birding site" className="custom-data">
-                      Gyalpozhing, Mongar
-                    </td>
-                    <td data-label="Date/Time" className="custom-data">
-                      10.08.2022
-                    </td>
-                    <td data-label="District" className="custom-data">
-                      Mongar
-                    </td>
-                    <td data-label="Gewog" className="custom-data">
-                      Gyalppozhing
-                    </td>
-                    <td data-label="Chiwog" className="custom-data">
-                      Gyalpozhing
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </Link>
-        </div>
+        {newSpecies.map((item, index) => {
+          const serialNumber = (page - 1) * limit + index + 1;
+          return (
+            <div key={index}>
+              <Link
+                to={`/new-species/${item._id.checklistName}`}
+                className="checklist-link"
+                state={{ NewSpeciesDetails: item }}
+              >
+                <div>
+                  <table className="checklist-table">
+                    <tbody>
+                      <tr>
+                        <td data-label="Birder" className="custom-data">
+                          #{serialNumber} {item._id.observer}
+                        </td>
+                        <td data-label="Birding site" className="custom-data">
+                          {item._id.village && (
+                            <>
+                              {item._id.village}
+                              {", "}
+                            </>
+                          )}
 
-        <div>
+                          {item._id.gewog && (
+                            <>
+                              {item._id.gewog}
+                              {", "}
+                            </>
+                          )}
+                          {item._id.dzongkhag && (
+                            <>
+                              {item._id.dzongkhag}
+                              {", "}
+                            </>
+                          )}
+                        </td>
+                        <td data-label="Date/Time" className="custom-data">
+                          {convertDate(item._id.selectedDate) || "none"}
+                        </td>
+                        <td data-label="District" className="custom-data">
+                          {item._id.dzongkhag || "none"}
+                        </td>
+                        <td data-label="Gewog" className="custom-data">
+                          {item._id.gewog || "none"}
+                        </td>
+                        <td data-label="Chiwog" className="custom-data">
+                          {item._id.village || "none"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </Link>
+            </div>
+          );
+        })}
+
+        {/* <div>
           <Link to="/new-species-detail" className="checklist-link">
             <div>
               <table className="checklist-table">
@@ -192,10 +241,17 @@ function Checklist() {
               </table>
             </div>
           </Link>
-        </div>
+        </div> */}
+
+        <Pagination
+          page={page}
+          limit={limit ? limit : 0}
+          total={newSpeciesTotal ? newSpeciesTotal : 0}
+          setPage={(page) => setPage(page)}
+        />
       </div>
     </div>
   );
 }
 
-export default Checklist;
+export default NewSpecies;

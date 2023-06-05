@@ -5,6 +5,7 @@ import upload from "../utils/multer.js";
 import {
   getCount,
   createSpecies,
+  getSpecies,
   getAllSpecies,
   getSpeciesDetail,
   updateSpecies,
@@ -21,6 +22,7 @@ const router = express.Router();
 
 router.route("/get-count").get(getCount);
 router.route("/").get(getAllSpecies);
+router.route("/get").get(getSpecies);
 router.route("/:id").get(getSpeciesDetail);
 router.route("/").post(authMiddleware, createSpecies);
 router.route("/:id").patch(authMiddleware, updateSpecies);
