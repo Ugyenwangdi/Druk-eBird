@@ -5,11 +5,11 @@ import "../styles/checklistdetail.css";
 import "../styles/newspeciesdetail.css";
 import { logo, profile } from "../images";
 
-const Modal = ({ isOpen, onClose, itemId }) => {
+const Modal = ({ isOpen, onClose, itemId, birdname, handleNameUpdate }) => {
   const { id } = useParams();
-  const [newName, setNewName] = useState("");
+  const [newName, setNewName] = useState(birdname.split("New bird - ")[1]);
 
-  const handleSave = async (id) => {
+  const handleSave = async () => {
     try {
       const { data } = await axios.patch(
         `${process.env.REACT_APP_API_URL}/api/v1/checklists/${itemId}`,
@@ -18,7 +18,7 @@ const Modal = ({ isOpen, onClose, itemId }) => {
         }
       );
       console.log("Bird name updated:", data);
-
+      handleNameUpdate(newName, itemId); // Call the callback function with the updated name
       onClose();
     } catch (error) {
       console.log("Error occurred while updating bird name:", error);
@@ -142,6 +142,20 @@ function NewSpeciesDetail() {
     setShowDialog(false);
   };
 
+  const handleNameUpdate = (updatedName, itemId) => {
+    setNewSpecies((prevChecklist) => {
+      const updatedChecklist = [...prevChecklist];
+      const entryIndex = updatedChecklist[0].entries.findIndex(
+        (entry) => entry._id === itemId
+      );
+      if (entryIndex !== -1) {
+        // Update the BirdName with the new name
+        updatedChecklist[0].entries[entryIndex].BirdName = updatedName;
+      }
+      return updatedChecklist;
+    });
+  };
+
   return (
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
@@ -236,6 +250,8 @@ function NewSpeciesDetail() {
                         isOpen={showDialog}
                         onClose={closeDialog}
                         itemId={item._id}
+                        birdname={item.BirdName}
+                        handleNameUpdate={handleNameUpdate}
                       />
                     </td>
                     <td data-label="Description">

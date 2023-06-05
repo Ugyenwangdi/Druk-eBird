@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
 
-import ChecklistTest from "../mongodb/models/checklist.js";
+import checkList from "../mongodb/models/checklist.js";
 
 dotenv.config();
 
@@ -865,7 +865,7 @@ const analyzeDistrictSpecies = async (req, res) => {
     const checklists = await ChecklistTest.find({
       "StartbirdingData.status": "submittedchecklist",
       "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: { $ne: "Unknown Birds" },
     })
       .maxTimeMS(30000)
       .lean(); // Increase timeout to 30 seconds
@@ -1001,11 +1001,13 @@ const analyzeDistrictSpecies = async (req, res) => {
 
 const analyzeDistrictChecklists = async (req, res) => {
   try {
-    const checklists = await ChecklistTest.find({
-      "StartbirdingData.status": "submittedchecklist",
-      "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
-    }).maxTimeMS(30000); // Increase timeout to 30 seconds
+    const checklists = await checkList
+      .find({
+        "StartbirdingData.status": "submittedchecklist",
+        "StartbirdingData.Approvedstatus": "approved",
+        BirdName: { $ne: "Unknown Birds" },
+      })
+      .maxTimeMS(30000); // Increase timeout to 30 seconds
 
     if (checklists.length === 0) {
       return res.status(404).json({ message: "No checklists found." });
@@ -1144,11 +1146,13 @@ function getMonthName(month) {
 const getTotalBirdingSites = async (req, res) => {
   try {
     // Query the database to get all documents
-    const checklists = await ChecklistTest.find({
-      "StartbirdingData.status": "submittedchecklist",
-      "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
-    }).maxTimeMS(30000);
+    const checklists = await checkList
+      .find({
+        "StartbirdingData.status": "submittedchecklist",
+        "StartbirdingData.Approvedstatus": "approved",
+        BirdName: { $ne: "Unknown Birds" },
+      })
+      .maxTimeMS(30000);
 
     const uniqueLocations = [];
 
@@ -1181,7 +1185,7 @@ const getTotalBirdingSites = async (req, res) => {
 
 const analyzeTopBirders = async (req, res) => {
   try {
-    const topBirders = await ChecklistTest.aggregate([
+    const topBirders = await checkList.aggregate([
       {
         $group: {
           _id: "$StartbirdingData.observer",
@@ -1208,6 +1212,48 @@ const analyzeTopBirders = async (req, res) => {
   }
 };
 
+// Controller function to get bird counts by month
+const getSpeciesCountsByMonth = async (req, res) => {
+  try {
+    const checklists = await ChecklistTest.find({
+      "StartbirdingData.status": "submittedchecklist",
+      "StartbirdingData.Approvedstatus": "approved",
+      BirdName: { $ne: "Unknown Birds" },
+    }).maxTimeMS(30000);
+
+    // Group checklists by year
+    const groupedChecklists = {};
+    checklists.forEach((checklist) => {
+      const year = new Date(checklist.createdAt).getFullYear();
+      const month = new Date(checklist.createdAt).getMonth() + 1; // Month is zero-indexed, so add 1 to get the actual month
+
+      if (!groupedChecklists[year]) {
+        groupedChecklists[year] = {};
+      }
+
+      if (!groupedChecklists[year][month]) {
+        groupedChecklists[year][month] = new Set();
+      }
+
+      groupedChecklists[year][month].add(checklist.BirdName);
+    });
+
+    // Calculate unique bird name counts for each month
+    const speciesCountsByMonth = {};
+    for (const year in groupedChecklists) {
+      speciesCountsByMonth[year] = {};
+      for (const month in groupedChecklists[year]) {
+        speciesCountsByMonth[year][month] = groupedChecklists[year][month].size;
+      }
+    }
+
+    return res.status(200).json(speciesCountsByMonth);
+  } catch (error) {
+    console.error("Error grouping checklists by year:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export {
   getChecklistCount,
   getAllEntries,
@@ -1224,4 +1270,5 @@ export {
   analyzeDistrictEntries,
   getTotalBirdingSites,
   analyzeTopBirders,
+  getSpeciesCountsByMonth,
 };
