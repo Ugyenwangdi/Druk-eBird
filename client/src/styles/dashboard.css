@@ -10,9 +10,9 @@
 .card-single {
   display: flex;
   justify-content: space-between;
-  background: #fff;
+  /* background: #fff; */
   padding: 1.5rem;
-  border-radius: 15px;
+  border-radius: 5px;
 }
 .card-single div:last-child span {
   font-size: 3.1rem;

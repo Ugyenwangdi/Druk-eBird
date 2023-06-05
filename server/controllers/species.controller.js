@@ -243,10 +243,10 @@ const getAllSpecies = async (req, res) => {
       ...searchQuery,
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
-    });
-    // .sort({ createdAt: -1 })
-    // .skip(page * limit)
-    // .limit(limit);
+    })
+    .sort({ createdAt: -1 })
+    .skip(page * limit)
+    .limit(limit);
 
     const total = await Species.countDocuments({
       $or: [
