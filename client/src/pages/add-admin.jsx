@@ -117,7 +117,7 @@ const AddAdmin = () => {
         }
       };
       // Create a new notification
-      const notificationMessage = `${currentUser.email} has added the ${data.name} at ${new Date().toLocaleString()}`;
+      const notificationMessage = `A new account **${data.email}** has been added by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
       console.log(notificationMessage);
       setData({ name: "", email: "", country: "", password: "" });
