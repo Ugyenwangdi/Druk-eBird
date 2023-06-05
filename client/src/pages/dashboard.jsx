@@ -457,49 +457,49 @@ function Dashboard() {
 
       <div class="mainn-content">
         <div class="dashboard-cards">
-          <div class="card-single">
+          <div class="card-single" style={{background:'#AC92EB'}}> 
             <div>
-              <span>Entries</span>
+              <span style={{color:'black'}}>Entries</span>
               <h1>{entriesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">login</span>
+              <span className="material-icons" style={{color:'black'}}>login</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#4FC1EB'}}>
             <div>
-              <span>Species</span>
+              <span style={{color:'black'}}>Species</span>
               <h1>{speciesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">flutter_dash</span>
+              <span className="material-icons" style={{color:'black'}}>flutter_dash</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#A0D568'}}>
             <div>
-              <span>Checklists</span>
+              <span style={{color:'black'}}>Checklists</span>
               <h1>{checklistCount}</h1>
             </div>
             <div>
-              <span className="material-icons">fact_check</span>
+              <span className="material-icons" style={{color:'black'}}>fact_check</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#FFCE54'}}>
             <div>
-              <span>Birding sites</span>
+              <span style={{color:'black'}}>Birding sites</span>
               <h1>{birdingSitesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">language</span>
+              <span className="material-icons" style={{color:'black'}}>language</span>
             </div>
           </div>
-          <div class="card-single">
+          <div class="card-single" style={{background:'#ED5564'}}>
             <div>
-              <span>eBirders</span>
+              <span style={{color:'black'}}>eBirders</span>
               <h1>5,732</h1>
             </div>
             <div>
-              <span className="material-icons">groups</span>
+              <span className="material-icons" style={{color:'black'}}>groups</span>
             </div>
           </div>
         </div>

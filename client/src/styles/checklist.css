@@ -104,6 +104,10 @@
   align-items: center;
   margin-top: 2rem;
 }
+.retrived-table{
+  display: block;
+  width: 100%;
+}
 
 .checklist-table {
   width: 100%;
@@ -158,6 +162,11 @@
 }
 
 @media (max-width: 768px) {
+  .checklists-page-container {
+    display: block;
+    width: 100%;
+    padding-right: 20px;
+  }
   .page-container {
     overflow: hidden;
   }
@@ -198,6 +207,16 @@
     flex-basis: auto;
     width: 100%;
     margin-right: 0;
+  }
+  .checklist-table-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .retrived-table{
+    display: block;
+    width: 100%;
   }
 
   .checklist-filter-dropdown:last-child {
