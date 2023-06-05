@@ -343,16 +343,21 @@ label {
   .arrow {
     margin-top: 4rem;
   }
-}
-@media only screen and (max-width: 768px) {
   .mainn-content {
     width: 100%;
-    /* margin-left: 2rem; */
   }
   .dashboard-cards {
     grid-template-columns: 100%;
   }
 }
+/* @media only screen and (max-width: 768px) {
+  .mainn-content {
+    width: 100%;
+  }
+  .dashboard-cards {
+    grid-template-columns: 100%;
+  }
+} */
 @media (max-width: 767px) {
   .graph-con {
     grid-template-columns: 1fr;
