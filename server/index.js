@@ -13,6 +13,7 @@ import authRoute from "./routes/auth.routes.js";
 import passwordResetRoutes from "./routes/reset-password.routes.js";
 import speciesRoutes from "./routes/species.routes.js";
 import checklistRoutes from "./routes/checklist.routes.js";
+import birderRoutes from "./routes/birder.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 
 const app = express();
@@ -67,6 +68,7 @@ passport.deserializeUser(function (user, cb) {
 app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);
 app.use("/api/v1/species", speciesRoutes);
+app.use("api/v1", birderRoutes);
 app.use("/api/v1", checklistRoutes);
 app.use("/notifications", notificationRoutes);
 

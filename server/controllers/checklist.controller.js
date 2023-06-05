@@ -24,14 +24,14 @@ const getChecklistCount = async (req, res) => {
 const getAllEntries = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 5;
     const startsWith = req.query.starts_with || "";
     const search = req.query.search || "";
 
     let searchQuery = {
       "StartbirdingData.status": "submittedchecklist",
       "StartbirdingData.Approvedstatus": "approved",
-      "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
+      BirdName: { $ne: "Unknown Birds" },
     };
 
     if (startsWith) {
@@ -68,7 +68,10 @@ const getAllEntries = async (req, res) => {
     const foundChecklists = await ChecklistTest.find(searchQuery)
       .skip(page * limit)
       .limit(limit)
-      .sort({ "StartbirdingData.selectedDate": -1 })
+      .sort({
+        "StartbirdingData.selectedDate": -1,
+        "StartbirdingData.selectedTime": -1,
+      })
       .maxTimeMS(30000);
 
     const total = await ChecklistTest.countDocuments(searchQuery);
@@ -77,13 +80,11 @@ const getAllEntries = async (req, res) => {
       "StartbirdingData.Approvedstatus": "approved",
       "StartbirdingData.BirdName": { $ne: "Unknown Birds" },
     });
-    const checklistTotal = await ChecklistTest.countDocuments();
 
     const response = {
       error: false,
       foundTotal: total,
       entriesTotal: entriesTotal,
-      checklistTotal,
       page: page + 1,
       limit,
       checklists: foundChecklists,
@@ -459,7 +460,7 @@ const getNewSpecies = async (req, res) => {
     let searchQuery = {
       "StartbirdingData.status": "submittedchecklist",
       $or: [
-        { BirdName: { $regex: "New bird", $options: "i" } },
+        { BirdName: { $regex: "New bird -", $options: "i" } },
         { BirdName: "Unknown Birds" },
       ],
     };
@@ -526,6 +527,7 @@ const getNewSpecies = async (req, res) => {
             checklistName: "$_id.checklistName",
             observer: "$_id.observer",
             selectedDate: "$_id.selectedDate",
+            selectedTime: "$_id.selectedTime",
             dzongkhag: "$_id.dzongkhag",
             gewog: "$_id.gewog",
             village: "$_id.village",
