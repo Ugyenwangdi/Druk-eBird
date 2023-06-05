@@ -27,6 +27,8 @@ function Species({ searchQuery, setSearchClickId }) {
   };
 
   const [speciesList, setSpeciesList] = useState([]);
+  const [exportList, setExportList] = useState([]);
+
   const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -44,12 +46,30 @@ function Species({ searchQuery, setSearchClickId }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [speciesToDelete, setSpeciesToDelete] = useState(null);
+  const [exportClick, setExportClick] = useState(false);
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  console.log(searchQuery);
+  console.log(filterGenus);
+
+  useEffect(() => {
+    const fetchExportList = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/api/v1/species`;
+
+        // console.log("url: ", url);
+        const { data } = await axios.get(url);
+        console.log("Species data:", data.species);
+
+        setExportList(data.species);
+      } catch (err) {
+        setError("Failed to fetch species list. Please try again later.");
+      }
+    };
+    fetchExportList();
+  }, [exportClick]);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
@@ -57,13 +77,13 @@ function Species({ searchQuery, setSearchClickId }) {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
         const url = `${
           process.env.REACT_APP_API_URL
-        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
+        }/api/v1/species/get?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
           englishName || searchQuery
         }&species=${searchspecies}&scientific_name=${searchscientific}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
-        // console.log("Species data:", data.species)
+        console.log("Species data:", data.species);
 
         setSpeciesCount(data.speciesTotal);
         setObj(data);
@@ -148,7 +168,7 @@ function Species({ searchQuery, setSearchClickId }) {
     { label: "Habitat", key: "habitat" },
   ];
 
-  const csvData = speciesList.map((species) => {
+  const csvData = exportList.map((species) => {
     return {
       englishName: species.englishName,
       scientificName: species.scientificName,

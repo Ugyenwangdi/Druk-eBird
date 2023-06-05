@@ -154,6 +154,7 @@
   color: white;
   margin-left: 8px;
   border-radius: 5px;
+  cursor: pointer;
 }
 .add-btn:hover {
   color: #231d14;

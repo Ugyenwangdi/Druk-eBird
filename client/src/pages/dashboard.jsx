@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import {
@@ -35,6 +36,7 @@ function Dashboard() {
   const [birdingSitesCount, setBirdingSitesCount] = useState(0);
   const [topBirders, setTopBirders] = useState([]);
   const [checklists, setChecklists] = useState([]);
+  const [speciesList, setSpeciesList] = useState([]);
   const [selectedData, setSelectedData] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -240,22 +242,18 @@ function Dashboard() {
     prepareSpeciesChartData();
   }, [checklists, speciesSelectedYear, speciesSelectedMonth]);
 
-  useEffect(() => {
-    if (!months.includes(currentMonth)) {
-      if (months.length > 0) {
-        if (!speciesSelectedMonth) {
-          setSpeciesSelectedMonth(months[months.length - 1]);
-        }
-        if (!speciesSelectedYear) {
-          setSpeciesSelectedYear(years[years.length - 1]);
-        }
-      } else {
-        // Handle the case when the months array is empty
-        setSpeciesSelectedYear("");
-        setSpeciesSelectedMonth("");
-      }
-    }
-  }, [currentMonth, months, years]);
+  // useEffect(() => {
+  //   if (!months.includes(currentMonth)) {
+  //     if (months.length > 0) {
+  //       if (!speciesSelectedMonth) {
+  //         setSpeciesSelectedMonth(months[months.length - 1]);
+  //       }
+  //       if (!speciesSelectedYear) {
+  //         setSpeciesSelectedYear(years[years.length - 1]);
+  //       }
+  //     }
+  //   }
+  // }, [currentMonth, months, years]);
 
   const prepareSpeciesChartData = async () => {
     const response = await fetch(
@@ -319,24 +317,20 @@ function Dashboard() {
     prepareChecklistChartData();
   }, [checklists, checklistSelectedYear, checklistSelectedMonth]);
 
-  useEffect(() => {
-    if (!checklistMonths.includes(currentMonth)) {
-      if (checklistMonths.length > 0) {
-        if (!checklistSelectedMonth) {
-          setChecklistSelectedMonth(
-            checklistMonths[checklistMonths.length - 1]
-          );
-        }
-        if (!checklistSelectedYear) {
-          setChecklistSelectedYear(checklistYears[checklistYears.length - 1]);
-        }
-      } else {
-        // Handle the case when the months array is empty
-        setChecklistSelectedYear("");
-        setChecklistSelectedMonth("");
-      }
-    }
-  }, [currentMonth, checklistMonths, checklistYears]);
+  // useEffect(() => {
+  //   if (!checklistMonths.includes(currentMonth)) {
+  //     if (checklistMonths.length > 0) {
+  //       if (!checklistSelectedMonth) {
+  //         setChecklistSelectedMonth(
+  //           checklistMonths[checklistMonths.length - 1]
+  //         );
+  //       }
+  //       if (!checklistSelectedYear) {
+  //         setChecklistSelectedYear(checklistYears[checklistYears.length - 1]);
+  //       }
+  //     }
+  //   }
+  // }, [currentMonth, checklistMonths, checklistYears]);
 
   const prepareChecklistChartData = async () => {
     const response = await fetch(
@@ -394,6 +388,20 @@ function Dashboard() {
       setChecklistChartData(null); // Set chartData to null to display an empty chart
     }
   };
+
+  useEffect(() => {
+    const fetchSpeciesList = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/api/v1/species/get?limit=3`;
+
+        const { data } = await axios.get(url);
+        setSpeciesList(data.species);
+      } catch (err) {
+        setError("Failed to fetch species list. Please try again later.");
+      }
+    };
+    fetchSpeciesList();
+  }, []);
 
   // Helper function to get the month name
   function getMonthName(month) {
@@ -514,7 +522,7 @@ function Dashboard() {
               <span className="up-arrow-icon">
                 <span className="material-icons">
                   {" "}
-                  {checklistPercentageChange > 0
+                  {speciesPercentageChange >= 0
                     ? "arrow_upward"
                     : "arrow_downward"}
                 </span>
@@ -637,7 +645,7 @@ function Dashboard() {
               <div class="percentage-value"> {currentMonthChecklistCount}</div>
               <span className="up-arrow-icon">
                 <span className="material-icons">
-                  {checklistPercentageChange > 0
+                  {checklistPercentageChange >= 0
                     ? "arrow_upward"
                     : "arrow_downward"}
                 </span>
@@ -725,7 +733,9 @@ function Dashboard() {
             <div class="card">
               <div class="card-header">
                 <h3>Top eBirders</h3>
-                <button>View all</button>
+                <Link to="/top-birders">
+                  <button>View all</button>
+                </Link>
               </div>
               <div class="card-body">
                 {topBirders.map((birder) => (
@@ -752,7 +762,9 @@ function Dashboard() {
             <div class="card">
               <div class="card-header">
                 <h3>Latest Sightings</h3>
-                <span className="material-icons">arrow_forward</span>
+                <a href="/entries">
+                  <span className="material-icons">arrow_forward</span>
+                </a>
               </div>
               <div class="card-body">
                 {checklists.map((item, index) => (
@@ -792,12 +804,34 @@ function Dashboard() {
         <div class="explore-birds">
           <div class="section-header">
             <h3>Explore Birds</h3>
-            <div class="buttons-container">
-              <span class="material-icons">arrow_forward</span>
-            </div>
+            <a href="/species">
+              {" "}
+              <div class="buttons-container">
+                <span class="material-icons">arrow_forward</span>
+              </div>
+            </a>
           </div>
           <div class="popularImg-section">
-            <div class="popular-img">
+            {speciesList.map((species) => (
+              <div class="popular-img" key={species._id}>
+                {species.photos[0] ? (
+                  <img
+                    src={species.photos[0].url}
+                    alt={species.englishName}
+                    class="b-img"
+                  />
+                ) : (
+                  <img src={VerditerFlycatcher} class="b-img" />
+                )}
+
+                <div className="name-button-container">
+                  <h3>{species.englishName}</h3>
+                  <button>{species.iucnStatus}</button>
+                </div>
+              </div>
+            ))}
+
+            {/* <div class="popular-img">
               <img src={VerditerFlycatcher} class="b-img" />
 
               <div className="name-button-container">
@@ -827,8 +861,7 @@ function Dashboard() {
               <span class="material-icons">
                 location_on <small>Dochula</small>
               </span>
-            </div>
-            <span class="material-icons arrow">arrow_forward</span>
+            </div> */}
           </div>
         </div>
       </div>

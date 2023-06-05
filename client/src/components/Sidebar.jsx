@@ -76,9 +76,9 @@ function Sidebar({ showSidebar, closeSidebar }) {
             <h4>Species</h4>
           </NavLink>
           <NavLink
-            to="/checklist"
-            className={activeItem === "/checklist" ? "active" : ""}
-            onClick={() => handleMenuItemClick("/checklist")}
+            to="/checklists"
+            className={activeItem === "/checklists" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/checklists")}
           >
             <span className="material-icons">fact_check</span>
             <h4>Checklists</h4>
@@ -108,9 +108,9 @@ function Sidebar({ showSidebar, closeSidebar }) {
             <h4>Graphs</h4>
           </NavLink>
           <NavLink
-            to="/Birder"
-            className={activeItem === "/Birder" ? "active" : ""}
-            onClick={() => handleMenuItemClick("/Birder")}
+            to="/birders"
+            className={activeItem === "/birders" ? "active" : ""}
+            onClick={() => handleMenuItemClick("/birders")}
           >
             <span className="material-icons">groups</span>
             <h4>Birders</h4>
