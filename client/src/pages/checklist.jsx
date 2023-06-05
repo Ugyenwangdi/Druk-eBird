@@ -15,15 +15,15 @@ function Checklist() {
 
   useEffect(() => {
     fetchData();
-  }, [page]);
+  }, [page, limit]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=3`
       );
       console.log("response: ", response.data);
-
+      setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setChecklistTotal(response.data.totalChecklists);
       setChecklists(Object.values(response.data.checklists));
@@ -32,7 +32,7 @@ function Checklist() {
     }
   };
 
-  console.log("checklists: ", checklists);
+  console.log("limit: ", limit);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -189,7 +189,7 @@ function Checklist() {
         })}
       </div>
 
-      <div
+      {/* <div
         style={{
           display: "flex",
           justifyContent: "center",
@@ -205,12 +205,12 @@ function Checklist() {
         <Link to="/checklists/analyze">
           <button className="add-button">Analyze Checklist</button>
         </Link>
-      </div>
+      </div> */}
 
       <Pagination
         page={page}
         limit={limit ? limit : 0}
-        total={foundTotal ? foundTotal : 0}
+        total={checklistTotal ? checklistTotal : 0}
         setPage={(page) => setPage(page)}
       />
     </div>

@@ -171,6 +171,7 @@ label {
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border: 1px solid #136d66;
+  cursor: pointer;
 }
 .eBirder {
   display: flex;
