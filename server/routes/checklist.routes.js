@@ -11,12 +11,14 @@ import {
   uploadExcelFile,
   deleteChecklist,
   getChecklists,
+  getNewSpecies,
   analyzeChecklists,
   analyzeDistrictSpecies,
   analyzeDistrictChecklists,
   analyzeDistrictEntries,
   getTotalBirdingSites,
   analyzeTopBirders,
+  getSpeciesCountsByMonth,
 } from "../controllers/checklist.controller.js";
 
 const router = express.Router();
@@ -24,6 +26,7 @@ const router = express.Router();
 router.route("/checklists/get-count").get(getChecklistCount);
 router.route("/entries").get(getAllEntries);
 router.route("/checklists").get(getChecklists);
+router.route("/newspecies").get(getNewSpecies);
 
 router.route("/checklists/:id").get(getChecklistDetail);
 router.route("/checklists/:id").patch(updateChecklist);
@@ -45,5 +48,8 @@ router
   .route("/checklists/analyze/birdingsites-count")
   .get(getTotalBirdingSites);
 router.route("/checklists/analyze/top-birders").get(analyzeTopBirders);
+router
+  .route("/checklists/analyze/species-count-months")
+  .get(getSpeciesCountsByMonth);
 
 export default router;

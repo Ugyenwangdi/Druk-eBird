@@ -67,6 +67,32 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
     window.location = "/login";
   };
 
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        setLoading(true);
+
+        // Fetch notifications from the server
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/notifications`
+        );
+
+        setNotifications(response.data.notifications);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
+
+  const notificationCount = notifications.length;
+
   return (
     <nav className="topbar-nav">
       <div className="container">
@@ -81,6 +107,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
         </div>
         <Link to="/notifications" className="notification">
           <span className="material-icons">notifications</span>
+          <div className="notification-count">{notificationCount}</div>
         </Link>
         <div className="profile-area">
           <div className="profile">

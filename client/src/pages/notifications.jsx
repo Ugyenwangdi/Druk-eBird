@@ -35,7 +35,7 @@ function Notifications() {
       ) : (
         <ul className="notification-list">
           {notifications.map((notification) => (
-            <li key={notification._id} className="notification-item">
+            <li key={notification._id} className="notice success">
               {notification.message}
             </li>
           ))}

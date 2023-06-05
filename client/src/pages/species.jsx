@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { CSVLink } from "react-csv";
@@ -27,6 +27,8 @@ function Species({ searchQuery, setSearchClickId }) {
   };
 
   const [speciesList, setSpeciesList] = useState([]);
+  const [exportList, setExportList] = useState([]);
+
   const [obj, setObj] = useState({});
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -44,12 +46,30 @@ function Species({ searchQuery, setSearchClickId }) {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [speciesToDelete, setSpeciesToDelete] = useState(null);
+  const [exportClick, setExportClick] = useState(false);
 
   const handleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
-  console.log(searchQuery);
+  console.log(filterGenus);
+
+  useEffect(() => {
+    const fetchExportList = async () => {
+      try {
+        const url = `${process.env.REACT_APP_API_URL}/api/v1/species`;
+
+        // console.log("url: ", url);
+        const { data } = await axios.get(url);
+        console.log("Species data:", data.species);
+
+        setExportList(data.species);
+      } catch (err) {
+        setError("Failed to fetch species list. Please try again later.");
+      }
+    };
+    fetchExportList();
+  }, [exportClick]);
 
   useEffect(() => {
     const fetchSpeciesList = async () => {
@@ -57,13 +77,13 @@ function Species({ searchQuery, setSearchClickId }) {
         // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
         const url = `${
           process.env.REACT_APP_API_URL
-        }/api/v1/species?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
+        }/api/v1/species/get?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
           englishName || searchQuery
         }&species=${searchspecies}&scientific_name=${searchscientific}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
-        // console.log("Species data:", data.species)
+        console.log("Species data:", data.species);
 
         setSpeciesCount(data.speciesTotal);
         setObj(data);
@@ -90,6 +110,75 @@ function Species({ searchQuery, setSearchClickId }) {
   // console.log("obj:", obj)
   // console.log("Species List:", speciesList)
 
+  const [currentUser, setCurrentUser] = useState({});
+  const [fetchCurrentUserLoading, setFetchCurrentUserLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    photo: "",
+  });
+
+  const fetchData = async () => {
+    try {
+      // const response = await fetch("http://localhost:8080/api/v1/users/");
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/`);
+
+      const jsonData = await response.json();
+      setFormData(Object.values(jsonData));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      setFetchCurrentUserLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setCurrentUser(response.data.user);
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  }, [token]);
+
+  useEffect(() => {
+    fetchCurrentUser();
+    fetchData();
+  }, [fetchCurrentUser]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        name: currentUser?.name,
+        email: currentUser?.email,
+        photo: currentUser?.profile,
+      });
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (currentUser.id) {
+      const getAdminDetails = async () => {
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.email}`
+        );
+        const data = await response.json();
+        // console.log(data);
+        setFormData(data);
+      };
+
+      getAdminDetails();
+    }
+  }, [currentUser]);
+
   const handleDelete = async (id) => {
     try {
       const speciesToDelete = speciesList.find((species) => species._id === id);
@@ -114,6 +203,19 @@ function Species({ searchQuery, setSearchClickId }) {
       setSpeciesCount(speciesList.length);
       setMsg(res.data.message);
       setError("");
+      const sendNotification = async (message) => {
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
+            message: message,
+          });
+        } catch (error) {
+          console.error("Failed to send notification:", error);
+        }
+      };      
+      // Create a new notification
+      const notificationMessage = `A Bird name **${speciesToDelete.englishName}** has been deleted by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
+      await sendNotification(notificationMessage);
+      console.log(notificationMessage);
     } catch (err) {
       setError(err.response.data.error);
       setMsg("");
@@ -148,7 +250,7 @@ function Species({ searchQuery, setSearchClickId }) {
     { label: "Habitat", key: "habitat" },
   ];
 
-  const csvData = speciesList.map((species) => {
+  const csvData = exportList.map((species) => {
     return {
       englishName: species.englishName,
       scientificName: species.scientificName,
