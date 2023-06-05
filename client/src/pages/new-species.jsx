@@ -19,7 +19,7 @@ function NewSpecies() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=1`
+        `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=${limit}`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);

@@ -16,36 +16,36 @@ function Birder() {
     fetchData();
   }, []);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       "https://druk-ebirds.onrender.com/api/v1/users"
-  //     );
-  //     console.log("rsponse: ", response);
-
-  //     const jsonData = await response.json();
-  //     setData(Object.values(jsonData.data));
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const fetchData = async () => {
     try {
-      const response = await fetch(
+      const response = await axios.get(
         "https://druk-ebirds.onrender.com/api/v1/users"
       );
+      console.log("rsponse: ", response);
 
-      if (response.ok) {
-        const jsonData = await response.json();
-        setData(Object.values(jsonData.data));
-      } else {
-        throw new Error("Request failed with status: " + response.status);
-      }
+      const jsonData = await response.json();
+      setData(Object.values(jsonData.data));
     } catch (error) {
       console.log(error);
     }
   };
+
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://druk-ebirds.onrender.com/api/v1/users"
+  //     );
+
+  //     if (response.ok) {
+  //       const jsonData = await response.json();
+  //       setData(Object.values(jsonData.data));
+  //     } else {
+  //       throw new Error("Request failed with status: " + response.status);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="birders-page-container">
