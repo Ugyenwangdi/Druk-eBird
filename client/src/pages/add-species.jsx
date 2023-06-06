@@ -121,7 +121,7 @@ function AddSpecies() {
     if (currentUser.id) {
       const getAdminDetails = async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/users/${currentUser.email}`
+          `${process.env.REACT_APP_API_URL}/users/`
         );
         const data = await response.json();
         // console.log(data);

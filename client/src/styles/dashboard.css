@@ -1,17 +1,22 @@
 .mainn-content {
   background: #f4f4f4;
   padding-right: 1rem;
+  width: 100%;
+}
+.dash-header {
+  margin-top: 80px;
+  padding: 10px 0;
+  padding-bottom: 15px;
 }
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 5rem;
+  grid-gap: 3rem;
 }
 .card-single {
   display: flex;
   justify-content: space-between;
-  /* background: #fff; */
-  padding: 1.5rem;
+  padding: 1.1rem;
   border-radius: 5px;
 }
 .card-single div:last-child span {
@@ -27,10 +32,7 @@
   padding-bottom: 2rem;
   display: flex;
   align-items: center;
-}
-
-.grid-item {
-  display: flex;
+  width: 100%;
 }
 
 /* species leader dropdown */
@@ -86,12 +88,6 @@ label {
   margin-left: 0px; 
 }
 
-
-
-
-
-
-
 .percentage-container {
   display: flex;
   padding-bottom: 2rem;
@@ -127,7 +123,6 @@ label {
 }
 /* charts */
 .graphBox {
-  position: relative;
   width: 100%;
   padding-top: 3.5rem;
   display: grid;
@@ -136,7 +131,6 @@ label {
   min-height: 200px;
 }
 .graphBox .box {
-  position: relative;
   background-color: #fff;
   padding: 20px;
   width: 100%;
@@ -258,6 +252,7 @@ label {
 
 .popularImg-section {
   display: flex;
+  width: 100%;
   flex-wrap: wrap;
   justify-content: space-between;
   padding: 1rem;
@@ -278,14 +273,14 @@ label {
   border-radius: 1rem;
 }
 
-.popular-img span {
-  align-self: flex-end;
-  color: #919191;
-}
-
 .name-button-container {
   justify-content: space-between;
   display: flex;
+}
+.name-button-container button {
+  height: 40px;
+  width: 50px;
+  margin-right: 2%;
 }
 
 .popular-img button {
@@ -304,63 +299,69 @@ label {
   margin: 0 auto;
 }
 
-@media (min-width: 768px) {
-  .popular-img {
-    flex-basis: 48%;
-    max-width: 48%;
-  }
-}
-
-@media (min-width: 992px) {
+@media only screen and (max-width: 1024px) {
   .popular-img {
     flex-basis: 30%;
     max-width: 30%;
   }
-}
-@media (max-width: 991px) {
   .graphBox {
     grid-template-columns: 1fr;
     height: auto;
   }
+  .graphBox .box {
+    width: 100%;
+  }
 }
-@media only screen and (max-width: 960px) {
+
+@media only screen and (max-width: 1000px) {
+  .graphBox {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .graphBox .box {
+    width: 100%;
+  }
+  .dashboard-cards .card-single .material-icons{
+    font-size: 25px;
+  }
+  .dashboard-cards .card-single h1{
+    font-size: 20px;
+  }
+}
+
+@media only screen and (max-width: 858px) {
+  .dashboard-cards {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media only screen and (max-width: 767px) {
   .dashboard-cards {
     grid-template-columns: repeat(3, 1fr);
   }
+  .graphBox .box {
+    width: 98%;
+  }
   .recent-grid {
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 2fr;
+    height: auto;
+    grid-template-columns: 100%;
+  } 
+  .recent-grid .card {
+    width: 98%;
+  }
+  .popular-img {
+    flex-basis: 45%;
+    max-width: 50%;
   }
 }
-@media only screen and (max-width: 768px) {
+
+@media only screen and (max-width: 576px) {
+  .popular-img {
+    flex-basis: 100%;
+    max-width: 70%;
+  }
   .dashboard-cards {
     grid-template-columns: repeat(2, 1fr);
-  }
-  .recent-grid {
-    grid-template-columns: 100%;
-  }
-  .popular-img button {
-    margin-left: 0rem;
-  }
-  .arrow {
-    margin-top: 4rem;
-  }
-}
-@media only screen and (max-width: 768px) {
-  .mainn-content {
-    width: 100%;
-    /* margin-left: 2rem; */
-  }
-  .dashboard-cards {
-    grid-template-columns: 100%;
-  }
-}
-@media (max-width: 767px) {
-  .graph-con {
-    grid-template-columns: 1fr;
-  }
-}
-@media only screen and (max-width: 560px) {
-  .dashboard-cards {
-    grid-template-columns: 100%;
   }
 }

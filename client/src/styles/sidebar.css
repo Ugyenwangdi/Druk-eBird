@@ -9,7 +9,7 @@ main aside {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 91.7vh;
+  height: 100%;
   width: 18rem;
   position: fixed;
   top: 5.5rem;
