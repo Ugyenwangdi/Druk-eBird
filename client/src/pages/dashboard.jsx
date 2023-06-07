@@ -858,6 +858,38 @@ function Dashboard() {
                 </div>
               </div>
             ))}
+
+            {/* <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div>
+            <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div>
+            <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div> */}
           </div>
         </div>
       </div>
