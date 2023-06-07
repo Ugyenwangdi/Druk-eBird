@@ -450,20 +450,8 @@ function Dashboard() {
   }
 
   return (
-    <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingTop: "20px",
-          paddingBottom: "26px",
-        }}
-      >
-        <h2 className="header">Dashboard</h2>
-      </div>
-
       <div class="mainn-content">
+        <h2 className="dash-header">Dashboard</h2>
         <div class="dashboard-cards">
           <div class="card-single" style={{background:'#AC92EB'}}> 
             <div>
@@ -925,7 +913,6 @@ function Dashboard() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
 
