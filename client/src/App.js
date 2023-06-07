@@ -28,6 +28,7 @@ import {
   AnalyzeChecklist,
   Notification,
   TopBirders,
+  Graphs,
 } from "./pages";
 
 function App() {
@@ -241,6 +242,7 @@ function App() {
               <Route path="/password-update" element={<UpdatePassword />} />
               <Route path="/notifications" element={<Notification />} />
               <Route path="/top-birders" element={<TopBirders />} />
+              <Route path="/graphs" element={<Graphs />} />
 
               <Route path="/checklists/add" element={<AddChecklist />} />
               <Route
