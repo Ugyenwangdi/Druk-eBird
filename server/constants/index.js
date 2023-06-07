@@ -22,6 +22,8 @@ export const orderOptions = [
   "Caprimulgiformes",
   "Strigiformes",
   "Passerformes",
+  "nan",
+  "",
 ];
 
 export const familyOptions = [
@@ -121,6 +123,8 @@ export const familyOptions = [
   "Fringillidae",
   "Emberizidae",
   "Calcariidae",
+  "nan",
+  "",
 ];
 export const genusOptions = [
   "Lerwa",
@@ -500,8 +504,19 @@ export const genusOptions = [
   "Calcarius",
   "Ocyceros ",
   "Poecile",
+  "nan",
+  "",
 ];
-export const iucnStatusOptions = ["LC", "NT", "VU", "LC ", "EN", "CR"];
+export const iucnStatusOptions = [
+  "LC",
+  "NT",
+  "VU",
+  "LC ",
+  "EN",
+  "CR",
+  "nan",
+  "",
+];
 export const groupOptions = [
   "Partridge",
   "Francolin",
@@ -709,6 +724,8 @@ export const groupOptions = [
   "Parrotfinch",
   "Grosbeak",
   "Bunting",
+  "nan",
+  "",
 ];
 export const residencyOptions = [
   "Altitudinal Migrant",
