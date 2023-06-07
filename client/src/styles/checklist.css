@@ -106,10 +106,6 @@
   align-items: center;
   margin-top: 2rem;
 }
-.retrived-table{
-  display: block;
-  width: 100%;
-}
 
 .checklist-table {
   width: 100%;
@@ -151,7 +147,6 @@
   display: none;
 }
 
-
 @media (max-width: 1024px) {
   .checklist-filter-container {
     display: flex;
@@ -164,17 +159,6 @@
 }
 
 @media (max-width: 768px) {
-  .checklists-page-container {
-    /* position: fixed; */
-    display: block;
-    width: 100%;
-    height: 100%;
-    /* padding-right: 20px; */
-    overflow-y: scroll;
-    overflow-x: hidden;
-
-
-  }
   .page-container {
     overflow: hidden;
   }
@@ -215,16 +199,6 @@
     flex-basis: auto;
     width: 100%;
     margin-right: 0;
-  }
-  .checklist-table-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-  }
-  .retrived-table{
-    display: block;
-    width: 100%;
   }
 
   .checklist-filter-dropdown:last-child {

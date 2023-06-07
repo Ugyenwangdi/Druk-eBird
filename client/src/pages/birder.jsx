@@ -6,32 +6,35 @@ import { profile } from "../images";
 
 import { Link } from "react-router-dom";
 
-// import { Pagination } from "../components";
+import { Pagination } from "../components";
 
 function Birder() {
-  //   const [page, setPage] = useState(1);
   const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [foundTotal, setFoundTotal] = useState(0);
+  const [usersTotal, setUsersTotal] = useState(0);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [page, limit]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        "https://druk-ebirds.onrender.com/api/v1/users"
+        `${process.env.REACT_APP_API_URL}/api/v1/birders?search=${search}&page=${page}&limit=${limit}`
       );
       console.log("rsponse: ", response);
-
-      const jsonData = await response.json();
-      setData(Object.values(jsonData.data));
+      setLimit(response.data.limit);
+      setFoundTotal(response.data.foundTotal);
+      setUsersTotal(response.data.birderTotal);
+      setData(response.data.users);
     } catch (error) {
       console.log(error);
     }
   };
-  
-
-  
+  console.log("users: ", data);
 
   return (
     <div className="birders-page-container">
@@ -48,7 +51,7 @@ function Birder() {
           <button className="birder-export-button">Export Data</button>
         </div>
         <h2 className="header">
-          Total Enteries <span className="birder-count">(700)</span>
+          Total Enteries <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
       <div className="birder-page-container">
@@ -71,19 +74,22 @@ function Birder() {
           </div>
         </div>
         {data.map((birder) => (
-          <div className="all-birder">
+          <div className="all-birder" key={birder._id}>
             <div className="checklist-link">
               <div className="birder-container">
                 <span
-                  class="material-symbols-outlined"
-                  style={{ marginLeft: "95%", paddingRight: "18px", 
-                  '@media screen and (max-width: 768px)': { marginleft: "50%" } }}
+                  className="material-symbols-outlined"
+                  style={{ marginLeft: "95%", paddingRight: "18px" }}
                 >
                   more_horiz
                 </span>
                 <span>
                   <Link to="/birder-detail">
-                    <img src={profile} alt="" className="birder-profile" />
+                    <img
+                      src={birder.photo ? birder.photo : profile}
+                      alt=""
+                      className="birder-profile"
+                    />
                   </Link>
                 </span>
                 <h2 className="birder-name">
@@ -93,11 +99,11 @@ function Birder() {
                 <div className="email-contact">
                   <ul>
                     <li>
-                      <span class="material-symbols-outlined">mail</span>
+                      <span className="material-symbols-outlined">mail</span>
                       {birder.email}
                     </li>
                     <li>
-                      <span class="material-symbols-outlined">
+                      <span className="material-symbols-outlined">
                         calendar_month
                       </span>
                       {birder.dob}
@@ -108,11 +114,15 @@ function Birder() {
                 <div className="locatio-date">
                   <ul>
                     <li>
-                      <span class="material-symbols-outlined">emoji_flags</span>
+                      <span className="material-symbols-outlined">
+                        emoji_flags
+                      </span>
                       {birder.country}
                     </li>
                     <li>
-                      <span class="material-symbols-outlined">fact_check</span>
+                      <span className="material-symbols-outlined">
+                        fact_check
+                      </span>
                       10 completed checklists
                     </li>
                   </ul>
@@ -122,19 +132,12 @@ function Birder() {
           </div>
         ))}
 
-        <div className="all-birder">
+        {/* <div className="all-birder">
           <div className="checklist-link">
             <div className="birder-container">
-               <span
-                class="material-symbols-outlined"
-                style={{
-                  marginLeft: "97%",
-                  paddingRight: "18px",
-                  cursor: "pointer",
-                  '@media (max-width: 768px)': {
-                    marginLeft: "50%"
-                  }
-                }}
+              <span
+                className="material-symbols-outlined"
+                style={{ marginLeft: "95%", paddingRight: "18px" }}
               >
                 more_horiz
               </span>
@@ -151,11 +154,11 @@ function Birder() {
               <div className="email-contact">
                 <ul>
                   <li>
-                    <span class="material-symbols-outlined">mail</span>
-                    exgfhjkfghjbfghjfvgh@gmail.com
+                    <span className="material-symbols-outlined">mail</span>
+                    ex@gmail.com
                   </li>
                   <li>
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                       calendar_month
                     </span>
                     02/03/2000
@@ -166,11 +169,15 @@ function Birder() {
               <div className="locatio-date">
                 <ul>
                   <li>
-                    <span class="material-symbols-outlined">emoji_flags</span>
+                    <span className="material-symbols-outlined">
+                      emoji_flags
+                    </span>
                     Bhutan
                   </li>
                   <li>
-                    <span class="material-symbols-outlined">fact_check</span>
+                    <span className="material-symbols-outlined">
+                      fact_check
+                    </span>
                     10 completed checklists
                   </li>
                 </ul>
@@ -183,8 +190,7 @@ function Birder() {
           <div className="checklist-link">
             <div className="birder-container">
               <span
-                
-                className="custom-classname material-symbols-outlined"
+                className="material-symbols-outlined"
                 style={{
                   marginLeft: "97%",
                   paddingRight: "18px",
@@ -208,16 +214,12 @@ function Birder() {
               </h2>
               <div className="email-contact">
                 <ul>
-
-                  <li >
-                    <span class="material-symbols-outlined">mail</span>
-                    <div style={{ display: 'inline-block', wordBreak: 'break-all' }}>
-                     erertyuiiytrefghjkytrex@gmail.com
-                    </div>
-                    
+                  <li>
+                    <span className="material-symbols-outlined">mail</span>
+                    ex@gmail.com
                   </li>
                   <li>
-                    <span class="material-symbols-outlined">
+                    <span className="material-symbols-outlined">
                       calendar_month
                     </span>
                     02/03/2000
@@ -228,25 +230,29 @@ function Birder() {
               <div className="locatio-date">
                 <ul>
                   <li>
-                    <span class="material-symbols-outlined">emoji_flags</span>
+                    <span className="material-symbols-outlined">
+                      emoji_flags
+                    </span>
                     Bhutan
                   </li>
                   <li>
-                    <span class="material-symbols-outlined">fact_check</span>
+                    <span className="material-symbols-outlined">
+                      fact_check
+                    </span>
                     10 completed checklists
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
-      {/* <Pagination
+      <Pagination
         page={page}
-        limit={data.limit ? data.limit : 0}
-        total={data.foundTotal ? data.foundTotal : 0}
+        limit={limit ? limit : 0}
+        total={foundTotal ? foundTotal : 0}
         setPage={(page) => setPage(page)}
-      /> */}
+      />
     </div>
   );
 }
