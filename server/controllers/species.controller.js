@@ -168,6 +168,7 @@ const getAllSpecies = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 10;
+    const export_limit = req.query.export_limit;
     const startsWith = req.query.starts_with || "";
     let search = req.query.search || "";
     const species = req.query.species || "";
@@ -221,33 +222,38 @@ const getAllSpecies = async (req, res) => {
         ],
       };
     }
-    const foundSpecies = await Species.find({
-      $or: [
-        { order: { $in: [...order] } },
-        { order: "" },
-        { familyName: { $in: [...family] } },
-        { familyName: "" },
-        { genus: { $in: [...genus] } },
-        { genus: "" },
-        { iucnStatus: { $in: [...iucnStatus] } },
-        { iucnStatus: "" },
-        { group: { $in: [...group] } },
-        { group: "" },
-        { residency: { $in: [...residency] } },
-        { residency: "" },
-        { species: { $regex: species, $options: "i" } },
-        { species: "" },
-        { scientificName: { $regex: scientificName, $options: "i" } },
-        { scientificName: "" },
-      ],
-      ...searchQuery,
-      species: { $regex: species, $options: "i" },
-      scientificName: { $regex: scientificName, $options: "i" },
-    })
-      .sort({ createdAt: -1 })
-      .skip(page * limit)
-      .limit(limit);
 
+    let foundSpecies = {};
+    if (export_limit) {
+      foundSpecies = await Species.find().maxTimeMS(30000);
+    } else {
+      foundSpecies = await Species.find({
+        $or: [
+          { order: { $in: [...order] } },
+          { order: "" },
+          { familyName: { $in: [...family] } },
+          { familyName: "" },
+          { genus: { $in: [...genus] } },
+          { genus: "" },
+          { iucnStatus: { $in: [...iucnStatus] } },
+          { iucnStatus: "" },
+          { group: { $in: [...group] } },
+          { group: "" },
+          { residency: { $in: [...residency] } },
+          { residency: "" },
+          { species: { $regex: species, $options: "i" } },
+          { species: "" },
+          { scientificName: { $regex: scientificName, $options: "i" } },
+          { scientificName: "" },
+        ],
+        ...searchQuery,
+        species: { $regex: species, $options: "i" },
+        scientificName: { $regex: scientificName, $options: "i" },
+      })
+        .sort({ createdAt: -1 })
+        .skip(page * limit)
+        .limit(limit);
+    }
 
     const total = await Species.countDocuments({
       $or: [

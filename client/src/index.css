@@ -91,7 +91,6 @@ small {
     display: inline;
     background: transparent;
     color: var(--color-dark);
-    margin-left: 0%;
   }
   main {
     grid-template-columns: 1fr;
@@ -131,12 +130,6 @@ small {
     nav .profile h5,
     nav .profile span {
       display: none;
-    }
-    nav .profile-area button#menu-btn {
-      display: inline;
-      background: transparent;
-      color: var(--color-dark);
-      margin-left: 0%;
     }
   }
 }

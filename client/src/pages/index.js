@@ -21,6 +21,7 @@ import EditAdmin from "./edit-admin";
 import UpdatePassword from "./update-password";
 import Notification from "./notifications";
 import TopBirders from "./top-birders";
+import Graphs from "./graphs";
 
 import { AddChecklist } from "./add-checklist";
 import { AnalyzeChecklist } from "./analyze-checklist";
@@ -50,4 +51,5 @@ export {
   AnalyzeChecklist,
   Notification,
   TopBirders,
+  Graphs,
 };

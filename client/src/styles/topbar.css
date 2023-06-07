@@ -1,5 +1,9 @@
-NAV BAR
-
+/* NAV BAR */
+/* nav {
+  width: 100%;
+  background: var(--color-white);
+  margin-top: 66px;
+} */
 nav {
   width: 100%;
   background: var(--color-white);
@@ -19,6 +23,41 @@ nav:after {
   pointer-events: none;
 }
 
+nav:before {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.4) 5%,
+    transparent 10%
+  );
+  animation: spider-web-animation 2s linear infinite;
+}
+
+nav:after {
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    rgba(0, 0, 0, 0.6) 10%,
+    transparent 12%
+  );
+  animation: spider-web-animation-reverse 2s linear infinite;
+}
+
+@keyframes spider-web-animation {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+@keyframes spider-web-animation-reverse {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100px -100px;
+  }
+}
 
 nav .container {
   display: flex;
@@ -84,6 +123,7 @@ nav .profile-area button {
   display: none;
 }
 
+/* Dropdown Menu */
 nav .profile-area .profile:hover .dropdown-menu {
   display: block;
 }
@@ -117,12 +157,13 @@ nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
 
+/* Add this CSS code to your stylesheet */
 
 .notification {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 85%;
+  margin-left: 50%;
   cursor: pointer;
 }
 
@@ -150,46 +191,3 @@ nav .profile-area .dropdown-menu button:hover {
   color: #fff;
   font-size: 12px;
 }
-@media(max-width:1024px){
-  .notification {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: 65%;
-    cursor: pointer;
-  }
-}
-/* @media(max-width:768px){
-  .notification {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: 45%;
-    cursor: pointer;
-  }
-  
-} */
-@media (max-width: 768px) {
-  nav .search-bar {
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
-  }
-  
-  nav .search-bar input[type="search"] {
-    width: 100%;
-    text-align: center;
-  }
-  nav .profile-area .profile {
-    display: none;
-  }
-  
-  nav .profile-area button {
-    display: flex;
-  }
-  
-  nav .notification {
-    margin-left: auto;
-  }
-}
-
