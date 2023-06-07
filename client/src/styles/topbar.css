@@ -1,10 +1,4 @@
-/* NAV BAR */
-/* nav {
-  width: 100%;
-  background: var(--color-white);
-  margin-top: 66px;
-} */
-nav {
+NAV BAR nav {
   width: 100%;
   background: var(--color-white);
   margin-top: 66px;
@@ -23,42 +17,6 @@ nav:after {
   pointer-events: none;
 }
 
-nav:before {
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    rgba(0, 0, 0, 0.4) 5%,
-    transparent 10%
-  );
-  animation: spider-web-animation 2s linear infinite;
-}
-
-nav:after {
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    rgba(0, 0, 0, 0.6) 10%,
-    transparent 12%
-  );
-  animation: spider-web-animation-reverse 2s linear infinite;
-}
-
-@keyframes spider-web-animation {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 100px 100px;
-  }
-}
-
-@keyframes spider-web-animation-reverse {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: -100px -100px;
-  }
-}
-
 nav .container {
   display: flex;
   justify-content: space-between;
@@ -74,9 +32,11 @@ nav .container {
   padding-bottom: 1rem;
 }
 nav img.logo {
-  width: 3.7rem;
+  width: 3.8rem;
   margin-left: 2rem;
+  translate: 40px 0;
 }
+
 nav .search-bar {
   background: var(--color-light);
   padding: 0.6rem;
@@ -123,7 +83,6 @@ nav .profile-area button {
   display: none;
 }
 
-/* Dropdown Menu */
 nav .profile-area .profile:hover .dropdown-menu {
   display: block;
 }
@@ -157,13 +116,11 @@ nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
 
-/* Add this CSS code to your stylesheet */
-
 .notification {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 50%;
+  margin-left: 70%;
   cursor: pointer;
 }
 
@@ -190,4 +147,59 @@ nav .profile-area .dropdown-menu button:hover {
   background-color: red;
   color: #fff;
   font-size: 12px;
+}
+@media (max-width: 1024px) {
+  .notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 58%;
+    cursor: pointer;
+  }
+  nav .profile-area .dropdown-menu {
+    right: 8%;
+    width: 14%;
+  }
+}
+
+@media (max-width: 768px) {
+  nav .search-bar {
+    left: 20%;
+    width: 40%;
+  }
+  nav .search-bar input[type="search"] {
+    width: 100%;
+    text-align: center;
+  }
+  nav .notification {
+    position: relative;
+    margin-left: 50%;
+  }
+  nav .profile-area .dropdown-menu {
+    right: 11%;
+    width: 17%;
+  }
+  nav img.logo {
+    translate: 10px 0;
+  }
+}
+
+@media (max-width: 638px) {
+  nav .profile-area .profile {
+    display: none;
+  }
+}
+
+@media (max-width: 500px) {
+  nav .search-bar {
+    width: 50%;
+  }
+  nav .notification {
+    position: relative;
+    margin-left: 60%;
+  }
+
+  nav .profile-area .profile {
+    display: none;
+  }
 }

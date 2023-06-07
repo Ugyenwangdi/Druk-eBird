@@ -49,7 +49,7 @@ function Entries() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="total-header">
           Total Enteries <span className="enteries-count">({foundTotal})</span>
         </h2>
         <div className="entries-button-container">

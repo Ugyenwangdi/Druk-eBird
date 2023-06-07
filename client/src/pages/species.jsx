@@ -287,10 +287,10 @@ function Species({ searchQuery, setSearchClickId }) {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="total-header">
           Total Species <span className="species-count">({speciesCount})</span>
         </h2>
-        <div>
+        <div className="button-container">
           <CSVLink data={csvData} headers={headers} filename={"species.csv"}>
             <button className="export-button">Export Data</button>
           </CSVLink>

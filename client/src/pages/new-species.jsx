@@ -49,7 +49,7 @@ function NewSpecies() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="total-header">
           New Species <span className="checklist-count">(10)</span>
         </h2>
         <div className="checklist-button-container">
