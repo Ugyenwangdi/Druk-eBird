@@ -50,7 +50,7 @@ function Checklist() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="checklist-header">
+        <h2 className="header">
           Total Checklist
           <span className="checklist-count">({checklistTotal})</span>
         </h2>

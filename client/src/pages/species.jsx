@@ -168,7 +168,7 @@ function Species({ searchQuery, setSearchClickId }) {
     if (currentUser.id) {
       const getAdminDetails = async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/users/`
+          `${process.env.REACT_APP_API_URL}/users/${currentUser.email}`
         );
         const data = await response.json();
         // console.log(data);
@@ -283,10 +283,10 @@ function Species({ searchQuery, setSearchClickId }) {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="total-header">
+        <h2 className="header">
           Total Species <span className="species-count">({speciesCount})</span>
         </h2>
-        <div className="button-container">
+        <div>
           <CSVLink data={csvData} headers={headers} filename={"species.csv"}>
             <button className="export-button">Export Data</button>
           </CSVLink>

@@ -96,9 +96,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
   return (
     <nav className="topbar-nav">
       <div className="container">
-        <a href="/" className="logo-link">
-          <img src={logo} className="logo" alt="Home" />
-        </a>
+        <img src={logo} className="logo" alt="" />
         <div className="search-bar">
           <span className="material-icons">search</span>
           <input
