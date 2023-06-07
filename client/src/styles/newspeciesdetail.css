@@ -150,14 +150,14 @@
 .add-btn {
   width: 5rem;
   height: 2rem;
-  background-color: #136d66;
+  background-color: #eb9c5c;
   color: white;
   margin-left: 8px;
   border-radius: 5px;
   cursor: pointer;
 }
 .add-btn:hover {
-  color: #ba760d;
+  color: #231d14;
 }
 
 .newspeciesdetail-card-container {
