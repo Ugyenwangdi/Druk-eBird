@@ -17,7 +17,7 @@ function Entries() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="entries-header">
           Total Enteries <span className="enteries-count">(700)</span>
         </h2>
         <div className="entries-button-container">

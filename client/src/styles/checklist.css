@@ -10,9 +10,8 @@
 }
 
 .checklist-count {
-  margin-top: 12rem;
+  margin-top: 0.5rem;
   font-size: 1rem;
-  margin-left: 1rem;
 }
 
 .checklist-page-container {
@@ -23,12 +22,12 @@
   width: 100%;
 }
 
-/* .checklist-filter-container {
+.checklist-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 1.5rem 0;
-} */
+  justify-content: flex-start;
+  padding: 20px 0;
+  margin-top: 70px;
+}
 
 .checklist-filter-container {
   display: flex;
@@ -82,6 +81,7 @@
   position: absolute;
   right: 0;
   padding-right: 20px;
+  top: 100px;
 }
 
 .checklist-export-button:is(:hover, :focus) {
@@ -102,7 +102,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 2rem;
+  margin-top: 1rem;
 }
 .retrived-table{
   display: block;

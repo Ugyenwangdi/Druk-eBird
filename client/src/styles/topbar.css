@@ -35,9 +35,11 @@ nav .container {
   padding-bottom: 1rem;
 }
 nav img.logo {
-  width: 3.7rem;
+  width: 3.8rem;
   margin-left: 2rem;
+  translate: 40px 0;
 }
+
 nav .search-bar {
   background: var(--color-light);
   padding: 0.6rem;
@@ -122,7 +124,7 @@ nav .profile-area .dropdown-menu button:hover {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 85%;
+  margin-left: 70%;
   cursor: pointer;
 }
 
@@ -150,46 +152,59 @@ nav .profile-area .dropdown-menu button:hover {
   color: #fff;
   font-size: 12px;
 }
-@media(max-width:1024px){
+@media (max-width:1024px){
   .notification {
     position: relative;
     display: flex;
     align-items: center;
-    margin-left: 65%;
+    margin-left: 58%;
     cursor: pointer;
+  }
+  nav .profile-area .dropdown-menu {
+    right: 8%;
+    width: 14%;
   }
 }
-/* @media(max-width:768px){
-  .notification {
-    position: relative;
-    display: flex;
-    align-items: center;
-    margin-left: 45%;
-    cursor: pointer;
-  }
-  
-} */
+
 @media (max-width: 768px) {
   nav .search-bar {
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60%;
+    left: 20%;
+    width: 40%;
   }
-  
   nav .search-bar input[type="search"] {
     width: 100%;
     text-align: center;
   }
+  nav .notification {
+    position: relative;
+    margin-left: 50%;
+  }
+  nav .profile-area .dropdown-menu {
+    right: 11%;
+    width: 17%;
+  }
+  nav img.logo {
+    translate: 10px 0;
+  }
+}
+
+@media (max-width: 638px) {
   nav .profile-area .profile {
     display: none;
   }
-  
-  nav .profile-area button {
-    display: flex;
+}
+
+@media (max-width: 500px) {
+  nav .search-bar {
+    width: 50%;
   }
-  
   nav .notification {
-    margin-left: auto;
+    position: relative;
+    margin-left: 60%;
+  }
+
+  nav .profile-area .profile {
+    display: none;
   }
 }
 
