@@ -10,7 +10,7 @@ function Checklist() {
   const [checklists, setChecklists] = useState([]);
   const [checklistTotal, setChecklistTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(6);
   const [foundTotal, setFoundTotal] = useState(0);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Checklist() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=3`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);

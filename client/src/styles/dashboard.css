@@ -299,20 +299,6 @@ label {
   margin: 0 auto;
 }
 
-.year-select {
-  border: 1px solid transparent;
-  background: var(--color-light);
-  padding: 3px;
-  border-radius: 5px;
-  justify-content: center;
-  color: var(--color-text-light-gray);
-  cursor: pointer;
-}
-
-.year-select:is(:hover, :focus) {
-  border: 1px solid #136d66;
-}
-
 @media only screen and (max-width: 1024px) {
   .popular-img {
     flex-basis: 30%;
