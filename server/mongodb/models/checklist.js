@@ -83,26 +83,31 @@ const detailSchema = new mongoose.Schema({
   },
 });
 
-const BirdsSchema = new mongoose.Schema({
-  CheckListName: {
-    type: String,
-    required: [true, "CheckListName"],
-    default: "null",
+const BirdsSchema = new mongoose.Schema(
+  {
+    CheckListName: {
+      type: String,
+      required: [true, "CheckListName"],
+      default: "null",
+    },
+    BirdName: {
+      type: String,
+      required: [true, "BirdName"],
+      default: "null",
+    },
+    // userId: {
+    //   type: String,
+    //   required: [true, "userId"],
+    // },
+    StartbirdingData: [detailSchema],
   },
-  BirdName: {
-    type: String,
-    required: [true, "BirdName"],
-    default: "null",
-  },
-  userId: {
-    type: String,
-    required: [true, "userId"],
-  },
-  StartbirdingData: [detailSchema],
-});
+  { _id: true, timestamps: true }
+);
 
-const checkList = mongoose.model("checkList", BirdsSchema);
-export default checkList;
+const ChecklistTest = mongoose.model("ChecklistTest", BirdsSchema);
+export default ChecklistTest;
+
+//
 
 // import mongoose from "mongoose";
 // import moment from "moment";
@@ -152,40 +157,19 @@ export default checkList;
 //     default: "null",
 //   },
 //   currentLocation: currentLocation,
-//   Totalcount: {
-//     type: Number,
-//     required: [true, "Count"],
-//     default: 0,
-//   },
-//   JAcount: {
-//     Adult: {
-//       type: Number,
-//       required: [true, "Adult"],
-//       default: 0,
-//     },
-//     Juvenile: {
-//       type: Number,
-//       required: [true, "Juvenile"],
-//       default: 0,
-//     },
-//   },
-//   Remarks: {
-//     type: String,
-//     required: [true, "Remarks"],
-//     default: "null",
+//   count: {
+//     adult: { type: Number },
+//     juvenile: { type: Number },
+//     total: { type: Number },
 //   },
 //   photo: {
 //     type: String,
 //     default: "null",
 //   },
 //   EndpointLocation: [EndpointLocation],
-//   status: {
+//   approvalStatus: {
 //     type: String,
-//     default: "draftchecklist",
-//   },
-//   Approvedstatus: {
-//     type: String,
-//     default: "pending",
+//     default: "none",
 //   },
 // });
 
@@ -201,14 +185,39 @@ export default checkList;
 //       required: [true, "BirdName"],
 //       default: "null",
 //     },
-//     // userId: {
-//     //   type: String,
-//     //   required: [true, "userId"],
-//     // },
 //     StartbirdingData: [detailSchema],
 //   },
 //   { _id: true, timestamps: true }
 // );
 
 // const ChecklistTest = mongoose.model("ChecklistTest", BirdsSchema);
+
+// export default ChecklistTest;
+
+// import mongoose from "mongoose";
+
+// const checklistTestSchema = new mongoose.Schema(
+//   {
+//     checklistName: { type: String, required: true },
+//     birdName: { type: String, required: false },
+//     count: {
+//       adult: { type: Number },
+//       juvenile: { type: Number },
+//       total: { type: Number },
+//     },
+//     selectedDate: { type: Date, required: false },
+//     selectedTime: { type: String, required: false },
+//     currentLocation: {
+//       latitude: { type: String, required: false },
+//       longitude: { type: String, required: false },
+//     },
+//     birder: { type: String, required: false },
+//     endpointLocation: { type: String, required: false },
+//     photos: [{ url: { type: String } }],
+//   },
+//   { _id: true, timestamps: true }
+// );
+
+// const ChecklistTest = mongoose.model("ChecklistTest", checklistTestSchema);
+
 // export default ChecklistTest;

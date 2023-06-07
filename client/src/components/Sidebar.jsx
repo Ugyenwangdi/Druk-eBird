@@ -7,7 +7,6 @@ import LogoutModal from "./LogoutModal";
 import axios from "axios";
 
 function Sidebar({ showSidebar, closeSidebar }) {
-  // console.log("user: ", user);
 
   // handling the clicked menu item
   const [activeItem, setActiveItem] = useState("/");
@@ -51,7 +50,7 @@ function Sidebar({ showSidebar, closeSidebar }) {
       <aside
         className={`sidebar ${showSidebar ? "show" : ""}`}
         style={{
-          display: window.innerWidth >= 768 || showSidebar ? "block" : "none",
+          display: window.innerWidth >= 1024 || showSidebar ? "block" : "none",
         }}
       >
         <button id="close-btn" onClick={closeSidebar} className="close-button">
