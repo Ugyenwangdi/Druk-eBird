@@ -71,30 +71,24 @@ function Dashboard() {
   const [checklistSelectedMonth, setChecklistSelectedMonth] =
     useState(currentMonth);
 
+  const toggleDropdown = (dropdownId) => {
+    const dropdownMenu = document.getElementById(dropdownId);
+    dropdownMenu.classList.toggle("show");
+  };
 
+  const selectYear = (year) => {
+    setSpeciesSelectedYear(year);
+    setChecklistSelectedYear(year);
+    const dropdownMenu = document.getElementById("year-dropdown-menu");
+    dropdownMenu.classList.remove("show");
+  };
 
-
-    const toggleDropdown = (dropdownId) => {
-      const dropdownMenu = document.getElementById(dropdownId);
-      dropdownMenu.classList.toggle("show");
-    };
-  
-    const selectYear = (year) => {
-      setSpeciesSelectedYear(year);
-      setChecklistSelectedYear(year);
-      const dropdownMenu = document.getElementById("year-dropdown-menu");
-      dropdownMenu.classList.remove("show");
-    };
-  
-    const selectMonth = (month) => {
-      setSpeciesSelectedMonth(month);
-      setChecklistSelectedMonth(month);
-      const dropdownMenu = document.getElementById("month-dropdown-menu");
-      dropdownMenu.classList.remove("show");
-    };
-
-
-
+  const selectMonth = (month) => {
+    setSpeciesSelectedMonth(month);
+    setChecklistSelectedMonth(month);
+    const dropdownMenu = document.getElementById("month-dropdown-menu");
+    dropdownMenu.classList.remove("show");
+  };
 
   console.log("currentMonth: ", currentMonth);
 
@@ -467,219 +461,218 @@ function Dashboard() {
   }
 
   return (
-
-      <div class="mainn-content">
-        <h2 className="dash-header">Dashboard</h2>
-        <div class="dashboard-cards">
-          <div class="card-single" style={{background:'#AC92EB'}}> 
-            <div>
-              <span style={{color:'black'}}>Entries</span>
-              <h1>{entriesCount}</h1>
-            </div>
-            <div>
-              <span className="material-icons" style={{color:'black'}}>login</span>
-            </div>
+    <div class="mainn-content">
+      <h2 className="dash-header">Dashboard</h2>
+      <div class="dashboard-cards">
+        <div class="card-single" style={{ background: "#AC92EB" }}>
+          <div>
+            <span style={{ color: "black" }}>Entries</span>
+            <h1>{entriesCount}</h1>
           </div>
-          <div class="card-single" style={{background:'#4FC1EB'}}>
-            <div>
-              <span style={{color:'black'}}>Species</span>
-              <h1>{speciesCount}</h1>
-            </div>
-            <div>
-              <span className="material-icons" style={{color:'black'}}>flutter_dash</span>
-            </div>
+          <div>
+            <span className="material-icons" style={{ color: "black" }}>
+              login
+            </span>
           </div>
-          <div class="card-single" style={{background:'#A0D568'}}>
-            <div>
-              <span style={{color:'black'}}>Checklists</span>
-              <h1>{checklistCount}</h1>
-            </div>
-            <div>
-              <span className="material-icons" style={{color:'black'}}>fact_check</span>
-            </div>
+        </div>
+        <div class="card-single" style={{ background: "#4FC1EB" }}>
+          <div>
+            <span style={{ color: "black" }}>Species</span>
+            <h1>{speciesCount}</h1>
           </div>
-          <div class="card-single" style={{background:'#FFCE54'}}>
-            <div>
-              <span style={{color:'black'}}>Birding sites</span>
-              <h1>{birdingSitesCount}</h1>
-            </div>
-            <div>
-              <span className="material-icons" style={{color:'black'}}>language</span>
-            </div>
+          <div>
+            <span className="material-icons" style={{ color: "black" }}>
+              flutter_dash
+            </span>
           </div>
-          <div class="card-single" style={{background:'#ED5564'}}>
-            <div>
-              <span style={{color:'black'}}>eBirders</span>
-              <h1>{birdersCount}</h1>
-            </div>
-            <div>
-              <span className="material-icons" style={{color:'black'}}>groups</span>
+        </div>
+        <div class="card-single" style={{ background: "#A0D568" }}>
+          <div>
+            <span style={{ color: "black" }}>Checklists</span>
+            <h1>{checklistCount}</h1>
+          </div>
+          <div>
+            <span className="material-icons" style={{ color: "black" }}>
+              fact_check
+            </span>
+          </div>
+        </div>
+        <div class="card-single" style={{ background: "#FFCE54" }}>
+          <div>
+            <span style={{ color: "black" }}>Birding sites</span>
+            <h1>{birdingSitesCount}</h1>
+          </div>
+          <div>
+            <span className="material-icons" style={{ color: "black" }}>
+              language
+            </span>
+          </div>
+        </div>
+        <div class="card-single" style={{ background: "#ED5564" }}>
+          <div>
+            <span style={{ color: "black" }}>eBirders</span>
+            <h1>{birdersCount}</h1>
+          </div>
+          <div>
+            <span className="material-icons" style={{ color: "black" }}>
+              groups
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="graphBox">
+        <div className="box">
+          <div className="grid-item">
+            <h3>Species Leaders</h3>
+            <span>
+              <label htmlFor="year">Current Year</label>{" "}
+              <select
+                id="year"
+                value={speciesSelectedYear}
+                onChange={(e) =>
+                  setSpeciesSelectedYear(parseInt(e.target.value))
+                }
+                className="year-select"
+              >
+                {years.map((year, index) => (
+                  <option key={index} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>{" "}
+              <label htmlFor="month">Current Month:</label>{" "}
+              <select
+                id="month"
+                value={speciesSelectedMonth}
+                onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
+                className="year-select"
+              >
+                {months.map((month, index) => (
+                  <option key={index} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>{" "}
+            </span>
+          </div>
+          <div className="percentage-container">
+            <div className="percentage-value">{currentMonthSpeciesCount}</div>
+            <span className="up-arrow-icon">
+              <span className="material-icons">
+                {" "}
+                {speciesPercentageChange >= 0
+                  ? "arrow_upward"
+                  : "arrow_downward"}
+              </span>{" "}
+            </span>
+            <div className="percentage-change">{speciesPercentageChange}%</div>
+            <div className="comparison-text">than last month</div>
+          </div>
+          <div className="chart-wrapper">
+            <div className="chart-container">
+              {speciesChartData !== null ? (
+                <Bar
+                  data={speciesChartData}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: true,
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => {
+                            let labelText = context.dataset.label || "";
+                            if (context.parsed.y !== null) {
+                              labelText += ", " + context.parsed.y + " species";
+                              const index = context.dataIndex;
+                              const label = context.chart.data.labels[index];
+                              const birdNames =
+                                selectedData[0].birdNames[label];
+                              labelText += " (" + birdNames.join(", ") + ")";
+                            }
+                            return labelText;
+                          },
+                        },
+                      },
+                    },
+                    layout: {
+                      padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                      },
+                    },
+                  }}
+                />
+              ) : (
+                <Bar
+                  data={{
+                    labels: [],
+                    datasets: [],
+                  }}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        display: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        display: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                  }}
+                />
+              )}
             </div>
           </div>
         </div>
-        <div className="graphBox">
-          <div className="box">
-            <div className="grid-item">
-              <h3>Species Leaders</h3>
-              <span>
-                <label htmlFor="year">Current Year</label>{" "}
-                <select
-                  id="year"
-                  value={speciesSelectedYear}
-                  onChange={(e) =>
-                    setSpeciesSelectedYear(parseInt(e.target.value))
-                  }
-                  className="year-select"
-                >
-                  {years.map((year, index) => (
-                    <option key={index} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
-                <select
-                  id="month"
-                  value={speciesSelectedMonth}
-                  onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
-                  className="year-select"
-                >
-                  {months.map((month, index) => (
-                    <option key={index} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>{" "}
-              </span>
-            </div>
-            <div className="percentage-container">
-              <div className="percentage-value">{currentMonthSpeciesCount}</div>
-              <span className="up-arrow-icon">
-                <span className="material-icons">
-                  {" "}
-                  {speciesPercentageChange >= 0
-                    ? "arrow_upward"
-                    : "arrow_downward"}
-                </span>{" "}
-              </span>
-              <div className="percentage-change">
-                {speciesPercentageChange}%
-              </div>
-              <div className="comparison-text">than last month</div>
-            </div>
-            <div className="chart-wrapper">
-              <div className="chart-container">
-                {speciesChartData !== null ? (
-                  <Bar
-                    data={speciesChartData}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          grid: {
-                            display: false,
-                          },
-                        },
-                        y: {
-                          grid: {
-                            display: false,
-                          },
-                        },
-                      },
-                      plugins: {
-                        legend: {
-                          display: true,
-                        },
-                        tooltip: {
-                          callbacks: {
-                            label: (context) => {
-                              let labelText = context.dataset.label || "";
-                              if (context.parsed.y !== null) {
-                                labelText +=
-                                  ", " + context.parsed.y + " species";
-                                const index = context.dataIndex;
-                                const label = context.chart.data.labels[index];
-                                const birdNames =
-                                  selectedData[0].birdNames[label];
-                                labelText += " (" + birdNames.join(", ") + ")";
-                              }
-                              return labelText;
-                            },
-                          },
-                        },
-                      },
-                      layout: {
-                        padding: {
-                          left: 10,
-                          right: 10,
-                          top: 10,
-                          bottom: 10,
-                        },
-                      },
-                    }}
-                  />
-                ) : (
-                  <Bar
-                    data={{
-                      labels: [],
-                      datasets: [],
-                    }}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          display: true,
-                          grid: {
-                            display: false,
-                          },
-                        },
-                        y: {
-                          display: true,
-                          grid: {
-                            display: false,
-                          },
-                        },
-                      },
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="box">
-            <div className="grid-item">
+        <div className="box">
+          <div className="grid-item">
             <h3>Checklists Leaders</h3>
-              <div className="checklist-flex">
+            <div className="checklist-flex" style={{ marginLeft: "0.5rem" }}>
               <label htmlFor="year">Current Year: </label>{" "}
-
-                <div className="checklist-wrapper">
+              <div className="checklist-wrapper">
                 <select
                   id="year"
-                  className="gray-select"
                   value={checklistSelectedYear}
                   onChange={(e) =>
                     setChecklistSelectedYear(parseInt(e.target.value))
                   }
                   className="year-select"
                 >
-
                   {years.map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>
                   ))}
                 </select>{" "}
-                <span className="material-icons">expand_more</span>
-
-                </div>
               </div>
-              <div className="checklist-flex">
+            </div>
+            <div className="checklist-flex">
               <label htmlFor="month">Current Month:</label>{" "}
-
-                <div className="checklist-wrapper">
+              <div className="checklist-wrapper">
                 <select
                   id="month"
-                  className="gray-select"
                   value={checklistSelectedMonth}
                   onChange={(e) => setChecklistSelectedMonth(e.target.value)}
                   className="year-select"
@@ -690,211 +683,203 @@ function Dashboard() {
                     </option>
                   ))}
                 </select>{" "}
-                <span className="material-icons">expand_more</span>
-
-                </div>
-              </div>
-            
-                
-                
-            </div>
-            <div className="percentage-container">
-              <div className="percentage-value">
-                {" "}
-                {currentMonthChecklistCount}
-              </div>
-              <span className="up-arrow-icon">
-                <span className="material-icons">
-                  {checklistPercentageChange >= 0
-                    ? "arrow_upward"
-                    : "arrow_downward"}
-                </span>
-              </span>
-              <div className="percentage-change">
-                {checklistPercentageChange}%
-              </div>
-              <div className="comparison-text">than last month</div>
-            </div>
-            <div className="chart-wrapper">
-              <div className="chart-container">
-                {checklistChartData !== null ? (
-                  <Bar
-                    data={checklistChartData}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          grid: {
-                            display: false,
-                          },
-                        },
-                        y: {
-                          grid: {
-                            display: false,
-                          },
-                        },
-                      },
-                      plugins: {
-                        legend: {
-                          display: true,
-                        },
-                        tooltip: {
-                          callbacks: {
-                            label: (context) => {
-                              let labelText = context.dataset.label || "";
-                              if (context.parsed.y !== null) {
-                                labelText +=
-                                  ": " + context.parsed.y + " checklists";
-                              }
-                              return labelText;
-                            },
-                          },
-                        },
-                      },
-                      layout: {
-                        padding: {
-                          left: 10,
-                          right: 10,
-                          top: 10,
-                          bottom: 10,
-                        },
-                      },
-                    }}
-                  />
-                ) : (
-                  <Bar
-                    data={{
-                      labels: [],
-                      datasets: [],
-                    }}
-                    options={{
-                      responsive: true,
-                      scales: {
-                        x: {
-                          display: true,
-                          grid: {
-                            display: false,
-                          },
-                        },
-                        y: {
-                          display: true,
-                          grid: {
-                            display: false,
-                          },
-                        },
-                      },
-                    }}
-                  />
-                )}
               </div>
             </div>
           </div>
-        </div>
-        <div className="recent-grid">
-          <div className="top-eBirders">
-            <div className="card">
-              <div className="card-header">
-                <h3>Top eBirders</h3>
-                <Link to="/top-birders">
-                  <button>View all</button>
-                </Link>
-              </div>
-              <div className="card-body">
-                {topBirders.map((birder, index) => (
-                  <div className="eBirder" key={index}>
-                    <div className="info">
-                      <img src={profile} className="birders-pic" />
-                      <div>
-                        <h4>{birder.birder}</h4>
-                        <small>
-                          {birder.totalChecklists}{" "}
-                          {birder.totalChecklists > 1 ? "entries" : "entry"}
-                        </small>
-                      </div>
-                    </div>
-                    <div className="more-info">
-                      <span className="material-icons">more_vert</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="latest-sights">
-            <div className="card">
-              <div className="card-header">
-                <h3>Latest Sightings</h3>
-                <a href="/entries">
-                  <span className="material-icons">arrow_forward</span>
-                </a>
-              </div>
-              <div className="card-body">
-                {checklists.map((item, index) => (
-                  <div className="eBirder" key={index}>
-                    <div className="info">
-                      <img
-                        src={
-                          item.StartbirdingData[0].photo
-                            ? item.StartbirdingData[0].photo
-                            : VerditerFlycatcher
-                        }
-                        className="bird-pic"
-                      />
-                      <div>
-                        <h4>{item.BirdName}</h4>
-                        <small>
-                          {
-                            item.StartbirdingData[0].EndpointLocation[0]
-                              .dzongkhag
-                          }{" "}
-                          {item.StartbirdingData[0].EndpointLocation[0].gewog}{" "}
-                          {item.StartbirdingData[0].EndpointLocation[0].village}
-                        </small>
-                      </div>
-                    </div>
-                    <div className="sighting-date">
-                      <span>
-                        {convertDate(item.StartbirdingData[0].selectedDate)}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="explore-birds">
-          <div className="section-header">
-            <h3>Explore Birds</h3>
-            <a href="/species">
+          <div className="percentage-container">
+            <div className="percentage-value">
               {" "}
-              <div className="buttons-container">
-                <span className="material-icons">arrow_forward</span>
-              </div>
-            </a>
+              {currentMonthChecklistCount}
+            </div>
+            <span className="up-arrow-icon">
+              <span className="material-icons">
+                {checklistPercentageChange >= 0
+                  ? "arrow_upward"
+                  : "arrow_downward"}
+              </span>
+            </span>
+            <div className="percentage-change">
+              {checklistPercentageChange}%
+            </div>
+            <div className="comparison-text">than last month</div>
           </div>
-          <div className="popularImg-section">
-            {speciesList.map((species) => (
-              <div className="popular-img" key={species._id}>
-                {species.photos[0] ? (
-                  <img
-                    src={species.photos[0].url}
-                    alt={species.englishName}
-                    className="b-img"
-                  />
-                ) : (
-                  <img src={VerditerFlycatcher} className="b-img" />
-                )}
-
-                <div className="name-button-container">
-                  <h3>{species.englishName}</h3>
-                  <button>{species.iucnStatus}</button>
-                </div>
-              </div>
-            ))}
+          <div className="chart-wrapper">
+            <div className="chart-container">
+              {checklistChartData !== null ? (
+                <Bar
+                  data={checklistChartData}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                    plugins: {
+                      legend: {
+                        display: true,
+                      },
+                      tooltip: {
+                        callbacks: {
+                          label: (context) => {
+                            let labelText = context.dataset.label || "";
+                            if (context.parsed.y !== null) {
+                              labelText +=
+                                ": " + context.parsed.y + " checklists";
+                            }
+                            return labelText;
+                          },
+                        },
+                      },
+                    },
+                    layout: {
+                      padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10,
+                      },
+                    },
+                  }}
+                />
+              ) : (
+                <Bar
+                  data={{
+                    labels: [],
+                    datasets: [],
+                  }}
+                  options={{
+                    responsive: true,
+                    scales: {
+                      x: {
+                        display: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                      y: {
+                        display: true,
+                        grid: {
+                          display: false,
+                        },
+                      },
+                    },
+                  }}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
+      <div className="recent-grid">
+        <div className="top-eBirders">
+          <div className="card">
+            <div className="card-header">
+              <h3>Top eBirders</h3>
+              <Link to="/top-birders">
+                <button>View all</button>
+              </Link>
+            </div>
+            <div className="card-body">
+              {topBirders.map((birder, index) => (
+                <div className="eBirder" key={index}>
+                  <div className="info">
+                    <img src={profile} className="birders-pic" />
+                    <div>
+                      <h4>{birder.birder}</h4>
+                      <small>
+                        {birder.totalChecklists}{" "}
+                        {birder.totalChecklists > 1 ? "entries" : "entry"}
+                      </small>
+                    </div>
+                  </div>
+                  <div className="more-info">
+                    <span className="material-icons">more_vert</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div className="latest-sights">
+          <div className="card">
+            <div className="card-header">
+              <h3>Latest Sightings</h3>
+              <a href="/entries">
+                <span className="material-icons">arrow_forward</span>
+              </a>
+            </div>
+            <div className="card-body">
+              {checklists.map((item, index) => (
+                <div className="eBirder" key={index}>
+                  <div className="info">
+                    <img
+                      src={
+                        item.StartbirdingData[0].photo
+                          ? item.StartbirdingData[0].photo
+                          : VerditerFlycatcher
+                      }
+                      className="bird-pic"
+                    />
+                    <div>
+                      <h4>{item.BirdName}</h4>
+                      <small>
+                        {item.StartbirdingData[0].EndpointLocation[0].dzongkhag}{" "}
+                        {item.StartbirdingData[0].EndpointLocation[0].gewog}{" "}
+                        {item.StartbirdingData[0].EndpointLocation[0].village}
+                      </small>
+                    </div>
+                  </div>
+                  <div className="sighting-date">
+                    <span>
+                      {convertDate(item.StartbirdingData[0].selectedDate)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="explore-birds">
+        <div className="section-header">
+          <h3>Explore Birds</h3>
+          <a href="/species">
+            {" "}
+            <div className="buttons-container">
+              <span className="material-icons">arrow_forward</span>
+            </div>
+          </a>
+        </div>
+        <div className="popularImg-section">
+          {speciesList.map((species) => (
+            <div className="popular-img" key={species._id}>
+              {species.photos[0] ? (
+                <img
+                  src={species.photos[0].url}
+                  alt={species.englishName}
+                  className="b-img"
+                />
+              ) : (
+                <img src={VerditerFlycatcher} className="b-img" />
+              )}
+
+              <div className="name-button-container">
+                <h3>{species.englishName}</h3>
+                <button>{species.iucnStatus}</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
