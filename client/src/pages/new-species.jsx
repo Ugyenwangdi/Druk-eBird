@@ -9,7 +9,7 @@ function NewSpecies() {
   const [newSpecies, setNewSpecies] = useState([]);
   const [newSpeciesTotal, setNewSpeciesTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(6);
+  const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
 
   useEffect(() => {

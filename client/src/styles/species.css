@@ -3,11 +3,6 @@
   justify-content: center;
 }
 
-.page-container {
-  display: flex;
-  justify-content: center;
-}
-
 .total-species-container {
   width: 100%;
   margin: 0;

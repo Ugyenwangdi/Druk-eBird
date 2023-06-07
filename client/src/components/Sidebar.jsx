@@ -7,6 +7,7 @@ import LogoutModal from "./LogoutModal";
 import axios from "axios";
 
 function Sidebar({ showSidebar, closeSidebar }) {
+  // console.log("user: ", user);
 
   // handling the clicked menu item
   const [activeItem, setActiveItem] = useState("/");

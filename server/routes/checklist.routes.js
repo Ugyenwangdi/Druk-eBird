@@ -19,6 +19,8 @@ import {
   getTotalBirdingSites,
   analyzeTopBirders,
   getSpeciesCountsByMonth,
+  districtSpeciesGraph,
+  getBirdsCountByYear,
 } from "../controllers/checklist.controller.js";
 
 const router = express.Router();
@@ -51,5 +53,9 @@ router.route("/checklists/analyze/top-birders").get(analyzeTopBirders);
 router
   .route("/checklists/analyze/species-count-months")
   .get(getSpeciesCountsByMonth);
+router
+  .route("/checklists/analyze/district-species-count")
+  .get(districtSpeciesGraph);
+router.route("/checklists/analyze/birds-count-year").get(getBirdsCountByYear);
 
 export default router;
