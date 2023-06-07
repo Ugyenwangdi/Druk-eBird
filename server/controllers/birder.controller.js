@@ -1,34 +1,35 @@
 import Birder from "../mongodb/models/user.js";
 
+const getBirdersCount = async (req, res) => {
+  try {
+    const count = await Birder.countDocuments();
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to retrieve count" });
+  }
+};
+
 const getAllBirders = async (req, res) => {
   try {
     const page = parseInt(req.query.page) - 1 || 0;
-    const limit = parseInt(req.query.limit) || 6;
+    const limit = parseInt(req.query.limit) || 5;
     let search = req.query.search || "";
-    let country = req.query.country || "All";
-
-    const countryOptions = ["Bhutan"];
-
-    country === "All"
-      ? (country = [...countryOptions])
-      : (country = req.query.order.split(","));
+    let country = req.query.country || "";
 
     let searchQuery = {
       name: { $regex: search, $options: "i" },
+      country: { $regex: country, $options: "i" },
     };
 
     const foundBirders = await Birder.find({
       ...searchQuery,
     })
-      .where("country")
-      .in([...country])
       .skip(page * limit)
       .limit(limit);
     // .sort({ createdAt: -1 });
 
     const total = await Birder.countDocuments({
       ...searchQuery,
-      country: { $in: [...country] },
     });
 
     const birderTotal = await Birder.countDocuments();
@@ -41,7 +42,7 @@ const getAllBirders = async (req, res) => {
       page: page + 1,
       limit,
 
-      species: foundBirders,
+      users: foundBirders,
     };
 
     res.status(200).json(response);
@@ -51,4 +52,4 @@ const getAllBirders = async (req, res) => {
   }
 };
 
-export { getAllBirders };
+export { getBirdersCount, getAllBirders };
