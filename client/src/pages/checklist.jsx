@@ -40,7 +40,7 @@ function Checklist() {
   };
 
   return (
-    <div className="checklists-page-container" >
+    <div className="checklists-page-container">
       <div
         style={{
           display: "flex",
@@ -50,7 +50,7 @@ function Checklist() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="checklist-header">
+        <h2 className="total-header">
           Total Checklist
           <span className="checklist-count">({checklistTotal})</span>
         </h2>
@@ -129,7 +129,7 @@ function Checklist() {
         </div>
       </div>
 
-      <div className="checklist-table-container" >
+      <div className="checklist-table-container">
         {checklists.map((item, index) => {
           const serialNumber = (page - 1) * limit + index + 1;
           return (

@@ -450,12 +450,24 @@ function Dashboard() {
   }
 
   return (
-      <div class="mainn-content">
-        <h2 className="dash-header">Dashboard</h2>
-        <div class="dashboard-cards">
-          <div class="card-single" style={{background:'#AC92EB'}}> 
+    <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: "20px",
+          paddingBottom: "26px",
+        }}
+      >
+        <h2 className="total-header">Dashboard</h2>
+      </div>
+
+      <div className="mainn-content">
+        <div className="dashboard-cards">
+          <div className="card-single">
             <div>
-              <span style={{color:'black'}}>Entries</span>
+              <span>Entries</span>
               <h1>{entriesCount}</h1>
             </div>
             <div>

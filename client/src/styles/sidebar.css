@@ -15,7 +15,7 @@ main aside {
   top: 5.5rem;
   left: 0;
   z-index: 3;
-  background-color: #136D66;
+  background-color: #136d66;
 }
 
 
@@ -60,7 +60,7 @@ main aside .sidebar h4 {
   font-weight: 500;
 }
 @media screen and (max-width: 1024px) {
-  main{
+  main {
     grid-template-columns: 1fr;
     padding-left: 0;
   }
@@ -68,17 +68,20 @@ main aside .sidebar h4 {
     position: fixed;
     left: 0;
     z-index: 3;
-    background-color: #136D66;
+    background-color: #136d66;
     width: 18rem;
     height: 100vh;
-    box-shadow: .1rem 0 1rem #136D66;
+    box-shadow: 0.1rem 0 1rem #136d66;
     display: none;
   }
-  button:hover{
+  button:hover {
     cursor: pointer;
   }
-  main aside .sidebar{
-    margin-top: 4rem; 
+  main aside .sidebar {
+    margin-top: 4rem;
+  }
+  .sidebar.visible {
+    display: block;
   }
   .sidebar.visible {
     display: block;
@@ -86,4 +89,3 @@ main aside .sidebar h4 {
   
  
 }
-
