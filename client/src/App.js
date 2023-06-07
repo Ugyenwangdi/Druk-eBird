@@ -28,7 +28,6 @@ import {
   AnalyzeChecklist,
   Notification,
   TopBirders,
-  Graphs,
 } from "./pages";
 
 function App() {
@@ -158,7 +157,7 @@ function App() {
   // adding an event listener to the window object to listen for changes in the screen size and update the state accordingly.
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setShowSidebar(true);
       }
     };
@@ -173,14 +172,14 @@ function App() {
   // hidding the sidebar in mobile and tablet screen
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setShowSidebar(true);
       } else {
         setShowSidebar(false);
       }
     };
 
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const mediaQuery = window.matchMedia("(max-width: 1024px)");
     setShowSidebar(mediaQuery.matches);
 
     mediaQuery.addEventListener("change", handleResize);
@@ -242,7 +241,6 @@ function App() {
               <Route path="/password-update" element={<UpdatePassword />} />
               <Route path="/notifications" element={<Notification />} />
               <Route path="/top-birders" element={<TopBirders />} />
-              <Route path="/graphs" element={<Graphs />} />
 
               <Route path="/checklists/add" element={<AddChecklist />} />
               <Route

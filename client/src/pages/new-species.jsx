@@ -9,7 +9,7 @@ function NewSpecies() {
   const [newSpecies, setNewSpecies] = useState([]);
   const [newSpeciesTotal, setNewSpeciesTotal] = useState(0);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(6);
   const [foundTotal, setFoundTotal] = useState(0);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ function NewSpecies() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="checklist-header">
           New Species <span className="checklist-count">(10)</span>
         </h2>
         <div className="checklist-button-container">

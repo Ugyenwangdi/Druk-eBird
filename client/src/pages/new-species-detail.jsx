@@ -320,58 +320,6 @@ function NewSpeciesDetail() {
                   </tr>
                 );
               })}
-              {/* <tr>
-                <td data-label="Sl.no">1</td>
-                <td>
-                  <span style={{ marginRight: "0.5rem" }}>Spotted Dov</span>
-                  <a href="#" onClick={openDialog}>
-                    <span
-                      className="material-symbols-outlined"
-                      style={{
-                        fontSize: "20px",
-                        color: "black",
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.color = "#ba760d";
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.color = "black";
-                      }}
-                    >
-                      edit
-                    </span>
-                  </a>
-                  <Modal isOpen={showDialog} onClose={closeDialog} />
-                </td>
-                <td data-label="Description">Sonam</td>
-                <td data-label="Count total">2</td>
-                <td data-label="Photo">
-                  <img src={logo} alt="Bird" className="bird-img" />
-                </td>
-                <td data-label="Action">
-                  <a href="/reject-request">
-                    <button
-                      className="reject-btn"
-                      onClick={() => handleReject()}
-                    >
-                      Reject
-                    </button>
-                  </a>
-                  <a href="/approved">
-                    <button
-                      className="approve-btn"
-                      onClick={() => handleApprove()}
-                    >
-                      Approve
-                    </button>
-                  </a>
-                  <a href="/add-species">
-                    <button className="add-btn" onClick={() => handleAdd()}>
-                      Add
-                    </button>
-                  </a>
-                </td>
-              </tr> */}
             </tbody>
           </table>
         </div>
@@ -401,35 +349,30 @@ function NewSpeciesDetail() {
                     <>{newSpecies[0]._id.selectedDate}</>
                   )}
                 </li>
-                {newSpecies[0].entries[0].StartbirdingData[0]
-                  .currentLocation ? (
-                  <>
-                    <li className="p-1">
-                      <span className="font-bold">Latitude</span>{" "}
+                <li className="p-1 ">
+                  <span className="font-bold">Latitude</span>{" "}
+                  {newSpecies[0].entries[0].StartbirdingData[0].currentLocation
+                    .latitude && (
+                    <>
                       {
                         newSpecies[0].entries[0].StartbirdingData[0]
                           .currentLocation.latitude
                       }
-                    </li>
-                    <li className="p-1">
-                      <span className="font-bold">Longitude</span>{" "}
+                    </>
+                  )}
+                </li>
+                <li className="p-1 ">
+                  <span className="font-bold">Longitude</span>{" "}
+                  {newSpecies[0].entries[0].StartbirdingData[0].currentLocation
+                    .longitude && (
+                    <>
                       {
                         newSpecies[0].entries[0].StartbirdingData[0]
                           .currentLocation.longitude
                       }
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <li className="p-1">
-                      <span className="font-bold">Latitude</span> N/A
-                    </li>
-                    <li className="p-1">
-                      <span className="font-bold">Longitude</span> N/A
-                    </li>
-                  </>
-                )}
-
+                    </>
+                  )}
+                </li>
                 <li className="p-1">
                   <div className="detail-container">
                     <span className="font-bold">Observer: </span>

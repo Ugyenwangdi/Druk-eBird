@@ -43,3 +43,9 @@
   color: white;
   padding: 5px 10px;
 }
+
+@media only screen and (max-width: 600px) {
+  .pagination_container {
+    left: 5rem;
+  }
+}
