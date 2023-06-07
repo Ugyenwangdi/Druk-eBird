@@ -69,16 +69,15 @@
   font-size: 1.2rem;
 }
 /* charts */
-.graphBox {
+.graphs-graphBox {
   position: relative;
   width: 100%;
-  padding-top: 3.5rem;
   display: grid;
   grid-template-columns: 2fr 2fr;
   grid-gap: 30px;
   min-height: 200px;
 }
-.graphBox .box {
+.graphs-graphBox .box {
   position: relative;
   background-color: #fff;
   padding: 20px;
@@ -275,7 +274,7 @@
   }
 }
 @media (max-width: 991px) {
-  .graphBox {
+  .graphs-graphBox {
     grid-template-columns: 1fr;
     height: auto;
   }
