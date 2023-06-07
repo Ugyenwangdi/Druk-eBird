@@ -11,12 +11,6 @@
   margin-top: 5rem;
 }
 
-.entries-header {
-  justify-content: flex-start;
-  padding: 20px 0;
-  margin-top: 70px;
-}
-
 .enteries-page-container {
   width: 100%;
   border-radius: 0.25rem;
@@ -30,7 +24,6 @@
 .entries-button-container {
   position: absolute;
   right: 0;
-  top: 100px;
   padding-right: 20px;
 }
 

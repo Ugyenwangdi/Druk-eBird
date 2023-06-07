@@ -6,7 +6,7 @@ function DeleteSpeciesModal({ speciesName, onDelete, onCancel }) {
   return (
     <div className="delete-confirmation-modal">
       <div className="modal-content">
-        <h3 className="deleteh3">Confirm Delete</h3>
+        <h3>Confirm Delete</h3>
         <p>
           Are you sure you want to delete <b>{speciesName}</b>?
         </p>
