@@ -82,7 +82,7 @@ function ChecklistDetail() {
   return (
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
-        <div>
+        <div className="header1">
           <Link to="/checklists">
             <span className="material-icons back-arrow">arrow_back_ios</span>
           </Link>
@@ -238,34 +238,29 @@ function ChecklistDetail() {
                 </li>
                 <li className="p-1 ">
                   <span className="font-bold">Latitude</span>{" "}
-                  {checklist[0].entries[0].StartbirdingData[0]
-                    .currentLocation &&
-                    checklist[0].entries[0].StartbirdingData[0].currentLocation
-                      .latitude && (
-                      <>
-                        {
-                          checklist[0].entries[0].StartbirdingData[0]
-                            .currentLocation.latitude
-                        }
-                      </>
-                    )}
+                  {checklist[0].entries[0].StartbirdingData[0].currentLocation
+                    .latitude && (
+                    <>
+                      {
+                        checklist[0].entries[0].StartbirdingData[0]
+                          .currentLocation.latitude
+                      }
+                    </>
+                  )}
                 </li>
 
                 <li className="p-1 ">
                   <span className="font-bold">Longitude</span>{" "}
-                  {checklist[0].entries[0].StartbirdingData[0]
-                    .currentLocation &&
-                    checklist[0].entries[0].StartbirdingData[0].currentLocation
-                      .longitude && (
-                      <>
-                        {
-                          checklist[0].entries[0].StartbirdingData[0]
-                            .currentLocation.longitude
-                        }
-                      </>
-                    )}
+                  {checklist[0].entries[0].StartbirdingData[0].currentLocation
+                    .longitude && (
+                    <>
+                      {
+                        checklist[0].entries[0].StartbirdingData[0]
+                          .currentLocation.longitude
+                      }
+                    </>
+                  )}
                 </li>
-
                 <li className="p-1">
                   <div className="detail-container">
                     <span className="font-bold">Observer: </span>
