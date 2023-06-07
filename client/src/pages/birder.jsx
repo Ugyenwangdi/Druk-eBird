@@ -51,7 +51,7 @@ function Birder() {
           <button className="birder-export-button">Export Data</button>
         </div>
         <h2 className="header">
-          Total Enteries <span className="birder-count">({usersTotal})</span>
+          Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
       <div className="birder-page-container">
@@ -77,12 +77,7 @@ function Birder() {
           <div className="all-birder" key={birder._id}>
             <div className="checklist-link">
               <div className="birder-container">
-                <span
-                  className="material-symbols-outlined"
-                  style={{ marginLeft: "95%", paddingRight: "18px" }}
-                >
-                  more_horiz
-                </span>
+                <span className="material-symbols-outlined">more_horiz</span>
                 <span>
                   <Link to="/birder-detail">
                     <img
@@ -100,7 +95,15 @@ function Birder() {
                   <ul>
                     <li>
                       <span className="material-symbols-outlined">mail</span>
-                      {birder.email}
+                      <div
+                        style={{
+                          display: "inline-block",
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        {" "}
+                        {birder.email}
+                      </div>
                     </li>
                     <li>
                       <span className="material-symbols-outlined">

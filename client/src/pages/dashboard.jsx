@@ -450,7 +450,7 @@ function Dashboard() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">Dashboard</h2>
+        <h2 className="total-header">Dashboard</h2>
       </div>
 
       <div className="mainn-content">

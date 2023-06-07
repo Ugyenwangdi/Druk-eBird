@@ -50,7 +50,7 @@ function Checklist() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">
+        <h2 className="total-header">
           Total Checklist
           <span className="checklist-count">({checklistTotal})</span>
         </h2>
@@ -139,7 +139,7 @@ function Checklist() {
                 className="checklist-link"
                 state={{ ChecklistDetail: item }}
               >
-                <div>
+                <div className="retrived-table">
                   <table className="checklist-table">
                     <tbody>
                       <tr>

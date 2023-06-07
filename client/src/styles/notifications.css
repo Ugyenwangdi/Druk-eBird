@@ -1,58 +1,59 @@
 .notifications-container {
-    width: 100%;
-    /* max-width: 1200px; */
-    background-color: white;
-    border-radius: 0.5rem;
-    padding-top: 1rem;
-    padding-left: 3rem;
-    margin-top: 2rem;
-    margin-right: 1rem;
-  }
-  
-  .notification-list {
-    list-style: none;
-    background-color: white;
-    padding: 10px;
-  }
-  
-  .notification-item {
-    background-color: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-  }
-  
-  .notice {
-    position: relative;
-    margin: 1em;
-    background: #F9F9F9;
-    padding: 1em 1em 1em 2em;
-    border-left: 4px solid #DDD;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
-  }
-  
-  .notice:before {
-    position: absolute;
-    top: 50%;
-    margin-top: -17px;
-    left: -17px;
-    background-color: #DDD;
-    color: #FFF;
-    width: 30px;
-    height: 30px;
-    border-radius: 100%;
-    text-align: center;
-    line-height: 30px;
-    font-weight: bold;
-    font-family: Georgia;
-    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
-  }
+  width: 100%;
+  /* max-width: 1200px; */
+  background-color: white;
+  border-radius: 0.5rem;
+  padding-top: 1rem;
+  padding-left: 3rem;
+  margin-top: 80px;
+  margin-right: 1rem;
+  margin-bottom: 2rem;
+}
 
-  .success {
-    border-color: #2ECC40;
-  }
-  
-  .success:before {
-    content: "√";
-    background-color: #2ECC40;
-  }
+.notification-list {
+  list-style: none;
+  background-color: white;
+  padding: 10px;
+}
+
+.notification-item {
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.notice {
+  position: relative;
+  margin: 1em;
+  background: #f9f9f9;
+  padding: 1em 1em 1em 2em;
+  border-left: 4px solid #ddd;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+}
+
+.notice:before {
+  position: absolute;
+  top: 50%;
+  margin-top: -17px;
+  left: -17px;
+  background-color: #ddd;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  text-align: center;
+  line-height: 30px;
+  font-weight: bold;
+  font-family: Georgia;
+  text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.success {
+  border-color: #2ecc40;
+}
+
+.success:before {
+  content: "√";
+  background-color: #2ecc40;
+}

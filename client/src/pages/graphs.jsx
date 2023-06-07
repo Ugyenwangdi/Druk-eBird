@@ -480,7 +480,7 @@ function Graphs() {
           paddingBottom: "26px",
         }}
       >
-        <h2 className="header">No. of Species Observed</h2>
+        <h2 className="total-header">No. of Species Observed</h2>
       </div>
 
       <div className="mainn-content">
