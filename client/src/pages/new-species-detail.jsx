@@ -349,30 +349,35 @@ function NewSpeciesDetail() {
                     <>{newSpecies[0]._id.selectedDate}</>
                   )}
                 </li>
-                <li className="p-1 ">
-                  <span className="font-bold">Latitude</span>{" "}
-                  {newSpecies[0].entries[0].StartbirdingData[0].currentLocation
-                    .latitude && (
-                    <>
+                {newSpecies[0].entries[0].StartbirdingData[0]
+                  .currentLocation ? (
+                  <>
+                    <li className="p-1">
+                      <span className="font-bold">Latitude</span>{" "}
                       {
                         newSpecies[0].entries[0].StartbirdingData[0]
                           .currentLocation.latitude
                       }
-                    </>
-                  )}
-                </li>
-                <li className="p-1 ">
-                  <span className="font-bold">Longitude</span>{" "}
-                  {newSpecies[0].entries[0].StartbirdingData[0].currentLocation
-                    .longitude && (
-                    <>
+                    </li>
+                    <li className="p-1">
+                      <span className="font-bold">Longitude</span>{" "}
                       {
                         newSpecies[0].entries[0].StartbirdingData[0]
                           .currentLocation.longitude
                       }
-                    </>
-                  )}
-                </li>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="p-1">
+                      <span className="font-bold">Latitude</span> N/A
+                    </li>
+                    <li className="p-1">
+                      <span className="font-bold">Longitude</span> N/A
+                    </li>
+                  </>
+                )}
+
                 <li className="p-1">
                   <div className="detail-container">
                     <span className="font-bold">Observer: </span>
