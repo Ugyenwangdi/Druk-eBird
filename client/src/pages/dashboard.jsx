@@ -37,8 +37,7 @@ function Dashboard() {
   const [topBirders, setTopBirders] = useState([]);
   const [checklists, setChecklists] = useState([]);
   const [speciesList, setSpeciesList] = useState([]);
-  const [selectedData, setSelectedData] = useState([]);
-  const [birdersCount, setBirdersCount] = useState(0);
+  const [selectedData, setSelectedData] = useState([{}]);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
 
@@ -70,6 +69,33 @@ function Dashboard() {
     useState(currentYear);
   const [checklistSelectedMonth, setChecklistSelectedMonth] =
     useState(currentMonth);
+
+
+
+
+    const toggleDropdown = (dropdownId) => {
+      const dropdownMenu = document.getElementById(dropdownId);
+      dropdownMenu.classList.toggle("show");
+    };
+  
+    const selectYear = (year) => {
+      setSpeciesSelectedYear(year);
+      setChecklistSelectedYear(year);
+      const dropdownMenu = document.getElementById("year-dropdown-menu");
+      dropdownMenu.classList.remove("show");
+    };
+  
+    const selectMonth = (month) => {
+      setSpeciesSelectedMonth(month);
+      setChecklistSelectedMonth(month);
+      const dropdownMenu = document.getElementById("month-dropdown-menu");
+      dropdownMenu.classList.remove("show");
+    };
+
+
+
+
+  console.log("currentMonth: ", currentMonth);
 
   const validateToken = useCallback(async () => {
     try {
@@ -173,22 +199,6 @@ function Dashboard() {
 
   useEffect(() => {
     fetchCount();
-  }, []);
-
-  const fetchBirders = async () => {
-    // Fetch species count
-    fetch(`${process.env.REACT_APP_API_URL}/api/v1/birders-count`)
-      .then((response) => response.json())
-      .then((data) => {
-        setBirdersCount(data.count);
-      })
-      .catch((error) => {
-        setError("Failed to fetch birders:", error);
-      });
-  };
-
-  useEffect(() => {
-    fetchBirders();
   }, []);
 
   const fetchBirdingSitesCount = async () => {
@@ -461,43 +471,43 @@ function Dashboard() {
               <h1>{entriesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">login</span>
+              <span className="material-icons" style={{color:'black'}}>login</span>
             </div>
           </div>
-          <div className="card-single">
+          <div class="card-single" style={{background:'#4FC1EB'}}>
             <div>
-              <span>Species</span>
+              <span style={{color:'black'}}>Species</span>
               <h1>{speciesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">flutter_dash</span>
+              <span className="material-icons" style={{color:'black'}}>flutter_dash</span>
             </div>
           </div>
-          <div className="card-single">
+          <div class="card-single" style={{background:'#A0D568'}}>
             <div>
-              <span>Checklists</span>
+              <span style={{color:'black'}}>Checklists</span>
               <h1>{checklistCount}</h1>
             </div>
             <div>
-              <span className="material-icons">fact_check</span>
+              <span className="material-icons" style={{color:'black'}}>fact_check</span>
             </div>
           </div>
-          <div className="card-single">
+          <div class="card-single" style={{background:'#FFCE54'}}>
             <div>
-              <span>Birding sites</span>
+              <span style={{color:'black'}}>Birding sites</span>
               <h1>{birdingSitesCount}</h1>
             </div>
             <div>
-              <span className="material-icons">language</span>
+              <span className="material-icons" style={{color:'black'}}>language</span>
             </div>
           </div>
-          <div className="card-single">
+          <div class="card-single" style={{background:'#ED5564'}}>
             <div>
-              <span>eBirders</span>
-              <h1>{birdersCount}</h1>
+              <span style={{color:'black'}}>eBirders</span>
+              <h1>5,732</h1>
             </div>
             <div>
-              <span className="material-icons">groups</span>
+              <span className="material-icons" style={{color:'black'}}>groups</span>
             </div>
           </div>
         </div>
@@ -505,51 +515,62 @@ function Dashboard() {
           <div className="box">
             <div className="grid-item">
               <h3>Species Leaders</h3>
-              <span>
-                <label htmlFor="year">Current Year</label>{" "}
-                <select
-                  id="year"
-                  value={speciesSelectedYear}
-                  onChange={(e) =>
-                    setSpeciesSelectedYear(parseInt(e.target.value))
-                  }
-                  className="year-select"
-                >
-                  {years.map((year, index) => (
-                    <option key={index} value={year}>
-                      {year}
-                    </option>
-                  ))}
-                </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
-                <select
-                  id="month"
-                  value={speciesSelectedMonth}
-                  onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
-                  className="year-select"
-                >
-                  {months.map((month, index) => (
-                    <option key={index} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>{" "}
-              </span>
+              <div className="flex-container">
+                <label htmlFor="year">Current Year:</label>{" "}
+                <div className="flex-item">
+                  <select
+                    id="year"
+                    className="gray-select"
+                    value={speciesSelectedYear}
+                    onChange={(e) => setSpeciesSelectedYear(parseInt(e.target.value))}
+                  >
+                    {years.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>{" "}
+                  <span className="material-icons">expand_more
+                  
+                  </span>
+
+                </div>
+              </div>
+              
+              <div className="flex-container">
+                <label htmlFor="month">Current Month:</label>{""}
+                <div className="flex-item">
+                  <select
+                    id="month"
+                    className="gray-select"
+
+                    value={speciesSelectedMonth}
+                    onChange={(e) => setSpeciesSelectedMonth(e.target.value)}
+                  >
+                    {months.map((month) => (
+                      <option key={month} value={month}>
+                        {month}
+                      </option>
+                    ))}
+                  </select>{" "}
+                    <span className="material-icons">expand_more</span>
+                 
+                </div>
+              </div>
             </div>
-            <div className="percentage-container">
-              <div className="percentage-value">{currentMonthSpeciesCount}</div>
+
+            <div class="percentage-container">
+              <div class="percentage-value">{currentMonthSpeciesCount}</div>
               <span className="up-arrow-icon">
                 <span className="material-icons">
                   {" "}
                   {speciesPercentageChange >= 0
                     ? "arrow_upward"
                     : "arrow_downward"}
-                </span>
+                </span>{" "}
               </span>
-              <div className="percentage-change">
-                {speciesPercentageChange}%
-              </div>
-              <div className="comparison-text">than last month</div>
+              <div class="percentage-change">{speciesPercentageChange}%</div>
+              <div class="comparison-text">than last month</div>
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
@@ -632,29 +653,39 @@ function Dashboard() {
           </div>
           <div className="box">
             <div className="grid-item">
-              <h3>Checklists Leaders</h3>
-              <span>
-                <label htmlFor="year">Current Year</label>{" "}
+            <h3>Checklists Leaders</h3>
+              <div className="checklist-flex">
+              <label htmlFor="year">Current Year: </label>{" "}
+
+                <div className="checklist-wrapper">
                 <select
                   id="year"
+                  className="gray-select"
                   value={checklistSelectedYear}
                   onChange={(e) =>
                     setChecklistSelectedYear(parseInt(e.target.value))
                   }
-                  className="year-select"
                 >
-                  {checklistYears.map((year) => (
+
+                  {years.map((year) => (
                     <option key={year} value={year}>
                       {year}
                     </option>
                   ))}
                 </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
+                <span className="material-icons">expand_more</span>
+
+                </div>
+              </div>
+              <div className="checklist-flex">
+              <label htmlFor="month">Current Month:</label>{" "}
+
+                <div className="checklist-wrapper">
                 <select
                   id="month"
+                  className="gray-select"
                   value={checklistSelectedMonth}
                   onChange={(e) => setChecklistSelectedMonth(e.target.value)}
-                  className="year-select"
                 >
                   {checklistMonths.map((month) => (
                     <option key={month} value={month}>
@@ -662,13 +693,16 @@ function Dashboard() {
                     </option>
                   ))}
                 </select>{" "}
-              </span>
-            </div>
-            <div className="percentage-container">
-              <div className="percentage-value">
-                {" "}
-                {currentMonthChecklistCount}
+                <span className="material-icons">expand_more</span>
+
+                </div>
               </div>
+            
+                
+                
+            </div>
+            <div class="percentage-container">
+              <div class="percentage-value"> {currentMonthChecklistCount}</div>
               <span className="up-arrow-icon">
                 <span className="material-icons">
                   {checklistPercentageChange >= 0
@@ -676,10 +710,8 @@ function Dashboard() {
                     : "arrow_downward"}
                 </span>
               </span>
-              <div className="percentage-change">
-                {checklistPercentageChange}%
-              </div>
-              <div className="comparison-text">than last month</div>
+              <div class="percentage-change">{checklistPercentageChange}%</div>
+              <div class="comparison-text">than last month</div>
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
@@ -756,20 +788,20 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="recent-grid">
-          <div className="top-eBirders">
-            <div className="card">
-              <div className="card-header">
+        <div class="recent-grid">
+          <div class="top-eBirders">
+            <div class="card">
+              <div class="card-header">
                 <h3>Top eBirders</h3>
                 <Link to="/top-birders">
                   <button>View all</button>
                 </Link>
               </div>
-              <div className="card-body">
-                {topBirders.map((birder, index) => (
-                  <div className="eBirder" key={index}>
-                    <div className="info">
-                      <img src={profile} className="birders-pic" />
+              <div class="card-body">
+                {topBirders.map((birder) => (
+                  <div class="eBirder">
+                    <div class="info">
+                      <img src={profile} class="birders-pic" />
                       <div>
                         <h4>{birder.birder}</h4>
                         <small>
@@ -778,7 +810,7 @@ function Dashboard() {
                         </small>
                       </div>
                     </div>
-                    <div className="more-info">
+                    <div class="more-info">
                       <span className="material-icons">more_vert</span>
                     </div>
                   </div>
@@ -786,25 +818,25 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="latest-sights">
-            <div className="card">
-              <div className="card-header">
+          <div class="latest-sights">
+            <div class="card">
+              <div class="card-header">
                 <h3>Latest Sightings</h3>
                 <a href="/entries">
                   <span className="material-icons">arrow_forward</span>
                 </a>
               </div>
-              <div className="card-body">
+              <div class="card-body">
                 {checklists.map((item, index) => (
-                  <div className="eBirder" key={index}>
-                    <div className="info">
+                  <div class="eBirder">
+                    <div class="info">
                       <img
                         src={
                           item.StartbirdingData[0].photo
                             ? item.StartbirdingData[0].photo
                             : VerditerFlycatcher
                         }
-                        className="bird-pic"
+                        class="bird-pic"
                       />
                       <div>
                         <h4>{item.BirdName}</h4>
@@ -818,7 +850,7 @@ function Dashboard() {
                         </small>
                       </div>
                     </div>
-                    <div className="sighting-date">
+                    <div class="sighting-date">
                       <span>
                         {convertDate(item.StartbirdingData[0].selectedDate)}
                       </span>
@@ -829,27 +861,27 @@ function Dashboard() {
             </div>
           </div>
         </div>
-        <div className="explore-birds">
-          <div className="section-header">
+        <div class="explore-birds">
+          <div class="section-header">
             <h3>Explore Birds</h3>
             <a href="/species">
               {" "}
-              <div className="buttons-container">
-                <span className="material-icons">arrow_forward</span>
+              <div class="buttons-container">
+                <span class="material-icons">arrow_forward</span>
               </div>
             </a>
           </div>
-          <div className="popularImg-section">
+          <div class="popularImg-section">
             {speciesList.map((species) => (
-              <div className="popular-img" key={species._id}>
+              <div class="popular-img" key={species._id}>
                 {species.photos[0] ? (
                   <img
                     src={species.photos[0].url}
                     alt={species.englishName}
-                    className="b-img"
+                    class="b-img"
                   />
                 ) : (
-                  <img src={VerditerFlycatcher} className="b-img" />
+                  <img src={VerditerFlycatcher} class="b-img" />
                 )}
 
                 <div className="name-button-container">
@@ -858,10 +890,41 @@ function Dashboard() {
                 </div>
               </div>
             ))}
+
+            {/* <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div>
+            <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div>
+            <div class="popular-img">
+              <img src={VerditerFlycatcher} class="b-img" />
+              <div className="name-button-container">
+                <h3>Dove</h3>
+                <button>Landbird</button>
+              </div>
+              <span class="material-icons">
+                location_on <small>Dochula</small>
+              </span>
+            </div> */}
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

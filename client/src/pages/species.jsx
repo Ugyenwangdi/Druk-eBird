@@ -57,7 +57,7 @@ function Species({ searchQuery, setSearchClickId }) {
   useEffect(() => {
     const fetchExportList = async () => {
       try {
-        const url = `${process.env.REACT_APP_API_URL}/api/v1/species?export_limit=all`;
+        const url = `${process.env.REACT_APP_API_URL}/api/v1/species`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
@@ -168,7 +168,7 @@ function Species({ searchQuery, setSearchClickId }) {
     if (currentUser.id) {
       const getAdminDetails = async () => {
         const response = await fetch(
-          `${process.env.REACT_APP_API_URL}/users/${currentUser.email}`
+          `${process.env.REACT_APP_API_URL}/users/`
         );
         const data = await response.json();
         // console.log(data);
@@ -211,13 +211,9 @@ function Species({ searchQuery, setSearchClickId }) {
         } catch (error) {
           console.error("Failed to send notification:", error);
         }
-      };
+      };      
       // Create a new notification
-      const notificationMessage = `A Bird name **${
-        speciesToDelete.englishName
-      }** has been deleted by **${
-        currentUser.email
-      }** at ${new Date().toLocaleString()}.`;
+      const notificationMessage = `A Bird name **${speciesToDelete.englishName}** has been deleted by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
       console.log(notificationMessage);
     } catch (err) {

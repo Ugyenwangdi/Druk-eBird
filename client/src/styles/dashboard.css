@@ -7,6 +7,12 @@
   margin-top: 80px;
   padding: 10px 0;
   padding-bottom: 15px;
+  width: 100%;
+}
+.dash-header {
+  margin-top: 80px;
+  padding: 10px 0;
+  padding-bottom: 15px;
 }
 .dashboard-cards {
   display: grid;
