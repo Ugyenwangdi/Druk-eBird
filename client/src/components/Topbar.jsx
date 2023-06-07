@@ -99,6 +99,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
         <Link to="/">
           <img src={logo} className="logo" alt="" />
         </Link>
+
         <div className="search-bar">
           <span className="material-icons">search</span>
           <input
@@ -132,7 +133,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
               </div>
             )}
           </div>
-          <button id="menu-btn" onClick={onToggleSidebar}>
+          <button id="menu-btn" className="menu-bar" onClick={onToggleSidebar}>
             <span className="material-icons">menu</span>
           </button>
         </div>
@@ -149,3 +150,4 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
 }
 
 export default TopBar;
+
