@@ -96,14 +96,14 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
   return (
     <nav className="topbar-nav">
       <div className="container">
-        <a href="/" className="logo-link">
-          <img src={logo} className="logo" alt="Home" />
-        </a>
+        <Link to="/" className="logo-link">
+          <img src={logo} className="logo" alt="" />
+        </Link>
         <div className="search-bar">
           <span className="material-icons">search</span>
           <input
             type="text"
-            placeholder="Search Bird names "
+            placeholder="Search Bird names, Scientific names, Species "
             onChange={({ currentTarget: input }) => setSearchQuery(input.value)}
           />
         </div>
@@ -149,4 +149,3 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
 }
 
 export default TopBar;
-

@@ -29,7 +29,7 @@ function Notifications() {
 
   return (
     <div className="notifications-container">
-      <h2 style={{ padding: '5px 0' }}>Notifications</h2>
+      <h2 style={{ padding: "5px 0" }}>Notifications</h2>
       {loading ? (
         <p>Loading notifications...</p>
       ) : (

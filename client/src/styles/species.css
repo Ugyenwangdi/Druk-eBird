@@ -3,6 +3,11 @@
   justify-content: center;
 }
 
+.page-container {
+  display: flex;
+  justify-content: center;
+}
+
 .total-species-container {
   width: 100%;
   margin: 0;
@@ -341,10 +346,8 @@
 }
 
 /* CSS for mobile devices */
-@media(max-width: 767px) {
-  
+@media (max-width: 767px) {
   .total-species-container {
-    
     padding-right: 0;
     padding-left: 2%;
     box-sizing: border-box;

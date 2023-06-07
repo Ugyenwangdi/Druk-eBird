@@ -5,6 +5,10 @@
   margin-top: 70px;
 }
 
+.header {
+  padding: 10px 0;
+}
+
 .birder-page-container {
   width: 100%;
   border-radius: 0.25rem;
@@ -246,26 +250,34 @@
     height: 30rem;
   }
 
+  .birder-profile {
+    width: 25%;
+    height: 150px;
+    margin-left: 2rem;
+    margin-right: 20px;
+    margin-top: 0;
+    border-radius: 50%;
+  }
+
   .birder-name {
-    margin-left: 35%;
-    margin-top: -24rem;
+    margin-left: 43%;
+    margin-top: -9rem;
   }
 
   .email-contact {
     display: flex;
-    width: 50%;
+    width: 40%;
     flex-direction: column;
     justify-content: center;
     margin-left: auto;
-    margin-left: 35%;
-    margin-top: 6rem;
+    margin-left: 31%;
+    margin-top: 3rem;
   }
 
   .locatio-date {
     width: 50%;
     position: relative;
-
-    margin-left: 35%;
+    margin-left: 31%;
     margin-top: 1rem;
   }
 }

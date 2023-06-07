@@ -7,6 +7,12 @@
   margin-top: 80px;
   padding: 10px 0;
   padding-bottom: 15px;
+  width: 100%;
+}
+.dash-header {
+  margin-top: 80px;
+  padding: 10px 0;
+  padding-bottom: 15px;
 }
 .dashboard-cards {
   display: grid;
@@ -45,25 +51,23 @@
 .flex-item {
   display: flex;
   align-items: center;
-  margin-left: 2px; 
+  margin-left: 2px;
 }
 
 label {
-  margin-right: 4px; 
+  margin-right: 4px;
 }
 .gray-select {
   background-color: rgb(216, 212, 212);
   border-radius: 2px;
 }
 
-
 .material-icons {
-  margin-left: 4px; 
+  margin-left: 4px;
 }
 .icon-label {
   cursor: pointer;
 }
-
 
 /* checklist leader dropdown */
 
@@ -76,16 +80,16 @@ label {
 .checklist-wrapper {
   display: flex;
   align-items: center;
-  margin-left: 2px; 
+  margin-left: 2px;
 }
 
 label {
   margin-right: 4px;
-  color: gray; 
+  color: gray;
 }
 
 .material-icons {
-  margin-left: 0px; 
+  margin-left: 0px;
 }
 
 .percentage-container {
@@ -321,10 +325,10 @@ label {
   .graphBox .box {
     width: 100%;
   }
-  .dashboard-cards .card-single .material-icons{
+  .dashboard-cards .card-single .material-icons {
     font-size: 25px;
   }
-  .dashboard-cards .card-single h1{
+  .dashboard-cards .card-single h1 {
     font-size: 20px;
   }
 }
@@ -346,7 +350,7 @@ label {
     grid-template-columns: 2fr;
     height: auto;
     grid-template-columns: 100%;
-  } 
+  }
   .recent-grid .card {
     width: 98%;
   }
