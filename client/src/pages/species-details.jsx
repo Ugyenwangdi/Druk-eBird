@@ -13,6 +13,8 @@ function SpeciesDetails() {
     location.state?.speciesDetails || { photos: [] }
   );
 
+  
+
   useEffect(() => {
     const fetchSpecies = async () => {
       try {

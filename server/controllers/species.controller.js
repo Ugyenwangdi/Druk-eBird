@@ -255,6 +255,7 @@ const getAllSpecies = async (req, res) => {
         .limit(limit);
     }
 
+
     const total = await Species.countDocuments({
       $or: [
         { order: { $in: [...order] } },

@@ -50,6 +50,7 @@ function Birder() {
         <div className="birder-button-container">
           <button className="birder-export-button">Export Data</button>
         </div>
+
         <h2 className="header">
           Total Enteries <span className="birder-count">({usersTotal})</span>
         </h2>
