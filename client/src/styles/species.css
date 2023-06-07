@@ -343,14 +343,20 @@
 @media(max-width: 767px) {
   
   .total-species-container {
-    
+    /* position: fixed; */
     padding-right: 0;
     padding-left: 2%;
+    height: 100%;
     box-sizing: border-box;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+
   }
   .species-page-container {
     width: 100%;
     padding: 2%;
+    /* overflow-y: scroll; */
   }
   .species-search-bar {
     width: 60%;

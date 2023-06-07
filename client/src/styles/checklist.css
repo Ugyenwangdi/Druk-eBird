@@ -165,9 +165,15 @@
 
 @media (max-width: 768px) {
   .checklists-page-container {
+    /* position: fixed; */
     display: block;
     width: 100%;
-    padding-right: 20px;
+    height: 100%;
+    /* padding-right: 20px; */
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+
   }
   .page-container {
     overflow: hidden;

@@ -29,23 +29,9 @@ function Birder() {
       console.log(error);
     }
   };
+  
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "https://druk-ebirds.onrender.com/api/v1/users"
-  //     );
-
-  //     if (response.ok) {
-  //       const jsonData = await response.json();
-  //       setData(Object.values(jsonData.data));
-  //     } else {
-  //       throw new Error("Request failed with status: " + response.status);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  
 
   return (
     <div className="birders-page-container">
@@ -90,7 +76,8 @@ function Birder() {
               <div className="birder-container">
                 <span
                   class="material-symbols-outlined"
-                  style={{ marginLeft: "95%", paddingRight: "18px" }}
+                  style={{ marginLeft: "95%", paddingRight: "18px", 
+                  '@media screen and (max-width: 768px)': { marginleft: "50%" } }}
                 >
                   more_horiz
                 </span>
@@ -138,9 +125,16 @@ function Birder() {
         <div className="all-birder">
           <div className="checklist-link">
             <div className="birder-container">
-              <span
+               <span
                 class="material-symbols-outlined"
-                style={{ marginLeft: "95%", paddingRight: "18px" }}
+                style={{
+                  marginLeft: "97%",
+                  paddingRight: "18px",
+                  cursor: "pointer",
+                  '@media (max-width: 768px)': {
+                    marginLeft: "50%"
+                  }
+                }}
               >
                 more_horiz
               </span>
@@ -158,7 +152,7 @@ function Birder() {
                 <ul>
                   <li>
                     <span class="material-symbols-outlined">mail</span>
-                    ex@gmail.com
+                    exgfhjkfghjbfghjfvgh@gmail.com
                   </li>
                   <li>
                     <span class="material-symbols-outlined">
@@ -189,11 +183,15 @@ function Birder() {
           <div className="checklist-link">
             <div className="birder-container">
               <span
-                class="material-symbols-outlined"
+                
+                className="custom-classname material-symbols-outlined"
                 style={{
-                  marginLeft: "95%",
+                  marginLeft: "97%",
                   paddingRight: "18px",
                   cursor: "pointer",
+                  '@media (max-width: 768px)': {
+                    marginLeft: "85%", // Decrease the margin-left as needed
+                  }
                 }}
               >
                 more_horiz
@@ -210,9 +208,13 @@ function Birder() {
               </h2>
               <div className="email-contact">
                 <ul>
-                  <li>
+
+                  <li >
                     <span class="material-symbols-outlined">mail</span>
-                    ex@gmail.com
+                    <div style={{ display: 'inline-block', wordBreak: 'break-all' }}>
+                     erertyuiiytrefghjkytrex@gmail.com
+                    </div>
+                    
                   </li>
                   <li>
                     <span class="material-symbols-outlined">

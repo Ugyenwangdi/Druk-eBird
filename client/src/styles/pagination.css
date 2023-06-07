@@ -2,7 +2,6 @@
   position: relative;
   bottom: -3rem;
   left: 15rem;
-  /* left: 0; */
   width: calc(80% - 20px);
   margin: 0 0;
   height: 45px;
@@ -42,4 +41,20 @@
   background-color: #136d66;
   color: white;
   padding: 5px 10px;
+}
+@media(max-width:768px){
+  .pagination_container {
+    position: relative;
+    bottom: -3rem;
+    left: 0;
+    width: calc(100% - 20px);
+    margin: 0 auto;
+    height: 45px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 100;
+    padding: 0px 35px;
+  }
 }

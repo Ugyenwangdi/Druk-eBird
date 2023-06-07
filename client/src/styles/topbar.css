@@ -21,12 +21,12 @@ nav:after {
 
 
 nav .container {
+  /* position: fixed; */
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--color-white);
   margin: 0 auto;
-  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -90,7 +90,7 @@ nav .profile-area .profile:hover .dropdown-menu {
 
 nav .profile-area .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: 8%;
   right: 2%;
   width: 12%;
   background-color: #ecebeb;
