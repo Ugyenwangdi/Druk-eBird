@@ -2,13 +2,12 @@ body {
   background-color: rgb(181, 186, 188);
 }
 .setting-box {
-  width: 100%;
+  width: 91%;
   /* max-width: 1200px; */
   background-color: white;
   border-radius: 0.5rem;
   padding-top: 2rem;
-  margin-top: 100px;
-  margin-right: 1rem;
+  margin-top: 2rem;
 }
 .form-container {
   width: 80%;
@@ -294,13 +293,11 @@ body {
 
 @media screen and (max-width: 768px) {
   .setting-box {
-    width: 100%;
+    width: 90%;
+    max-width: 1200px;
     margin: 0 auto;
-    margin-top: 70px;
-    margin-right: 1rem;
     background-color: white;
     border-radius: 0.5rem;
-    padding-top: 10px;
   }
   .form-container {
     position: relative;
