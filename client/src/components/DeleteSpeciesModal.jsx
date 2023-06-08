@@ -10,8 +10,8 @@ function DeleteSpeciesModal({ speciesName, onDelete, onCancel }) {
         <p>
           Are you sure you want to delete <b>{speciesName}</b>?
         </p>
-        <div className="modal-buttons">
-          <button className="button-delete" onClick={onDelete}>
+        <div className="modal-buttons1">
+          <button className="confirm-delete" onClick={onDelete}>
             Delete
           </button>
           <button className="button-delete" onClick={onCancel}>

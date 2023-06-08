@@ -84,13 +84,13 @@ const Pagination = ({ page, total, limit, setPage }) => {
   return (
     <div className="pagination_container">
       {page > 1 && (
-        <button onClick={handlePrevClick} className="pagination_page_btn" style={{backgroundColor: '#136d66', color:'white', width:'4rem'}}>
+        <button onClick={handlePrevClick} className="pagination_page_btn_prev">
           Prev
         </button>
       )}
       {renderPageButtons()}
       {page < totalPages && (
-        <button onClick={handleNextClick} className="pagination_page_btn" style={{backgroundColor: '#136d66', color:'white', width:'4rem'}}>
+        <button onClick={handleNextClick} className="pagination_page_btn_next">
           Next
         </button>
       )}

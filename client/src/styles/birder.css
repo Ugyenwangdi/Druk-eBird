@@ -191,6 +191,28 @@
   margin-right: 0.5rem;
 }
 
+.delete-birder {
+  padding: 5px 10px;
+  position: absolute;
+  right: 6%;
+  margin-top: 2rem;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: rgb(217, 6, 6);
+}
+
+.delete-birder:hover {
+  background-color: rgb(166, 8, 8);
+}
+
+.material-symbols-outlined#toggle {
+    margin-top: 0;
+    margin-left: 95%;
+    cursor: pointer;
+}
+
 @media (max-width: 1024px) {
   .birder-page-container {
     display: block;
@@ -233,6 +255,16 @@
     margin-left: 30%;
     margin-top: 6rem;
   }
+  .delete-birder {
+    position: absolute;
+    right: 8%;
+    margin-top: 2rem;
+  }
+  .material-symbols-outlined#toggle {
+    margin-top: 0;
+    margin-left: 94%;
+    cursor: pointer;
+}
 }
 
 @media (max-width: 768px) {
@@ -280,4 +312,22 @@
     margin-left: 31%;
     margin-top: 1rem;
   }
+  .delete-birder {
+    position: absolute;
+    right: 9%;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .delete-birder {
+    position: absolute;
+    right: 13%;
+    margin-top: 2rem;
+  }
+  .material-symbols-outlined#toggle {
+    margin-top: 0;
+    margin-left: 90%;
+    cursor: pointer;
+}
 }

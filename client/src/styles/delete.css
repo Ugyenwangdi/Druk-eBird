@@ -25,26 +25,44 @@
   padding: 10px;
 }
 
-.modal-buttons {
+.modal-buttons1 {
   margin-top: 20px;
   display: flex;
   justify-content: center;
 }
 
 .button-delete {
-  margin: 0 10px;
-  padding: 10px 20px;
-  background-color: #ff4d4f;
-  color: #fff;
-  border: none;
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: rgb(217, 6, 6);
+  color: white;
+  font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .button-delete:hover {
-  background-color: #d9363e;
+  background-color: rgb(166, 8, 8);
 }
 
 .button-delete:focus {
+  outline: none;
+}
+
+.confirm-delete {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #136d66;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.confirm-delete:hover {
+  background-color: #115d56;
+}
+
+.confirm-delete:focus {
   outline: none;
 }
