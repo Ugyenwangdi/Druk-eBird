@@ -103,7 +103,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
           <span className="material-icons">search</span>
           <input
             type="text"
-            placeholder="Search Bird names, Scientific names, Species "
+            placeholder="Search Bird name, Scientific name, Species "
             onChange={({ currentTarget: input }) => setSearchQuery(input.value)}
           />
         </div>

@@ -4,7 +4,7 @@ import axios from "axios";
 
 import "../styles/checklist.css";
 
-import { Pagination } from "../components";
+import { Search, Pagination } from "../components";
 
 function Checklist() {
   const [checklists, setChecklists] = useState([]);
@@ -12,15 +12,17 @@ function Checklist() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
+  const [birderName, setBirderName] = useState("");
+  const [birdingSite, setBirdingSite] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, [page, limit]);
+  }, [page, limit, birderName]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}&birder=${birderName}&birding_site=${birdingSite}`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);
@@ -60,7 +62,7 @@ function Checklist() {
       </div>
       <div className="checklist-page-container">
         <div className="checklist-filter-container">
-          <div className="checklist-filter-select">
+          {/* <div className="checklist-filter-select">
             <select className="checklist-filter-dropdown">
               <option value="">Birder</option>
               <option value="1">option 1</option>
@@ -70,17 +72,18 @@ function Checklist() {
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
+          </div> */}
+          <div className="checklist-name-search">
+            <Search
+              placeholder="Birder"
+              setSearch={(birderName) => setBirderName(birderName)}
+            />
           </div>
-          <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">Birding site</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
-            <span className="material-icons google-font-icon">
-              arrow_drop_down
-            </span>
+          <div className="checklist-name-search">
+            <Search
+              placeholder="Birding sites"
+              setSearch={(birdingSite) => setBirdingSite(birdingSite)}
+            />
           </div>
           <div className="checklist-filter-select">
             <select className="checklist-filter-dropdown">

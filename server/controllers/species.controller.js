@@ -37,6 +37,7 @@ const getSpecies = async (req, res) => {
     const limit = parseInt(req.query.limit) || 6;
     const startsWith = req.query.starts_with || "";
     let search = req.query.search || "";
+    const birdName = req.query.bird_name || "";
     const species = req.query.species || "";
     const scientificName = req.query.scientific_name || "";
     let order = req.query.order || "All";
@@ -89,58 +90,52 @@ const getSpecies = async (req, res) => {
       };
     }
     const foundSpecies = await Species.find({
-      $or: [
-        { order: { $in: [...order] } },
-        { order: "" },
-        { familyName: { $in: [...family] } },
-        { familyName: "" },
-        { genus: { $in: [...genus] } },
-        { genus: "" },
-        { iucnStatus: { $in: [...iucnStatus] } },
-        { iucnStatus: "" },
-        { group: { $in: [...group] } },
-        { group: "" },
-        { residency: { $in: [...residency] } },
-        { residency: "" },
-        { species: { $regex: species, $options: "i" } },
-        { species: "" },
-        { scientificName: { $regex: scientificName, $options: "i" } },
-        { scientificName: "" },
-      ],
       ...searchQuery,
+      $or: [
+        { englishName: { $regex: birdName, $options: "i" } },
+        { species: { $regex: species, $options: "i" } },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+      ],
+    })
+      .where("order")
+      .in([...order])
+      .where("familyName")
+      .in([...family])
+      .where("genus")
+      .in([...genus])
+      .where("iucnStatus")
+      .in([...iucnStatus])
+      .where("group")
+      .in([...group])
+      .where("residency")
+      .in([...residency])
+      .sort({ createdAt: -1 })
+      .skip(page * limit)
+      .limit(limit)
+      .maxTimeMS(60000);
+
+    const total = await Species.countDocuments({
+      ...searchQuery,
+      englishName: { $regex: birdName, $options: "i" },
       species: { $regex: species, $options: "i" },
       scientificName: { $regex: scientificName, $options: "i" },
     })
-      .sort({ createdAt: -1 })
-      .skip(page * limit)
-      .limit(limit);
-
-    const total = await Species.countDocuments({
-      $or: [
-        { order: { $in: [...order] } },
-        { order: "" },
-        { familyName: { $in: [...family] } },
-        { familyName: "" },
-        { genus: { $in: [...genus] } },
-        { genus: "" },
-        { iucnStatus: { $in: [...iucnStatus] } },
-        { iucnStatus: "" },
-        { group: { $in: [...group] } },
-        { group: "" },
-        { residency: { $in: [...residency] } },
-        { residency: "" },
-        { species: { $regex: species, $options: "i" } },
-        { species: "" },
-        { scientificName: { $regex: scientificName, $options: "i" } },
-        { scientificName: "" },
-      ],
-      ...searchQuery,
-      species: { $regex: species, $options: "i" },
-      scientificName: { $regex: scientificName, $options: "i" },
-    });
+      .where("order")
+      .in([...order])
+      .where("familyName")
+      .in([...family])
+      .where("genus")
+      .in([...genus])
+      .where("iucnStatus")
+      .in([...iucnStatus])
+      .where("group")
+      .in([...group])
+      .where("residency")
+      .in([...residency]);
 
     const speciesTotal = await Species.countDocuments();
     // console.log(`Total number of species: ${speciesTotal}`);
+    // const uniqueOrders = await Species.distinct("order");
 
     const response = {
       error: false,
@@ -347,10 +342,8 @@ const createSpecies = async (req, res) => {
 
   // console.log(photo);
 
-  if (!englishName || !scientificName) {
-    return res
-      .status(400)
-      .json({ message: "English name and Scientific name are required" });
+  if (!englishName) {
+    return res.status(400).json({ message: "English name is required" });
   }
 
   try {
@@ -378,8 +371,10 @@ const createSpecies = async (req, res) => {
     });
     // console.log(photos[0]);
     if (photos[0]) {
+      const folderPath = "DrukeBird/Species";
       const uploadedResponse = await cloudinary.uploader.upload(photos[0], {
-        upload_preset: "druk-ebird",
+        folder: folderPath,
+        upload_preset: "DrukeBird",
       });
 
       if (uploadedResponse) {

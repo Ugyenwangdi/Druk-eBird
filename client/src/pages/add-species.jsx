@@ -73,7 +73,6 @@ function AddSpecies() {
 
   const fetchData = async () => {
     try {
-      // const response = await fetch("http://localhost:8080/api/v1/users/");
       const response = await fetch(`${process.env.REACT_APP_API_URL}/users/`);
 
       const jsonData = await response.json();
@@ -137,15 +136,21 @@ function AddSpecies() {
     try {
       setLoading(true);
 
-      if (!form.englishName || !form.scientificName) {
-        setError("English name and Scientific name is required!");
+      if (!form.englishName) {
+        setError("English name is required!");
+        setLoading(false);
+        return;
       }
       if (form.englishName.length < 2) {
-        setError("Please provide a name with atleast 2 letters!");
+        setError("Please provide a name with at least 2 letters!");
+        setLoading(false);
+        return;
       }
-      if (form.scientificName.length < 2) {
-        setError("Please provide a name with atleast 2 letters!");
-      }
+      // if (form.scientificName.length < 2) {
+      //   setError("Please provide a scientific name with at least 2 letters!");
+      //   setLoading(false);
+      //   return;
+      // }
 
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/v1/species`,
@@ -179,10 +184,10 @@ function AddSpecies() {
         photos: [],
       }); // reset form
       setSpeciesImg("");
-      // document.getElementById("photo").value = "";
 
       setMsg(res.data.message);
       console.log(res.data.message);
+
       const sendNotification = async (notification) => {
         try {
           await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
@@ -193,7 +198,11 @@ function AddSpecies() {
         }
       };
       // Create a new notification
-      const notificationMessage = `A new Species **${form.englishName}** has been added by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
+      const notificationMessage = `A new Species **${
+        form.englishName
+      }** has been added by **${
+        currentUser.email
+      }** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
       console.log(notificationMessage);
     } catch (err) {

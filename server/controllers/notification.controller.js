@@ -7,7 +7,7 @@ const createNotification = async (req, res) => {
 
     // Create a new notification and associate it with all admins
     const notification = await Notification.create({
-      message
+      message,
     });
 
     res.status(201).json({ notification });
@@ -20,7 +20,7 @@ const createNotification = async (req, res) => {
 const getAllNotifications = async (req, res) => {
   try {
     // Find all notifications associated with the logged-in admin
-    const notifications = await Notification.find();
+    const notifications = await Notification.find().sort({ createdAt: -1 });
 
     res.json({ notifications });
   } catch (error) {
@@ -38,8 +38,4 @@ const getCount = async (req, res) => {
   }
 };
 
-export {
-  getAllNotifications,
-  createNotification,
-  getCount,
-};
+export { getAllNotifications, createNotification, getCount };
