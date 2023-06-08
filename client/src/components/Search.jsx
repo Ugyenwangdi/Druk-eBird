@@ -6,6 +6,7 @@ const Search = ({ setSearch, placeholder }) => {
       type="text"
       placeholder={placeholder}
       onChange={({ currentTarget: input }) => setSearch(input.value)}
+      style={{ "::placeholder": { color: "black" } }}
     />
   );
 };
