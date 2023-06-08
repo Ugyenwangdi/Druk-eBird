@@ -159,15 +159,16 @@ function ChecklistDetail() {
                       {item.StartbirdingData[0].Totalcount}
                     </td>
                     <td data-label="Photo">
-                      <img
-                        src={
-                          item.StartbirdingData[0].photo
-                            ? item.StartbirdingData[0].photo
-                            : logo
-                        }
-                        alt="Bird"
-                        className="bird-img"
-                      />
+                      {item.StartbirdingData[0].photo &&
+                      item.StartbirdingData[0].photo !== "null" ? (
+                        <img
+                          src={item.StartbirdingData[0].photo}
+                          alt="Bird"
+                          className="bird-img"
+                        />
+                      ) : (
+                        <img src={logo} alt="Logo" className="bird-img" />
+                      )}
                     </td>
                     <td data-label="Action">
                       <button
@@ -272,11 +273,6 @@ function ChecklistDetail() {
 
                     <div className="detail-text">
                       <img
-                        // src={
-                        //   checklist.StartbirdingData[0].photo
-                        //     ? checklist.StartbirdingData[0].photo
-                        //     : profile
-                        // }
                         src={profile}
                         className="detail-profile"
                         alt="detail"

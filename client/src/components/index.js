@@ -14,6 +14,7 @@ import Searchspecies from "./Searchspecies";
 import Searchscientific from "./Searchscientific";
 import DeleteSpeciesModal from "./DeleteSpeciesModal";
 import DeactivateModal from "./DeactivateModal";
+import Dropdown from "./Dropdown";
 
 export {
   Sidebar,
@@ -32,5 +33,5 @@ export {
   Searchscientific,
   DeleteSpeciesModal,
   DeactivateModal,
-  
+  Dropdown,
 };

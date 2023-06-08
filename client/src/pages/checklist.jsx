@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
 
 import "../styles/checklist.css";
 
-import { Search, Pagination } from "../components";
+import { Search, Dropdown, Pagination } from "../components";
 
 function Checklist() {
   const [checklists, setChecklists] = useState([]);
@@ -14,27 +17,52 @@ function Checklist() {
   const [foundTotal, setFoundTotal] = useState(0);
   const [birderName, setBirderName] = useState("");
   const [birdingSite, setBirdingSite] = useState("");
+  const [selectedDzongkhag, setSelectedDzongkhag] = useState("");
+  const [selectedGewog, setSelectedGewog] = useState("");
+  const [selectedVillage, setSelectedVillage] = useState("");
+  const [dzongkhagOptions, setDzongkhagOptions] = useState([]);
+  const [gewogOptions, setGewogOptions] = useState([]);
+  const [villageOptions, setVillageOptions] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  console.log(selectedDate);
 
   useEffect(() => {
     fetchData();
-  }, [page, limit, birderName]);
+  }, [
+    page,
+    limit,
+    birderName,
+    selectedDate,
+    birdingSite,
+    selectedDzongkhag,
+    selectedGewog,
+    selectedVillage,
+  ]);
 
   const fetchData = async () => {
     try {
+      const formattedDate = selectedDate
+        ? moment(selectedDate).format("YYYY-MM-DD")
+        : "";
+
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}&birder=${birderName}&birding_site=${birdingSite}`
+        `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}&birder=${birderName}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&date=${formattedDate}`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setChecklistTotal(response.data.totalChecklists);
+      setDzongkhagOptions(response.data.distinctDzongkhags);
+      setGewogOptions(response.data.distinctGewogs);
+      setVillageOptions(response.data.distinctVillages);
       setChecklists(Object.values(response.data.checklists));
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log("limit: ", limit);
+  console.log("selectedDzongkhag: ", selectedDzongkhag);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -62,21 +90,11 @@ function Checklist() {
       </div>
       <div className="checklist-page-container">
         <div className="checklist-filter-container">
-          {/* <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">Birder</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
-            <span className="material-icons google-font-icon">
-              arrow_drop_down
-            </span>
-          </div> */}
           <div className="checklist-name-search">
             <Search
               placeholder="Birder"
               setSearch={(birderName) => setBirderName(birderName)}
+              className="darker-placeholder"
             />
           </div>
           <div className="checklist-name-search">
@@ -85,46 +103,44 @@ function Checklist() {
               setSearch={(birdingSite) => setBirdingSite(birdingSite)}
             />
           </div>
+          <div className="date-filter-select">
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholderText="Selected date"
+              className="species-filter-dropdown"
+              style={{ width: "100px", maxWidth: "100%" }}
+            />
+          </div>
           <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">Date</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+            <Dropdown
+              option={selectedDzongkhag}
+              options={dzongkhagOptions ? dzongkhagOptions : []}
+              setOption={(dzongkhag) => setSelectedDzongkhag(dzongkhag)}
+              title="Dzongkhags"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
           <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">District</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+            <Dropdown
+              option={selectedGewog}
+              options={gewogOptions ? gewogOptions : []}
+              setOption={(gewog) => setSelectedGewog(gewog)}
+              title="Gewogs"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
           <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">Gewog</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
-            <span className="material-icons google-font-icon">
-              arrow_drop_down
-            </span>
-          </div>
-          <div className="checklist-filter-select">
-            <select className="checklist-filter-dropdown">
-              <option value="">Village</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+            <Dropdown
+              option={selectedVillage}
+              options={villageOptions ? villageOptions : []}
+              setOption={(village) => setSelectedVillage(village)}
+              title="Villages"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
