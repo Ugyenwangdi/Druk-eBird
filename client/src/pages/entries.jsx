@@ -4,6 +4,7 @@ import axios from "axios";
 import "../styles/entries.css";
 import { logo } from "../images";
 
+
 import { Pagination } from "../components";
 function Entries() {
   const [entries, setEntries] = useState([]);
@@ -37,6 +38,17 @@ function Entries() {
     const date = new Date(dateString);
     return date.toLocaleDateString();
   };
+
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setEnlargedImageVisible(true);
+  };
+
+
+
 
   return (
     <div className="page-container">
@@ -160,29 +172,42 @@ function Entries() {
                     <img
                       src={
                         item.StartbirdingData[0]?.photo === "null" ||
-                        item.StartbirdingData[0]?.photo === undefined
+                          item.StartbirdingData[0]?.photo === undefined
                           ? logo
                           : item.StartbirdingData[0].photo
                       }
                       alt=""
                       className="bird-img"
+                      onClick={() => handleImageClick(item.StartbirdingData[0]?.photo)}
                     />
+                    {enlargedImageVisible && (
+                      <div className="enlarged-image-container">
+                        <img
+                          src={selectedImage}
+                          alt=""
+                          className="enlarged-img"
+                        />
+                        <button className="close-button" onClick={() => setEnlargedImageVisible(false)}>
+                          &#10005;
+                        </button>
+                      </div>
+                    )}
                   </td>
                   <td data-title="Number Observed">
                     {item.StartbirdingData[0].JAcount &&
-                    item.StartbirdingData[0].JAcount.Adult === 0 &&
-                    item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
+                      item.StartbirdingData[0].JAcount.Adult === 0 &&
+                      item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
                       "Total: " + item.StartbirdingData[0].Totalcount
                     ) : (
                       <>
                         Adult:{" "}
                         {item.StartbirdingData[0].JAcount &&
-                        item.StartbirdingData[0].JAcount.Adult
+                          item.StartbirdingData[0].JAcount.Adult
                           ? item.StartbirdingData[0].JAcount.Adult
                           : item.StartbirdingData[0].Totalcount}
                         , Juvenile:{" "}
                         {item.StartbirdingData[0].JAcount &&
-                        item.StartbirdingData[0].JAcount.Juvenile
+                          item.StartbirdingData[0].JAcount.Juvenile
                           ? item.StartbirdingData[0].JAcount.Juvenile
                           : item.StartbirdingData[0].Totalcount}
                       </>
@@ -192,28 +217,6 @@ function Entries() {
               );
             })}
 
-            {/* <tr>
-              <td data-title="Sl.no">1</td>
-              <td data-title="English Name">Spotted Dov</td>
-              <td data-title="Birder">Sonam</td>
-              <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
-              <td data-title="Date/Time">10.12.2022</td>
-              <td data-title="Photo">
-                <img src={logo} alt="" className="bird-img" />
-              </td>
-              <td data-title="Number Observed">2 male</td>
-            </tr>
-            <tr>
-              <td data-title="Sl.no">1</td>
-              <td data-title="English Name">Spotted Dov</td>
-              <td data-title="Birder">Sonam</td>
-              <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
-              <td data-title="Date/Time">10.12.2022</td>
-              <td data-title="Photo">
-                <img src={logo} alt="" className="bird-img" />
-              </td>
-              <td data-title="Number Observed">2 male</td>
-            </tr> */}
           </tbody>
         </table>
       </div>

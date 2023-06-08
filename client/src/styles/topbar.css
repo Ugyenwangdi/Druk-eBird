@@ -1,9 +1,5 @@
-/* NAV BAR */
-/* nav {
-  width: 100%;
-  background: var(--color-white);
-  margin-top: 66px;
-} */
+NAV BAR
+
 nav {
   width: 100%;
   background: var(--color-white);
@@ -25,12 +21,12 @@ nav:after {
 
 
 nav .container {
-  position: fixed;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: var(--color-white);
   margin: 0 auto;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -88,14 +84,13 @@ nav .profile-area button {
   display: none;
 }
 
-/* Dropdown Menu */
 nav .profile-area .profile:hover .dropdown-menu {
   display: block;
 }
 
 nav .profile-area .dropdown-menu {
   position: absolute;
-  top: 8%;
+  top: 100%;
   right: 2%;
   width: 12%;
   background-color: #ecebeb;
@@ -122,13 +117,12 @@ nav .profile-area .dropdown-menu button:hover {
   color: #ba760d;
 }
 
-/* Add this CSS code to your stylesheet */
 
 .notification {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: 50%;
+  margin-left: 85%;
   cursor: pointer;
 }
 
@@ -156,21 +150,45 @@ nav .profile-area .dropdown-menu button:hover {
   color: #fff;
   font-size: 12px;
 }
-
+@media(max-width:1024px){
+  .notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 65%;
+    cursor: pointer;
+  }
+}
+/* @media(max-width:768px){
+  .notification {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-left: 45%;
+    cursor: pointer;
+  }
+  
+} */
 @media (max-width: 768px) {
-  nav .profile-area {
+  nav .search-bar {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+  }
+  
+  nav .search-bar input[type="search"] {
+    width: 100%;
+    text-align: center;
+  }
+  nav .profile-area .profile {
     display: none;
   }
   
-  nav .notification {
+  nav .profile-area button {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: 20%;
   }
   
-  nav #menu-btn {
-    display: block;
-    margin-left: 10%;
+  nav .notification {
+    margin-left: auto;
   }
 }
