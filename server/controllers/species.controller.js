@@ -90,6 +90,24 @@ const getSpecies = async (req, res) => {
       };
     }
     const foundSpecies = await Species.find({
+      $or: [
+        { order: { $in: [...order] } },
+        { order: "" },
+        { familyName: { $in: [...family] } },
+        { familyName: "" },
+        { genus: { $in: [...genus] } },
+        { genus: "" },
+        { iucnStatus: { $in: [...iucnStatus] } },
+        { iucnStatus: "" },
+        { group: { $in: [...group] } },
+        { group: "" },
+        { residency: { $in: [...residency] } },
+        { residency: "" },
+        { species: { $regex: species, $options: "i" } },
+        { species: "" },
+        { scientificName: { $regex: scientificName, $options: "i" } },
+        { scientificName: "" },
+      ],
       ...searchQuery,
       $or: [
         { englishName: { $regex: birdName, $options: "i" } },
@@ -97,18 +115,18 @@ const getSpecies = async (req, res) => {
         { scientificName: { $regex: scientificName, $options: "i" } },
       ],
     })
-      .where("order")
-      .in([...order])
-      .where("familyName")
-      .in([...family])
-      .where("genus")
-      .in([...genus])
-      .where("iucnStatus")
-      .in([...iucnStatus])
-      .where("group")
-      .in([...group])
-      .where("residency")
-      .in([...residency])
+      // .where("order")
+      // .in([...order])
+      // .where("familyName")
+      // .in([...family])
+      // .where("genus")
+      // .in([...genus])
+      // .where("iucnStatus")
+      // .in([...iucnStatus])
+      // .where("group")
+      // .in([...group])
+      // .where("residency")
+      // .in([...residency])
       .sort({ createdAt: -1 })
       .skip(page * limit)
       .limit(limit)

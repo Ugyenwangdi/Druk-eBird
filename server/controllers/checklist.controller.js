@@ -1,6 +1,7 @@
 import * as dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import xlsx from "xlsx";
+import moment from "moment";
 
 import Checklist from "../mongodb/models/checklist.js";
 
@@ -332,9 +333,12 @@ const getChecklists = async (req, res) => {
     const limit = parseInt(req.query.limit) || 5;
     const birder = req.query.birder || "";
     const birding_site = req.query.birding_site || "";
+    const dzongkhag = req.query.dzongkhag || "";
+    const gewog = req.query.gewog || "";
+    const village = req.query.village || "";
+    const selectedDate = req.query.date || "";
 
-    const search = req.query.search || "";
-
+    console.log(selectedDate);
     let searchQuery = {
       "StartbirdingData.status": "submittedchecklist",
       // "StartbirdingData.Approvedstatus": "approved",
@@ -361,10 +365,20 @@ const getChecklists = async (req, res) => {
       ];
     } else if (birding_site) {
       searchQuery.$or = [
-        // { CheckListName: { $regex: search, $options: "i" } },
-        // { "StartbirdingData.observer": { $regex: birder, $options: "i" } },
         {
           "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: `^${birding_site}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: `.* ${birding_site}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.gewog": {
             $regex: `^${birding_site}`,
             $options: "i",
           },
@@ -377,31 +391,68 @@ const getChecklists = async (req, res) => {
         },
         {
           "StartbirdingData.EndpointLocation.village": {
+            $regex: `^${birding_site}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.village": {
             $regex: `.* ${birding_site}`,
             $options: "i",
           },
         },
-        // {
-        //   "StartbirdingData.EndpointLocation.dzongkhag": {
-        //     $regex: search,
-        //     $options: "i",
-        //   },
-        // },
-        // {
-        //   "StartbirdingData.EndpointLocation.gewog": {
-        //     $regex: search,
-        //     $options: "i",
-        //   },
-        // },
-        // {
-        //   "StartbirdingData.EndpointLocation.village": {
-        //     $regex: search,
-        //     $options: "i",
-        //   },
-        // },
-        // { "StartbirdingData.observer": { $regex: search, $options: "i" } },
+      ];
+    } else if (dzongkhag) {
+      searchQuery.$or = [
+        {
+          "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: `^${dzongkhag}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.dzongkhag": {
+            $regex: `.* ${dzongkhag}`,
+            $options: "i",
+          },
+        },
+      ];
+    } else if (gewog) {
+      searchQuery.$or = [
+        {
+          "StartbirdingData.EndpointLocation.gewog": {
+            $regex: `^${gewog}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.gewog": {
+            $regex: `.* ${gewog}`,
+            $options: "i",
+          },
+        },
+      ];
+    } else if (village) {
+      searchQuery.$or = [
+        {
+          "StartbirdingData.EndpointLocation.village": {
+            $regex: `^${village}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.EndpointLocation.village": {
+            $regex: `.* ${village}`,
+            $options: "i",
+          },
+        },
       ];
     }
+
+    if (selectedDate) {
+      searchQuery["StartbirdingData.selectedDate"] = selectedDate;
+    }
+
     const groupedChecklists = await Checklist.aggregate([
       { $match: searchQuery },
       {
@@ -467,6 +518,10 @@ const getChecklists = async (req, res) => {
     const totalChecklists = totalGroupedChecklists.length;
     const entriesTotal = await Checklist.countDocuments(searchQuery);
 
+    const distinctDzongkhags = await getDistinctDzongkhags();
+    const distinctGewogs = await getDistinctChecklistGewogs();
+    const distinctVillages = await getDistinctChecklistVillages();
+
     const response = {
       error: false,
       foundTotal: foundTotal,
@@ -475,6 +530,9 @@ const getChecklists = async (req, res) => {
       page: page + 1,
       limit,
       checklists: groupedChecklists,
+      distinctDzongkhags,
+      distinctGewogs,
+      distinctVillages,
     };
 
     res.status(200).json(response);
@@ -1409,6 +1467,42 @@ const getBirdsCountByYear = async (req, res) => {
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+const getDistinctDzongkhags = async () => {
+  try {
+    const distinctDzongkhags = await Checklist.distinct(
+      "StartbirdingData.EndpointLocation.dzongkhag"
+    );
+    return distinctDzongkhags;
+  } catch (error) {
+    console.error("Error retrieving distinct dzongkhags:", error);
+    throw error;
+  }
+};
+
+const getDistinctChecklistGewogs = async () => {
+  try {
+    const distinctGewogs = await Checklist.distinct(
+      "StartbirdingData.EndpointLocation.gewog"
+    );
+    return distinctGewogs;
+  } catch (error) {
+    console.error("Error retrieving distinct dzongkhags:", error);
+    throw error;
+  }
+};
+
+const getDistinctChecklistVillages = async () => {
+  try {
+    const distinctVillages = await Checklist.distinct(
+      "StartbirdingData.EndpointLocation.village"
+    );
+    return distinctVillages;
+  } catch (error) {
+    console.error("Error retrieving distinct dzongkhags:", error);
+    throw error;
   }
 };
 
