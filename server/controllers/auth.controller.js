@@ -387,8 +387,10 @@ const updateProfile = async (req, res) => {
     updatedUser.email = email;
 
     if (photo) {
+      const folderPath = "DrukeBird/AdminProfile";
       const uploadedResponse = await cloudinary.uploader.upload(photo, {
-        upload_preset: "druk-ebird-profiles",
+        folder: folderPath,
+        upload_preset: "DrukeBird",
       });
 
       if (uploadedResponse) {

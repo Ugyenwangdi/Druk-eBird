@@ -74,12 +74,9 @@ function Species({ searchQuery, setSearchClickId }) {
   useEffect(() => {
     const fetchSpeciesList = async () => {
       try {
-        // const url = `http://localhost:8080/api/v1/species?page=${page}&order=${filterOrder.toString()}&search=${search}`;
         const url = `${
           process.env.REACT_APP_API_URL
-        }/api/v1/species/get?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${
-          englishName || searchQuery
-        }&species=${searchspecies}&scientific_name=${searchscientific}`;
+        }/api/v1/species/get?page=${page}&order=${filterOrder.toString()}&family=${filterFamily.toString()}&genus=${filterGenus.toString()}&iucn_status=${filterIucnstatus.toString()}&group=${filterGroup.toString()}&residency=${filterResidency.toString()}&search=${searchQuery}&bird_name=${englishName}&species=${searchspecies}&scientific_name=${searchscientific}`;
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
@@ -307,7 +304,10 @@ function Species({ searchQuery, setSearchClickId }) {
         <div className="species-filter-container">
           <div className="species-search-bar">
             <span className="material-icons google-font-icon">search</span>
-            <Search setSearch={(englishName) => setEnglishName(englishName)} />
+            <Search
+              setSearch={(englishName) => setEnglishName(englishName)}
+              placeholder="Type bird name"
+            />
           </div>
           <div className="filter-select" id="order">
             <Orders

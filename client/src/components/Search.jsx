@@ -1,10 +1,10 @@
 import React from "react";
 
-const Search = ({ setSearch }) => {
+const Search = ({ setSearch, placeholder }) => {
   return (
     <input
       type="text"
-      placeholder="Enter bird name"
+      placeholder={placeholder}
       onChange={({ currentTarget: input }) => setSearch(input.value)}
     />
   );

@@ -43,6 +43,38 @@
   width: 30%;
 }
 
+.checklist-name-search {
+  border: 1px solid transparent;
+  background: var(--color-light);
+  padding: 8px;
+  width: 8%;
+  border-radius: var(--border-radius-2);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-gray-light);
+}
+
+.checklist-name-search:is(:hover, :focus) {
+  border: 1px solid #136d66;
+}
+
+.checklist-name-search input {
+  background-color: transparent;
+  color: var(--color-gray-light);
+  width: 100%;
+}
+
+.checklist-name-search input[type="search"] {
+  color: var(--color-dark);
+  background: transparent;
+  width: 100%;
+}
+
+.species-search-bar input[type="search"]::placeholder {
+  color: var(--color-gray-dark);
+}
+
 .checklist-filter-dropdown {
   padding: 5px;
   background: var(--color-light);

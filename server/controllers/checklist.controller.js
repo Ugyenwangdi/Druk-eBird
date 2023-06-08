@@ -330,7 +330,9 @@ const getChecklists = async (req, res) => {
 
     const page = parseInt(req.query.page) - 1 || 0;
     const limit = parseInt(req.query.limit) || 5;
-    const startsWith = req.query.starts_with || "";
+    const birder = req.query.birder || "";
+    const birding_site = req.query.birding_site || "";
+
     const search = req.query.search || "";
 
     let searchQuery = {
@@ -342,34 +344,62 @@ const getChecklists = async (req, res) => {
       },
     };
 
-    if (startsWith) {
+    if (birder) {
       searchQuery.$or = [
-        { CheckListName: { $regex: `^${startsWith}`, $options: "i" } },
-        { CheckListName: { $regex: `.* ${startsWith}`, $options: "i" } },
+        {
+          "StartbirdingData.observer": {
+            $regex: `^${birder}`,
+            $options: "i",
+          },
+        },
+        {
+          "StartbirdingData.observer": {
+            $regex: `.* ${birder}`,
+            $options: "i",
+          },
+        },
       ];
-    } else if (search) {
+    } else if (birding_site) {
       searchQuery.$or = [
-        { CheckListName: { $regex: search, $options: "i" } },
-        { BirdName: { $regex: search, $options: "i" } },
+        // { CheckListName: { $regex: search, $options: "i" } },
+        // { "StartbirdingData.observer": { $regex: birder, $options: "i" } },
         {
           "StartbirdingData.EndpointLocation.dzongkhag": {
-            $regex: search,
+            $regex: `^${birding_site}`,
             $options: "i",
           },
         },
         {
           "StartbirdingData.EndpointLocation.gewog": {
-            $regex: search,
+            $regex: `.* ${birding_site}`,
             $options: "i",
           },
         },
         {
           "StartbirdingData.EndpointLocation.village": {
-            $regex: search,
+            $regex: `.* ${birding_site}`,
             $options: "i",
           },
         },
-        { "StartbirdingData.observer": { $regex: search, $options: "i" } },
+        // {
+        //   "StartbirdingData.EndpointLocation.dzongkhag": {
+        //     $regex: search,
+        //     $options: "i",
+        //   },
+        // },
+        // {
+        //   "StartbirdingData.EndpointLocation.gewog": {
+        //     $regex: search,
+        //     $options: "i",
+        //   },
+        // },
+        // {
+        //   "StartbirdingData.EndpointLocation.village": {
+        //     $regex: search,
+        //     $options: "i",
+        //   },
+        // },
+        // { "StartbirdingData.observer": { $regex: search, $options: "i" } },
       ];
     }
     const groupedChecklists = await Checklist.aggregate([
