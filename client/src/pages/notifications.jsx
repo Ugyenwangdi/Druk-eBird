@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import "../styles/notifications.css";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const goBack = () => {
+    window.history.back();
+  };
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -29,7 +34,16 @@ function Notifications() {
 
   return (
     <div className="notifications-container">
-      <h1 style={{ padding: "5px 0" }}>Notifications</h1>
+      <div className="notification-header">
+        <span
+          className="material-icons back-arrow"
+          id="notification"
+          onClick={goBack}
+        >
+          arrow_back_ios
+        </span>
+        <h1>Notifications</h1>
+      </div>
       {loading ? (
         <p>Loading notifications...</p>
       ) : (

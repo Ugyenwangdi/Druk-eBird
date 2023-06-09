@@ -52,7 +52,7 @@ function SpeciesDetails() {
         </div>
       )}
       <h2 className="species-details-header">
-        <div>
+        <div className="header">
           <Link to="/species">
             <span className="material-icons back-arrow">arrow_back_ios</span>
           </Link>

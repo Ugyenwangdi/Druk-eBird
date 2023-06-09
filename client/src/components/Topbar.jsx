@@ -112,8 +112,8 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
           <div className="notification-count">{notificationCount}</div>
         </Link>
         <div className="profile-area">
-          <div className="profile">
-            <div className="profile-photo" onClick={handleDropdownToggle}>
+          <div className="profile" onClick={handleDropdownToggle}>
+            <div className="profile-photo">
               <img
                 src={currentUser.profile ? currentUser.profile : profile}
                 alt="profile"

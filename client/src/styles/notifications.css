@@ -10,6 +10,29 @@
   margin-bottom: 2rem;
 }
 
+.notification-header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0px 0;
+}
+
+.notification-header h1 {
+  padding: 5px 0;
+  font-size: 25px;
+}
+
+.back-arrow#notification {
+  font-size: 1.8rem;
+  padding-right: 5px;
+  line-height: 220%;
+  color: #6c6c6c;
+  cursor: pointer;
+}
+
+.back-arrow#notification:hover {
+  color: black;
+}
+
 .notification-list {
   list-style: none;
   background-color: white;

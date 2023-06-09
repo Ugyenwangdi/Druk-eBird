@@ -6,12 +6,14 @@ function LogoutModal({ message, onConfirm, onCancel }) {
   return (
     <div className="logout-modal">
       <div className="logout-modal-content">
-        <p>{message}</p>
+        <p>
+          <b>{message}</b>
+        </p>
         <div className="logout-modal-buttons">
-          <button className="logout-button" onClick={onConfirm}>
+          <button className="confirm1-button" onClick={onConfirm}>
             Confirm
           </button>
-          <button className="logout-button" onClick={onCancel}>
+          <button className="canclebutton" onClick={onCancel}>
             Cancel
           </button>
         </div>

@@ -1,6 +1,5 @@
 .add-species-container {
   width: 100%;
-  margin: 0;
   padding: 0 8px;
 }
 .species-header {
@@ -13,9 +12,12 @@
 .back-arrow {
   font-size: 1rem;
   padding-right: 10px;
-  line-height: 220%;
+  line-height: 210%;
+  color: #767676;
 }
-
+.back-arrow:hover {
+  color: black;
+}
 .speciescontainer {
   display: flex;
   flex-direction: row;
@@ -135,6 +137,10 @@
   font-size: 14px;
 }
 
+.cancle-button:hover {
+  background-color: #f4f4f6;
+}
+
 .addnew-button {
   margin-left: 10px;
   background-color: #136d66;
@@ -144,6 +150,10 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.addnew-button:hover {
+  background-color: #115d56;
 }
 
 .update-button {
@@ -157,6 +167,10 @@
   font-size: 14px;
 }
 
+.update-button:hover {
+  background-color: #115d56;
+}
+
 .delete-button {
   margin-left: 10px;
   background-color: rgba(173, 27, 34, 0.752);
@@ -166,6 +180,10 @@
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+}
+
+.delete-button:hover {
+  background-color: rgb(164, 3, 11);
 }
 
 .uploaded-photos-img-container {

@@ -1,6 +1,6 @@
 .species-details-container {
   border-radius: 15px;
-  margin-top: 20px;
+  margin-top: 80px;
   border-color: #f7f7f7;
   background-color: #fcfcfc;
   padding: 1%;
@@ -26,6 +26,9 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 14px;
+}
+.edit-button:hover {
+  background-color: #115d56;
 }
 .species-images {
   display: flex;
@@ -136,6 +139,21 @@
   padding-top: 5px;
   font-size: 12px;
   margin-left: 15px;
+}
+
+@media (max-width: 650px) {
+  .species-image {
+    display: none;
+  }
+  .species-image-more {
+    display: none;
+  }
+  .species-table {
+    display: block;
+    gap: 10px;
+    border-collapse: collapse;
+    border-radius: 50px;
+  }
 }
 
 @media (max-width: 768px) {

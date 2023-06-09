@@ -44,6 +44,40 @@
   padding: 5px 10px;
 }
 
+.pagination_page_btn.active:hover {
+  background-color: #115d56;
+}
+
+.pagination_page_btn:hover {
+  background-color: #115d56;
+  color: white;
+  padding: 5px 10px;
+}
+
+.pagination_page_btn_prev,
+.pagination_page_btn_next {
+  background-color: #136d66;
+  color: white;
+  padding: 5px 10px;
+  width: 4rem;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 5px;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 5px;
+  box-shadow: var(--box-shadow);
+  cursor: pointer;
+}
+
+.pagination_page_btn_prev:hover,
+.pagination_page_btn_next:hover {
+  background-color: #115d56;
+}
+
 @media only screen and (max-width: 600px) {
   .pagination_container {
     left: 5rem;

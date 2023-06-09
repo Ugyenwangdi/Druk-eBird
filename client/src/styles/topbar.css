@@ -148,6 +148,13 @@ nav .profile-area .dropdown-menu button:hover {
   color: #fff;
   font-size: 12px;
 }
+.profile-area .material-icons {
+  font-size: 26px;
+}
+.profile-area .material-icons:hover {
+  font-size: 26px;
+  color: #ba760d;
+}
 @media (max-width: 1024px) {
   .notification {
     position: relative;
