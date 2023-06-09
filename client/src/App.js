@@ -235,7 +235,7 @@ function App() {
               <Route path="/new-species" element={<NewSpecies />} />
               <Route path="/new-species/:id" element={<NewSpeciesDetails />} />
               <Route path="/birders" element={<Birder />} />
-              <Route path="/birder-detail" element={<BirderDetail />} />
+              <Route path="/birders/:id" element={<BirderDetail />} />
               <Route path="/settings" element={<Settings />} />
               <Route path="/add-admin" element={<AddAdmin />} />
               <Route path="/admins/:id/edit" element={<EditAdmin />} />

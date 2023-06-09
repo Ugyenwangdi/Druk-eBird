@@ -6,7 +6,7 @@ import { profile } from "../images";
 
 import { Link } from "react-router-dom";
 
-import { Pagination } from "../components";
+import { Search, Dropdown, Pagination } from "../components";
 
 function Birder() {
   const [data, setData] = useState([]);
@@ -14,27 +14,42 @@ function Birder() {
   const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
   const [usersTotal, setUsersTotal] = useState(0);
-  const [search, setSearch] = useState("");
+  const [birderName, setBirderName] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const [countryOptions, setCountryOptions] = useState([]);
 
   useEffect(() => {
     fetchData();
-  }, [page, limit]);
+  }, [page, limit, birderName, selectedCountry]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/birders?search=${search}&page=${page}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}/api/v1/birders?birder=${birderName}&country=${selectedCountry}&page=${page}&limit=${limit}`
       );
-      console.log("rsponse: ", response);
+
+      // const response = await axios.get(
+      //   `https://chekilhamo.serv00.net/api/v1/users`
+      // );
+
+      console.log("user data: ", response);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setUsersTotal(response.data.birderTotal);
+      setCountryOptions(response.data.distinctCountries);
       setData(response.data.users);
     } catch (error) {
       console.log(error);
     }
   };
   console.log("users: ", data);
+
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
 
   return (
     <div className="birders-page-container">
@@ -51,29 +66,32 @@ function Birder() {
           <button className="birder-export-button">Export Data</button>
         </div>
         <h2 className="header">
-          Total Enteries <span className="birder-count">({usersTotal})</span>
+          Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
       <div className="birder-page-container">
         <div className="birder-filter-container">
           <div className="birder-search-bar">
             <span className="material-icons google-font-icon">search</span>
-            <input type="text" placeholder="Enter birder name" />
-            {/* <Search setSearch={(search) => setSearch(search)} /> */}
+            <Search
+              placeholder="Search bird observer name"
+              setSearch={(birderName) => setBirderName(birderName)}
+              className="darker-placeholder"
+            />
           </div>
           <div className="birder-filter-select">
-            <select className="birder-filter-dropdown">
-              <option value="">District</option>
-              <option value="1">District 1</option>
-              <option value="2">District 2</option>
-              <option value="3">District 3</option>
-            </select>
+            <Dropdown
+              option={selectedCountry}
+              options={countryOptions ? countryOptions : []}
+              setOption={(country) => setSelectedCountry(country)}
+              title="Country"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
         </div>
-        {data.map((birder) => (
+        {data.map((birder, index) => (
           <div className="all-birder" key={birder._id}>
             <div className="checklist-link">
               <div className="birder-container">
@@ -84,7 +102,10 @@ function Birder() {
                   more_horiz
                 </span>
                 <span>
-                  <Link to="/birder-detail">
+                  <Link
+                    to={`/birders/${birder._id}`}
+                    state={{ BirderDetail: birder }}
+                  >
                     <img
                       src={birder.photo ? birder.photo : profile}
                       alt=""
@@ -106,7 +127,7 @@ function Birder() {
                       <span className="material-symbols-outlined">
                         calendar_month
                       </span>
-                      {birder.dob}
+                      {convertDate(birder.dob) || "none"}
                     </li>
                   </ul>
                 </div>
@@ -131,118 +152,6 @@ function Birder() {
             </div>
           </div>
         ))}
-
-        {/* <div className="all-birder">
-          <div className="checklist-link">
-            <div className="birder-container">
-              <span
-                className="material-symbols-outlined"
-                style={{ marginLeft: "95%", paddingRight: "18px" }}
-              >
-                more_horiz
-              </span>
-
-              <span>
-                <Link to="/birder-detail">
-                  <img src={profile} alt="" className="birder-profile" />
-                </Link>
-              </span>
-              <h2 className="birder-name">
-                Sonam
-                <p style={{ fontSize: "12px" }}>Photographer</p>
-              </h2>
-              <div className="email-contact">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">mail</span>
-                    ex@gmail.com
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      calendar_month
-                    </span>
-                    02/03/2000
-                  </li>
-                </ul>
-              </div>
-
-              <div className="locatio-date">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      emoji_flags
-                    </span>
-                    Bhutan
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      fact_check
-                    </span>
-                    10 completed checklists
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="all-birder">
-          <div className="checklist-link">
-            <div className="birder-container">
-              <span
-                className="material-symbols-outlined"
-                style={{
-                  marginLeft: "95%",
-                  paddingRight: "18px",
-                  cursor: "pointer",
-                }}
-              >
-                more_horiz
-              </span>
-
-              <span>
-                <Link to="/birder-detail">
-                  <img src={profile} alt="" className="birder-profile" />
-                </Link>
-              </span>
-              <h2 className="birder-name">
-                Sonam
-                <p style={{ fontSize: "12px" }}>Photographer</p>
-              </h2>
-              <div className="email-contact">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">mail</span>
-                    ex@gmail.com
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      calendar_month
-                    </span>
-                    02/03/2000
-                  </li>
-                </ul>
-              </div>
-
-              <div className="locatio-date">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      emoji_flags
-                    </span>
-                    Bhutan
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      fact_check
-                    </span>
-                    10 completed checklists
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div> */}
       </div>
       <Pagination
         page={page}
