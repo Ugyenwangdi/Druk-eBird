@@ -27,6 +27,14 @@ function Entries() {
   const [villageOptions, setVillageOptions] = useState([]);
   const [birderOptions, setBirderOptions] = useState([]);
 
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setEnlargedImageVisible(true);
+  };
+
   useEffect(() => {
     fetchData();
   }, [
@@ -219,7 +227,25 @@ function Entries() {
                       }
                       alt=""
                       className="bird-img"
+                      onClick={() =>
+                        handleImageClick(item.StartbirdingData[0]?.photo)
+                      }
                     />
+                    {enlargedImageVisible && (
+                      <div className="enlarged-image-container">
+                        <img
+                          src={selectedImage}
+                          alt=""
+                          className="enlarged-img"
+                        />
+                        <button
+                          className="close-button"
+                          onClick={() => setEnlargedImageVisible(false)}
+                        >
+                          &#10005;
+                        </button>
+                      </div>
+                    )}
                   </td>
                   <td data-title="Number Observed">
                     {item.StartbirdingData[0].JAcount &&
