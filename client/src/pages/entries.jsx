@@ -1,30 +1,63 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+
 import "../styles/entries.css";
 import { logo } from "../images";
 
-import { Pagination } from "../components";
+import { Search, Dropdown, Pagination } from "../components";
 function Entries() {
   const [entries, setEntries] = useState([]);
   const [entriesTotal, setEntriesTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
+  const [search, setSearch] = useState("");
+  const [birdingSite, setBirdingSite] = useState("");
+  const [selectedDzongkhag, setSelectedDzongkhag] = useState("");
+  const [selectedGewog, setSelectedGewog] = useState("");
+  const [selectedVillage, setSelectedVillage] = useState("");
+  const [selectedBirder, setSelectedBirder] = useState("");
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [dzongkhagOptions, setDzongkhagOptions] = useState([]);
+  const [gewogOptions, setGewogOptions] = useState([]);
+  const [villageOptions, setVillageOptions] = useState([]);
+  const [birderOptions, setBirderOptions] = useState([]);
 
   useEffect(() => {
     fetchData();
-  }, [page, limit]);
+  }, [
+    page,
+    limit,
+    selectedBirder,
+    search,
+    birdingSite,
+    selectedDate,
+    selectedDzongkhag,
+    selectedVillage,
+    selectedGewog,
+  ]);
 
   const fetchData = async () => {
     try {
+      const formattedDate = selectedDate
+        ? moment(selectedDate).format("YYYY-MM-DD")
+        : "";
+
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/entries?page=${page}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}/api/v1/entries?page=${page}&limit=${limit}&birder=${selectedBirder}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&search=${search}&date=${formattedDate}`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setEntriesTotal(response.data.entriesTotal);
+      setDzongkhagOptions(response.data.distinctDzongkhags);
+      setBirderOptions(response.data.distinctObservers);
+      setGewogOptions(response.data.distinctGewogs);
+      setVillageOptions(response.data.distinctVillages);
       setEntries(Object.values(response.data.checklists));
     } catch (error) {
       console.log(error);
@@ -35,9 +68,9 @@ function Entries() {
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(undefined, options);
   };
-
   return (
     <div className="page-container">
       <div
@@ -60,49 +93,69 @@ function Entries() {
         <div className="enteries-filter-container">
           <div className="species-search-bar">
             <span className="material-icons google-font-icon">search</span>
-            <input type="text" className="" placeholder="Search" />
+            <Search
+              placeholder="Search bird name, birder"
+              setSearch={(search) => setSearch(search)}
+              className="darker-placeholder"
+            />
           </div>
 
-          <div className="entries-filter-select">
-            <select className="enteries-filter-dropdown">
-              <option value="">Birder</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+          <div className="entries-filter-select" style={{ width: "10rem" }}>
+            <Dropdown
+              option={selectedBirder}
+              options={birderOptions ? birderOptions : []}
+              setOption={(birder) => setSelectedBirder(birder)}
+              title="Birder"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
-          <div className="entries-filter-select">
-            <select className="enteries-filter-dropdown">
-              <option value="">Date</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+          <div className="date-filter-select">
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholderText="Select Date"
+              className="species-filter-dropdown"
+              style={{
+                width: "100px",
+                maxWidth: "100%",
+                color: "black",
+                "::placeholder": {
+                  color: "black",
+                },
+              }}
+            />
+          </div>
+          <div className="entries-filter-select" style={{ width: "10rem" }}>
+            <Dropdown
+              option={selectedDzongkhag}
+              options={dzongkhagOptions ? dzongkhagOptions : []}
+              setOption={(dzongkhag) => setSelectedDzongkhag(dzongkhag)}
+              title="Dzongkhag"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
-          <div className="entries-filter-select">
-            <select className="enteries-filter-dropdown">
-              <option value="">District</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+          <div className="entries-filter-select" style={{ width: "10rem" }}>
+            <Dropdown
+              option={selectedGewog}
+              options={gewogOptions ? gewogOptions : []}
+              setOption={(gewog) => setSelectedGewog(gewog)}
+              title="Gewog"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
           </div>
-          <div className="entries-filter-select">
-            <select className="enteries-filter-dropdown">
-              <option value="">Birding site</option>
-              <option value="1">option 1</option>
-              <option value="2">option 2</option>
-              <option value="3">option 3</option>
-            </select>
+          <div className="entries-filter-select" style={{ width: "10rem" }}>
+            <Dropdown
+              option={selectedVillage}
+              options={villageOptions ? villageOptions : []}
+              setOption={(village) => setSelectedVillage(village)}
+              title="Village"
+            />
             <span className="material-icons google-font-icon">
               arrow_drop_down
             </span>
@@ -125,7 +178,7 @@ function Entries() {
             {entries.map((item, index) => {
               const serialNumber = (page - 1) * limit + index + 1;
               return (
-                <tr>
+                <tr key={index}>
                   <td data-title="Sl.no">{serialNumber}</td>
                   <td data-title="English Name">{item.BirdName}</td>
                   <td data-title="Birder">
