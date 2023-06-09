@@ -117,7 +117,7 @@ function Settings() {
         }
       };
       // Create a new notification
-      const notificationMessage = `**${deleteuseremail}** has been deleted by **${
+      const notificationMessage = `Admin User **${deleteuseremail}** has been deleted by **${
         currentUser.email
       }** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
