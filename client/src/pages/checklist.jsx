@@ -66,9 +66,9 @@ function Checklist() {
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString();
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(undefined, options);
   };
-
   return (
     <div className="checklists-page-container">
       <div
@@ -92,7 +92,7 @@ function Checklist() {
         <div className="checklist-filter-container">
           <div className="checklist-name-search">
             <Search
-              placeholder="Birder"
+              placeholder="Birders"
               setSearch={(birderName) => setBirderName(birderName)}
               className="darker-placeholder"
             />
@@ -109,7 +109,14 @@ function Checklist() {
               onChange={(date) => setSelectedDate(date)}
               placeholderText="Selected date"
               className="species-filter-dropdown"
-              style={{ width: "100px", maxWidth: "100%" }}
+              style={{
+                width: "100px",
+                maxWidth: "100%",
+                color: "black",
+                "::placeholder": {
+                  color: "black",
+                },
+              }}
             />
           </div>
           <div className="checklist-filter-select">
