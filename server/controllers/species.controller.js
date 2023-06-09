@@ -90,43 +90,23 @@ const getSpecies = async (req, res) => {
       };
     }
     const foundSpecies = await Species.find({
-      $or: [
-        { order: { $in: [...order] } },
-        { order: "" },
-        { familyName: { $in: [...family] } },
-        { familyName: "" },
-        { genus: { $in: [...genus] } },
-        { genus: "" },
-        { iucnStatus: { $in: [...iucnStatus] } },
-        { iucnStatus: "" },
-        { group: { $in: [...group] } },
-        { group: "" },
-        { residency: { $in: [...residency] } },
-        { residency: "" },
-        { species: { $regex: species, $options: "i" } },
-        { species: "" },
-        { scientificName: { $regex: scientificName, $options: "i" } },
-        { scientificName: "" },
-      ],
       ...searchQuery,
-      $or: [
-        { englishName: { $regex: birdName, $options: "i" } },
-        { species: { $regex: species, $options: "i" } },
-        { scientificName: { $regex: scientificName, $options: "i" } },
-      ],
+      englishName: { $regex: birdName, $options: "i" },
+      species: { $regex: species, $options: "i" },
+      scientificName: { $regex: scientificName, $options: "i" },
     })
-      // .where("order")
-      // .in([...order])
-      // .where("familyName")
-      // .in([...family])
-      // .where("genus")
-      // .in([...genus])
-      // .where("iucnStatus")
-      // .in([...iucnStatus])
-      // .where("group")
-      // .in([...group])
-      // .where("residency")
-      // .in([...residency])
+      .where("order")
+      .in([...order])
+      .where("familyName")
+      .in([...family])
+      .where("genus")
+      .in([...genus])
+      .where("iucnStatus")
+      .in([...iucnStatus])
+      .where("group")
+      .in([...group])
+      .where("residency")
+      .in([...residency])
       .sort({ createdAt: -1 })
       .skip(page * limit)
       .limit(limit)
@@ -152,8 +132,6 @@ const getSpecies = async (req, res) => {
       .in([...residency]);
 
     const speciesTotal = await Species.countDocuments();
-    // console.log(`Total number of species: ${speciesTotal}`);
-    // const uniqueOrders = await Species.distinct("order");
 
     const response = {
       error: false,
