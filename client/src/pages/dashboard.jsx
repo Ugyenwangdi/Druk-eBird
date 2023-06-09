@@ -12,7 +12,7 @@ import {
   Legend,
 } from "chart.js";
 
-import { profile, VerditerFlycatcher } from "../images";
+import { profile, logo, VerditerFlycatcher } from "../images";
 import "../styles/dashboard.css";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -798,14 +798,16 @@ function Dashboard() {
                 {checklists.map((item, index) => (
                   <div className="eBirder" key={index}>
                     <div className="info">
-                      <img
-                        src={
-                          item.StartbirdingData[0].photo
-                            ? item.StartbirdingData[0].photo
-                            : VerditerFlycatcher
-                        }
-                        className="bird-pic"
-                      />
+                      {item.StartbirdingData[0].photo &&
+                      item.StartbirdingData[0].photo !== "null" ? (
+                        <img
+                          src={item.StartbirdingData[0].photo}
+                          alt="Bird"
+                          className="bird-img"
+                        />
+                      ) : (
+                        <img src={logo} alt="Logo" className="bird-img" />
+                      )}
                       <div>
                         <h4>{item.BirdName}</h4>
                         <small>
@@ -858,38 +860,6 @@ function Dashboard() {
                 </div>
               </div>
             ))}
-
-            {/* <div class="popular-img">
-              <img src={VerditerFlycatcher} class="b-img" />
-
-              <div className="name-button-container">
-                <h3>Dove</h3>
-                <button>Landbird</button>
-              </div>
-              <span class="material-icons">
-                location_on <small>Dochula</small>
-              </span>
-            </div>
-            <div class="popular-img">
-              <img src={VerditerFlycatcher} class="b-img" />
-              <div className="name-button-container">
-                <h3>Dove</h3>
-                <button>Landbird</button>
-              </div>
-              <span class="material-icons">
-                location_on <small>Dochula</small>
-              </span>
-            </div>
-            <div class="popular-img">
-              <img src={VerditerFlycatcher} class="b-img" />
-              <div className="name-button-container">
-                <h3>Dove</h3>
-                <button>Landbird</button>
-              </div>
-              <span class="material-icons">
-                location_on <small>Dochula</small>
-              </span>
-            </div> */}
           </div>
         </div>
       </div>

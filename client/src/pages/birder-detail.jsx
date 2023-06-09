@@ -3,13 +3,13 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import "../styles/birderdetail.css";
-import { profile } from "../images";
+import { profile, VerditerFlycatcher } from "../images";
 
 function BirderDetail() {
   const { id } = useParams();
   const location = useLocation();
 
-  const [birder, setBirder] = useState(location.state?.birderDetail || {});
+  const [birder, setBirder] = useState(location.state?.BirderDetail || {});
 
   useEffect(() => {
     const fetchSpecies = async () => {
@@ -29,11 +29,17 @@ function BirderDetail() {
     fetchSpecies();
   }, [id]);
 
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
+
   return (
     <div className="birder-detail-page-container">
       <h2 className="birder-details-header">
         <div>
-          <Link to="/birder">
+          <Link to="/birders">
             <span className="material-icons back-arrow">arrow_back_ios</span>
           </Link>
           Birder Details
@@ -41,13 +47,13 @@ function BirderDetail() {
       </h2>
       <div className="parent-container">
         <div className="birder-detail-profile">
-          <img
-            src="VerditerFlycatcher2.jpg"
-            className="cover-img"
-            alt="cover"
-          />
+          <img src={VerditerFlycatcher} className="cover-img" alt="cover" />
           <div className="profile-img">
-            <img src={profile} alt="profile"></img>
+            {birder.photo && birder.photo !== "null" ? (
+              <img src={birder.photo} alt="profile" className="bird-img" />
+            ) : (
+              <img src={profile} alt="Logo" className="bird-img" />
+            )}
           </div>
           <div className="name-description">
             <h2>{birder.name}</h2>
@@ -58,7 +64,9 @@ function BirderDetail() {
               <ul>
                 <li className="p-1">
                   <span className="font-bold">DOB:</span>
-                  <span className="ml-auto">{birder.dob}</span>
+                  <span className="ml-auto">
+                    {convertDate(birder.dob) || "none"}
+                  </span>
                 </li>
                 {/* <li className="p-1 bg-gray-100">
                                     <span className="font-bold">City:</span>
@@ -70,18 +78,12 @@ function BirderDetail() {
                   <span className="font-bold">Country:</span>
                   <span className="ml-auto">{birder.country}</span>
                 </li>
-                <li className="p-1">
-                  <span className="font-bold">Birder:</span>
-                  <span className="ml-auto">1400m</span>
-                </li>
+
                 <li className="p-1">
                   <span className="font-bold">Birder ID:</span>
                   <span className="ml-auto">#783747747</span>
                 </li>
-                {/* <li className="p-1">
-                                    <span className="font-bold">Phone:</span>
-                                    <span className="ml-auto">17532757</span>
-                                </li> */}
+
                 <li className="p-1">
                   <span className="font-bold">Email:</span>
                   <span className="ml-auto">{birder.email}</span>
@@ -100,13 +102,7 @@ function BirderDetail() {
           <div className="all-bio">
             <h2 className="birder-bio">Bio</h2>
             <hr />
-            <p className="bio-text">
-              It is a long established fact that a reader will be distracted by
-              the readable content of a page when looking at its layout. The
-              point of using Lorem Ipsum is that it has a more-or-less normal
-              distribution of letters, as opposed to using 'Content here,
-              content here', making it look like readable English.{" "}
-            </p>
+            <p className="bio-text">More about the bird observer. </p>
             <hr />
           </div>
           <div className="birder-states">
@@ -146,7 +142,7 @@ function BirderDetail() {
         <div className="submitted-species">
           <div className="first-species">
             <img
-              src="VerditerFlycatcher2.jpg"
+              src={VerditerFlycatcher}
               style={{
                 width: "170px",
                 height: "110px",
@@ -186,7 +182,7 @@ function BirderDetail() {
           </div>
           <div className="second-species">
             <img
-              src="VerditerFlycatcher2.jpg"
+              src={VerditerFlycatcher}
               style={{
                 width: "170px",
                 height: "110px",

@@ -47,7 +47,7 @@
   border: 1px solid transparent;
   background: var(--color-light);
   padding: 5px;
-  width: 35%;
+  width: 50%;
   border-radius: var(--border-radius-2);
   display: flex;
   align-items: center;
