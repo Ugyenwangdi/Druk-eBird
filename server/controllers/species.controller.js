@@ -132,8 +132,6 @@ const getSpecies = async (req, res) => {
       .in([...residency]);
 
     const speciesTotal = await Species.countDocuments();
-    // console.log(`Total number of species: ${speciesTotal}`);
-    // const uniqueOrders = await Species.distinct("order");
 
     const response = {
       error: false,
