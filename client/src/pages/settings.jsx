@@ -436,12 +436,7 @@ function Settings() {
                   <td data-label="Email">{item.email}</td>
                   <td data-label="UserType">{item.userType}</td>
                   <td data-label="Action">
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                      }}
-                    >
+                    <div className="action-btn">
                       <button
                         className="deleteBtn"
                         onClick={() => handleDeleteUser(item._id)}

@@ -12,7 +12,11 @@
 .back-arrow {
   font-size: 1rem;
   padding-right: 10px;
-  line-height: 220%;
+  line-height: 210%;
+  color: #767676;
+}
+.back-arrow:hover {
+  color: black;
 }
 
 .speciescontainer {

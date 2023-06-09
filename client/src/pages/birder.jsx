@@ -61,7 +61,7 @@ function Birder() {
           <button className="birder-export-button">Export Data</button>
         </div>
         <h2 className="header">
-          Total Enteries <span className="birder-count">({usersTotal})</span>
+          Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
       <div className="birder-page-container">
@@ -94,7 +94,7 @@ function Birder() {
                 >
                   more_horiz
                 </span>
-                <span>
+                <span className="birder-info">
                   <Link to="/birder-detail">
                     <img
                       src={birder.photo ? birder.photo : profile}
