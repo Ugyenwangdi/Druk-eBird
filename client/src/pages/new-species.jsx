@@ -100,7 +100,7 @@ function NewSpecies() {
               setSearch={(birdingSite) => setBirdingSite(birdingSite)}
             />
           </div>
-          <div className="date-filter-select">
+          <div className="date-filter-select" style={{ display: "flex", alignItems: "center" }}>
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
@@ -115,6 +115,9 @@ function NewSpecies() {
                 },
               }}
             />
+            <span class="material-symbols-outlined" style={{ fontSize: '16px', marginLeft: '-0.2rem' }}>
+              calendar_month
+            </span>
           </div>
           <div className="checklist-filter-select">
             <Dropdown

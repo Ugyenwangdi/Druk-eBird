@@ -35,6 +35,26 @@ function BirderDetail() {
     return date.toLocaleDateString(undefined, options);
   };
 
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+
+  const handleSpanClick = () => {
+    setShowDeleteButton(!showDeleteButton);
+  };
+  const handleDelete = () => {
+    setShowConfirmation(true);
+
+  };
+  const handleConfirm = () => {
+    // Perform delete action
+    setShowConfirmation(false);
+    setShowDeleteButton(false);
+  };
+
+  const handleCancel = () => {
+    setShowConfirmation(false);
+  };
+
   return (
     <div className="birder-detail-page-container">
       <h2 className="birder-details-header">
@@ -68,12 +88,6 @@ function BirderDetail() {
                     {convertDate(birder.dob) || "none"}
                   </span>
                 </li>
-                {/* <li className="p-1 bg-gray-100">
-                                    <span className="font-bold">City:</span>
-                                    <span className="ml-auto" >
-                                        Thimphu
-                                    </span>
-                                </li> */}
                 <li className="p-1">
                   <span className="font-bold">Country:</span>
                   <span className="ml-auto">{birder.country}</span>
@@ -94,11 +108,36 @@ function BirderDetail() {
         </div>
         <div className="birder-description">
           <span
-            class="material-symbols-outlined"
+            className="material-symbols-outlined"
             style={{ marginLeft: "95%", paddingTop: "20px", cursor: "pointer" }}
+            onClick={handleSpanClick}
+
           >
             more_horiz
           </span>
+          {showDeleteButton && (
+          <button className="birderDetail-delete"
+          
+            onClick={handleDelete}
+          >
+            Delete Birder Details
+          </button>
+        )}
+        {showConfirmation && (
+        <div className="confirmation-overlay">
+        <div className="confirmation-modal">
+          <div className="confirmation-content">
+            <p>Are you sure you want to delete birder details?</p>
+            <div className="confirmation-buttons">
+              <button onClick={handleConfirm} style={{background:'#136d66'}}>Confirm</button>
+              <button onClick={handleCancel} style={{background:'red'}}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      )}
+
           <div className="all-bio">
             <h2 className="birder-bio">Bio</h2>
             <hr />
@@ -129,6 +168,7 @@ function BirderDetail() {
                 200
               </h1>
             </div>
+           
           </div>
         </div>
       </div>

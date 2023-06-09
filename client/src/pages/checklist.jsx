@@ -103,7 +103,7 @@ function Checklist() {
               setSearch={(birdingSite) => setBirdingSite(birdingSite)}
             />
           </div>
-          <div className="date-filter-select">
+          {/* <div className="date-filter-select">
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
@@ -118,7 +118,30 @@ function Checklist() {
                 },
               }}
             />
+            <span class="material-symbols-outlined" style={{fontSize:'16px'}}>
+              calendar_month
+            </span>
+          </div> */}
+          <div className="date-filter-select" style={{ display: "flex", alignItems: "center" }}>
+            <DatePicker
+              selected={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
+              placeholderText="Selected date"
+              className="species-filter-dropdown"
+              style={{
+                width: "100px",
+                maxWidth: "100%",
+                color: "black",
+                "::placeholder": {
+                  color: "black",
+                },
+              }}
+            />
+            <span class="material-symbols-outlined" style={{ fontSize: '16px', marginLeft: '-0.2rem' }}>
+              calendar_month
+            </span>
           </div>
+
           <div className="checklist-filter-select">
             <Dropdown
               option={selectedDzongkhag}

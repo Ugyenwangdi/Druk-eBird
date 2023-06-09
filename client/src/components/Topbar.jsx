@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { logo, profile } from "../images";
@@ -8,13 +8,13 @@ import "../styles/topbar.css";
 function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     if (searchQuery) {
       navigate("/species");
     }
 
-    // Add the event listener here
     const handleMouseMove = (e) => {
       const topbarNav = document.querySelector(".topbar-nav");
       const x = e.pageX - topbarNav.offsetLeft;
@@ -25,15 +25,24 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
 
     document.addEventListener("mousemove", handleMouseMove);
 
-    // Clean up the event listener when the component unmounts
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener("click", handleOutsideClick);
+
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("click", handleOutsideClick);
     };
   }, [searchQuery, navigate]);
 
   const handleDropdownToggle = () => {
     setShowDropdown(!showDropdown);
   };
+
 
   const handleNavigateToSettings = () => {
     setShowDropdown(false);
@@ -112,7 +121,7 @@ function TopBar({ onToggleSidebar, currentUser, setSearchQuery, searchQuery }) {
           <div className="notification-count">{notificationCount}</div>
         </Link>
         <div className="profile-area">
-          <div className="profile" onClick={handleDropdownToggle}>
+          <div className="profile" onClick={handleDropdownToggle}  ref={dropdownRef}>
             <div className="profile-photo">
               <img
                 src={currentUser.profile ? currentUser.profile : profile}

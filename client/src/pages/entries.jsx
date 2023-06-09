@@ -79,6 +79,8 @@ function Entries() {
     const options = { day: "numeric", month: "long", year: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
+
+  
   return (
     <div className="page-container">
       <div
@@ -119,7 +121,7 @@ function Entries() {
               arrow_drop_down
             </span>
           </div>
-          <div className="date-filter-select">
+          <div className="date-filter-select" style={{ display: "flex", alignItems: "center" }}>
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
@@ -134,6 +136,9 @@ function Entries() {
                 },
               }}
             />
+            <span class="material-symbols-outlined" style={{ fontSize: '16px', marginLeft: '-0.2rem' }}>
+              calendar_month
+            </span>
           </div>
           <div className="entries-filter-select" style={{ width: "10rem" }}>
             <Dropdown
@@ -221,7 +226,7 @@ function Entries() {
                     <img
                       src={
                         item.StartbirdingData[0]?.photo === "null" ||
-                        item.StartbirdingData[0]?.photo === undefined
+                          item.StartbirdingData[0]?.photo === undefined
                           ? logo
                           : item.StartbirdingData[0].photo
                       }
@@ -249,19 +254,19 @@ function Entries() {
                   </td>
                   <td data-title="Number Observed">
                     {item.StartbirdingData[0].JAcount &&
-                    item.StartbirdingData[0].JAcount.Adult === 0 &&
-                    item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
+                      item.StartbirdingData[0].JAcount.Adult === 0 &&
+                      item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
                       "Total: " + item.StartbirdingData[0].Totalcount
                     ) : (
                       <>
                         Adult:{" "}
                         {item.StartbirdingData[0].JAcount &&
-                        item.StartbirdingData[0].JAcount.Adult
+                          item.StartbirdingData[0].JAcount.Adult
                           ? item.StartbirdingData[0].JAcount.Adult
                           : item.StartbirdingData[0].Totalcount}
                         , Juvenile:{" "}
                         {item.StartbirdingData[0].JAcount &&
-                        item.StartbirdingData[0].JAcount.Juvenile
+                          item.StartbirdingData[0].JAcount.Juvenile
                           ? item.StartbirdingData[0].JAcount.Juvenile
                           : item.StartbirdingData[0].Totalcount}
                       </>
@@ -271,28 +276,6 @@ function Entries() {
               );
             })}
 
-            {/* <tr>
-              <td data-title="Sl.no">1</td>
-              <td data-title="English Name">Spotted Dov</td>
-              <td data-title="Birder">Sonam</td>
-              <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
-              <td data-title="Date/Time">10.12.2022</td>
-              <td data-title="Photo">
-                <img src={logo} alt="" className="bird-img" />
-              </td>
-              <td data-title="Number Observed">2 male</td>
-            </tr>
-            <tr>
-              <td data-title="Sl.no">1</td>
-              <td data-title="English Name">Spotted Dov</td>
-              <td data-title="Birder">Sonam</td>
-              <td data-title="Birding site">Gyalpozhing,Mongar highway</td>
-              <td data-title="Date/Time">10.12.2022</td>
-              <td data-title="Photo">
-                <img src={logo} alt="" className="bird-img" />
-              </td>
-              <td data-title="Number Observed">2 male</td>
-            </tr> */}
           </tbody>
         </table>
       </div>

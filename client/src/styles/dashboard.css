@@ -8,11 +8,13 @@
   padding: 10px 0;
   padding-bottom: 15px;
 }
+
 .dashboard-cards {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-gap: 3rem;
 }
+
 .card-single {
   display: flex;
   justify-content: space-between;
@@ -24,15 +26,18 @@
   background-color: rgba(160, 160, 161, 0.039);
   cursor: pointer;
 }
+
 .card-single div:last-child span {
   font-size: 3.1rem;
   margin-left: 2rem;
   color: rgb(162, 162, 162);
 }
+
 .card-single div:first-child span {
   font-size: 1.2rem;
   color: rgb(162, 162, 162);
 }
+
 .grid-item {
   padding-bottom: 2rem;
   display: flex;
@@ -95,6 +100,7 @@ label {
   display: flex;
   padding-bottom: 2rem;
 }
+
 .up-arrow-icon {
   background-color: #136d66;
   border-radius: 50%;
@@ -103,14 +109,15 @@ label {
   align-items: center;
   width: 23px;
   height: 23px;
-  /* Add margin-right if needed */
   margin-right: 10px;
 }
+
 .up-arrow-icon .material-icons {
   font-size: 20px;
   color: #fff;
   margin-left: 5px;
 }
+
 .percentage-value {
   font-size: 2rem;
   margin-right: 20px;
@@ -121,9 +128,11 @@ label {
   color: #136d66;
   margin-right: 10px;
 }
+
 .comparison-text {
   font-size: 1.2rem;
 }
+
 /* charts */
 .graphBox {
   width: 100%;
@@ -133,34 +142,41 @@ label {
   grid-gap: 30px;
   min-height: 200px;
 }
+
 .graphBox .box {
   background-color: #fff;
   padding: 20px;
   width: 100%;
   border-radius: 15px;
 }
+
 .recent-grid {
   margin-top: 3.5rem;
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: 35% auto;
 }
+
 .card {
   background-color: #fff;
   border-radius: 15px;
 }
+
 .card-header {
   padding: 1rem;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f0f0f0;
 }
+
 .card-header span {
   color: #136d66;
 }
+
 .card-header button {
   background-color: #136d66;
   border-radius: 5px;
@@ -179,41 +195,50 @@ label {
   align-items: center;
   padding: 0.5rem 0.7rem;
 }
+
 .birders-pic {
   width: 40px;
   height: 40px;
 }
+
 .bird-pic {
   width: 40px;
   height: 40px;
 }
+
 .info {
   display: flex;
   align-items: center;
 }
+
 .info img {
   border-radius: 20%;
   margin-right: 1rem;
 }
+
 .info h4 {
   font-size: 1.2rem;
   font-weight: 700;
   color: #222;
 }
+
 .info small {
   font-weight: 600;
   color: grey;
   font-size: 1rem;
 }
+
 .more-info span {
   display: inline-block;
   margin-left: 0.5rem;
   color: #919191;
 }
+
 .sighting-date span {
   color: #136d66;
   font-size: 14px;
 }
+
 .explore-birds {
   display: flex;
   flex-direction: column;
@@ -221,6 +246,7 @@ label {
   border-radius: 15px;
   margin-top: 3rem;
 }
+
 .section-header {
   display: flex;
   justify-content: flex-end;
@@ -234,6 +260,7 @@ label {
   margin-top: 1rem;
   color: #136d66;
 }
+
 .section-header button {
   background-color: #136d66;
   border-radius: 5px;
@@ -242,16 +269,19 @@ label {
   padding: 0.5rem 1rem;
   border: 1px solid #136d66;
 }
+
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #f0f0f0;
 }
+
 .buttons-container {
   display: flex;
   gap: 1rem;
 }
+
 .section-header h3 {
   margin: 0;
 }
@@ -263,16 +293,19 @@ label {
   justify-content: space-between;
   padding: 1rem;
 }
+
 .arrow {
   color: #136d66;
   margin-top: 9rem;
 }
+
 .popular-img {
   flex-basis: 100%;
   max-width: 30%;
   margin-bottom: 20px;
   /* text-align: center; */
 }
+
 .popular-img img {
   width: 100%;
   height: 70%;
@@ -348,6 +381,7 @@ label {
   .graphBox .box {
     width: 98%;
   }
+
   .recent-grid {
     grid-template-columns: 2fr;
     height: auto;
@@ -367,6 +401,7 @@ label {
     flex-basis: 100%;
     max-width: 70%;
   }
+
   .dashboard-cards {
     grid-template-columns: repeat(2, 1fr);
   }

@@ -141,13 +141,13 @@ span.birder-info {
 }
 
 .email-contact {
-  display: flex;
   width: 20%;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   margin-left: auto;
-  margin-left: 26rem;
-  margin-top: 4rem;
+  margin-right: 15rem;
+  margin-top: -4rem;
 }
 
 .email-contact ul {
@@ -282,7 +282,24 @@ span.birder-info {
   .birder-page-container {
     display: block;
     width: 100%;
+    overflow-x: hidden;
   }
+  .custom-classname {
+    margin-left: 50%;
+    padding-right: 18px;
+    cursor: "pointer",
+  }
+  .birder-profile {
+    width: 30%;
+    height: 150px;
+    margin-left: 2rem;
+    margin-right: 20px;
+    margin-top: 0;
+    border-radius: 15px;
+    border-radius: 50%;
+
+  }
+  
 
   .birder-search-bar {
     width: 85%;
@@ -310,6 +327,7 @@ span.birder-info {
   .email-contact {
     display: flex;
     width: 40%;
+    width: 30%;
     flex-direction: column;
     justify-content: center;
     margin-left: auto;

@@ -181,6 +181,8 @@
   font-size: 12px;
 }
 
+
+
 @media (max-width: 1024px) {
   .checklist-detail-container {
     display: block;

@@ -79,6 +79,16 @@ function ChecklistDetail() {
     }
   };
 
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setEnlargedImageVisible(true);
+  };
+
+  
+
   return (
     <div className="checklist-detail-page-container">
       <h2 className="checklist-details-header">
@@ -165,10 +175,29 @@ function ChecklistDetail() {
                           src={item.StartbirdingData[0].photo}
                           alt="Bird"
                           className="bird-img"
+                          onClick={() =>
+                            handleImageClick(item.StartbirdingData[0]?.photo)
+                          }
                         />
                       ) : (
-                        <img src={logo} alt="Logo" className="bird-img" />
+                        <span>No photo available</span>
+
                       )}
+                      {enlargedImageVisible && (
+                      <div className="enlarged-image-container">
+                        <img
+                          src={selectedImage}
+                          alt=""
+                          className="enlarged-img"
+                        />
+                        <button
+                          className="close-button"
+                          onClick={() => setEnlargedImageVisible(false)}
+                        >
+                          &#10005;
+                        </button>
+                      </div>
+                    )}
                     </td>
                     <td data-label="Action">
                       <button
