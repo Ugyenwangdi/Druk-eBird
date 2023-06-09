@@ -6,9 +6,11 @@ function DeactivateModal({ message, onConfirm, onCancel }) {
   return (
     <div className="confirmation-modal">
       <div className="confirmation-modal-content">
-        <p>{message}</p>
+        <p>
+          <b>{message}</b>
+        </p>
         <div className="confirmation-modal-buttons">
-          <button className="deactivate-button" onClick={onConfirm}>
+          <button className="confirm-button" onClick={onConfirm}>
             Confirm
           </button>
           <button className="deactivate-button" onClick={onCancel}>

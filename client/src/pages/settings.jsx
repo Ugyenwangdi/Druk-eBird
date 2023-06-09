@@ -115,9 +115,11 @@ function Settings() {
         } catch (error) {
           console.error("Failed to send notification:", error);
         }
-      };      
+      };
       // Create a new notification
-      const notificationMessage = `**${deleteuseremail}** has been deleted by **${currentUser.email}** at ${new Date().toLocaleString()}.`;
+      const notificationMessage = `**${deleteuseremail}** has been deleted by **${
+        currentUser.email
+      }** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
       console.log(notificationMessage);
       setData(data.filter((item) => item._id !== deleteUserId));
@@ -436,12 +438,7 @@ function Settings() {
                   <td data-label="Email">{item.email}</td>
                   <td data-label="UserType">{item.userType}</td>
                   <td data-label="Action">
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-around",
-                      }}
-                    >
+                    <div className="action-btn">
                       <button
                         className="deleteBtn"
                         onClick={() => handleDeleteUser(item._id)}

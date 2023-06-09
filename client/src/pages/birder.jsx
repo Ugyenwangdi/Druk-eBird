@@ -19,6 +19,17 @@ function Birder() {
 
   const [countryOptions, setCountryOptions] = useState([]);
 
+  const [showDeleteId, setShowDeleteId] = useState(null);
+
+  const deleteBirder = (id) => {
+    // Add your delete logic here using the id
+    console.log("Deleting birder with ID:", id);
+  };
+
+  const toggleDeleteButton = (id) => {
+    setShowDeleteId((prevId) => (prevId === id ? null : id));
+  };
+
   useEffect(() => {
     fetchData();
   }, [page, limit, birderName, selectedCountry]);
@@ -97,11 +108,12 @@ function Birder() {
               <div className="birder-container">
                 <span
                   className="material-symbols-outlined"
-                  style={{ marginLeft: "95%", paddingRight: "18px" }}
+                  id="toggle"
+                  onClick={() => toggleDeleteButton(birder._id)}
                 >
                   more_horiz
                 </span>
-                <span>
+                <span className="birder-info">
                   <Link
                     to={`/birders/${birder._id}`}
                     state={{ BirderDetail: birder }}
@@ -148,6 +160,14 @@ function Birder() {
                     </li>
                   </ul>
                 </div>
+                {showDeleteId === birder._id && (
+                  <button
+                    className="delete-birder"
+                    onClick={() => deleteBirder(birder._id)}
+                  >
+                    Delete Birder
+                  </button>
+                )}
               </div>
             </div>
           </div>

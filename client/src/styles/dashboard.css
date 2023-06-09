@@ -18,6 +18,11 @@
   justify-content: space-between;
   padding: 1.1rem;
   border-radius: 5px;
+  border: 1px solid white;
+}
+.card-single:hover {
+  background-color: rgba(160, 160, 161, 0.039);
+  cursor: pointer;
 }
 .card-single div:last-child span {
   font-size: 3.1rem;
@@ -164,6 +169,9 @@ label {
   padding: 0.5rem 1rem;
   border: 1px solid #136d66;
   cursor: pointer;
+}
+.card-header button:hover {
+  background-color: #115d56;
 }
 .eBirder {
   display: flex;
