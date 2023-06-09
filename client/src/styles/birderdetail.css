@@ -19,8 +19,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 30%;
-  height: 50rem;
+  width: 100%;
   border-color: #f7f7f7;
   background-color: #ffffff;
   margin-top: 2rem;
@@ -37,45 +36,46 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 100%;
 }
 .profile-img {
   display: block;
   margin-top: -3rem;
-  margin-left: 3rem;
-  margin-right: 1rem;
+  width: 100%;
+  text-align: center;
 }
 .profile-img img {
-  width: 95px;
-  height: 95px;
+  width: 10rem;
+  height: 10rem;
   border-radius: 100%;
 }
 
 .name-description {
-  /* position: relative; */
   display: flex;
-  margin-top: -15%;
-  margin-left: 50%;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
 }
 .name-description p {
-  margin-top: 2rem;
-  margin-left: -5rem;
   font-size: 14px;
 }
 .birder-detail {
   flex: 1;
+  width: 100%;
+  text-align: center;
+  font-size: 1.3rem;
 }
 .birder-detail ul {
-  margin-left: 2rem;
   margin-top: 2rem;
+  width: 40%;
+  margin-left: 30%;
 }
 .birder-detail ul li {
   padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
 }
 .birder-detail ul li span:first-child {
   display: inline-block;
-  width: 40%;
-
   color: #827f7f;
 }
 
@@ -128,22 +128,28 @@ hr {
   left: 1rem;
   width: 95%;
 }
-.states-checklist {
+.states-row {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  align-items: center;
+  width: 40%;
+  justify-content: space-between;
+  margin-left: 30%;
   display: flex;
+  flex-direction: row;
+}
+.states-checklist {
   flex: 1;
-  max-width: 15rem;
-  height: 13rem;
-  margin-top: 4rem;
-  margin-left: -5rem;
+  max-width: 14rem;
+  padding: 1rem;
   /* border-color: #f7f7f7; */
   background-color: #f2f1f1;
   border-radius: 10px;
 }
 .states-checklist-text {
-  margin-top: 2rem;
-  margin-left: 3rem;
   font-size: 14px;
   font-family: "Manrope";
+  margin-bottom: 0.5rem;
 }
 .states-species {
   display: flex;
@@ -162,86 +168,102 @@ hr {
   font-size: 14px;
   font-family: "Manrope";
 }
-.total-species-observed {
-  display: flex;
-  flex-direction: column;
+
+.entries-species {
+  border-radius: 15px;
+  border-color: #f7f7f7;
+  background-color: #fcfcfc;
+  padding: 20px;
+  padding-bottom: 10px;
+  max-width: 100%;
   width: 100%;
-  height: 17rem;
-  margin-top: -9rem;
-  background-color: #ffffff;
-  border-radius: 10px;
-}
-.submitted-checklist {
-  margin: 0;
+  margin-bottom: 4rem;
+  margin-top: 3rem;
 }
 
-.viewall-button-container {
+.entries-container {
+  background-color: white;
+  margin-top: 2rem;
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  margin-bottom: 1.5rem;
   justify-content: space-between;
-  align-items: center;
-  padding-right: 20px;
-  padding-left: 20px;
-  padding-top: 10px;
 }
 
-.view-all-button {
-  background-color: #136d66;
-  color: #ffffff;
-  border: none;
-  padding: 10px 10px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: auto;
-}
-
-.view-all-button:is(:hover, :focus) {
-  color: #ba760d;
-}
-
-.submitted-species {
-  /* position: relative; */
+.species-card2 {
+  width: calc(50% - 1rem);
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 1rem;
+  background-color: #f5f4f4;
+  position: relative;
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
 }
-.first-species {
-  flex: 1;
-  width: 10rem;
-  height: 10rem;
-  margin: 2rem;
-  margin-top: 8px;
+
+.species-card2 img {
+  padding: 1rem;
+  max-width: 100%;
+  height: 100%;
+  object-fit: fill;
+  border-radius: 10%;
 }
-.first-span {
-  display: inline-block;
-  margin-left: 10px;
-  vertical-align: top;
+
+.species-card2-content {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  padding: 1rem;
 }
-.first-location {
-  margin-top: 1rem;
+
+.species-card2-name {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  color: var(--color-dark);
 }
-.second-species {
-  flex: 1;
-  width: 10rem;
-  height: 10rem;
-  /* margin-left: -10rem; */
-  margin-top: 2rem;
+
+.species-card-location {
+  font-size: 1rem;
+  color: #808191;
 }
-.second-species {
-  flex: 1;
-  width: 10rem;
-  height: 10rem;
-  margin: 2rem;
-  margin-top: 8px;
+
+.species-card-date {
+  font-size: 1rem;
+  color: #000000;
+  padding: 0.5rem;
 }
-.second-span {
-  display: inline-block;
-  margin-left: 10px;
-  vertical-align: top;
+
+.delete-birder1 {
+  padding: 5px 10px;
+  position: absolute;
+  right: 5%;
+  margin-top: 17rem;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: rgb(217, 6, 6);
 }
-.second-location {
-  margin-top: 1rem;
+
+.delete-birder1:hover {
+  background-color: rgb(166, 8, 8);
 }
+
+.material-symbols-outlined#toggle1 {
+  margin-top: 15rem;
+  position: absolute;
+  color: #777;
+  right: 5%;
+  cursor: pointer;
+}
+
+.material-symbols-outlined#toggle1:hover {
+  color: #050404;
+}
+
 @media (max-width: 1024px) {
   .birder-detail-page-container {
     width: 100%;
@@ -266,7 +288,6 @@ hr {
   }
   .birder-detail-profile {
     width: 100%;
-    height: 68rem;
   }
   /* .cover-img{
       width: 60px;
@@ -275,76 +296,22 @@ hr {
   .profile-img {
     display: block;
     margin-top: -3rem;
-    margin-left: 40%;
-    margin-right: 1rem;
   }
   .profile-img img {
-    width: 95px;
-    height: 95px;
+    width: 10rem;
+    height: 10rem;
     border-radius: 100%;
   }
 
-  .name-description {
-    /* position: relative; */
-    display: flex;
-    margin-top: 1%;
-    margin-left: 42%;
-  }
-  .name-description p {
-    margin-top: 2rem;
-    margin-left: -5rem;
-    font-size: 14px;
-  }
   .birder-detail ul {
-    margin-left: 0;
     margin-top: 2rem;
-  }
-  .birder-detail ul li {
-    padding-top: 1rem;
-    margin-bottom: 1rem;
-    /* margin-left: 1rem; */
-    height: 5rem;
-    border: 0.75px solid rgb(180, 178, 178);
-  }
-  .birder-detail ul li span:first-child {
-    display: inline-block;
-    font-size: 16px;
-    width: 40%;
-    margin-left: 2rem;
-    font-weight: bold;
-    color: #0f0f0f;
+    width: 60%;
+    margin-left: 20%;
   }
 
-  .birder-detail ul li span:last-child {
-    display: inline-block;
-    margin-left: 30%;
-    font-size: 16px;
-    font-weight: bold;
-    color: rgb(255, 89, 0);
-  }
-
-  .birder-description {
-    width: 100%;
-    min-height: 20rem;
-    margin-left: 0;
-    flex-wrap: wrap;
-  }
-
-  .birder-states {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    left: 1rem;
-    width: 100%;
-  }
-
-  .states-checklist {
-    max-width: 40%;
-    height: 8rem;
-    margin-top: 1rem;
-    margin-left: 2rem;
-    background-color: #f2f1f1;
-    border-radius: 10px;
+  .states-row {
+    width: 60%;
+    margin-left: 20%;
   }
 
   .states-species {
@@ -361,79 +328,28 @@ hr {
     margin-top: 2rem;
   }
 
-  .submitted-checklist {
-    display: flex;
-    flex-direction: row;
-    font-size: 14px;
-    display: inline-block;
-    clear: both;
-    width: 50%;
-  }
-
-  .submitted-species {
-    flex-direction: column;
-    height: 30rem;
-  }
-
-  .first-species {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
+  .species-card2 {
     width: 100%;
-    height: auto;
-    margin: 2rem;
-  }
-  .first-species img {
-    width: 100px;
-    height: 100px;
-    margin-right: 1rem;
-  }
-  .first-span {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .first-span h4 {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-  .first-span .first-location {
-    font-size: 0.875rem;
-  }
-  .first-span h5 {
-    margin: 0;
-    font-size: 0.875rem;
+    margin-right: 0;
   }
 
-  .second-species {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: 100%;
-    height: auto;
-    margin: 2rem;
+  .delete-birder1 {
+    right: 8%;
   }
-  .second-species img {
-    width: 100px;
-    height: 100px;
-    margin-right: 1rem;
+  
+  .material-symbols-outlined#toggle1 {
+    right: 8%;
   }
-  .second-span {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+}
+
+@media (max-width: 500px) {
+  .birder-detail ul {
+    margin-top: 2rem;
+    width: 90%;
+    margin-left: 5%;
   }
-  .second-span h4 {
-    margin: 0;
-    font-size: 1.25rem;
-  }
-  .second-span .second-location {
-    font-size: 0.875rem;
-  }
-  .second-span h5 {
-    margin: 0;
-    font-size: 0.875rem;
+  .states-row {
+    width:90%;
+    margin-left: 5%;
   }
 }

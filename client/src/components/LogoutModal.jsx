@@ -6,7 +6,7 @@ function LogoutModal({ message, onConfirm, onCancel }) {
   return (
     <div className="logout-modal">
       <div className="logout-modal-content">
-        <p>
+        <p style={{ fontSize: "1rem" }}>
           <b>{message}</b>
         </p>
         <div className="logout-modal-buttons">
