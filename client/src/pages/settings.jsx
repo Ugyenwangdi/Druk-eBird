@@ -320,7 +320,7 @@ function Settings() {
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-group2">
             <label htmlFor="email">Email:</label>
             <input
               type="email"

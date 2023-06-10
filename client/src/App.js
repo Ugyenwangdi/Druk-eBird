@@ -107,7 +107,6 @@ function App() {
       setCheckedDeactivatedUser(true);
     }
   }, [token, tokenValidated]);
-  console.log("current: ", userData);
   useEffect(() => {
     validateToken();
   }, [validateToken]);

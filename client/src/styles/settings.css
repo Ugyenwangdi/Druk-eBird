@@ -17,7 +17,14 @@ body {
 }
 .form-group {
   display: inline-block;
-  width: 30%;
+  width: 32%;
+  padding: 2rem;
+  font-size: 15px;
+  color: #4b5767;
+}
+.form-group2 {
+  display: inline-block;
+  width: 43%;
   padding: 2rem;
   font-size: 15px;
   color: #4b5767;
@@ -54,19 +61,17 @@ body {
   margin-left: 2rem;
 }
 .profile-pic {
-  height: 20vw;
-  width: 20vw;
+  width: 100%;
   max-height: 200px;
   max-width: 200px;
-  position: absolute;
-  top: 33%;
-  right: 17%;
-  transform: translate(50%, -50%);
+  margin-left: 80%;
   border-radius: 50%;
   border: 3px solid #136d66;
-  display: flex; /* Added display property */
-  justify-content: center; /* Added justify-content property */
+  display: flex;
+  justify-content: center;
   align-items: center;
+  position: sticky;
+  margin-top: -13rem;
 }
 #photo {
   height: 98%;
@@ -262,8 +267,6 @@ body {
   gap: 1rem;
 }
 
-/*responsive*/
-
 @media (max-width: 620px) {
   .table thead {
     display: none;
@@ -281,7 +284,6 @@ body {
   }
   .table td {
     text-align: right;
-    padding-left: 50%;
     text-align: right;
     position: relative;
   }
@@ -301,7 +303,7 @@ body {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media (max-width: 768px) {
   .setting-box {
     width: 100%;
     margin: 0 auto;
@@ -315,9 +317,10 @@ body {
     position: relative;
   }
   .form-group {
-    width: 100%;
-    margin-right: 0;
-    padding: 0rem;
+    width: 45%;
+  }
+  .form-group2 {
+    width: 55%;
   }
   .submit {
     width: 100%;
@@ -326,14 +329,8 @@ body {
     align-items: center;
   }
   .profile-pic {
-    height: 200px;
-    width: 200px;
-    position: static;
-    transform: translate(-50%, -50%);
-    margin: 0 auto;
-    margin-top: 8rem;
-    margin-left: 10%;
-    align-items: center;
+    margin-top: -1rem;
+    margin-left: 30%;
   }
   .camera {
     position: absolute;
@@ -343,7 +340,7 @@ body {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: grey;
+    background-color: #136d66;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -361,11 +358,6 @@ body {
     cursor: pointer;
     text-align: center;
   }
-  /* #uploadBtn {
-    width: 80%;
-    margin: 0 auto;
-    margin-top: 1rem;
-  } */
   .parent {
     display: block;
   }
@@ -376,15 +368,13 @@ body {
 }
 @media screen and (max-width: 480px) {
   .profile-pic {
-    position: static;
-    margin-top: 8rem;
-    margin-left: -15%;
+    position: sticky;
     height: 150px;
     width: 150px;
   }
   .submit {
-    /* width: 40%; */
-    padding: 2rem;
+    padding: 1rem;
+    margin-left: 2rem;
   }
   .form-input,
   .form-button {

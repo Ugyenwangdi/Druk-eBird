@@ -64,30 +64,19 @@ function SpeciesDetails() {
         </Link>
       </h2>
       <div className="species-images">
-        <img
-          className="species-image1"
-          src={species.photos[0] ? species.photos[0].url : preview}
-          alt="species1"
-          onClick={toggleFullscreen}
-        />
-        <div className="species-image-column">
+        <div className="img-bird">
           <img
-            className="species-image"
-            src={species.photos[1] ? species.photos[1].url : preview}
-            alt="first"
-          />
-          <img
-            className="species-image-more"
-            src={species.photos[2] ? species.photos[2].url : preview}
-            alt="second"
+            className="species-image1"
+            src={species.photos[0] ? species.photos[0].url : preview}
+            alt="species1"
+            onClick={toggleFullscreen}
           />
         </div>
-        <div className="map">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d113271.23452452681!2d89.64648174999999!3d27.477785949999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sbt!4v1682098982303!5m2!1sen!2sbt"
-            className="location"
-            title="location-frame"
-          ></iframe>
+
+        <div className="species-image-column1">
+          <h3 className="bird-name">{species.englishName}</h3>
+          <div className="scientific-name">{species.scientificName}</div>
+          <div className="IUCNStatus">IUCN Status: {species.iucnStatus}</div>
         </div>
       </div>
 

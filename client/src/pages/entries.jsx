@@ -93,9 +93,9 @@ function Entries() {
         <h2 className="total-header">
           Total Enteries <span className="enteries-count">({foundTotal})</span>
         </h2>
-        <div className="entries-button-container">
+        {/* <div className="entries-button-container">
           <button className="entries-export-button">Export Data</button>
-        </div>
+        </div> */}
       </div>
       <div className="enteries-page-container">
         <div className="enteries-filter-container">
@@ -119,7 +119,10 @@ function Entries() {
               arrow_drop_down
             </span>
           </div>
-          <div className="date-filter-select">
+          <div
+            className="date-filter-select"
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
@@ -134,6 +137,12 @@ function Entries() {
                 },
               }}
             />
+            <span
+              class="material-symbols-outlined"
+              style={{ fontSize: "16px", marginLeft: "-0.2rem" }}
+            >
+              calendar_month
+            </span>
           </div>
           <div className="entries-filter-select" style={{ width: "10rem" }}>
             <Dropdown
@@ -176,7 +185,7 @@ function Entries() {
               <th>English Name</th>
               <th>Birder</th>
               <th>Birding Site</th>
-              <th>Data/Time</th>
+              <th>Date</th>
               <th>Photo</th>
               <th>Numbers observed</th>
             </tr>
