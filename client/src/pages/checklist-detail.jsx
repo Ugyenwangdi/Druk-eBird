@@ -6,18 +6,32 @@ import { logo, profile } from "../images";
 
 function ChecklistDetail() {
   const { id } = useParams();
+  const [data, setData] = useState([]);
+
   console.log(id);
   const location = useLocation();
-  const [showFullscreen, setShowFullscreen] = useState(false);
 
   const [checklist, setChecklist] = useState(
     [location.state?.ChecklistDetail] || [{ photo: [] }]
   );
 
-  console.log(
-    "bird count? ",
-    checklist[0].entries[0].StartbirdingData[0].selectedTime
-  );
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/birders/${id}`
+      );
+
+      setData(response.data.users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log("checklist: ", data);
 
   // Create a Set to store unique bird names
   const uniqueBirdNames = new Set();
@@ -77,6 +91,14 @@ function ChecklistDetail() {
     } catch (error) {
       console.log("Error occurred while rejecting checklist:", error);
     }
+  };
+
+  const [enlargedImageVisible, setEnlargedImageVisible] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+    setEnlargedImageVisible(true);
   };
 
   return (
@@ -165,9 +187,27 @@ function ChecklistDetail() {
                           src={item.StartbirdingData[0].photo}
                           alt="Bird"
                           className="bird-img"
+                          onClick={() =>
+                            handleImageClick(item.StartbirdingData[0]?.photo)
+                          }
                         />
                       ) : (
-                        <img src={logo} alt="Logo" className="bird-img" />
+                        <span>No photo available</span>
+                      )}
+                      {enlargedImageVisible && (
+                        <div className="enlarged-image-container">
+                          <img
+                            src={selectedImage}
+                            alt=""
+                            className="enlarged-img"
+                          />
+                          <button
+                            className="close-button"
+                            onClick={() => setEnlargedImageVisible(false)}
+                          >
+                            &#10005;
+                          </button>
+                        </div>
                       )}
                     </td>
                     <td data-label="Action">
@@ -239,32 +279,32 @@ function ChecklistDetail() {
                 </li>
                 <li className="p-1 ">
                   <span className="font-bold">Latitude</span>{" "}
-                  {checklist[0].entries[0].StartbirdingData[0]
-                    .currentLocation &&
-                    checklist[0].entries[0].StartbirdingData[0].currentLocation
-                      .latitude && (
-                      <>
-                        {
-                          checklist[0].entries[0].StartbirdingData[0]
-                            .currentLocation.latitude
-                        }
-                      </>
-                    )}
+                  {checklist[0]?.entries[0]?.StartbirdingData[0]
+                    ?.currentLocation?.latitude ? (
+                    <>
+                      {
+                        checklist[0]?.entries[0]?.StartbirdingData[0]
+                          ?.currentLocation?.latitude
+                      }
+                    </>
+                  ) : (
+                    "Not provided"
+                  )}
                 </li>
 
                 <li className="p-1 ">
                   <span className="font-bold">Longitude</span>{" "}
-                  {checklist[0].entries[0].StartbirdingData[0]
-                    .currentLocation &&
-                    checklist[0].entries[0].StartbirdingData[0].currentLocation
-                      .longitude && (
-                      <>
-                        {
-                          checklist[0].entries[0].StartbirdingData[0]
-                            .currentLocation.longitude
-                        }
-                      </>
-                    )}
+                  {checklist[0]?.entries[0]?.StartbirdingData[0]
+                    ?.currentLocation?.longitude ? (
+                    <>
+                      {
+                        checklist[0]?.entries[0]?.StartbirdingData[0]
+                          ?.currentLocation?.longitude
+                      }
+                    </>
+                  ) : (
+                    "Not provided"
+                  )}
                 </li>
 
                 <li className="p-1">

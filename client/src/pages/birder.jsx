@@ -32,7 +32,7 @@ function Birder() {
 
   useEffect(() => {
     fetchData();
-  }, [page, limit, birderName, selectedCountry]);
+  }, [page, limit, birderName, selectedCountry, deleteUserId]);
 
   const fetchData = async () => {
     try {
@@ -54,7 +54,7 @@ function Birder() {
       console.log(error);
     }
   };
-  console.log("users: ", data);
+  console.log("birders: ", data);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -73,9 +73,9 @@ function Birder() {
           paddingBottom: "26px",
         }}
       >
-        <div className="birder-button-container">
+        {/* <div className="birder-button-container">
           <button className="birder-export-button">Export Data</button>
-        </div>
+        </div> */}
         <h2 className="header">
           Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
@@ -102,44 +102,44 @@ function Birder() {
             </span>
           </div>
         </div>
-        {data.map((birder, index) => (
-          <div className="all-birder" key={birder._id}>
+        {data.map((item, index) => (
+          <div className="all-birder" key={item.birder._id}>
             <div className="checklist-link">
               <div className="birder-container">
                 <span
                   className="material-symbols-outlined"
                   id="toggle"
-                  onClick={() => toggleDeleteButton(birder._id)}
+                  onClick={() => toggleDeleteButton(item.birder._id)}
                 >
                   more_horiz
                 </span>
                 <span className="birder-info">
                   <Link
-                    to={`/birders/${birder._id}`}
-                    state={{ BirderDetail: birder }}
+                    to={`/birders/${item.birder._id}`}
+                    state={{ BirderDetail: item }}
                   >
                     <img
-                      src={birder.photo ? birder.photo : profile}
+                      src={item.birder.photo ? item.birder.photo : profile}
                       alt=""
                       className="birder-profile"
                     />
                   </Link>
                 </span>
                 <h2 className="birder-name">
-                  {birder.name}
-                  <p style={{ fontSize: "12px" }}>{birder.profession}</p>
+                  {item.birder.name}
+                  <p style={{ fontSize: "12px" }}>{item.birder.profession}</p>
                 </h2>
                 <div className="email-contact">
                   <ul>
                     <li>
                       <span className="material-symbols-outlined">mail</span>
-                      {birder.email}
+                      {item.birder.email}
                     </li>
                     <li>
                       <span className="material-symbols-outlined">
                         calendar_month
                       </span>
-                      {convertDate(birder.dob) || "none"}
+                      {convertDate(item.birder.dob) || "none"}
                     </li>
                   </ul>
                 </div>
@@ -150,20 +150,23 @@ function Birder() {
                       <span className="material-symbols-outlined">
                         emoji_flags
                       </span>
-                      {birder.country}
+                      {item.birder.country}
                     </li>
                     <li>
                       <span className="material-symbols-outlined">
                         fact_check
                       </span>
-                      10 completed checklists
+                      {item.entriesCount}{" "}
+                      {item.entriesCount > 1 ? "entries" : "entry"} submitted
                     </li>
                   </ul>
                 </div>
-                {showDeleteId === birder._id && (
+                {showDeleteId === item.birder._id && (
                   <button
                     className="delete-birder"
-                    onClick={() => deleteBirder(birder._id)}
+
+                    onClick={() => handleDeleteUser(item.birder._id)}
+
                   >
                     Delete Birder
                   </button>

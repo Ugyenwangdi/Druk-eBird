@@ -84,9 +84,9 @@ function Checklist() {
           Total Checklist
           <span className="checklist-count">({checklistTotal})</span>
         </h2>
-        <div className="checklist-button-container">
+        {/* <div className="checklist-button-container">
           <button className="checklist-export-button">Export Data</button>
-        </div>
+        </div> */}
       </div>
       <div className="checklist-page-container">
         <div className="checklist-filter-container">
@@ -103,11 +103,14 @@ function Checklist() {
               setSearch={(birdingSite) => setBirdingSite(birdingSite)}
             />
           </div>
-          <div className="date-filter-select">
+          <div
+            className="date-filter-select"
+            style={{ display: "flex", alignItems: "center" }}
+          >
             <DatePicker
               selected={selectedDate}
               onChange={(date) => setSelectedDate(date)}
-              placeholderText="Selected date"
+              placeholderText="Select Date"
               className="species-filter-dropdown"
               style={{
                 width: "100px",
@@ -118,6 +121,16 @@ function Checklist() {
                 },
               }}
             />
+            <span
+              class="material-symbols-outlined"
+              style={{
+                fontSize: "16px",
+                padding: "7px",
+                marginLeft: "-0.2rem",
+              }}
+            >
+              calendar_month
+            </span>
           </div>
           <div className="checklist-filter-select">
             <Dropdown

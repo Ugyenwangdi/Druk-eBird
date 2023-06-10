@@ -72,13 +72,12 @@ function SpeciesDetails() {
             onClick={toggleFullscreen}
           />
         </div>
-        
+
         <div className="species-image-column1">
-            <h3 className="bird-name">{species.englishName}</h3>
-            <div className="scientific-name">{species.scientificName}</div>
-            <div className="IUCNStatus">
-              IUCN Status: {species.iucnStatus}
-            </div>
+          <h3 className="bird-name">{species.englishName}</h3>
+          <div className="scientific-name">{species.scientificName}</div>
+          <div className="IUCNStatus">IUCN Status: {species.iucnStatus}</div>
+
         </div>
       </div>
 
