@@ -251,6 +251,737 @@ function AddSpecies() {
     setShowFullscreen(!showFullscreen);
   };
 
+  const orderOptions = [
+    "Accipitriformes",
+    "Anseriformes",
+    "Bucerotiformes",
+    "Caprimulgiformes",
+    "Charadriiformes",
+    "Ciconiiformes",
+    "Columbiformes",
+    "Coraciiformes",
+    "Cuculiformes",
+    "Falconiformes",
+    "Galliformes",
+    "Gaviiformes",
+    "Gruiformes",
+    "Passerformes",
+    "Passeriformes",
+    "Pelecaniformes",
+    "Piciformes",
+    "Podicipediformes",
+    "Procellariiformes",
+    "Psittaciformes",
+    "Strigiformes",
+    "Suliformes",
+    "Trogoniformes",
+  ];
+
+  const familyOptions = [
+    "Accipitridae",
+    "Acrocephalidae",
+    "Aegithalidae",
+    "Aegithinidae",
+    "Alaudidae",
+    "Alcedinidae",
+    "Anatidae",
+    "Apodidae",
+    "Ardeidae",
+    "Artamidae",
+    "Bucerotidae",
+    "Burhinidae",
+    "Calcariidae",
+    "Campephagidae",
+    "Caprimulgidae",
+    "Certhiidae",
+    "Charadriidae",
+    "Chloropseidae",
+    "Ciconiidae",
+    "Cinclidae",
+    "Cisticolidae",
+    "Cittiidae",
+    "Columbidae",
+    "Coraciidae",
+    "Corvidae",
+    "Cuculidae",
+    "Dicaeidae",
+    "Dicruridae",
+    "Elachuridae",
+    "Emberizidae",
+    "Estrildidae",
+    "Eurylaimidae",
+    "Falconidae",
+    "Fringillidae",
+    "Gaviidae",
+    "Glareolidae",
+    "Gruidae",
+    "Hemiprocnidae",
+    "Hirundinidae",
+    "Ibidorhynchidae",
+    "Indicatoridae",
+    "Irenidae",
+    "Jacanidae",
+    "Laniidae",
+    "Laridae",
+    "Leiothrichidae",
+    "Locustellidae",
+    "Megalaimidae",
+    "Meropidae",
+    "Monarchidae",
+    "Motacillidae",
+    "Muscicapidae",
+    "Nectariniidae",
+    "Oriolidae",
+    "Pandionidae",
+    "Paridae",
+    "Passeridae",
+    "Pelecanidae",
+    "Pellorneidae",
+    "Phalacrocoracidae",
+    "Phasianidae",
+    "Phylloscopidae",
+    "Picidae",
+    "Pittidae",
+    "Ploceidae",
+    "Pnoepygidae",
+    "Podargidae",
+    "Podicipedidae",
+    "Procellariidae",
+    "Prunellidae",
+    "Psittaculidae",
+    "Pycnonotidae",
+    "Rallidae",
+    "Recurvirostridae",
+    "Regulidae",
+    "Rhipiduridae",
+    "Rostratulidae",
+    "Scolopacidae",
+    "Scotocercidae",
+    "Sittidae",
+    "Stenostiridae",
+    "Strigidae",
+    "Sturnidae",
+    "Sylviidae",
+    "Threskiornithidae",
+    "Tichodromidae",
+    "Timaliidae",
+    "Troglodytidae",
+    "Trogonidae",
+    "Turdidae",
+    "Turnicidae",
+    "Tytonidae",
+    "Upupidae",
+    "Vangidae",
+    "Vireonidae",
+    "Zosteropidae",
+  ];
+  const genusOptions = [
+    "Abroscopus",
+    "Accipiter",
+    "Aceros",
+    "Acridotheres",
+    "Acrocephalus",
+    "Actinodura",
+    "Actitis",
+    "Aegithalos",
+    "Aegithina",
+    "Aegolius",
+    "Aegypius",
+    "Aethopyga",
+    "Agraphospiza",
+    "Aix",
+    "Alauda",
+    "Alaudala",
+    "Alcedo",
+    "Alcippe",
+    "Alcurus",
+    "Alophoixus",
+    "Amaurornis",
+    "Ampeliceps",
+    "Anas",
+    "Anastomus",
+    "Anser",
+    "Anthipes",
+    "Anthracoceros",
+    "Anthropoides",
+    "Anthus",
+    "Apus",
+    "Aquila",
+    "Arachnothera",
+    "Arborophila",
+    "Ardea",
+    "Ardenna",
+    "Ardeola",
+    "Artamus",
+    "Asarcornis",
+    "Asio",
+    "Athene",
+    "Aviceda",
+    "Aythya",
+    "Batrachostomus",
+    "Blythipicus",
+    "Botaurus",
+    "Brachypteryx",
+    "Bradypterus",
+    "Bubo",
+    "Bubulcus",
+    "Bucephala",
+    "Buceros",
+    "Burhinus",
+    "Butastur",
+    "Buteo",
+    "Butorides",
+    "Cacomantis",
+    "Calandrella",
+    "Calcarius",
+    "Calidris",
+    "Callacanthis",
+    "Caprimulgus",
+    "Carpodacus",
+    "Cecropis",
+    "Centropus",
+    "Cephalopyrus",
+    "Certhia",
+    "Ceryle",
+    "Cettia",
+    "Ceyx",
+    "Chaimarrornis",
+    "Chalcoparia",
+    "Chalcophaps",
+    "Charadrius",
+    "Chelidorhynx",
+    "Chleuasicus",
+    "Chlidonias",
+    "Chloris",
+    "Chloropsis",
+    "Cholornis",
+    "Chroicocephalus",
+    "Chrysococcyx",
+    "Chrysocolaptes ",
+    "Chrysomma",
+    "Ciconia",
+    "Cinclidium",
+    "Cinclus",
+    "Cinnyris",
+    "Circaetus",
+    "Circus",
+    "Cissa",
+    "Cisticola",
+    "Clamator",
+    "Clanga",
+    "Clangula",
+    "Cochoa",
+    "Collocalia",
+    "Columba",
+    "Conostoma",
+    "Copsychus",
+    "Coracias",
+    "Coracina",
+    "Corvus",
+    "Coturnix",
+    "Cuculus",
+    "Culicicapa",
+    "Cutia",
+    "Cyornis",
+    "Cypsiurus",
+    "Delichon",
+    "Dendrocitta",
+    "Dendrocopos",
+    "Dendrocygna",
+    "Dendronanthus",
+    "Dicaeum",
+    "Dicrurus",
+    "Dinopium",
+    "Drenddrocopos",
+    "Ducula",
+    "Egretta",
+    "Elachura",
+    "Elanus",
+    "Emberiza",
+    "Enicurus",
+    "Eremophila",
+    "Erpornis",
+    "Erythrura",
+    "Esacus",
+    "Eudynamys",
+    "Eumyias",
+    "Eurostopodus",
+    "Eurystomus",
+    "Falco",
+    "Ficedula",
+    "Francolinus",
+    "Fringilla",
+    "Fulica",
+    "Fulvetta",
+    "Gallinago",
+    "Gallinula",
+    "Gallirallus",
+    "Gallus",
+    "Gampsorhynchus",
+    "Garrulax",
+    "Garrulax ",
+    "Garrulus",
+    "Gavia",
+    "Gecinulus",
+    "Geokichla",
+    "Glareola",
+    "Glaucidium",
+    "Gorsachius",
+    "Gracula",
+    "Gracupica",
+    "Grandala",
+    "Grus",
+    "Gypaetus",
+    "Gyps",
+    "Halcyon",
+    "Haliaeetus",
+    "Haliastur",
+    "Harpactes",
+    "Hemiprocne",
+    "Hemipus",
+    "Hemixos",
+    "Heterophasia",
+    "Heteroxenicus",
+    "Hieraaetus",
+    "Hierococcyx",
+    "Hierococcyx ",
+    "Himantopus",
+    "Hirundapus",
+    "Hirundo",
+    "Hodgsonius",
+    "Hydrophasianus",
+    "Hypothymis",
+    "Hypsipetes",
+    "Ibidorhyncha",
+    "Ichthyaetus",
+    "Icthyophaga",
+    "Ictinaetus",
+    "Iduna",
+    "Indicator",
+    "Irena",
+    "Ithaginis",
+    "Ixobrychus",
+    "Ixos",
+    "Jynx",
+    "Ketupa",
+    "Lanius",
+    "Larus",
+    "Leioptila",
+    "Leiothrix",
+    "Leptopoecile",
+    "Leptoptilos",
+    "Lerwa",
+    "Leucosticte",
+    "Liocichla",
+    "Lioparus",
+    "Locustella",
+    "Lonchura",
+    "Lophophanes",
+    "Lophophorus",
+    "Lophotriorchis",
+    "Lophura",
+    "Loriculus",
+    "Loxia",
+    "Luscinia",
+    "Lymnocryptes",
+    "Macronus",
+    "Macropygia",
+    "Malacias",
+    "Malacocincla",
+    "Mareca",
+    "Megaceryle",
+    "Megalaima",
+    "Megalurus",
+    "Melanochlora",
+    "Mergus",
+    "Merops",
+    "Metopidius",
+    "Microhierax",
+    "Micropternus",
+    "Milvus",
+    "Minla",
+    "Mirafra",
+    "Monticola",
+    "Motacilla",
+    "Mulleripicus",
+    "Muscicapa",
+    "Muscicapella ",
+    "Mycerobas",
+    "Myiomela",
+    "Myophonus",
+    "Myzornis",
+    "Napothera",
+    "Neophron",
+    "Netta",
+    "Niltava",
+    "Ninox",
+    "Nisaetus",
+    "Nucifraga",
+    "Numenius",
+    "Nycticorax",
+    "Nyctyornis",
+    "Ocyceros ",
+    "Oenanthe",
+    "Oligura",
+    "Oriolus",
+    "Orthotomus",
+    "Otus",
+    "Pandion",
+    "Parus",
+    "Passer",
+    "Pastor",
+    "Pavo",
+    "Pelargopsis",
+    "Pelecanus",
+    "Pellorneum",
+    "Perdix",
+    "Pericrocotus",
+    "Periparus",
+    "Pernis",
+    "Phalacrocorax",
+    "Phalaropus",
+    "Phasianus",
+    "Phodilus",
+    "Phoenicurus",
+    "Phoenicurus ",
+    "Phragmaticola",
+    "Phyllergates",
+    "Phylloscopus",
+    "Phylloscopus ",
+    "Physlloscopus",
+    "Pica",
+    "Picumnus",
+    "Picus",
+    "Pitta",
+    "Platalea",
+    "Ploceus",
+    "Pluvialis",
+    "Pnoepyga",
+    "Podiceps",
+    "Poecile",
+    "Polyplectron",
+    "Pomatorhinus",
+    "Porphyrio",
+    "Prinia",
+    "Procarduelis",
+    "Prunella",
+    "Psarisomus",
+    "Pseudibis",
+    "Pseudominla",
+    "Pseudopodoces",
+    "Psittacula",
+    "Psittiparus",
+    "Pteruthius",
+    "Ptyonoprogne",
+    "Pycnonotus",
+    "Pyrrhocorax",
+    "Pyrrhoplectes",
+    "Pyrrhula",
+    "Rallina",
+    "Recurvirostra",
+    "Regulus",
+    "Rhipidura",
+    "Rhopodytes",
+    "Rhyacornis",
+    "Rhyticeros",
+    "Rimator",
+    "Riparia",
+    "Rostratula",
+    "Rubigula",
+    "Sarcogyps",
+    "Saroglossa",
+    "Sasia",
+    "Saxicola",
+    "Schoeniparus",
+    "Scolopax",
+    "Seicercus",
+    "Seicercus ",
+    "Serilophus",
+    "Serinus",
+    "Sibirionetta",
+    "Sitta",
+    "Siva",
+    "Spatula",
+    "Spelaeornis",
+    "Sphenocichla",
+    "Spilopelia",
+    "Spilornis",
+    "Spinus",
+    "Spodiopsar",
+    "Stachyridopsis",
+    "Stachyris",
+    "Staphida",
+    "Statchyridopsis",
+    "Statchyridopsis ",
+    "Sterna",
+    "Sternula",
+    "Stigmatopelia",
+    "Streptopelia",
+    "Strix",
+    "Sturnia",
+    "Sturnus",
+    "Surniculus",
+    "Suthora",
+    "Sylvia",
+    "Sylviparus",
+    "Tachybaptus",
+    "Tachymarptis",
+    "Tadorna",
+    "Tarsiger",
+    "Tephrodornis",
+    "Terpsiphone",
+    "Tesia",
+    "Tetraogallus",
+    "Tichodroma",
+    "Tickellia",
+    "Todiramphus",
+    "Tragopan",
+    "Treron",
+    "Treron ",
+    "Tringa",
+    "Troglodytes",
+    "Turdoides",
+    "Turdus",
+    "Turdus ",
+    "Turnix",
+    "Tyto",
+    "Upupa",
+    "Urocissa",
+    "Vanellus",
+    "Xiphirhynchus",
+    "Yuhina",
+    "Zapornia",
+    "Zoothera",
+    "Zosterops",
+  ];
+  const iucnStatusOptions = ["CR", "EN", "LC", "LC ", "NT", "VU"];
+  const groupOptions = [
+    "Accentor",
+    "Accipiter",
+    "Adjutant",
+    "Anas",
+    "Avocet",
+    "Babbler",
+    "Barbet",
+    "Barwing",
+    "Baza",
+    "Bee-eater",
+    "Bittern",
+    "Blackbird",
+    "Bluebird",
+    "Bluetail",
+    "Bluethroat",
+    "Brambling ",
+    "Broadbill",
+    "Bubul",
+    "Bulbul",
+    "Bullfinch",
+    "Bunting",
+    "Bushchat",
+    "Bushlark",
+    "Buttonquail",
+    "Buzzard",
+    "Chaffinch",
+    "Chough",
+    "Cisticola",
+    "Cochoa",
+    "Coot",
+    "Cormorant",
+    "Coucal",
+    "Crake",
+    "Crane",
+    "Crossbill",
+    "Crow",
+    "Cuckoo",
+    "Cuckooshrike",
+    "Curlew",
+    "Cutia",
+    "Dipper",
+    "Diver",
+    "Dollarbird",
+    "Dove",
+    "Drongo",
+    "Duck",
+    "Eagle",
+    "Egret",
+    "Erpornis",
+    "Falcon",
+    "Falconet",
+    "Fantail",
+    "Finch",
+    "Fish eagle",
+    "Flowerpecker",
+    "Flycatcher",
+    "Flycatcher-shrike",
+    "Flyctacher",
+    "Forktail",
+    "Francolin",
+    "Frogmouth",
+    "Fulvetta",
+    "Gadwall",
+    "Goldcrest",
+    "Goldeneye",
+    "Goosander",
+    "Goose",
+    "Grandala",
+    "Grassbird",
+    "Grebe",
+    "Green Pigeon",
+    "Greenfinch",
+    "Greenshank",
+    "Grosbeak",
+    "Groundpecker",
+    "Gull",
+    "Harrier",
+    "Heron",
+    "Hobby",
+    "Honeyguide",
+    "Hoopoe",
+    "Hornbill",
+    "Ibis",
+    "Ibisbill",
+    "Iora",
+    "Jacana",
+    "Jay",
+    "Kestrel",
+    "Kingfisher",
+    "Kite",
+    "Koel",
+    "Lapwing",
+    "Lark",
+    "Laughingthrush",
+    "Leafbird",
+    "Leiothrix",
+    "Liocichla",
+    "Magpie",
+    "Major",
+    "Malkoha",
+    "Mallard",
+    "Martin",
+    "Mesia",
+    "Minivet",
+    "Minla",
+    "Monarch",
+    "Moorhen",
+    "Munia",
+    "Myna",
+    "Myzornis",
+    "Nightjar",
+    "Niltava",
+    "Nutcracker",
+    "Nuthatch",
+    "Oriole",
+    "Osprey",
+    "Owl",
+    "Parakeet",
+    "Parrot",
+    "Parrotbill",
+    "Parrotfinch",
+    "Partridge",
+    "Pelican",
+    "Phalarope",
+    "Pheasant",
+    "Pigeon",
+    "Pintail",
+    "Pipit",
+    "Pitta",
+    "Plover",
+    "Pochard",
+    "Pratincole",
+    "Prinia",
+    "Quail",
+    "Raven",
+    "Redshank",
+    "Redstart",
+    "Robin",
+    "Rock Thrush",
+    "Rockchat",
+    "Roller",
+    "Rosefinch",
+    "Rubythroat",
+    "Ruff",
+    "Sandpiper",
+    "Scaup",
+    "Sea eagles",
+    "Serin",
+    "Shama",
+    "Shearwater",
+    "Shelduck",
+    "Shortwing",
+    "Shoveler",
+    "Shrike",
+    "Sibia",
+    "Siskin",
+    "Siva",
+    "Skylark",
+    "Snipe",
+    "Snowcock",
+    "Sparrow",
+    "Spiderhunter",
+    "Spoonbill",
+    "Starling",
+    "Stilt",
+    "Stint",
+    "Stonechat",
+    "Stork",
+    "Sunbird",
+    "Swallow",
+    "Swamphen",
+    "Swift",
+    "Tailorbird",
+    "Teal",
+    "Tern",
+    "Tesia",
+    "Thick-knee",
+    "Thrush",
+    "Tit",
+    "Treecreeper",
+    "Treepie",
+    "Trogon",
+    "Vulture",
+    "Wagtail",
+    "Wallcreeper",
+    "Warbler",
+    "Waterhen",
+    "Weaver",
+    "Wheatear",
+    "Whimbrel",
+    "White-eye",
+    "Whitethroat",
+    "Wigeon",
+    "Woodcock",
+    "Woodpecker",
+    "Woodshrike",
+    "Woodswallows",
+    "Wren",
+    "Wryneck",
+    "Yuhina",
+    "badia",
+    "duck",
+    "erithacus",
+    "gouldiae",
+    "maximus",
+    "sandpiper",
+  ];
+  const residencyOptions = [
+    "Altitudinal Migrant",
+    "Altitudinal migrant",
+    "Introduced",
+    "No recent records",
+    "Passage migrant",
+    "Passsage migrant",
+    "Rare visitor",
+    "Resident",
+    "Resident ",
+    "Resident-update",
+    "Summer Visitor",
+    "Summer visitor",
+    "Vagrant",
+    "Visitor",
+    "Winter visitor",
+    "vagrant",
+  ];
+
   return (
     <div className="add-species-container">
       {showFullscreen && (
@@ -286,22 +1017,50 @@ function AddSpecies() {
             />
 
             <div>Order</div>
-            <input
+            {/* <input
               type="text"
               name="order"
-              value={form.order}
+              value="Accipitriformes"
               onChange={handleChange}
               placeholder="Enter Order"
-            />
+            /> */}
+
+            <select
+              className="add-options"
+              value={form.order}
+              type="text"
+              name="order"
+              onChange={handleChange}
+            >
+              {orderOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>Genus</div>
-            <input
+            {/* <input
               type="text"
               name="genus"
-              value={form.genus}
+              value="Aegithalos"
               onChange={handleChange}
               placeholder="Enter Genus"
-            />
+            /> */}
+
+            <select
+              className="add-options"
+              value={form.genus}
+              type="text"
+              name="genus"
+              onChange={handleChange}
+            >
+              {genusOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>Authority</div>
             <input
@@ -331,13 +1090,27 @@ function AddSpecies() {
             />
 
             <div>IUCN Status</div>
-            <input
+            {/* <input
               type="text"
               name="iucnStatus"
-              value={form.iucnStatus}
+              value="EN"
               onChange={handleChange}
               placeholder="Enter IUCN Status"
-            />
+            /> */}
+
+            <select
+              className="add-options"
+              value={form.iucnStatus}
+              type="text"
+              name="iucnStatus"
+              onChange={handleChange}
+            >
+              {iucnStatusOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>Bhutan Schedule</div>
             <input
@@ -379,13 +1152,27 @@ function AddSpecies() {
             />
 
             <div>Family Name</div>
-            <input
+            {/* <input
               type="text"
               name="familyName"
-              value={form.familyName}
+              value="Anatidae"
               onChange={handleChange}
               placeholder="Enter Family Name"
-            />
+            /> */}
+
+            <select
+              className="add-options"
+              value={form.familyName}
+              type="text"
+              name="familyName"
+              onChange={handleChange}
+            >
+              {familyOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>Species</div>
             <input
@@ -396,13 +1183,26 @@ function AddSpecies() {
               placeholder="Enter Species"
             />
             <div>Group</div>
-            <input
+            {/* <input
               type="text"
               name="group"
-              value={form.group}
+              value="Accentor"
               onChange={handleChange}
               placeholder="Enter Group"
-            />
+            /> */}
+            <select
+              className="add-options"
+              value={form.group}
+              type="text"
+              name="group"
+              onChange={handleChange}
+            >
+              {groupOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>Lho Name</div>
             <input
@@ -432,13 +1232,26 @@ function AddSpecies() {
             />
 
             <div>Residency</div>
-            <input
+            {/* <input
               type="text"
               name="residency"
-              value={form.residency}
+              value="Resident"
               onChange={handleChange}
               placeholder="Enter residency"
-            />
+            /> */}
+            <select
+              className="add-options"
+              value={form.residency}
+              type="text"
+              name="residency"
+              onChange={handleChange}
+            >
+              {residencyOptions.map((item, index) => (
+                <option key={index} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
 
             <div>No. of Observation</div>
             <div className="number-input">

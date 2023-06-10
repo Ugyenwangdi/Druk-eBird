@@ -91,47 +91,6 @@ const verifyPasswordResetLink = async (req, res) => {
   }
 };
 
-// //  set new password
-// const setNewPassword = async (req, res) => {
-//   try {
-//     if (!req.body.oldPassword || !req.body.newPassword) {
-//       return res
-//         .status(400)
-//         .json({ message: "Old Password and New Password are required" });
-//     }
-
-//     if (!isValidPassword(req.body.newPassword)) {
-//       return res.status(400).send({
-//         message:
-//           "Password must be between 8 and 26 characters long and include at least one lowercase letter, one uppercase letter, one number, and one symbol.",
-//       });
-//     }
-
-//     const user = await Admin.findOne({ _id: req.params.id });
-//     if (!user)
-//       return res.status(400).send({ message: "Invalid link: User not found!" });
-
-//     const token = await AdminToken.findOne({
-//       userId: user._id,
-//       token: req.params.token,
-//     });
-//     if (!token) return res.status(400).send({ message: "Token invalid!" });
-
-//     // Change the password
-//     await user.changePassword(req.body.oldPassword, req.body.newPassword);
-//     await sendEmail(
-//       user.email,
-//       "Your password has been changed",
-//       `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
-//     );
-//     await AdminToken.deleteOne({ _id: token._id }); // remove the token from the database
-
-//     res.status(200).send({ message: "Password reset successful!" });
-//   } catch (error) {
-//     res.status(500).send({ message: "Internal Server Error" });
-//   }
-// };
-
 const resetPassword = async (req, res) => {
   try {
     if (!req.body.password) {

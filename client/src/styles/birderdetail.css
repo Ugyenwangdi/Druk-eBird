@@ -336,9 +336,10 @@ hr {
   .delete-birder1 {
     right: 8%;
   }
-  
+
   .material-symbols-outlined#toggle1 {
     right: 8%;
+
   }
 }
 
@@ -349,7 +350,7 @@ hr {
     margin-left: 5%;
   }
   .states-row {
-    width:90%;
+    width: 90%;
     margin-left: 5%;
   }
 }

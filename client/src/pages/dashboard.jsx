@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
@@ -41,6 +42,9 @@ function Dashboard() {
   const [birdersCount, setBirdersCount] = useState(0);
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
+
+  const [speciesResult, setSpeciesResult] = useState({});
+  const [checklistResult, setChecklistResult] = useState({});
 
   const [checklistChartData, setChecklistChartData] = useState(null);
   const [speciesChartData, setSpeciesChartData] = useState(null);
@@ -212,11 +216,11 @@ function Dashboard() {
   const fetchTopBirders = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/top-birders`
+        `${process.env.REACT_APP_API_URL}/api/v1/birders/top?limit=5}`
       );
-      // console.log("response: ", response);
 
-      setTopBirders(Object.values(response.data.slice(0, 5)));
+      setBirdersCount(response.data.birderTotal);
+      setTopBirders(Object.values(response.data.users));
     } catch (error) {
       console.log(error);
     }
@@ -231,7 +235,6 @@ function Dashboard() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/v1/entries?limit=5`
       );
-      console.log("response: ", response);
       setEntriesCount(response.data.entriesTotal);
 
       setChecklists(Object.values(response.data.checklists));
@@ -239,8 +242,6 @@ function Dashboard() {
       console.log(error);
     }
   };
-
-  console.log("Checklists: ", checklists);
 
   useEffect(() => {
     fetchChecklistData();
@@ -259,19 +260,6 @@ function Dashboard() {
     prepareSpeciesChartData();
   }, [checklists, speciesSelectedYear, speciesSelectedMonth]);
 
-  // useEffect(() => {
-  //   if (!months.includes(currentMonth)) {
-  //     if (months.length > 0) {
-  //       if (!speciesSelectedMonth) {
-  //         setSpeciesSelectedMonth(months[months.length - 1]);
-  //       }
-  //       if (!speciesSelectedYear) {
-  //         setSpeciesSelectedYear(years[years.length - 1]);
-  //       }
-  //     }
-  //   }
-  // }, [currentMonth, months, years]);
-
   const prepareSpeciesChartData = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-species`
@@ -286,6 +274,8 @@ function Dashboard() {
     const { changeResult, result, overallTotalCount } = responseData;
 
     // setSpeciesCount(overallTotalCount);
+    console.log("result: ", responseData);
+    setSpeciesResult(responseData);
     setCurrentMonthSpeciesCount(changeResult.currentMonthCount);
     setPreviousMonthSpeciesCount(changeResult.previousMonthCount);
     setSpeciesPercentageChange(changeResult.percentageChange);
@@ -334,21 +324,6 @@ function Dashboard() {
     prepareChecklistChartData();
   }, [checklists, checklistSelectedYear, checklistSelectedMonth]);
 
-  // useEffect(() => {
-  //   if (!checklistMonths.includes(currentMonth)) {
-  //     if (checklistMonths.length > 0) {
-  //       if (!checklistSelectedMonth) {
-  //         setChecklistSelectedMonth(
-  //           checklistMonths[checklistMonths.length - 1]
-  //         );
-  //       }
-  //       if (!checklistSelectedYear) {
-  //         setChecklistSelectedYear(checklistYears[checklistYears.length - 1]);
-  //       }
-  //     }
-  //   }
-  // }, [currentMonth, checklistMonths, checklistYears]);
-
   const prepareChecklistChartData = async () => {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-checklists`
@@ -363,6 +338,7 @@ function Dashboard() {
     const { changeResult, result, overallTotalCount } = responseData;
 
     setChecklistCount(overallTotalCount);
+    setChecklistResult(responseData);
     setCurrentMonthChecklistCount(changeResult.currentMonthCount);
     setPreviousMonthChecklistCount(changeResult.previousMonthCount);
     setChecklistPercentageChange(changeResult.percentageChange);
@@ -420,6 +396,75 @@ function Dashboard() {
     fetchSpeciesList();
   }, []);
 
+  const ExportSpeciesCSVButton = () => {
+    // Prepare CSV data
+    const csvData = [];
+    const headerRow = [
+      "Year",
+      "Month",
+      "Districts",
+      "Species count",
+      "Bird Names",
+    ];
+    csvData.push(headerRow);
+
+    if (speciesResult && speciesResult.result) {
+      speciesResult.result.forEach((yearData) => {
+        const { year, month, labels, data, birdNames } = yearData;
+
+        labels.forEach((label, index) => {
+          const rowData = [];
+          rowData.push(year); // Year column
+          rowData.push(month); // Month column
+          rowData.push(label); // Districts column
+          rowData.push(data[index]); // Species count column
+          rowData.push(birdNames[label] ? birdNames[label].join(", ") : ""); // Bird Names column
+
+          csvData.push(rowData);
+        });
+      });
+    } else {
+      setError("Error! retry after some time");
+    }
+
+    return (
+      <CSVLink data={csvData} filename="district_species_count.csv">
+        Export CSV
+      </CSVLink>
+    );
+  };
+
+  const ExportChecklistCSVButton = () => {
+    // Prepare CSV data
+    const csvData = [];
+    const headerRow = ["Year", "Month", "Districts", "Checklists count"];
+    csvData.push(headerRow);
+
+    if (checklistResult && checklistResult.result) {
+      checklistResult.result.forEach((yearData) => {
+        const { year, month, labels, data } = yearData;
+
+        labels.forEach((label, index) => {
+          const rowData = [];
+          rowData.push(year); // Year column
+          rowData.push(month); // Month column
+          rowData.push(label); // Districts column
+          rowData.push(data[index]); // Species count column
+
+          csvData.push(rowData);
+        });
+      });
+    } else {
+      setError("Error! retry after some time");
+    }
+
+    return (
+      <CSVLink data={csvData} filename="district_checklists_count.csv">
+        Export CSV
+      </CSVLink>
+    );
+  };
+
   // Helper function to get the month name
   function getMonthName(month) {
     const monthNames = [
@@ -438,6 +483,13 @@ function Dashboard() {
     ];
     return monthNames[month];
   }
+
+  const getTrimmedLabel = (label, maxLength) => {
+    if (label.length > maxLength) {
+      return label.substring(0, maxLength) + "...)";
+    }
+    return label;
+  };
 
   return (
     <div>
@@ -550,6 +602,9 @@ function Dashboard() {
                 {speciesPercentageChange}%
               </div>
               <div className="comparison-text">than last month</div>
+              <span style={{ padding: "3px", paddingLeft: "4px" }}>
+                {speciesResult && <ExportSpeciesCSVButton />}
+              </span>
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
@@ -587,7 +642,7 @@ function Dashboard() {
                                   selectedData[0].birdNames[label];
                                 labelText += " (" + birdNames.join(", ") + ")";
                               }
-                              return labelText;
+                              return getTrimmedLabel(labelText, 100);
                             },
                           },
                         },
@@ -680,6 +735,9 @@ function Dashboard() {
                 {checklistPercentageChange}%
               </div>
               <div className="comparison-text">than last month</div>
+              <span style={{ padding: "3px", paddingLeft: "4px" }}>
+                {speciesResult && <ExportChecklistCSVButton />}
+              </span>
             </div>
             <div className="chart-wrapper">
               <div className="chart-container">
@@ -712,7 +770,7 @@ function Dashboard() {
                                 labelText +=
                                   ": " + context.parsed.y + " checklists";
                               }
-                              return labelText;
+                              return getTrimmedLabel(labelText, 100);
                             },
                           },
                         },
@@ -767,20 +825,28 @@ function Dashboard() {
               </div>
               <div className="card-body">
                 {topBirders.map((birder, index) => (
-                  <div className="eBirder" key={index}>
+                  <div className="eBirder" key={birder.birder._id}>
                     <div className="info">
-                      <img src={profile} className="birders-pic" />
+                      {birder.birder.photo && birder.birder.photo !== "null" ? (
+                        <img
+                          src={birder.birder.photo}
+                          alt="profile"
+                          className="birders-pic"
+                        />
+                      ) : (
+                        <img src={profile} alt="Logo" className="birders-pic" />
+                      )}
                       <div>
-                        <h4>{birder.birder}</h4>
+                        <h4>{birder.birder.name}</h4>
                         <small>
-                          {birder.totalChecklists}{" "}
-                          {birder.totalChecklists > 1 ? "entries" : "entry"}
+                          {birder.entriesCount}{" "}
+                          {birder.entriesCount > 1 ? "entries" : "entry"}
                         </small>
                       </div>
                     </div>
-                    <div className="more-info">
+                    {/* <div className="more-info">
                       <span className="material-icons">more_vert</span>
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               </div>
@@ -803,10 +869,10 @@ function Dashboard() {
                         <img
                           src={item.StartbirdingData[0].photo}
                           alt="Bird"
-                          className="bird-img"
+                          className="entries_img"
                         />
                       ) : (
-                        <img src={logo} alt="Logo" className="bird-img" />
+                        <img src={logo} alt="Logo" className="entries_img" />
                       )}
                       <div>
                         <h4>{item.BirdName}</h4>
