@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import "../styles/birder.css";
@@ -6,12 +6,9 @@ import { profile } from "../images";
 
 import { Link } from "react-router-dom";
 
-import { Search, Dropdown, Pagination, DeactivateModal } from "../components";
+import { Search, Dropdown, Pagination } from "../components";
 
 function Birder() {
-  const token = localStorage.getItem("token");
-  const [currentUser, setCurrentUser] = useState({});
-
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
@@ -21,27 +18,13 @@ function Birder() {
   const [selectedCountry, setSelectedCountry] = useState("");
 
   const [countryOptions, setCountryOptions] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   const [showDeleteId, setShowDeleteId] = useState(null);
-  const [deleteUserId, setDeleteUserId] = useState("");
 
-  const fetchCurrentUser = useCallback(async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setCurrentUser(response.data.user);
-    } catch (error) {
-      // Handle error
-      console.error(error);
-    }
-  }, [token]);
+  const deleteBirder = (id) => {
+    // Add your delete logic here using the id
+    console.log("Deleting birder with ID:", id);
+  };
 
   const toggleDeleteButton = (id) => {
     setShowDeleteId((prevId) => (prevId === id ? null : id));
@@ -79,57 +62,6 @@ function Birder() {
     return date.toLocaleDateString(undefined, options);
   };
 
-  const handleDeleteConfirmation = async () => {
-    console.log("Confirming Delete birder with ID:", deleteUserId);
-
-    try {
-      const url = `${process.env.REACT_APP_API_URL}/api/v1/birders/${deleteUserId}`;
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const response = await axios.get(url, { headers });
-      const deleteuseremail = response.data.email;
-
-      await axios.delete(url, { headers });
-      console.log("User deleted successfully!");
-
-      const sendNotification = async (message) => {
-        try {
-          await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
-            message: message,
-          });
-        } catch (error) {
-          console.log("Failed to send notification:", error);
-        }
-      };
-      // Create a new notification
-      const notificationMessage = `Birder **${deleteuseremail}** has been deleted by **${
-        currentUser.email
-      }** at ${new Date().toLocaleString()}.`;
-      await sendNotification(notificationMessage);
-      console.log(notificationMessage);
-      setData(data.filter((item) => item._id !== deleteUserId));
-      setShowDeleteModal(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeleteCancel = () => {
-    setShowDeleteModal(false);
-    console.log("Canceled Deleting birder");
-  };
-
-  const handleDeleteUser = (userId) => {
-    console.log("Deleting birder with ID:", userId);
-    setDeleteUserId(userId);
-    setShowDeleteModal(true);
-  };
-
-  useEffect(() => {
-    fetchCurrentUser();
-  }, [fetchCurrentUser]);
-
   return (
     <div className="birders-page-container">
       <div
@@ -148,7 +80,6 @@ function Birder() {
           Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
-
       <div className="birder-page-container">
         <div className="birder-filter-container">
           <div className="birder-search-bar">
@@ -232,7 +163,7 @@ function Birder() {
                 {showDeleteId === birder._id && (
                   <button
                     className="delete-birder"
-                    onClick={() => handleDeleteUser(birder._id)}
+                    onClick={() => deleteBirder(birder._id)}
                   >
                     Delete Birder
                   </button>
@@ -242,13 +173,6 @@ function Birder() {
           </div>
         ))}
       </div>
-      {showDeleteModal && (
-        <DeactivateModal
-          message="Are you sure you want to delete this birder?"
-          onConfirm={handleDeleteConfirmation}
-          onCancel={handleDeleteCancel}
-        />
-      )}
       <Pagination
         page={page}
         limit={limit ? limit : 0}

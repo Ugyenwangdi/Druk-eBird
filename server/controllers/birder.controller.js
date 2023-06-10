@@ -1,5 +1,5 @@
+import User from "../mongodb/models/user.js";
 import Birder from "../mongodb/models/user.js";
-import Checklist from "../mongodb/models/checklist.js";
 
 const getBirdersCount = async (req, res) => {
   try {
@@ -69,34 +69,6 @@ const getAllBirders = async (req, res) => {
   }
 };
 
-const getBirderByID = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const user = await Birder.findOne({ _id: id });
-
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ message: "User not found" });
-    }
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const deleteBirder = async (req, res) => {
-  try {
-    const user = await Birder.findByIdAndDelete(req.params.id);
-    if (!user) {
-      return res.status(404).json({ message: "Birder not found" });
-    }
-    res.status(200).json({ message: "Birder deleted successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
 const getDistinctCountries = async () => {
   try {
     const distinctCountries = await Birder.distinct("country");
@@ -108,4 +80,4 @@ const getDistinctCountries = async () => {
   }
 };
 
-export { getBirdersCount, getAllBirders, getBirderByID, deleteBirder };
+export { getBirdersCount, getAllBirders };
