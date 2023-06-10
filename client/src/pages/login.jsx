@@ -124,9 +124,9 @@ const Login = () => {
               {loading ? "Signing in..." : "Sign In"}
             </button>
 
-            <p className="text">or</p>
+            {/* <p className="text">or</p> */}
           </form>
-          <div className="form_container">
+          {/* <div className="form_container">
             <button className="google_btn" onClick={handleGoogleLogin}>
               <img src={google} alt="google icon" />
               <span>Sign in with Google</span>
@@ -134,9 +134,8 @@ const Login = () => {
 
             <div>
               <Link to="/forgot-password">Forgot Password? </Link>
-              {/* <Link to="/signup">Sign Up</Link> */}
             </div>
-          </div>
+          </div> */}
         </div>
 
         <div
