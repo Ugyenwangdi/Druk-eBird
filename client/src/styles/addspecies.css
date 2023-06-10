@@ -65,6 +65,17 @@
   background-color: transparent;
 }
 
+.add-options {
+  width: 100%;
+  padding: 7px;
+  border: 1px solid var(--color-outline-gray-light);
+  color: var(--color-dark);
+  border-radius: 3px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  background-color: transparent;
+}
+
 .select-photo {
   color: var(--color-gray-light);
 }
@@ -266,10 +277,10 @@
 }
 
 .fullscreen-container img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
+  /* max-width: 100%;
+  max-height: 100%; */
+  width: 50%;
+  height: 100%;
   object-fit: contain;
 }
 
@@ -357,6 +368,13 @@
   }
   .previewcontainer {
     max-width: 100%;
+  }
+  .fullscreen-container img {
+    /* max-width: 100%;
+    max-height: 100%; */
+    width: 84%;
+    height: 100%;
+    object-fit: contain;
   }
 }
 

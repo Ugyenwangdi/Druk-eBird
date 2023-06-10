@@ -42,7 +42,7 @@ function Notifications() {
         >
           arrow_back_ios
         </span>
-        <h1>Notifications</h1>
+        <h1>Activity Logs</h1>
       </div>
       {loading ? (
         <p>Loading notifications...</p>

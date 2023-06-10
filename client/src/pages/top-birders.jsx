@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 import "../styles/birder.css";
@@ -6,35 +6,125 @@ import { profile } from "../images";
 
 import { Link } from "react-router-dom";
 
-import { Pagination } from "../components";
+import { Search, Dropdown, Pagination, DeactivateModal } from "../components";
 
 function TopBirders() {
+  const token = localStorage.getItem("token");
+  const [currentUser, setCurrentUser] = useState({});
+
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
   const [usersTotal, setUsersTotal] = useState(0);
-  const [search, setSearch] = useState("");
+  const [birderName, setBirderName] = useState("");
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDeleteId, setShowDeleteId] = useState(null);
+  const [deleteUserId, setDeleteUserId] = useState("");
+
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setCurrentUser(response.data.user);
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  }, [token]);
+
+  const toggleDeleteButton = (id) => {
+    setShowDeleteId((prevId) => (prevId === id ? null : id));
+  };
 
   useEffect(() => {
     fetchData();
-  }, [page, limit]);
+  }, [page, limit, birderName, selectedCountry]);
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/birders?search=${search}&page=${page}&limit=${limit}`
+        `${process.env.REACT_APP_API_URL}/api/v1/birders/top?birder=${birderName}&country=${selectedCountry}&page=${page}&limit=${limit}`
       );
-      console.log("rsponse: ", response);
+
+      console.log("user data: ", response);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setUsersTotal(response.data.birderTotal);
+      setCountryOptions(response.data.distinctCountries);
       setData(response.data.users);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log("users: ", data);
+  console.log("birders: ", data);
+
+  const convertDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: "numeric", month: "long", year: "numeric" };
+    return date.toLocaleDateString(undefined, options);
+  };
+
+  const handleDeleteConfirmation = async () => {
+    console.log("Confirming Delete birder with ID:", deleteUserId);
+
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/api/v1/birders/${deleteUserId}`;
+      const headers = {
+        Authorization: `Bearer ${token}`,
+      };
+      const response = await axios.get(url, { headers });
+      const deleteuseremail = response.data.email;
+
+      await axios.delete(url, { headers });
+      console.log("User deleted successfully!");
+
+      const sendNotification = async (message) => {
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/notifications`, {
+            message: message,
+          });
+        } catch (error) {
+          console.log("Failed to send notification:", error);
+        }
+      };
+      // Create a new notification
+      const notificationMessage = `Birder **${deleteuseremail}** has been deleted by **${
+        currentUser.email
+      }** at ${new Date().toLocaleString()}.`;
+      await sendNotification(notificationMessage);
+      console.log(notificationMessage);
+      setData(data.filter((item) => item._id !== deleteUserId));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    console.log("Canceled Deleting birder");
+  };
+
+  const handleDeleteUser = (userId) => {
+    console.log("Deleting birder with ID:", userId);
+    setDeleteUserId(userId);
+    setShowDeleteModal(true);
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, [fetchCurrentUser]);
 
   return (
     <div className="birders-page-container">
@@ -47,203 +137,90 @@ function TopBirders() {
           paddingBottom: "26px",
         }}
       >
-        <div className="birder-button-container">
-          <button className="birder-export-button">Export Data</button>
-        </div>
         <h2 className="header">
-          Total Enteries <span className="birder-count">({usersTotal})</span>
+          <Link to="/">
+            <span className="material-icons back-arrow">arrow_back_ios</span>
+          </Link>
+          Top Birders <span className="birder-count">({usersTotal})</span>
         </h2>
       </div>
+
       <div className="birder-page-container">
-        <div className="birder-filter-container">
-          <div className="birder-search-bar">
-            <span className="material-icons google-font-icon">search</span>
-            <input type="text" placeholder="Enter birder name" />
-            {/* <Search setSearch={(search) => setSearch(search)} /> */}
-          </div>
-          <div className="birder-filter-select">
-            <select className="birder-filter-dropdown">
-              <option value="">District</option>
-              <option value="1">District 1</option>
-              <option value="2">District 2</option>
-              <option value="3">District 3</option>
-            </select>
-            <span className="material-icons google-font-icon">
-              arrow_drop_down
-            </span>
-          </div>
-        </div>
-        {data.map((birder) => (
-          <div className="all-birder" key={birder._id}>
-            <div className="checklist-link">
-              <div className="birder-container">
-                <span
-                  className="material-symbols-outlined"
-                  style={{ marginLeft: "95%", paddingRight: "18px" }}
-                >
-                  more_horiz
-                </span>
-                <span>
-                  <Link to="/birder-detail">
-                    <img
-                      src={birder.photo ? birder.photo : profile}
-                      alt=""
-                      className="birder-profile"
-                    />
-                  </Link>
-                </span>
-                <h2 className="birder-name">
-                  {birder.name}
-                  <p style={{ fontSize: "12px" }}>{birder.profession}</p>
-                </h2>
-                <div className="email-contact">
-                  <ul>
-                    <li>
-                      <span className="material-symbols-outlined">mail</span>
-                      {birder.email}
-                    </li>
-                    <li>
-                      <span className="material-symbols-outlined">
-                        calendar_month
-                      </span>
-                      {birder.dob}
-                    </li>
-                  </ul>
-                </div>
+        {data.map((item, index) => {
+          const serialNumber = (page - 1) * limit + index + 1;
+          return (
+            <div className="all-birder" key={item.birder._id}>
+              <div className="checklist-link">
+                <div className="birder-container">
+                  <span className="birder-info">
+                    <Link
+                      to={`/birders/${item.birder._id}`}
+                      state={{ BirderDetail: item }}
+                    >
+                      <img
+                        src={item.birder.photo ? item.birder.photo : profile}
+                        alt=""
+                        className="birder-profile"
+                      />
+                    </Link>
+                  </span>
+                  <h2 className="birder-name">
+                    #{serialNumber} {item.birder.name}
+                    <p style={{ fontSize: "12px" }}>{item.birder.profession}</p>
+                  </h2>
+                  <div className="email-contact">
+                    <ul>
+                      <li>
+                        <span className="material-symbols-outlined">mail</span>
+                        {item.birder.email}
+                      </li>
+                      <li>
+                        <span className="material-symbols-outlined">
+                          calendar_month
+                        </span>
+                        {convertDate(item.birder.dob) || "none"}
+                      </li>
+                    </ul>
+                  </div>
 
-                <div className="locatio-date">
-                  <ul>
-                    <li>
-                      <span className="material-symbols-outlined">
-                        emoji_flags
-                      </span>
-                      {birder.country}
-                    </li>
-                    <li>
-                      <span className="material-symbols-outlined">
-                        fact_check
-                      </span>
-                      10 completed checklists
-                    </li>
-                  </ul>
+                  <div className="locatio-date">
+                    <ul>
+                      <li>
+                        <span className="material-symbols-outlined">
+                          emoji_flags
+                        </span>
+                        {item.birder.country}
+                      </li>
+                      <li>
+                        <span className="material-symbols-outlined">
+                          fact_check
+                        </span>
+                        {item.entriesCount}{" "}
+                        {item.entriesCount > 1 ? "entries" : "entry"} submitted
+                      </li>
+                    </ul>
+                  </div>
+                  {showDeleteId === item.birder._id && (
+                    <button
+                      className="delete-birder"
+                      onClick={() => handleDeleteUser(item.birder._id)}
+                    >
+                      Delete Birder
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-
-        {/* <div className="all-birder">
-          <div className="checklist-link">
-            <div className="birder-container">
-              <span
-                className="material-symbols-outlined"
-                style={{ marginLeft: "95%", paddingRight: "18px" }}
-              >
-                more_horiz
-              </span>
-
-              <span>
-                <Link to="/birder-detail">
-                  <img src={profile} alt="" className="birder-profile" />
-                </Link>
-              </span>
-              <h2 className="birder-name">
-                Sonam
-                <p style={{ fontSize: "12px" }}>Photographer</p>
-              </h2>
-              <div className="email-contact">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">mail</span>
-                    ex@gmail.com
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      calendar_month
-                    </span>
-                    02/03/2000
-                  </li>
-                </ul>
-              </div>
-
-              <div className="locatio-date">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      emoji_flags
-                    </span>
-                    Bhutan
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      fact_check
-                    </span>
-                    10 completed checklists
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="all-birder">
-          <div className="checklist-link">
-            <div className="birder-container">
-              <span
-                className="material-symbols-outlined"
-                style={{
-                  marginLeft: "95%",
-                  paddingRight: "18px",
-                  cursor: "pointer",
-                }}
-              >
-                more_horiz
-              </span>
-
-              <span>
-                <Link to="/birder-detail">
-                  <img src={profile} alt="" className="birder-profile" />
-                </Link>
-              </span>
-              <h2 className="birder-name">
-                Sonam
-                <p style={{ fontSize: "12px" }}>Photographer</p>
-              </h2>
-              <div className="email-contact">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">mail</span>
-                    ex@gmail.com
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      calendar_month
-                    </span>
-                    02/03/2000
-                  </li>
-                </ul>
-              </div>
-
-              <div className="locatio-date">
-                <ul>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      emoji_flags
-                    </span>
-                    Bhutan
-                  </li>
-                  <li>
-                    <span className="material-symbols-outlined">
-                      fact_check
-                    </span>
-                    10 completed checklists
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div> */}
+          );
+        })}
       </div>
+      {showDeleteModal && (
+        <DeactivateModal
+          message="Are you sure you want to delete this birder?"
+          onConfirm={handleDeleteConfirmation}
+          onCancel={handleDeleteCancel}
+        />
+      )}
       <Pagination
         page={page}
         limit={limit ? limit : 0}

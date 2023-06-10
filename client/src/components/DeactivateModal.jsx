@@ -6,7 +6,7 @@ function DeactivateModal({ message, onConfirm, onCancel }) {
   return (
     <div className="confirmation-modal">
       <div className="confirmation-modal-content">
-        <p>
+        <p style={{ fontSize: "1rem" }}>
           <b>{message}</b>
         </p>
         <div className="confirmation-modal-buttons">

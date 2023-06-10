@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link } from "react-router-dom";
+import { CSVLink } from "react-csv";
 import axios from "axios";
 import { Bar } from "react-chartjs-2";
 import {
@@ -16,6 +16,13 @@ import { VerditerFlycatcher } from "../images";
 import "../styles/graphs.css";
 
 Chart.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+const getTrimmedLabel = (label, maxLength) => {
+  if (label.length > maxLength) {
+    return label.substring(0, maxLength) + "...)";
+  }
+  return label;
+};
 
 const BirdChart = ({ data, selectedYearData }) => {
   const chartData = {
@@ -71,7 +78,7 @@ const BirdChart = ({ data, selectedYearData }) => {
                         selectedYearData[label]?.birdNames || [];
                       labelText += ` (${birdNames.join(", ")})`;
                     }
-                    return labelText;
+                    return getTrimmedLabel(labelText, 100);
                   },
                 },
               },
@@ -152,7 +159,7 @@ const ChartComponent = ({ data }) => {
                         labelText += ` (${birdNames.join(", ")})`;
                       }
                     }
-                    return labelText;
+                    return getTrimmedLabel(labelText, 100);
                   },
                 },
               },
@@ -329,46 +336,6 @@ function Graphs() {
     fetchDistrictSpeciesCount();
   }, []);
 
-  // const apiResult = {
-  //   dzongkhagResult: [
-  //     {
-  //       year: 2023,
-  //       month: "June",
-  //       labels: ["Bumthang", "Gasa"],
-  //       data: [1, 1],
-  //       birdNames: {
-  //         Bumthang: ["Large Blue Flycatcher"],
-  //         Gasa: ["Caspian Gull"],
-  //       },
-  //     },
-  //   ],
-  //   gewogResult: [
-  //     {
-  //       year: 2023,
-  //       month: "June",
-  //       labels: ["Chhoekhor", "Lunana"],
-  //       data: [1, 1],
-  //       birdNames: {
-  //         Chhoekhor: ["Large Blue Flycatcher"],
-  //         Lunana: ["Caspian Gull"],
-  //       },
-  //     },
-  //   ],
-  //   villageResult: [
-  //     {
-  //       year: 2023,
-  //       month: "June",
-  //       labels: ["Dhur Moen", "Chakhar", "Drangsho"],
-  //       data: [1, 1, 1],
-  //       birdNames: {
-  //         "Dhur Moen": ["Large Blue Flycatcher"],
-  //         Chakhar: ["Large Blue Flycatcher"],
-  //         Drangsho: ["Caspian Gull"],
-  //       },
-  //     },
-  //   ],
-  // };
-
   const [selectedType, setSelectedType] = useState("dzongkhag");
   const selectedResult = districtSpeciesCounts[selectedType + "Result"] || [];
 
@@ -379,25 +346,6 @@ function Graphs() {
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
   };
-
-  // const sampleData = {
-  //   2023: {
-  //     birdNames: [
-  //       "Caspian Gull",
-  //       "Large Blue Flycatcher",
-  //       "Taiwan Vivid Niltava",
-  //     ],
-  //     totalCounts: [6, 1, 1],
-  //   },
-  //   2022: {
-  //     birdNames: [
-  //       "Caspian Gull",
-  //       "Large Blue Flycatcher",
-  //       "Taiwan Vivid Niltava",
-  //     ],
-  //     totalCounts: [6, 1, 1],
-  //   },
-  // };
 
   const [countsYearData, setCountsYearData] = useState({});
   const [selectedCountsYear, setSelectedCountsYear] = useState(
@@ -469,6 +417,50 @@ function Graphs() {
     return monthNames[month];
   }
 
+  const getTrimmedLabel = (label, maxLength) => {
+    if (label.length > maxLength) {
+      return label.substring(0, maxLength) + "...";
+    }
+    return label;
+  };
+
+  const ExportMonthCSVButton = () => {
+    // Sample data returned from the API
+    const apiData = {
+      2023: {
+        June: {
+          totalBirdCount: 5,
+          birdNames: [
+            "New bird - small bird",
+            "Pallid Harrier",
+            "Caspian Gull",
+            "Taiwan Vivid Niltava",
+            "New bird - Bull Bull",
+          ],
+        },
+      },
+    };
+
+    // Extract the data from the API response
+    const {
+      2023: {
+        June: { totalBirdCount, birdNames },
+      },
+    } = apiData;
+
+    // Prepare the CSV data
+    const csvData = [
+      ["Year", "Month", "Total Bird Count", "Bird Names"],
+      ["2023", "June", totalBirdCount.toString(), birdNames.join(", ")],
+    ];
+
+    return (
+      <CSVLink data={csvData} filename="api_data.csv">
+        Export CSV
+      </CSVLink>
+    );
+  };
+
   return (
     <div>
       <div
@@ -502,6 +494,7 @@ function Graphs() {
                     </option>
                   ))}
                 </select>
+                {/* <ExportMonthCSVButton /> */}
               </span>
             </div>
 

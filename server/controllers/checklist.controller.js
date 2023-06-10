@@ -223,8 +223,6 @@ const updateChecklist = async (req, res) => {
     village,
   } = req.body;
 
-  console.log(BirdName.split("New bird - ")[1]);
-
   try {
     const checklist = await Checklist.findById(id).maxTimeMS(60000);
 

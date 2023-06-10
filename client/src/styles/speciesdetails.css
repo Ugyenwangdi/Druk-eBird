@@ -32,21 +32,40 @@
 }
 .species-images {
   display: flex;
+  flex-direction: row-reverse;
 }
 .species-image1 {
-  width: 33.3%;
-  max-width: 400px;
-  margin: 20px;
+  width: 100%;
+  max-width: 700px;
   border: 1px solid #ccc;
   border-radius: 2%;
   object-fit: cover;
   cursor: pointer;
 }
-.species-image-column {
-  width: 33.33%;
+.species-image-column1 {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  text-align: center;
+}
+.img-bird {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+}
+.bird-name {
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 2rem;
+}
+.scientific-name {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+.IUCNStatus {
+  font-size: 1.8rem;
 }
 .species-image {
   width: 80%;
@@ -173,12 +192,32 @@
     cursor: pointer;
   }
 
-  .species-image-column {
+  .species-image-column1 {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     /* align-items: center; */
     flex-direction: column;
+  }
+
+  .img-bird {
+    padding: 0;
+  }
+
+  .bird-name {
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 1rem;
+    margin-top: -1.5rem;
+  }
+  .scientific-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-style: italic;
+  }
+  .IUCNStatus {
+    font-size: 1rem;
+    margin-bottom: 2rem;
   }
 
   .species-image {
