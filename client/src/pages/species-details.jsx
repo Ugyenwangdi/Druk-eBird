@@ -77,6 +77,7 @@ function SpeciesDetails() {
           <h3 className="bird-name">{species.englishName}</h3>
           <div className="scientific-name">{species.scientificName}</div>
           <div className="IUCNStatus">IUCN Status: {species.iucnStatus}</div>
+
         </div>
       </div>
 

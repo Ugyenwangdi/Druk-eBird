@@ -51,6 +51,28 @@ function BirderDetail() {
     setShowDeleteId((prevId) => (prevId === id ? null : id));
   };
 
+  const fetchCurrentUser = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/auth/checkLoggedIn`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setCurrentUser(response.data.user);
+    } catch (error) {
+      // Handle error
+      console.error(error);
+    }
+  }, [token]);
+
+  const toggleDeleteButton = (id) => {
+    setShowDeleteId((prevId) => (prevId === id ? null : id));
+  };
+
   const convertDate = (dateString) => {
     const date = new Date(dateString);
     const options = { day: "numeric", month: "long", year: "numeric" };
@@ -182,9 +204,11 @@ function BirderDetail() {
             <div className="states-row">
               <div className="states">States:</div>
               <div className="states-checklist">
+
                 <p className="states-checklist-text">Total Entries</p>
                 <span className="material-symbols-outlined">fact_check</span>
                 <h1>{totalEntries}</h1>
+
               </div>
             </div>
           </div>
@@ -194,6 +218,7 @@ function BirderDetail() {
       <div className="entries-species">
         <h2>Submitted Checklists</h2>
         <div className="entries-container">
+
           {entries.map((item, index) => {
             return (
               <div className="species-card2">
@@ -263,30 +288,13 @@ function BirderDetail() {
               </div>
             );
           })}
-          {/* <div className="species-card2">
-            <span
-              style={{
-                display: "inline-block",
-                width: "200px",
-                height: "130px",
-                border: "1px solid #dee4ed",
-                borderRadius: "10px",
-              }}
-            >
-              <img src={VerditerFlycatcher} alt="placeholder" />
-            </span>
 
-            <div className="species-card2-content">
-              <h3 className="species-card2-name">Tropical kingbird</h3>
-              <div className="species-card-location">
-                <span class="material-symbols-outlined">location_on</span>
-                <span>Gyalpozhing</span>
-              </div>
-              <div className="species-card-date">08 March 2023</div>
-            </div>
-          </div> */}
+
         </div>
+
+      
       </div>
+
     </div>
   );
 }
