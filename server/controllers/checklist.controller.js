@@ -948,15 +948,14 @@ const analyzeDistrictSpecies = async (req, res) => {
     // Calculate the percentage increase or decrease in checklist submissions
     const currentMonthCount = currentMonthChecklists.length;
     const previousMonthCount = previousMonthChecklists.length;
-    const percentageChange =
-      currentMonthCount !== 0 && previousMonthCount !== 0
-        ? parseFloat(
-            (
-              ((currentMonthCount - previousMonthCount) / previousMonthCount) *
-              100
-            ).toFixed(2)
-          )
-        : 0;
+    let percentageChange;
+
+    if (previousMonthCount === 0) {
+      percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+    } else {
+      percentageChange =
+        ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+    }
     const changeResult = {
       currentMonthCount,
       previousMonthCount,
@@ -1134,11 +1133,20 @@ const analyzeDistrictChecklists = async (req, res) => {
       ? previousMonthData.data.reduce((sum, count) => sum + count, 0)
       : 0;
 
-    // Calculate the percentage change
-    const percentageChange =
-      previousMonthCount !== 0
-        ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
-        : 0;
+    // // Calculate the percentage change
+    // const percentageChange =
+    //   previousMonthCount !== 0
+    //     ? ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100
+    //     : 0;
+
+    let percentageChange;
+
+    if (previousMonthCount === 0) {
+      percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+    } else {
+      percentageChange =
+        ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
+    }
 
     const changeResult = {
       currentMonthCount,
