@@ -170,7 +170,6 @@ const getAllBirders = async (req, res) => {
   }
 };
 
-
 const getBirderByID = async (req, res) => {
   try {
     const { id } = req.params;
@@ -217,4 +216,3 @@ export {
   getBirderByID,
   deleteBirder,
 };
-
