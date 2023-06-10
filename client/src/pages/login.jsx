@@ -126,16 +126,16 @@ const Login = () => {
 
             {/* <p className="text">or</p> */}
           </form>
-          {/* <div className="form_container">
-            <button className="google_btn" onClick={handleGoogleLogin}>
+          <div className="form_container">
+            {/* <button className="google_btn" onClick={handleGoogleLogin}>
               <img src={google} alt="google icon" />
               <span>Sign in with Google</span>
-            </button>
+            </button> */}
 
             <div>
               <Link to="/forgot-password">Forgot Password? </Link>
             </div>
-          </div> */}
+          </div>
         </div>
 
         <div
