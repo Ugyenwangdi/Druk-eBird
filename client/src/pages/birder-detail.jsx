@@ -180,7 +180,7 @@ function BirderDetail() {
               </ul>
             </article>
             <div className="states-row">
-              <div className="states">States:</div>
+              <div className="states">Stats:</div>
               <div className="states-checklist">
                 <p className="states-checklist-text">Total Entries</p>
                 <span className="material-symbols-outlined">fact_check</span>
@@ -192,7 +192,7 @@ function BirderDetail() {
       </div>
 
       <div className="entries-species">
-        <h2>Submitted Checklists</h2>
+        <h2>Submitted Entries</h2>
         <div className="entries-container">
           {entries.map((item, index) => {
             return (
