@@ -9,6 +9,7 @@ const UpdatePassword = () => {
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [currentUser, setCurrentUser] = useState({});
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
@@ -49,6 +50,7 @@ const UpdatePassword = () => {
           {
             oldPassword: oldPassword,
             newPassword: newPassword,
+            confirmPassword: confirmPassword,
           },
           { headers }
         );
@@ -122,6 +124,20 @@ const UpdatePassword = () => {
                 setNewPassword(e.target.value);
               }}
               value={newPassword}
+              required
+              className="input"
+            />
+
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              onChange={(e) => {
+                setMsg("");
+                setError("");
+                setConfirmPassword(e.target.value);
+              }}
+              value={confirmPassword}
               required
               className="input"
             />

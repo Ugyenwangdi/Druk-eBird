@@ -19,10 +19,18 @@ const createNotification = async (req, res) => {
 // Get all notifications for the logged-in admin
 const getAllNotifications = async (req, res) => {
   try {
-    // Find all notifications associated with the logged-in admin
-    const notifications = await Notification.find().sort({ createdAt: -1 });
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 10;
 
-    res.json({ notifications });
+    // Find all notifications associated with the logged-in admin
+    const notifications = await Notification.find()
+      .sort({ createdAt: -1 })
+      .skip(page * limit)
+      .limit(limit);
+
+    const notificationsTotal = await Notification.countDocuments();
+
+    res.json({ limit, page: page + 1, notificationsTotal, notifications });
   } catch (error) {
     res.status(500).json({ error: "Unable to get notifications" });
   }

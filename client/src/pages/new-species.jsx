@@ -14,14 +14,18 @@ function NewSpecies() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(5);
   const [foundTotal, setFoundTotal] = useState(0);
-  const [birderName, setBirderName] = useState("");
+  // const [birderName, setBirderName] = useState("");
   const [birdingSite, setBirdingSite] = useState("");
   const [selectedDzongkhag, setSelectedDzongkhag] = useState("");
   const [selectedGewog, setSelectedGewog] = useState("");
   const [selectedVillage, setSelectedVillage] = useState("");
+  const [selectedBirder, setSelectedBirder] = useState("");
+
   const [dzongkhagOptions, setDzongkhagOptions] = useState([]);
   const [gewogOptions, setGewogOptions] = useState([]);
   const [villageOptions, setVillageOptions] = useState([]);
+  const [birderOptions, setBirderOptions] = useState([]);
+
   const [selectedDate, setSelectedDate] = useState(null);
 
   useEffect(() => {
@@ -29,7 +33,7 @@ function NewSpecies() {
   }, [
     page,
     limit,
-    birderName,
+    selectedBirder,
     selectedDate,
     birdingSite,
     selectedDzongkhag,
@@ -44,7 +48,7 @@ function NewSpecies() {
         : "";
 
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=${limit}&birder=${birderName}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&date=${formattedDate}`
+        `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=${limit}&birder=${selectedBirder}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&date=${formattedDate}`
       );
       console.log("response: ", response.data);
       setLimit(response.data.limit);
@@ -53,6 +57,7 @@ function NewSpecies() {
       setDzongkhagOptions(response.data.distinctDzongkhags);
       setGewogOptions(response.data.distinctGewogs);
       setVillageOptions(response.data.distinctVillages);
+      setBirderOptions(response.data.distinctObservers);
       setNewSpecies(Object.values(response.data.checklists));
     } catch (error) {
       console.log(error);
@@ -87,12 +92,16 @@ function NewSpecies() {
       </div>
       <div className="checklist-page-container">
         <div className="checklist-filter-container">
-          <div className="checklist-name-search">
-            <Search
-              placeholder="Birders"
-              setSearch={(birderName) => setBirderName(birderName)}
-              className="darker-placeholder"
+          <div className="checklist-filter-select">
+            <Dropdown
+              option={selectedBirder}
+              options={birderOptions ? birderOptions : []}
+              setOption={(birder) => setSelectedBirder(birder)}
+              title="Birders"
             />
+            <span className="material-icons google-font-icon">
+              arrow_drop_down
+            </span>
           </div>
           <div className="checklist-name-search">
             <Search

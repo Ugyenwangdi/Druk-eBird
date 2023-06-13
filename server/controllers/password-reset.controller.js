@@ -104,6 +104,12 @@ const resetPassword = async (req, res) => {
       });
     }
 
+    if (req.body.password !== req.body.confirmPassword) {
+      return res
+        .status(400)
+        .json({ message: "Password and confirm password do not match" });
+    }
+
     const user = await Admin.findOne({ _id: req.params.id });
     if (!user)
       return res.status(400).send({ message: "Invalid link: User not found!" });
