@@ -6,6 +6,8 @@ import "../styles/passwordreset.css";
 const PasswordReset = () => {
   const [validUrl, setValidUrl] = useState(false);
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
   const [msg, setMsg] = useState("");
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false); // Add loading state
@@ -33,6 +35,7 @@ const PasswordReset = () => {
       setIsLoading(true);
       const { data } = await axios.post(url, {
         password: password,
+        confirmPassword: confirmPassword,
       });
       setMsg(data.message);
       setError("");
@@ -67,6 +70,20 @@ const PasswordReset = () => {
                 setPassword(e.target.value);
               }}
               value={password}
+              required
+              className="input"
+            />
+
+            <input
+              type="password"
+              placeholder="Confirm password"
+              name="confirmPassword"
+              onChange={(e) => {
+                setMsg("");
+                setError("");
+                setConfirmPassword(e.target.value);
+              }}
+              value={confirmPassword}
               required
               className="input"
             />
