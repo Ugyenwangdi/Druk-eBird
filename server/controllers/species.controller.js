@@ -107,7 +107,7 @@ const getSpecies = async (req, res) => {
       .in([...group])
       .where("residency")
       .in([...residency])
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .skip(page * limit)
       .limit(limit)
       .maxTimeMS(60000);
