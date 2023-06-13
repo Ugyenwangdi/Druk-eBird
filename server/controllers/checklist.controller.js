@@ -531,6 +531,7 @@ const getChecklists = async (req, res) => {
     const distinctDzongkhags = await getDistinctDzongkhags();
     const distinctGewogs = await getDistinctChecklistGewogs();
     const distinctVillages = await getDistinctChecklistVillages();
+    const distinctObservers = await getDistinctObservers();
 
     const response = {
       error: false,
@@ -543,6 +544,7 @@ const getChecklists = async (req, res) => {
       distinctDzongkhags,
       distinctGewogs,
       distinctVillages,
+      distinctObservers,
     };
 
     res.status(200).json(response);
@@ -721,6 +723,7 @@ const getNewSpecies = async (req, res) => {
     const distinctDzongkhags = await getDistinctDzongkhags();
     const distinctGewogs = await getDistinctChecklistGewogs();
     const distinctVillages = await getDistinctChecklistVillages();
+    const distinctObservers = await getDistinctObservers();
 
     const response = {
       error: false,
@@ -733,6 +736,7 @@ const getNewSpecies = async (req, res) => {
       distinctDzongkhags,
       distinctGewogs,
       distinctVillages,
+      distinctObservers,
     };
 
     res.status(200).json(response);
