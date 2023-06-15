@@ -59,9 +59,7 @@ function Species({ searchQuery, setSearchClickId }) {
       try {
         const url = `${process.env.REACT_APP_API_URL}/api/v1/species?export_limit=all`;
 
-        // console.log("url: ", url);
         const { data } = await axios.get(url);
-        console.log("Species data:", data.species);
 
         setExportList(data.species);
       } catch (err) {
@@ -80,7 +78,6 @@ function Species({ searchQuery, setSearchClickId }) {
 
         // console.log("url: ", url);
         const { data } = await axios.get(url);
-        console.log("Species data:", data.species);
 
         setSpeciesCount(data.speciesTotal);
         setObj(data);
@@ -216,7 +213,6 @@ function Species({ searchQuery, setSearchClickId }) {
         currentUser.email
       }** at ${new Date().toLocaleString()}.`;
       await sendNotification(notificationMessage);
-      console.log(notificationMessage);
     } catch (err) {
       setError(err.response.data.error);
       setMsg("");

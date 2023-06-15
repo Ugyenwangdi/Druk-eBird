@@ -6,7 +6,7 @@ import "../styles/newspeciesdetail.css";
 import { logo, profile } from "../images";
 
 const Modal = ({ isOpen, onClose, itemId, birdname, handleNameUpdate }) => {
-  const { id } = useParams();
+  // const { id } = useParams();
   const [newName, setNewName] = useState(birdname.split("New bird - ")[1]);
 
   const handleSave = async () => {
@@ -17,7 +17,7 @@ const Modal = ({ isOpen, onClose, itemId, birdname, handleNameUpdate }) => {
           BirdName: "New bird - " + newName,
         }
       );
-      console.log("Bird name updated:", data);
+      // console.log("Bird name updated:", itemId);
       handleNameUpdate(newName, itemId); // Call the callback function with the updated name
       onClose();
     } catch (error) {
@@ -54,7 +54,7 @@ const Modal = ({ isOpen, onClose, itemId, birdname, handleNameUpdate }) => {
 
 function NewSpeciesDetail() {
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
   const location = useLocation();
   const [showFullscreen, setShowFullscreen] = useState(false);
 
@@ -62,14 +62,9 @@ function NewSpeciesDetail() {
     [location.state?.NewSpeciesDetails] || [{ photo: [] }]
   );
 
-  console.log(
-    "bird count? ",
-    newSpecies[0].entries[0].StartbirdingData[0].selectedTime
-  );
-
   // Create a Set to store unique bird names
   const uniqueBirdNames = new Set();
-  newSpecies[0].entries.forEach((item) => {
+  newSpecies[0]?.entries.forEach((item) => {
     uniqueBirdNames.add(item.BirdName);
   });
 
@@ -82,7 +77,7 @@ function NewSpeciesDetail() {
           approvalStatus: "approved",
         }
       );
-      console.log("Approved", data);
+      // console.log("Approved", data);
 
       // Update the checklist state
       setNewSpecies((prevChecklist) => {
@@ -109,7 +104,7 @@ function NewSpeciesDetail() {
           approvalStatus: "rejected",
         }
       );
-      console.log("Rejected", data);
+      // console.log("Rejected", data);
 
       // Update the checklist state
       setNewSpecies((prevChecklist) => {
@@ -176,24 +171,27 @@ function NewSpeciesDetail() {
       </h2>
 
       <div className="checklist-detail-container">
-        <span class="material-symbols-outlined" style={{ marginTop: ".5rem" }}>
+        <span
+          className="material-symbols-outlined"
+          style={{ marginTop: ".5rem" }}
+        >
           distance
         </span>
         <p className="checklist-detail-container-text">
-          {newSpecies[0]._id.village && (
+          {newSpecies[0]?._id?.village && (
             <>
               {newSpecies[0]._id.village}
               {", "}
             </>
           )}
 
-          {newSpecies[0]._id.gewog && (
+          {newSpecies[0]?._id?.gewog && (
             <>
               {newSpecies[0]._id.gewog}
               {", "}
             </>
           )}
-          {newSpecies[0]._id.dzongkhag && (
+          {newSpecies[0]?._id?.dzongkhag && (
             <>
               {newSpecies[0]._id.dzongkhag}
               {", "}
@@ -218,7 +216,7 @@ function NewSpeciesDetail() {
                   <div style={{ paddingTop: "20px" }}>Description</div>
                 </th>
                 <th>
-                  <div style={{ paddingTop: "20px" }}>Count total</div>
+                  <div style={{ paddingTop: "20px" }}>Count</div>
                 </th>
                 <th>
                   <div style={{ paddingTop: "20px" }}>Photo</div>
@@ -229,7 +227,7 @@ function NewSpeciesDetail() {
               </tr>
             </thead>
             <tbody>
-              {newSpecies[0].entries.map((item, index) => {
+              {newSpecies[0]?.entries.map((item, index) => {
                 return (
                   <tr key={index}>
                     <td data-label="Sl.no">{index + 1}</td>
@@ -241,8 +239,8 @@ function NewSpeciesDetail() {
                         <span
                           className="material-symbols-outlined"
                           style={{
-                            fontSize: "20px",
-                            color: "black",
+                            fontSize: "15px",
+                            color: "#136d66",
                           }}
                           onMouseEnter={(e) => {
                             e.target.style.color = "#ba760d";
@@ -268,7 +266,25 @@ function NewSpeciesDetail() {
                     </td>
                     <td data-label="Count total">
                       {" "}
-                      {item.StartbirdingData[0].Totalcount}
+                      {/* {item.StartbirdingData[0].Totalcount} */}
+                      {item.StartbirdingData[0].JAcount &&
+                      item.StartbirdingData[0].JAcount.Adult === 0 &&
+                      item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
+                        "Total: " + item.StartbirdingData[0].Totalcount
+                      ) : (
+                        <>
+                          Adult:{" "}
+                          {item.StartbirdingData[0].JAcount &&
+                          item.StartbirdingData[0].JAcount.Adult
+                            ? item.StartbirdingData[0].JAcount.Adult
+                            : item.StartbirdingData[0].Totalcount}
+                          , Juvenile:{" "}
+                          {item.StartbirdingData[0].JAcount &&
+                          item.StartbirdingData[0].JAcount.Juvenile
+                            ? item.StartbirdingData[0].JAcount.Juvenile
+                            : item.StartbirdingData[0].Totalcount}
+                        </>
+                      )}
                     </td>
                     <td data-label="Photo">
                       <img
@@ -402,7 +418,7 @@ function NewSpeciesDetail() {
           </table>
         </div>
         <div className="card-container">
-          <card className="card-detail">
+          <div className="card-detail">
             <article className="mt-10 mb-14 flex items-end justify-end">
               <ul>
                 <li className="p-1 ">
@@ -411,8 +427,8 @@ function NewSpeciesDetail() {
                 </li>
                 <li className="p-1 bg-gray-100">
                   <span className="font-bold">Time</span>{" "}
-                  {newSpecies[0].entries[0].StartbirdingData[0]
-                    .selectedTime && (
+                  {newSpecies[0]?.entries[0]?.StartbirdingData[0]
+                    ?.selectedTime && (
                     <>
                       {
                         newSpecies[0].entries[0].StartbirdingData[0]
@@ -423,12 +439,12 @@ function NewSpeciesDetail() {
                 </li>
                 <li className="p-1 ">
                   <span className="font-bold">Date</span>{" "}
-                  {newSpecies[0]._id.selectedDate && (
+                  {newSpecies[0]?._id?.selectedDate && (
                     <>{newSpecies[0]._id.selectedDate}</>
                   )}
                 </li>
-                {newSpecies[0].entries[0].StartbirdingData[0]
-                  .currentLocation ? (
+                {newSpecies[0]?.entries[0]?.StartbirdingData[0]
+                  ?.currentLocation ? (
                   <>
                     <li className="p-1">
                       <span className="font-bold">Latitude</span>{" "}
@@ -468,7 +484,7 @@ function NewSpeciesDetail() {
                       />
                       <p className="name">
                         {" "}
-                        {newSpecies[0]._id.village && (
+                        {newSpecies[0]?._id?.village && (
                           <>{newSpecies[0]._id.observer}</>
                         )}
                       </p>
@@ -478,7 +494,7 @@ function NewSpeciesDetail() {
                 </li>
               </ul>
             </article>
-          </card>
+          </div>
         </div>
       </div>
     </div>
