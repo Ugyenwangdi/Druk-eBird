@@ -32,6 +32,25 @@ import {
 } from "./pages";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  const getGoogleUser = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
+      const { data } = await axios.get(url, { withCredentials: true });
+      // console.log("google token: ", data.token);
+      localStorage.setItem("token", data.token);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  useEffect(() => {
+    getGoogleUser();
+  }, []);
+
+  // console.log("google: ", user);
+
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -73,7 +92,7 @@ function App() {
       if (res.status === 200 && res.data.valid) {
         setIsValidtoken(true);
       } else {
-        localStorage.removeItem("token");
+        // localStorage.removeItem("token");
         setIsValidtoken(false);
       }
     } catch (error) {
@@ -122,7 +141,7 @@ function App() {
           `${process.env.REACT_APP_API_URL}/users/${currentUser.id}`
         );
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setUserData(data);
       };
 
