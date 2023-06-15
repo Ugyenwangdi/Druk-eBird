@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-
+import { CSVLink } from "react-csv";
 import "../styles/birder.css";
 import { profile } from "../images";
 
@@ -61,7 +61,6 @@ function Birder() {
       //   `https://chekilhamo.serv00.net/api/v1/users`
       // );
 
-      console.log("user data: ", response);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setUsersTotal(response.data.birderTotal);
@@ -71,7 +70,6 @@ function Birder() {
       console.log(error);
     }
   };
-  console.log("birders: ", data);
 
   const convertDate = (dateString) => {
     const date = new Date(dateString);
@@ -130,6 +128,29 @@ function Birder() {
     fetchCurrentUser();
   }, [fetchCurrentUser]);
 
+  const csvData = data.map((user) => {
+    const birder = user.birder;
+    return {
+      Name: birder.name,
+      Email: birder.email,
+      Photo: birder.photo,
+      DateOfBirth: birder.dob,
+      Country: birder.country,
+      Profession: birder.profession,
+      EntriesCount: user.entriesCount,
+    };
+  });
+
+  const headers = [
+    { label: "Name", key: "Name" },
+    { label: "Email", key: "Email" },
+    { label: "Photo", key: "Photo" },
+    { label: "Date of Birth", key: "DateOfBirth" },
+    { label: "Country", key: "Country" },
+    { label: "Profession", key: "Profession" },
+    { label: "Entries Count", key: "EntriesCount" },
+  ];
+
   return (
     <div className="birders-page-container">
       <div
@@ -141,9 +162,17 @@ function Birder() {
           paddingBottom: "26px",
         }}
       >
-        {/* <div className="birder-button-container">
-          <button className="birder-export-button">Export Data</button>
-        </div> */}
+        <div className="birder-button-container">
+          {/* <button className="birder-export-button">Export Data</button> */}
+          <CSVLink
+            data={csvData}
+            headers={headers}
+            filename="birders.csv"
+            className="birder-export-button"
+          >
+            Export to CSV
+          </CSVLink>
+        </div>
         <h2 className="header">
           Total Birders <span className="birder-count">({usersTotal})</span>
         </h2>
