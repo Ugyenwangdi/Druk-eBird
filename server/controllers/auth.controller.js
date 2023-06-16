@@ -40,6 +40,28 @@ passport.use(
   )
 );
 
+passport.use(Admin.createStrategy());
+
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, {
+      id: user.id,
+      name: user.name,
+      email: user.email, // what we want to retrieve when we call req.user
+      googleId: user.googleId,
+      userType: user.userType,
+      isDeactivated: user.isDeactivated,
+      profile: user.profile, //
+    });
+  });
+});
+
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
+
 const googleAuth = passport.authenticate("google", {
   scope: ["profile"],
 });
@@ -48,7 +70,6 @@ const successGoogleLogin = async (req, res) => {
   if (req.user) {
     // console.log("id: ", req.user.id);
     // console.log("email: ", req.user.email);
-    console.log(req.user);
 
     const token = jwt.sign(
       {
@@ -63,6 +84,7 @@ const successGoogleLogin = async (req, res) => {
         expiresIn: "7d",
       }
     );
+    // console.log(token);
 
     res.status(200).json({
       error: false,
@@ -131,10 +153,16 @@ const getAllUsers = async (req, res) => {
   // console.log("user: ", req.user);
 
   try {
+    const page = parseInt(req.query.page) - 1 || 0;
+    const limit = parseInt(req.query.limit) || 5;
+
     const users = await Admin.find({})
-      .limit(req.query._end)
+      .skip(page * limit)
+      .limit(limit)
       .sort({ createdAt: -1 });
-    res.status(200).json(users);
+
+    const adminsTotal = await Admin.countDocuments();
+    res.status(200).json({ users, page: page + 1, limit, adminsTotal });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -421,10 +449,20 @@ const updatePassword = async (req, res) => {
         .json({ message: "You are not authorized to update this password!" });
     }
 
-    if (!req.body.oldPassword || !req.body.newPassword) {
+    if (
+      !req.body.oldPassword ||
+      !req.body.newPassword ||
+      !req.body.confirmPassword
+    ) {
+      return res.status(400).json({
+        message: "Old Password, New Password and Confirm Password are required",
+      });
+    }
+
+    if (req.body.newPassword !== req.body.confirmPassword) {
       return res
         .status(400)
-        .json({ message: "Old Password and New Password are required" });
+        .json({ message: "Password and confirm password do not match" });
     }
 
     if (!isValidPassword(req.body.newPassword)) {
@@ -447,7 +485,10 @@ const updatePassword = async (req, res) => {
 
     return res.status(200).send({ message: "Password reset successful!" });
   } catch (error) {
-    return res.status(500).send({ message: "Internal Server Error" });
+    return res.status(500).send({
+      message:
+        "Internal Server Error! Please try to recheck that you are entering correct old password.",
+    });
   }
 };
 

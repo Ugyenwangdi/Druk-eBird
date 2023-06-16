@@ -4,6 +4,7 @@ import axios from "axios";
 import moment from "moment";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { CSVLink } from "react-csv";
 
 import "../styles/entries.css";
 import { logo } from "../images";
@@ -42,7 +43,7 @@ function Entries() {
     limit,
     selectedBirder,
     search,
-    birdingSite,
+    // birdingSite,
     selectedDate,
     selectedDzongkhag,
     selectedVillage,
@@ -56,9 +57,9 @@ function Entries() {
         : "";
 
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/entries?page=${page}&limit=${limit}&birder=${selectedBirder}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&search=${search}&date=${formattedDate}`
+        `${process.env.REACT_APP_API_URL}/api/v1/entries?page=${page}&limit=${limit}&birder=${selectedBirder}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&search=${search}&date=${formattedDate}`
       );
-      console.log("response: ", response.data);
+      // console.log("response: ", response.data);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setEntriesTotal(response.data.entriesTotal);
@@ -79,6 +80,49 @@ function Entries() {
     const options = { day: "numeric", month: "long", year: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
+
+  const entriesData = entries.map((entry) => {
+    const startbirdingData = entry.StartbirdingData[0];
+    const currentLocation = startbirdingData.currentLocation;
+    const endpointLocation = startbirdingData.EndpointLocation[0];
+
+    return {
+      CheckListName: entry.CheckListName,
+      BirdName: entry.BirdName,
+      selectedDate: startbirdingData.selectedDate,
+      selectedTime: startbirdingData.selectedTime,
+      observer: startbirdingData.observer,
+      latitude: currentLocation?.latitude,
+      longitude: currentLocation?.longitude,
+      dzongkhag: endpointLocation?.dzongkhag,
+      gewog: endpointLocation?.gewog,
+      village: endpointLocation?.village,
+      adultCount: startbirdingData?.JAcount?.Adult,
+      juvenileCount: startbirdingData?.JAcount?.Juvenile,
+      totalCount: startbirdingData?.Totalcount,
+      photo: startbirdingData?.photo,
+      remarks: startbirdingData?.Remarks,
+    };
+  });
+
+  const headers = [
+    { label: "CheckListName", key: "CheckListName" },
+    { label: "BirdName", key: "BirdName" },
+    { label: "Selected Date", key: "selectedDate" },
+    { label: "Selected Time", key: "selectedTime" },
+    { label: "Observer", key: "observer" },
+    { label: "Latitude", key: "latitude" },
+    { label: "Longitude", key: "longitude" },
+    { label: "Dzongkhag", key: "dzongkhag" },
+    { label: "Gewog", key: "gewog" },
+    { label: "Village", key: "village" },
+    { label: "Adult Count", key: "adultCount" },
+    { label: "Juvenile Count", key: "juvenileCount" },
+    { label: "Total Count", key: "totalCount" },
+    { label: "Photo", key: "photo" },
+    { label: "Remarks", key: "remarks" },
+  ];
+
   return (
     <div className="page-container">
       <div
@@ -93,9 +137,20 @@ function Entries() {
         <h2 className="total-header">
           Total Enteries <span className="enteries-count">({foundTotal})</span>
         </h2>
-        {/* <div className="entries-button-container">
-          <button className="entries-export-button">Export Data</button>
-        </div> */}
+        {/* <CSVLink data={entriesData} headers={headers} filename="entries.csv">
+          Export to CSV
+        </CSVLink> */}
+        <div className="entries-button-container">
+          {/* <button className="entries-export-button">Export Data</button> */}
+          <CSVLink
+            data={entriesData}
+            headers={headers}
+            filename="entries.csv"
+            className="entries-export-button"
+          >
+            Export to CSV
+          </CSVLink>
+        </div>
       </div>
       <div className="enteries-page-container">
         <div className="enteries-filter-container">
@@ -138,7 +193,7 @@ function Entries() {
               }}
             />
             <span
-              class="material-symbols-outlined"
+              className="material-symbols-outlined"
               style={{ fontSize: "16px", marginLeft: "-0.2rem" }}
             >
               calendar_month
@@ -202,24 +257,41 @@ function Entries() {
                     {item.StartbirdingData[0].observer}
                   </td>
                   <td data-title="Birding site">
-                    {item.StartbirdingData[0].EndpointLocation[0].village && (
+                    {item.StartbirdingData[0]?.EndpointLocation?.[0]?.village ||
+                    item.StartbirdingData[0]?.EndpointLocation?.[0]?.gewog ||
+                    item.StartbirdingData[0]?.EndpointLocation?.[0]
+                      ?.dzongkhag ? (
                       <>
-                        {item.StartbirdingData[0].EndpointLocation[0].village}
-                        {", "}
+                        {item.StartbirdingData[0]?.EndpointLocation?.[0]
+                          ?.village && (
+                          <>
+                            {
+                              item.StartbirdingData[0].EndpointLocation[0]
+                                .village
+                            }
+                            {", "}
+                          </>
+                        )}
+                        {item.StartbirdingData[0]?.EndpointLocation?.[0]
+                          ?.gewog && (
+                          <>
+                            {item.StartbirdingData[0].EndpointLocation[0].gewog}
+                            {", "}
+                          </>
+                        )}
+                        {item.StartbirdingData[0]?.EndpointLocation?.[0]
+                          ?.dzongkhag && (
+                          <>
+                            {
+                              item.StartbirdingData[0].EndpointLocation[0]
+                                .dzongkhag
+                            }
+                            {", "}
+                          </>
+                        )}
                       </>
-                    )}
-
-                    {item.StartbirdingData[0].EndpointLocation[0].gewog && (
-                      <>
-                        {item.StartbirdingData[0].EndpointLocation[0].gewog}
-                        {", "}
-                      </>
-                    )}
-                    {item.StartbirdingData[0].EndpointLocation[0].dzongkhag && (
-                      <>
-                        {item.StartbirdingData[0].EndpointLocation[0].dzongkhag}
-                        {", "}
-                      </>
+                    ) : (
+                      "none"
                     )}
                   </td>
                   <td data-title="Date/Time">

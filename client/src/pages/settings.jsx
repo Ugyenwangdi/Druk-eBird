@@ -4,7 +4,7 @@ import axios from "axios";
 
 import "../styles/settings.css";
 import { logo } from "../images";
-import { DeactivateModal } from "../components";
+import { DeactivateModal, Pagination } from "../components";
 
 function Settings() {
   const token = localStorage.getItem("token");
@@ -25,6 +25,10 @@ function Settings() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState("");
 
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(5);
+  const [adminsTotal, setAdminsTotal] = useState(0);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,10 +40,15 @@ function Settings() {
   const fetchData = async () => {
     try {
       // const response = await fetch("http://localhost:8080/api/v1/users/");
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/users/`);
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/users?page=${page}&limit=${limit}`
+      );
 
       const jsonData = await response.json();
-      setData(Object.values(jsonData));
+      console.log(jsonData);
+      setLimit(jsonData.limit);
+      setAdminsTotal(jsonData.adminsTotal);
+      setData(Object.values(jsonData.users));
     } catch (error) {
       console.log(error);
     }
@@ -264,7 +273,7 @@ function Settings() {
     if (deactivatedUser) {
       window.location = "/login";
     }
-  }, [fetchCurrentUser, deactivatedUser]);
+  }, [fetchCurrentUser, deactivatedUser, limit, page]);
 
   useEffect(() => {
     if (currentUser) {
@@ -431,39 +440,49 @@ function Settings() {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
-                <tr key={item._id}>
-                  <td data-label="SLNO">{index + 1}</td>
-                  <td data-label="Name">{item.name}</td>
-                  <td data-label="Email">{item.email}</td>
-                  <td data-label="UserType">{item.userType}</td>
-                  <td data-label="Action">
-                    <div className="action-btn">
-                      <button
-                        className="deleteBtn"
-                        onClick={() => handleDeleteUser(item._id)}
-                      >
-                        Delete
-                      </button>
-
-                      <button className="editBtn">
-                        <Link
-                          to={`/admins/${item._id}/edit`}
-                          state={{ adminDetail: item }}
-                          className="editLink"
+              {data.map((item, index) => {
+                const serialNumber = (page - 1) * limit + index + 1;
+                return (
+                  <tr key={item._id}>
+                    <td data-label="SLNO">{serialNumber}</td>
+                    <td data-label="Name">{item.name}</td>
+                    <td data-label="Email">{item.email}</td>
+                    <td data-label="UserType">{item.userType}</td>
+                    <td data-label="Action">
+                      <div className="action-btn">
+                        <button
+                          className="deleteBtn"
+                          onClick={() => handleDeleteUser(item._id)}
                         >
-                          Edit
-                        </Link>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                          Delete
+                        </button>
+
+                        <button className="editBtn">
+                          <Link
+                            to={`/admins/${item._id}/edit`}
+                            state={{ adminDetail: item }}
+                            className="editLink"
+                          >
+                            Edit
+                          </Link>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <br></br>
         </>
       )}
+      <Pagination
+        page={page}
+        limit={limit ? limit : 0}
+        total={adminsTotal ? adminsTotal : 0}
+        setPage={(page) => setPage(page)}
+        style={{ padding: "3rem" }}
+      />
       {showDeleteModal && (
         <DeactivateModal
           message="Are you sure you want to delete this user?"

@@ -19,8 +19,9 @@ const Login = () => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/auth/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
+      console.log("google token: ", data.token);
       localStorage.setItem("token", data.token);
-      window.location.reload();
+      // window.location.reload();
       window.location = "/";
     } catch (err) {
       console.log(err);
@@ -127,10 +128,10 @@ const Login = () => {
             {/* <p className="text">or</p> */}
           </form>
           <div className="form_container">
-            {/* <button className="google_btn" onClick={handleGoogleLogin}>
+            <button className="google_btn" onClick={handleGoogleLogin}>
               <img src={google} alt="google icon" />
               <span>Sign in with Google</span>
-            </button> */}
+            </button>
 
             <div>
               <Link to="/forgot-password">Forgot Password? </Link>

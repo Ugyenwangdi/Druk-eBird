@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Pagination } from "../components";
 import "../styles/notifications.css";
+import { Pagination } from "../components";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);
-  const limit = 6;
 
   const goBack = () => {
     window.history.back();
@@ -21,10 +19,12 @@ function Notifications() {
 
         // Fetch notifications from the server
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/notifications/?page=${page}&limit=${limit}`
+          `${process.env.REACT_APP_API_URL}/notifications`
         );
-
+        setLimit(response.data.limit);
+        setNotificationTotal(response.data.notificationsTotal);
         setNotifications(response.data.notifications);
+        // console.log(response);
       } catch (error) {
         console.log(error);
       } finally {
@@ -33,7 +33,7 @@ function Notifications() {
     };
 
     fetchNotifications();
-  }, [page]);
+  }, []);
 
   const foundTotal = notifications.length;
   const paginatedNotifications = notifications.slice(
@@ -64,14 +64,6 @@ function Notifications() {
           ))}
         </ul>
       )}
-      <div>
-        <Pagination
-          page={page}
-          limit={limit}
-          total={foundTotal}
-          setPage={setPage}
-        />
-      </div>
     </div>
   );
 }
