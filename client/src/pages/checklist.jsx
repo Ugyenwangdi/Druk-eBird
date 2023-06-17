@@ -110,13 +110,11 @@ function Checklist() {
       const formattedDate = selectedDate
         ? moment(selectedDate).format("YYYY-MM-DD")
         : "";
-      // const url = "https://druk-ebirds.onrender.com/api/v1/checkList";
 
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/v1/checklists?page=${page}&limit=${limit}&birder=${selectedBirder}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&date=${formattedDate}`
-        // `https://druk-ebirds.onrender.com/api/v1/checkList`
       );
-      console.log("Checklist response: ", response.data);
+      // console.log("response: ", response.data);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setChecklistTotal(response.data.totalChecklists);

@@ -147,7 +147,7 @@ function NewSpecies() {
         }}
       >
         <h2 className="total-header">
-          New Species <span className="checklist-count">({foundTotal})</span>
+          New Species <span className="checklist-count">(10)</span>
         </h2>
         {/* <CSVLink data={csvData} filename="new_species.csv" className="checklist-button-container">
           Export to CSV

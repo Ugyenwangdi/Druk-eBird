@@ -54,9 +54,12 @@ function Birder() {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/api/v1/birders`
+        `${process.env.REACT_APP_API_URL}/api/v1/birders?birder=${birderName}&country=${selectedCountry}&page=${page}&limit=${limit}`
       );
-      // console.log("response: ", response);
+
+      // const response = await axios.get(
+      //   `https://chekilhamo.serv00.net/api/v1/users`
+      // );
 
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
@@ -78,14 +81,12 @@ function Birder() {
     console.log("Confirming Delete birder with ID:", deleteUserId);
 
     try {
-      const url = `https://druk-ebirds.onrender.com/api/v1/users`;
+      const url = `${process.env.REACT_APP_API_URL}/api/v1/birders/${deleteUserId}`;
       const headers = {
         Authorization: `Bearer ${token}`,
       };
       const response = await axios.get(url, { headers });
       const deleteuseremail = response.data.email;
-
-      // console.log("response: ", response);
 
       await axios.delete(url, { headers });
       console.log("User deleted successfully!");
