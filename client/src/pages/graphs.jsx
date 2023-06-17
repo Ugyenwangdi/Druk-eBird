@@ -295,7 +295,7 @@ function Graphs() {
         const url = `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/species-count-months`;
 
         const response = await axios.get(url);
-        // console.log("month species counts: ", response.data);
+        console.log("month species counts: ", response.data);
         setMonthSpeciesCounts(response.data);
       } catch (err) {
         setError("Failed to fetch species list. Please try again later.");
@@ -327,7 +327,7 @@ function Graphs() {
         const url = `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/district-species-count`;
 
         const response = await axios.get(url);
-        // console.log("district species counts: ", response.data);
+        console.log("district species counts: ", response.data);
         setDistrictSpeciesCounts(response.data);
       } catch (err) {
         setError("Failed to fetch species list. Please try again later.");
@@ -359,7 +359,7 @@ function Graphs() {
         const url = `${process.env.REACT_APP_API_URL}/api/v1/checklists/analyze/birds-count-year`;
 
         const response = await axios.get(url);
-        // console.log("district species counts: ", response.data);
+        console.log("district species counts: ", response.data);
         setCountsYearData(response.data);
       } catch (err) {
         setError("Failed to fetch species list. Please try again later.");

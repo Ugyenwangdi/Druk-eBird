@@ -40,28 +40,6 @@ passport.use(
   )
 );
 
-passport.use(Admin.createStrategy());
-
-passport.serializeUser(function (user, cb) {
-  process.nextTick(function () {
-    return cb(null, {
-      id: user.id,
-      name: user.name,
-      email: user.email, // what we want to retrieve when we call req.user
-      googleId: user.googleId,
-      userType: user.userType,
-      isDeactivated: user.isDeactivated,
-      profile: user.profile, //
-    });
-  });
-});
-
-passport.deserializeUser(function (user, cb) {
-  process.nextTick(function () {
-    return cb(null, user);
-  });
-});
-
 const googleAuth = passport.authenticate("google", {
   scope: ["profile"],
 });
@@ -70,6 +48,7 @@ const successGoogleLogin = async (req, res) => {
   if (req.user) {
     // console.log("id: ", req.user.id);
     // console.log("email: ", req.user.email);
+    console.log(req.user);
 
     const token = jwt.sign(
       {
@@ -84,7 +63,6 @@ const successGoogleLogin = async (req, res) => {
         expiresIn: "7d",
       }
     );
-    // console.log(token);
 
     res.status(200).json({
       error: false,

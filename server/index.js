@@ -28,7 +28,7 @@ app.use(
     secret: process.env.PASSPORT_LONG_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
+    // cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }, // 24 hours
   })
 );
 
@@ -37,11 +37,33 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: "*",
     methods: "GET,POST,PUT,DELETE, PATCH",
     credentials: true,
   })
 );
+
+passport.use(Admin.createStrategy());
+
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, {
+      id: user.id,
+      name: user.name,
+      email: user.email, // what we want to retrieve when we call req.user
+      googleId: user.googleId,
+      userType: user.userType,
+      isDeactivated: user.isDeactivated,
+      profile: user.profile, //
+    });
+  });
+});
+
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
 
 app.use("", authRoute);
 app.use("/api/v1/password-reset", passwordResetRoutes);

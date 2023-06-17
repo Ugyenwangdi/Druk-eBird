@@ -4,72 +4,9 @@ import { Link } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
-import { CSVLink } from "react-csv";
 
 import "../styles/checklist.css";
 import { Search, Dropdown, Pagination } from "../components";
-
-function convertChecklistsToCSVData(checklists) {
-  const csvData = [];
-  csvData.push([
-    "Checklist Name",
-    "Birding Site",
-    "Observer",
-    "Selected Date",
-    "Selected Time",
-    "Dzongkhag",
-    "Gewog",
-    "Village",
-    "Entries",
-  ]);
-
-  checklists.forEach((checklist) => {
-    const {
-      checklistName,
-      observer,
-      selectedDate,
-      selectedTime,
-      dzongkhag,
-      gewog,
-      village,
-    } = checklist._id;
-
-    const time = selectedTime ? selectedTime[0] : "";
-
-    let birdingSite = "";
-    if (dzongkhag[0]?.[0] || gewog[0]?.[0] || village[0]?.[0]) {
-      birdingSite = `${dzongkhag[0]?.[0] || ""}, ${gewog[0]?.[0] || ""}, ${
-        village[0]?.[0] || ""
-      }`;
-    }
-
-    const observerName = observer[0] || "";
-    const date = selectedDate[0] || "";
-    const dzongkhagName = dzongkhag[0]?.[0] || "";
-    const gewogName = gewog[0]?.[0] || "";
-    const villageName = village[0]?.[0] || "";
-
-    const entriesData = checklist.entries.map((entry) => {
-      return `{bird name: ${entry.BirdName}, selected date: ${entry.StartbirdingData[0]?.selectedDate}, selected time: ${entry.StartbirdingData[0]?.selectedTime}, latitude: ${entry.StartbirdingData[0]?.currentLocation?.latitude}, longitude: ${entry.StartbirdingData[0]?.currentLocation?.longitude}, total count: ${entry.StartbirdingData[0]?.Totalcount}, juvenile count: ${entry.StartbirdingData[0]?.JAcount?.Juvenile}, adult count: ${entry.StartbirdingData[0]?.JAcount?.Adult}, remarks: ${entry.StartbirdingData[0]?.Remarks}, photo: ${entry.StartbirdingData[0]?.photo}}`;
-    });
-
-    const entriesColumnData = entriesData.join(", ");
-
-    csvData.push([
-      checklistName,
-      birdingSite,
-      observerName,
-      date,
-      time,
-      dzongkhagName,
-      gewogName,
-      villageName,
-      entriesColumnData,
-    ]);
-  });
-
-  return csvData;
-}
 
 function NewSpecies() {
   const [newSpecies, setNewSpecies] = useState([]);
@@ -113,7 +50,7 @@ function NewSpecies() {
       const response = await axios.get(
         `${process.env.REACT_APP_API_URL}/api/v1/newspecies?page=${page}&limit=${limit}&birder=${selectedBirder}&birding_site=${birdingSite}&dzongkhag=${selectedDzongkhag}&gewog=${selectedGewog}&village=${selectedVillage}&date=${formattedDate}`
       );
-      // console.log("response: ", response.data);
+      console.log("response: ", response.data);
       setLimit(response.data.limit);
       setFoundTotal(response.data.foundTotal);
       setNewSpeciesTotal(response.data.totalChecklists);
@@ -127,13 +64,13 @@ function NewSpecies() {
     }
   };
 
+  console.log("limit: ", limit);
+
   const convertDate = (dateString) => {
     const date = new Date(dateString);
     const options = { day: "numeric", month: "long", year: "numeric" };
     return date.toLocaleDateString(undefined, options);
   };
-
-  const csvData = convertChecklistsToCSVData(newSpecies);
 
   return (
     <div className="checklists-page-container">
@@ -149,19 +86,9 @@ function NewSpecies() {
         <h2 className="total-header">
           New Species <span className="checklist-count">(10)</span>
         </h2>
-        {/* <CSVLink data={csvData} filename="new_species.csv" className="checklist-button-container">
-          Export to CSV
-        </CSVLink> */}
-        <div className="checklist-button-container">
-          {/* <button className="checklist-export-button">Export Data</button> */}
-          <CSVLink
-            data={csvData}
-            filename="new_species.csv"
-            className="checklist-export-button"
-          >
-            Export to CSV
-          </CSVLink>
-        </div>
+        {/* <div className="checklist-button-container">
+          <button className="checklist-export-button">Export Data</button>
+        </div> */}
       </div>
       <div className="checklist-page-container">
         <div className="checklist-filter-container">
@@ -201,7 +128,7 @@ function NewSpecies() {
               }}
             />
             <span
-              className="material-symbols-outlined"
+              class="material-symbols-outlined"
               style={{
                 fontSize: "16px",
                 padding: "7px",

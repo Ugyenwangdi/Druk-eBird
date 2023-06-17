@@ -8,29 +8,30 @@ function ChecklistDetail() {
   const { id } = useParams();
   const [data, setData] = useState([]);
 
+  console.log(id);
   const location = useLocation();
 
   const [checklist, setChecklist] = useState(
     [location.state?.ChecklistDetail] || [{ photo: [] }]
   );
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [id]);
+  useEffect(() => {
+    fetchData();
+  }, [id]);
 
-  // const fetchData = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `${process.env.REACT_APP_API_URL}/api/v1/birders/${id}`
-  //     );
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/v1/birders/${id}`
+      );
 
-  //     setData(response.data.users);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+      setData(response.data.users);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-  // console.log("checklist: ", data);
+  console.log("checklist: ", data);
 
   // Create a Set to store unique bird names
   const uniqueBirdNames = new Set();
@@ -157,7 +158,7 @@ function ChecklistDetail() {
                   <div style={{ paddingTop: "20px" }}>Description</div>
                 </th>
                 <th>
-                  <div style={{ paddingTop: "20px" }}>Count</div>
+                  <div style={{ paddingTop: "20px" }}>Count total</div>
                 </th>
                 <th>
                   <div style={{ paddingTop: "20px" }}>Photo</div>
@@ -177,25 +178,7 @@ function ChecklistDetail() {
                       {item.StartbirdingData[0].Remarks}
                     </td>
                     <td data-label="Count total">
-                      {/* {item.StartbirdingData[0].Totalcount} */}
-                      {item.StartbirdingData[0].JAcount &&
-                      item.StartbirdingData[0].JAcount.Adult === 0 &&
-                      item.StartbirdingData[0].JAcount.Juvenile === 0 ? (
-                        "Total: " + item.StartbirdingData[0].Totalcount
-                      ) : (
-                        <>
-                          Adult:{" "}
-                          {item.StartbirdingData[0].JAcount &&
-                          item.StartbirdingData[0].JAcount.Adult
-                            ? item.StartbirdingData[0].JAcount.Adult
-                            : item.StartbirdingData[0].Totalcount}
-                          , Juvenile:{" "}
-                          {item.StartbirdingData[0].JAcount &&
-                          item.StartbirdingData[0].JAcount.Juvenile
-                            ? item.StartbirdingData[0].JAcount.Juvenile
-                            : item.StartbirdingData[0].Totalcount}
-                        </>
-                      )}
+                      {item.StartbirdingData[0].Totalcount}
                     </td>
                     <td data-label="Photo">
                       {item.StartbirdingData[0].photo &&
