@@ -1,12 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+
 import "../styles/notifications.css";
 import { Pagination } from "../components";
 
 function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [notificationTotal, setNotificationTotal] = useState(0);
 
   const goBack = () => {
     window.history.back();
@@ -19,7 +23,7 @@ function Notifications() {
 
         // Fetch notifications from the server
         const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/notifications`
+          `${process.env.REACT_APP_API_URL}/notifications?page=${page}&limit=${limit}`
         );
         setLimit(response.data.limit);
         setNotificationTotal(response.data.notificationsTotal);
@@ -33,13 +37,7 @@ function Notifications() {
     };
 
     fetchNotifications();
-  }, []);
-
-  const foundTotal = notifications.length;
-  const paginatedNotifications = notifications.slice(
-    (page - 1) * limit,
-    page * limit
-  );
+  }, [limit, page]);
 
   return (
     <div className="notifications-container">
@@ -57,13 +55,20 @@ function Notifications() {
         <p>Loading notifications...</p>
       ) : (
         <ul className="notification-list">
-          {paginatedNotifications.map((notification) => (
+          {notifications.map((notification) => (
             <li key={notification._id} className="notice success">
               {notification.message}
             </li>
           ))}
         </ul>
       )}
+      <Pagination
+        page={page}
+        limit={limit ? limit : 0}
+        total={notificationTotal ? notificationTotal : 0}
+        setPage={(page) => setPage(page)}
+        style={{ padding: "3rem" }}
+      />
     </div>
   );
 }

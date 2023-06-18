@@ -495,6 +495,7 @@ const getChecklists = async (req, res) => {
             checklistName: "$_id.checklistName",
             observer: "$_id.observer",
             selectedDate: "$_id.selectedDate",
+            selectedTime: "$_id.selectedTime",
             dzongkhag: "$_id.dzongkhag",
             gewog: "$_id.gewog",
             village: "$_id.village",
@@ -505,6 +506,16 @@ const getChecklists = async (req, res) => {
       { $skip: page * limit },
       { $limit: limit },
     ]);
+
+    groupedChecklists.sort((a, b) => {
+      if (b._id.selectedDate > a._id.selectedDate) {
+        return 1;
+      } else if (b._id.selectedDate < a._id.selectedDate) {
+        return -1;
+      } else {
+        return b._id.selectedTime.localeCompare(a._id.selectedTime);
+      }
+    });
 
     const totalGroupedChecklists = await Checklist.aggregate([
       { $match: searchQuery },
@@ -697,6 +708,16 @@ const getNewSpecies = async (req, res) => {
       { $skip: page * limit },
       { $limit: limit },
     ]);
+
+    groupedChecklists.sort((a, b) => {
+      if (b._id.selectedDate > a._id.selectedDate) {
+        return 1;
+      } else if (b._id.selectedDate < a._id.selectedDate) {
+        return -1;
+      } else {
+        return b._id.selectedTime.localeCompare(a._id.selectedTime);
+      }
+    });
 
     const totalGroupedChecklists = await Checklist.aggregate([
       { $match: searchQuery },

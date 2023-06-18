@@ -105,6 +105,7 @@
 .modal-buttons {
   display: flex;
   justify-content: center;
+  margin-top: 8px;
 }
 .modal-buttons button {
   margin-left: 10px;
