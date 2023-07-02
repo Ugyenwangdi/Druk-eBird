@@ -513,7 +513,9 @@ const getChecklists = async (req, res) => {
       } else if (b._id.selectedDate < a._id.selectedDate) {
         return -1;
       } else {
-        return b._id.selectedTime.localeCompare(a._id.selectedTime);
+        return b._id.selectedTime
+          .toString()
+          .localeCompare(a._id.selectedTime.toString());
       }
     });
 
@@ -715,7 +717,9 @@ const getNewSpecies = async (req, res) => {
       } else if (b._id.selectedDate < a._id.selectedDate) {
         return -1;
       } else {
-        return b._id.selectedTime.localeCompare(a._id.selectedTime);
+        return b._id.selectedTime
+          .toString()
+          .localeCompare(a._id.selectedTime.toString());
       }
     });
 
