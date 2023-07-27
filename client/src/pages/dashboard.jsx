@@ -280,6 +280,21 @@ function Dashboard() {
     setPreviousMonthSpeciesCount(changeResult.previousMonthCount);
     setSpeciesPercentageChange(changeResult.percentageChange);
 
+    // Check if the selected year and month are present in the result array
+    const yearFound = result.some((data) => data.year === speciesSelectedYear);
+    const monthFound = result.some(
+      (data) => data.month === speciesSelectedMonth
+    );
+
+    if (!yearFound || !monthFound) {
+      // If the selected year or month is not found, set them to the first year and month available
+      const firstYear = result.length > 0 ? result[0].year : currentYear;
+      const firstMonth = result.length > 0 ? result[0].month : currentMonth;
+
+      setSpeciesSelectedYear(firstYear);
+      setSpeciesSelectedMonth(firstMonth);
+    }
+
     // Filter the result data based on the selected year and month
     const filteredData = result.filter(
       (data) =>
@@ -342,6 +357,23 @@ function Dashboard() {
     setCurrentMonthChecklistCount(changeResult.currentMonthCount);
     setPreviousMonthChecklistCount(changeResult.previousMonthCount);
     setChecklistPercentageChange(changeResult.percentageChange);
+
+    // Check if the selected year and month are present in the result array
+    const yearFound = result.some(
+      (data) => data.year === checklistSelectedYear
+    );
+    const monthFound = result.some(
+      (data) => data.month === checklistSelectedMonth
+    );
+
+    if (!yearFound || !monthFound) {
+      // If the selected year or month is not found, set them to the first year and month available
+      const firstYear = result.length > 0 ? result[0].year : currentYear;
+      const firstMonth = result.length > 0 ? result[0].month : currentMonth;
+
+      setChecklistSelectedYear(firstYear);
+      setChecklistSelectedMonth(firstMonth);
+    }
 
     // Filter the result data based on the selected year and month
     const filteredData = result.filter(
@@ -558,7 +590,7 @@ function Dashboard() {
             <div className="grid-item">
               <h3>Species Leaders</h3>
               <span>
-                <label htmlFor="year">Current Year</label>{" "}
+                <label htmlFor="year">Year</label>{" "}
                 <select
                   id="year"
                   value={speciesSelectedYear}
@@ -573,7 +605,7 @@ function Dashboard() {
                     </option>
                   ))}
                 </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
+                <label htmlFor="month">Month:</label>{" "}
                 <select
                   id="month"
                   value={speciesSelectedMonth}
@@ -689,7 +721,7 @@ function Dashboard() {
             <div className="grid-item">
               <h3>Checklists Leaders</h3>
               <span>
-                <label htmlFor="year">Current Year</label>{" "}
+                <label htmlFor="year">Year</label>{" "}
                 <select
                   id="year"
                   value={checklistSelectedYear}
@@ -704,7 +736,7 @@ function Dashboard() {
                     </option>
                   ))}
                 </select>{" "}
-                <label htmlFor="month">Current Month:</label>{" "}
+                <label htmlFor="month">Month:</label>{" "}
                 <select
                   id="month"
                   value={checklistSelectedMonth}

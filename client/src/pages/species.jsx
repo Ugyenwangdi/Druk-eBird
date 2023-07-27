@@ -194,7 +194,7 @@ function Species({ searchQuery, setSearchClickId }) {
       setSpeciesList((prevSpeciesList) =>
         prevSpeciesList.filter((species) => species._id !== speciesToDelete._id)
       );
-      setSpeciesCount(speciesList.length);
+      // setSpeciesCount(speciesList.length);
       setMsg(res.data.message);
       setError("");
       const sendNotification = async (message) => {

@@ -10,6 +10,17 @@ import path from "path";
 import http from "http";
 import { Server } from "socket.io";
 
+const app = express();
+app.setMaxListeners(15);
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    methods: "GET,POST,PUT,DELETE, PATCH",
+    credentials: true,
+  })
+);
+
 import connectDB from "./mongodb/connect.js";
 import { Admin } from "./mongodb/models/admin.js";
 import authRoute from "./routes/auth.routes.js";
@@ -26,16 +37,6 @@ import appUserRoutes from "./routes/appRoutes/userRoutes.js";
 import appForgotPasswordRoutes from "./routes/appRoutes/forgotPasswordRoutes.js";
 import appViewRoutes from "./routes/appRoutes/viewRoutes.js";
 
-const app = express();
-app.setMaxListeners(15);
-
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    methods: "GET,POST,PUT,DELETE, PATCH",
-    credentials: true,
-  })
-);
 app.use(express.json({ limit: "50mb" }));
 
 app.use(bodyParser.json());

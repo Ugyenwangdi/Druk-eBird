@@ -501,7 +501,7 @@ export const genusOptions = [
   "Zoothera",
   "Zosterops",
 ];
-export const iucnStatusOptions = ["CR", "EN", "LC", "LC ", "NT", "VU"];
+export const iucnStatusOptions = ["CR", "EN", "LC", "NT", "VU"];
 export const groupOptions = [
   "Accentor",
   "Accipiter",
@@ -711,17 +711,13 @@ export const groupOptions = [
   "sandpiper",
 ];
 export const residencyOptions = [
-  "Altitudinal Migrant",
   "Altitudinal migrant",
   "Introduced",
   "No recent records",
   "Passage migrant",
-  "Passsage migrant",
   "Rare visitor",
   "Resident",
-  "Resident ",
   "Resident-update",
-  "Summer Visitor",
   "Summer visitor",
   "Vagrant",
   "Visitor",

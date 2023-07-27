@@ -754,7 +754,7 @@ function AddSpecies() {
     "Zoothera",
     "Zosterops",
   ];
-  const iucnStatusOptions = ["CR", "EN", "LC", "LC ", "NT", "VU"];
+  const iucnStatusOptions = ["CR", "EN", "LC", "NT", "VU"];
   const groupOptions = [
     "Accentor",
     "Accipiter",
@@ -964,17 +964,13 @@ function AddSpecies() {
     "sandpiper",
   ];
   const residencyOptions = [
-    "Altitudinal Migrant",
     "Altitudinal migrant",
     "Introduced",
     "No recent records",
     "Passage migrant",
-    "Passsage migrant",
     "Rare visitor",
     "Resident",
-    "Resident ",
     "Resident-update",
-    "Summer Visitor",
     "Summer visitor",
     "Vagrant",
     "Visitor",
