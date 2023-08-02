@@ -240,7 +240,7 @@ function App() {
                 element={
                   <SpeciesList
                     searchQuery={searchQuery}
-                    setSearchClickedId={setSearchClickedId}
+                    setSearchClickId={setSearchClickedId}
                   />
                 }
               />

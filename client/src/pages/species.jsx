@@ -457,7 +457,7 @@ function Species({ searchQuery, setSearchClickId }) {
           <SpeciesListComponent
             speciesObj={speciesList ? speciesList : []}
             deleteSpecies={handleDelete}
-            setSearchClickId={setSearchClickId}
+            setSearchClickedId={setSearchClickId}
           />
           {showDeleteModal && speciesToDelete && (
             <DeleteSpeciesModal
