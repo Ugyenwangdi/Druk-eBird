@@ -980,7 +980,12 @@ const analyzeDistrictSpecies = async (req, res) => {
     let percentageChange;
 
     if (previousMonthCount === 0) {
-      percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+      // percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+      if (currentMonthCount === 0) {
+        percentageChange = 0;
+      } else {
+        percentageChange = 100;
+      }
     } else {
       percentageChange =
         ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
@@ -1171,7 +1176,12 @@ const analyzeDistrictChecklists = async (req, res) => {
     let percentageChange;
 
     if (previousMonthCount === 0) {
-      percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+      // percentageChange = 100; // Set the percentage change to 100% or any other value as desired
+      if (currentMonthCount === 0) {
+        percentageChange = 0;
+      } else {
+        percentageChange = 100;
+      }
     } else {
       percentageChange =
         ((currentMonthCount - previousMonthCount) / previousMonthCount) * 100;
